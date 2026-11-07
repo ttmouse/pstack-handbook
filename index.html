@@ -13,7 +13,7 @@
 :root{
   --display:"Songti SC","Source Han Serif SC","Noto Serif CJK SC","Songti TC",Georgia,"Times New Roman",serif;
   --text:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Noto Sans CJK SC","Microsoft YaHei",sans-serif;
-  --mono:ui-monospace,SFMono-Regular,Menlo,monospace; /* taste-skill-ignore font stack, only reaches <code> and <pre> */
+  --mono:ui-monospace,SFMono-Regular,Menlo,monospace; /* taste-skill-ignore font stack, only reaches code and pre */
 
   --ground:#f6f5f2;
   --raise:#efeeea;
@@ -36,6 +36,7 @@
   --code:#efeeea;
 
   --rail:212px;
+  --hang:120px;      /* margin column the chapter numeral hangs in */
   --measure:37em;
   --wide:62em;
 }
@@ -65,14 +66,14 @@ a:focus-visible{outline:2px solid var(--brand);outline-offset:3px;border-radius:
 
 /* ---------- rail ---------- */
 .rail{position:sticky;top:0;z-index:30;height:100dvh;overflow-y:auto;background:var(--raise);
-  padding:28px 16px 48px 22px;scrollbar-width:thin}
-.rail-head{display:flex;align-items:center;justify-content:space-between;margin:0 0 30px;padding:0 6px}
+  padding:28px 22px 48px;scrollbar-width:thin}
+.rail-head{display:flex;align-items:center;justify-content:space-between;margin:0 0 30px;padding:0}
 .wordmark{font-family:var(--display);font-size:17px;line-height:1.4;letter-spacing:.01em}
 .chev{display:none}
 .rail-list{list-style:none;margin:0;padding:0;font-size:14px;line-height:1.5}
-.rail-list li{margin:0}
+.rail-list li{margin:0;padding:0}
 .rail-list a{display:grid;grid-template-columns:1.9em minmax(0,1fr);align-items:baseline;
-  gap:.55em;padding:7px 8px 7px 6px;color:var(--muted);text-decoration:none;border-radius:2px;
+  gap:.55em;padding:7px 8px 7px 0;color:var(--muted);text-decoration:none;border-radius:2px;
   transition:color .25s ease,background-color .25s ease}
 .rail-list .n{font-variant-numeric:tabular-nums;text-align:right;opacity:.8;
   transition:color .25s ease,opacity .25s ease}
@@ -81,7 +82,7 @@ a:focus-visible{outline:2px solid var(--brand);outline-offset:3px;border-radius:
 .rail-list a.on .n{color:var(--brand);opacity:1}
 
 /* ---------- main column ---------- */
-main{padding:0 clamp(22px,4.6vw,80px) 140px;min-width:0}
+main{padding:0 clamp(22px,4.6vw,80px) 140px clamp(164px,12.8vw,184px);min-width:0}
 main > *{max-width:var(--wide)}
 main :is(p,ul,ol,h3,h4,blockquote,.note,.search){max-width:var(--measure)}
 
@@ -106,11 +107,15 @@ main :is(p,ul,ol,h3,h4,blockquote,.note,.search){max-width:var(--measure)}
 .go:active{transform:translateY(0)}
 
 /* ---------- headings ---------- */
-h2{display:grid;grid-template-columns:3.35em minmax(0,1fr);align-items:start;column-gap:1.1rem;
+h2{display:block;
   margin:clamp(80px,9.5vw,152px) 0 10px;font-family:var(--display);font-weight:600;
   font-size:clamp(1.7rem,3vw,2.5rem);line-height:1.18;letter-spacing:-.012em}
-h2 .num{font-size:1.5em;font-weight:400;line-height:.9;color:var(--muted);opacity:.6;
-  font-variant-numeric:tabular-nums;letter-spacing:0;margin-top:-.04em;text-align:right}
+/* zero height + zero leading keeps the numeral off the line box, so it shares
+   the title's baseline exactly without adding a pixel of section spacing */
+h2 .num{display:inline-block;width:var(--hang);height:0;line-height:0;
+  margin:0 1.05rem 0 calc(-1 * (var(--hang) + 1.05rem));
+  font-size:1.5em;font-weight:400;color:var(--muted);opacity:.6;
+  font-variant-numeric:tabular-nums;letter-spacing:0;text-align:right}
 main > h2 + p{max-width:31em;margin:10px 0 20px;font-size:1.3125rem;line-height:1.78}
 main > h2:first-of-type{margin-top:clamp(44px,5vw,84px)}
 h3{margin:62px 0 12px;font-family:var(--display);font-size:1.3125rem;line-height:1.5;
@@ -191,20 +196,24 @@ figure.devfig figcaption{margin:12px 0 0;font-size:14px;line-height:1.7;color:va
     transition:transform .3s ease}
   .toc-toggle:checked ~ .shell .chev{transform:rotate(-135deg) translateY(-3px)}
   .rail-list{display:none;max-height:calc(100dvh - 56px);overflow-y:auto;
-    padding:6px clamp(12px,4vw,28px) 22px;font-size:16px}
-  .rail-list a{padding:12px 8px;font-size:16px}
+    padding:6px clamp(20px,5vw,34px) 22px;font-size:16px}
+  .rail-list a{padding:12px 8px 12px 0;font-size:16px}
   .rail-list .n{font-size:14px}
   .toc-toggle:checked ~ .shell .rail-list{display:block}
   .toc-toggle:focus-visible ~ .shell .rail-head{outline:2px solid var(--brand);outline-offset:-3px}
   main{padding:0 clamp(20px,5vw,34px) 96px}
   .cover{min-height:auto;padding-top:clamp(30px,7vw,64px)}
   h2,h3,h4{scroll-margin-top:80px}
+  /* no margin to hang a numeral in once the rail moves above the text:
+     the numeral takes a column so a wrapped title stays under itself */
+  h2{display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:.42em;align-items:baseline}
+  h2 .num{display:block;height:auto;width:auto;margin:0;
+    font-size:1em;line-height:inherit;opacity:.7;text-align:left}
 }
 
 @media (max-width:860px){
   body{font-size:16.5px;line-height:1.85}
-  h2{display:block;margin:clamp(92px,13vw,120px) 0 12px}
-  h2 .num{font-size:1em;opacity:.7;margin-right:.42em;vertical-align:.06em}
+  h2{margin:clamp(92px,13vw,120px) 0 12px}
   main > h2 + p{font-size:1.15rem;line-height:1.8;max-width:32em}
   h3{margin-top:48px}
   main :is(p,ul,ol,h3,h4,blockquote,.note,.search){max-width:42em}
@@ -237,6 +246,7 @@ figure.devfig figcaption{margin:12px 0 0;font-size:14px;line-height:1.7;color:va
   body{background:#fff;color:#000;font-size:10.5pt}
   .js [data-rv]{opacity:1!important;transform:none!important}
   h2{break-after:avoid}
+  h2 .num{display:inline;width:auto;height:auto;line-height:inherit;margin:0 .42em 0 0;font-size:1em}
   figure.devfig,table,pre{break-inside:avoid}
 }
 </style>
@@ -1664,7 +1674,9 @@ create-verification-skill  造一个能自己跑应用的验证技能</code></pr
     if(!wordmark) return;
     var a=byId[id];
     if(!a||window.scrollY<80){ wordmark.textContent=home; return; }
-    wordmark.textContent=a.textContent.replace(/\s+/g,' ').trim();
+    var n=a.querySelector('.n');
+    var label=a.lastChild&&a.lastChild.nodeType===3?a.lastChild.textContent:a.textContent;
+    wordmark.textContent=(n?n.textContent.trim()+' ':'')+label.replace(/\s+/g,' ').trim();
   }
   if(window.IntersectionObserver){
     var here=new IntersectionObserver(function(entries){
