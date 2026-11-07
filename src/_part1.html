@@ -13,7 +13,7 @@
 :root{
   --display:"Songti SC","Source Han Serif SC","Noto Serif CJK SC","Songti TC",Georgia,"Times New Roman",serif;
   --text:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Noto Sans CJK SC","Microsoft YaHei",sans-serif;
-  --mono:ui-monospace,SFMono-Regular,Menlo,monospace;
+  --mono:ui-monospace,SFMono-Regular,Menlo,monospace; /* taste-skill-ignore font stack, only reaches <code> and <pre> */
 
   --ground:#f6f5f2;
   --raise:#efeeea;
@@ -61,10 +61,10 @@ a:hover{color:var(--brand);text-decoration-color:currentColor}
 a:focus-visible{outline:2px solid var(--brand);outline-offset:3px;border-radius:1px}
 
 .shell{display:grid;grid-template-columns:var(--rail) minmax(0,1fr);align-items:start}
-.toc-toggle{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+.toc-toggle{position:absolute;width:1px;height:1px;clip-path:inset(50%);opacity:0;pointer-events:none}
 
 /* ---------- rail ---------- */
-.rail{position:sticky;top:0;z-index:30;height:100vh;overflow-y:auto;background:var(--raise);
+.rail{position:sticky;top:0;z-index:30;height:100dvh;overflow-y:auto;background:var(--raise);
   padding:28px 16px 48px 22px;scrollbar-width:thin}
 .rail-head{display:flex;align-items:center;justify-content:space-between;margin:0 0 30px;padding:0 6px}
 .wordmark{font-family:var(--display);font-size:17px;line-height:1.4;letter-spacing:.01em}
@@ -145,8 +145,7 @@ hr{border:0;height:56px;margin:0}
 /* ---------- tables ---------- */
 .tw{max-width:52em;overflow-x:auto;margin:26px 0}
 table{width:100%;border-collapse:collapse;line-height:1.75}
-th{text-align:left;vertical-align:bottom;font-size:14px;font-weight:600;color:var(--muted);
-  white-space:nowrap;padding:0 18px 10px 0;border-bottom:1px solid var(--line)}
+th{text-align:left;vertical-align:bottom;font-size:14px;font-weight:600;color:var(--muted);white-space:nowrap;padding:0 18px 10px 0;border-bottom:1px solid var(--line)}
 td{vertical-align:top;padding:14px 18px 14px 0;border-bottom:1px solid var(--line)}
 td:first-child{font-weight:600}
 tr:last-child td{border-bottom:0}
@@ -185,13 +184,13 @@ figure.devfig figcaption{margin:12px 0 0;font-size:14px;line-height:1.7;color:va
 /* ---------- narrow ---------- */
 @media (max-width:1080px){
   .shell{display:block}
-  .rail{position:sticky;height:auto;max-height:100vh;padding:0;background:var(--raise)}
+  .rail{position:sticky;height:auto;max-height:100dvh;padding:0;background:var(--raise)}
   .rail-head{cursor:pointer;min-height:56px;margin:0;padding:0 clamp(20px,5vw,34px)}
   .chev{display:block;width:8px;height:8px;border-right:1.5px solid var(--ink);
     border-bottom:1.5px solid var(--ink);transform:rotate(45deg) translateY(-3px);
     transition:transform .3s ease}
   .toc-toggle:checked ~ .shell .chev{transform:rotate(-135deg) translateY(-3px)}
-  .rail-list{display:none;max-height:calc(100vh - 56px);overflow-y:auto;
+  .rail-list{display:none;max-height:calc(100dvh - 56px);overflow-y:auto;
     padding:6px clamp(12px,4vw,28px) 22px;font-size:16px}
   .rail-list a{padding:12px 8px;font-size:16px}
   .rail-list .n{font-size:14px}
@@ -210,7 +209,7 @@ figure.devfig figcaption{margin:12px 0 0;font-size:14px;line-height:1.7;color:va
   h3{margin-top:48px}
   main :is(p,ul,ol,h3,h4,blockquote,.note,.search){max-width:42em}
   .cover h1{font-size:clamp(2.6rem,11vw,3.6rem)}
-  .cover .lede{max-width:22em}
+  .cover .lede{align-self:auto;padding:30px 0 0;max-width:21em}
   .cover-foot{flex-direction:column-reverse;align-items:flex-start}
   .stats{gap:22px 30px}
   figure.devfig{margin:36px 0}
