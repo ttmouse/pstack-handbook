@@ -575,9 +575,57 @@ def fig_cost():
     return f
 
 
+# --------------------------------------------------------------------------
+# 9. 第 16 章：两条环
+# --------------------------------------------------------------------------
+
+def fig_outerloop():
+    f = Fig("outerloop", 620,
+            "两条环：上排外循环决定做什么，下排内循环决定做完了；派活往下走，结果回流往上走",
+            "上排没有任何插件提供，要自己搭。下排是这本手册第 1 到 13 章的全部内容。")
+    xs = [112, 338, 564, 790]
+    bw = 176
+    top = [("信号流", "工单 语音 聊天"),
+           ("队列", "先攒后看，找模式"),
+           ("复现闸", "复现不了就不修"),
+           ("一条主线", "其余明确判死")]
+    bot = [("交接", "说清怎么验的"),
+           ("验证", "真实产物"),
+           ("实现", "最小改动"),
+           ("认领", "一句话带背景")]
+    top_y, bot_y = 118, 438
+
+    f.note(40, 72, "外循环 · 决定做什么", size=14, anchor="start",
+           color="var(--accent2)", weight="600")
+    f.note(40, 536, "内循环 · 决定做完了", size=14, anchor="start",
+           color="var(--accent2)", weight="600")
+
+    for i, (t, s) in enumerate(top):
+        f.box(xs[i], top_y, t, s, w=bw, kind="accent" if i == 3 else "box")
+    for i, (t, s) in enumerate(bot):
+        f.box(xs[i], bot_y, t, s, w=bw, kind="accent" if i == 3 else "box")
+
+    for i in range(3):
+        f.line(xs[i] + bw / 2, top_y, xs[i + 1] - bw / 2, top_y)
+        f.line(xs[i + 1] - bw / 2, bot_y, xs[i] + bw / 2, bot_y)
+
+    f.line(xs[3], top_y + 29, xs[3], bot_y - 29)
+    f.note(xs[3] + 16, 268, "派活：目标 + 完成标准", size=12, rotate=90)
+    f.line(xs[0], bot_y - 29, xs[0], top_y + 29)
+    f.note(xs[0] - 16, 268, "结果与教训回流", size=12, rotate=-90)
+
+    f.note(450, 236, "只装下排：工具很全，但不知道今天该干什么。", size=12.5,
+           color="var(--bad)")
+    f.note(450, 266, "只装上排：知道该做什么，但每件事都做不完。", size=12.5,
+           color="var(--bad)")
+    f.note(450, 574, "两排之间只传两样东西：一句带完成标准的话，和一条回流的教训。",
+           size=12.5, color="var(--accent2)")
+    return f
+
+
 FIGS = [fig_story, fig_layers, fig_context, fig_flow, fig_bugfix, fig_feature,
         fig_principles, fig_verify, fig_parallel, fig_decide, fig_feynman,
-        fig_levels, fig_cost]
+        fig_levels, fig_cost, fig_outerloop]
 
 
 def main():

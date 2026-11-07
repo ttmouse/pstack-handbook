@@ -210,9 +210,9 @@
 
 <p class="muted">这一章讲的是原理。想看真实的成本数字和第三方实测，翻到 15.2。</p>
 
-<h2 id="offline">10 离线课</h2>
+<h2 id="paper">10 纸笔课</h2>
 
-<p>飞机上没有网络也能做。全部只要求这本手册和一支笔，或一个空编辑器。</p>
+<p>全部只要求这本手册和一支笔，或一个空编辑器。</p>
 
 <h3>练习一 路由盲测</h3>
 <p>下面十个任务，先各写一本 playbook，再看答案。目标八个以上。</p>
@@ -246,9 +246,9 @@
 <h3>练习六 画图</h3>
 <p>不看书，画一张四层结构图，标出哪层能直接调用、哪层不能。画完对照第 1 章。</p>
 
-<h2 id="online">11 联网课</h2>
+<h2 id="practice">11 实操课</h2>
 
-<p>有网络和系统权限之后再跑。每条给出命令与通过标准。</p>
+<p>在自己的机器上跑。每条给出命令与通过标准。</p>
 
 <h3>课一 体检</h3>
 <pre><code>cd &lt;你的项目&gt;
@@ -365,7 +365,7 @@
 <h4>第 10 到 12 章 练习与计划</h4>
 <p><b>外行版。</b>练习不是测验，是暴露。做不出来才知道哪一章白读了。</p>
 <p><b>常见误解。</b>按顺序做完就算学完。做错却不回读，做十遍也没用。</p>
-<p><b>口述题。</b>六个离线练习里，哪一个错得最多，错在哪一章？</p>
+<p><b>口述题。</b>六个纸笔练习里，哪一个错得最多，错在哪一章？</p>
 
 <h3>讲错诊断</h3>
 
@@ -490,7 +490,7 @@
 <tr><td>云端的定时任务、自动看板、缺陷机器人</td><td>替换成一行「本环境跳过」</td><td>每日维护验证技能这件事，得自己排定时任务补上</td></tr>
 </table>
 
-<p>还有一层根本没有搬过来：外循环。作者工作环境里有一层接聊天工具、监控、告警的东西，看到异常自动派代理去复现、开改动请求。这一层不属于插件，本地也没有现成对应物，要自己搭。</p>
+<p>还有一层根本没有搬过来：外循环。作者工作环境里有一层接聊天工具、监控、告警的东西，看到异常自动派代理去复现、开改动请求。这一层不属于插件，本地也没有现成对应物，要自己搭。第 <a href="#outer">16 章</a>专门讲这一层。</p>
 
 <div class="note"><b>一条可操作的检查。</b>打开你的模型表，看面板类那几行。如果全是同一个家族，就别把「两边一致」当成结论，那只是同一个人说了两遍。</div>
 
@@ -670,6 +670,131 @@ create-verification-skill  造一个能自己跑应用的验证技能</code></pr
 
 <div class="note"><b>这一章的正确读法。</b>它不是在说这套流程不好，是在说它的边界在哪。一个方法的价值，等于它能做到的事减去它的代价。只看前者，你会高估它；只看后者，你会错过验证技能那一块真正能带走的东西。</div>
 
+<h2 id="outer">16 外循环：需求之前那一环</h2>
+
+<div class="note warn"><b>来源说明。</b>这一章的材料分三层。<b>一手</b>是作者 2026-10-06 的一条公开推文，讲第一公里。<b>二手</b>是一篇 2026-11-03 的中文转述，逐条标了出处，本章出现的每一句引文都来自它，是中文转述而不是英文原文。<b>归纳</b>是我从这两份材料推出来的判断，标了「归纳」的地方不是作者自己的话。还有一件事要说清：本机装的 0.9.129 里没有外循环对应的技能，所以这一章不教「怎么用技能」，只讲「要自己搭什么」。</div>
+
+<h3>16.1 两条环，先分开</h3>
+
+<p>前面十五章讲的都是内循环。一次任务进来之后，怎么判断类型、走哪条清单、怎么验证、怎么交出去。</p>
+
+<p>但整条产线还有另一半。作者的分法是这样的。</p>
+
+<!--FIG:outerloop-->
+
+<p><b>外循环决定做什么，内循环决定做完了。</b>她管前者叫第一公里，原话的意思是「你到底该做哪件事」。后者是最后一公里。</p>
+
+<p>这个分法解释了一个很容易困惑的现象。有人问她，这套工作流为什么不自己找活干。因为找活不归内循环管。它属于外循环，靠把 bot 接进真实信号流来完成，判断留给人。</p>
+
+<div class="note"><b>为什么这一章放在最后。</b>手册前面全在下排。把 pstack 装好、技能配齐，你拿到的也只是下排。上排没有任何插件给你。只装一半的症状很像：工具很全，但不知道今天该干什么。</div>
+
+<h3>16.2 上排的五个动作</h3>
+
+<table>
+<tr><th>动作</th><th>她的做法</th><th>缺了会怎样</th></tr>
+<tr><td>接进信号流</td><td>把 bot 接到日历、客户系统、聊天工具、邮件上，让它直接读上下文，不靠你转述</td><td>你转述一次，信息掉一半，还要花你的注意力</td></tr>
+<tr><td>一句话带背景派活</td><td>给意图和约束，不给操作步骤</td><td>微操是把代理当实习生，它永远不会做你没说到的事</td></tr>
+<tr><td>用 routine 自动化发现</td><td>定时加事件触发，频率不超过每小时</td><td>发现要靠你想起，等于没做</td></tr>
+<tr><td>中间加一个队列</td><td>坏模式先记下来，隔几天一起看，再合并成根因需求</td><td>你会一直在来一单做一单，看不到规律</td></tr>
+<tr><td>原型代替需求文档</td><td>她常说 why not today</td><td>需求在纸上永远定不下来，做着做着就散了</td></tr>
+</table>
+
+<p>第三条最容易被跳过，第五条最容易被误解。<b>用原型回答需求，不是反对写文档，是承认一件事：需求的形态靠做出来才知道，靠讨论定不下来。</b></p>
+
+<h3>16.3 最后一公里是一条固定闭环</h3>
+
+<p>内循环也不是自由的。她的闭环起点是一个具体的频道，不是一个抽象目标。</p>
+
+<pre><code>盯反馈频道 → 开单 → 云端代理复现 → 修复 → 小群代理测试 → 否决窗口 → 自动合并</code></pre>
+
+<p>两个设计值得抄。</p>
+
+<p><b>复现前置。</b>单开出来不是给人读的，是给代理复现的。复现不了就不修。这一条把「我觉得这里有问题」挡在了队列外面。</p>
+
+<p><b>否决窗口。</b>绿灯之后不是等人批准，是给人一小时说「不行」，超时自动合。把「人必须主动批准」换成「人必须主动否决」，队列才流动得起来。人从瓶颈变成刹车。</p>
+
+<div class="note"><b>和第 7 章的关系。</b>验证体系决定「绿灯是不是真的绿」，否决窗口决定「绿灯之后谁来停」。两样缺一样，自动合并都会出事。</div>
+
+<h3>16.4 信任是分四步给的</h3>
+
+<p>她不会一上来就把合并权交出去。顺序是固定的四步。</p>
+
+<table>
+<tr><th>步</th><th>做什么</th><th>你的注意力花在哪</th></tr>
+<tr><td>一 看</td><td>看它完整做一遍</td><td>花在这里</td></tr>
+<tr><td>二 存为技能</td><td>把这次的过程写成技能，下次照做</td><td>花在这里</td></tr>
+<tr><td>三 一次纠正</td><td>它做错了，纠正一次，让它记住</td><td>花在这里</td></tr>
+<tr><td>四 例行</td><td>不再看，只在异常时介入</td><td>不该再花</td></tr>
+</table>
+
+<p><b>第四步还不放手，说明这套东西没省下任何东西。</b>这是最值得自查的一条。</p>
+
+<h3>16.5 她砍东西的判据</h3>
+
+<p>这一节是整章最实用的部分。她判断一件事要不要做，不靠优先级矩阵。</p>
+
+<blockquote>
+<p>目标不是更多的代码，是用最少的代码产生最大的影响。</p>
+</blockquote>
+
+<blockquote>
+<p>不可能每道菜都尝，但也永远不能一道都不尝。</p>
+</blockquote>
+
+<blockquote>
+<p>只出现一次的问题，可能不用管。好几个 bot 都犯同一个错，才说明该改厨房。</p>
+</blockquote>
+
+<p class="muted">三句都是中文转述，不是英文原文。来源见 16.7。</p>
+
+<p>把它们翻译成可操作的判据，是这四条。</p>
+
+<ul>
+<li><b>抽查，不逐条。</b>反馈不逐条看，也不一条不看。抽样之后找重复模式。</li>
+<li><b>一次只推一条主线。</b>其余明确处理掉，不是挂着。挂着的待办不产生决策。</li>
+<li><b>队列用来找规律，不是用来清空。</b>攒着不是欠债。攒着是为了看清模式。</li>
+<li><b>改厨房，不是改这道菜。</b>同一个错犯第二次，问题在让它犯错的环境里，不在那一次的输出里。</li>
+</ul>
+
+<h3>16.6 本地最小替代</h3>
+
+<p>外循环没有插件，但不需要按她的规模搭。下面是最小可行的一套，每一项都能从今天开始。</p>
+
+<table>
+<tr><th>能力</th><th>她的做法</th><th>本地最小替代</th></tr>
+<tr><td>信号接入</td><td>bot 接聊天工具、工单、日历、客户系统</td><td>一个只追加的采集脚本，把版本、队列数量、巡检结果写成一行 JSON</td></tr>
+<tr><td>发现自动化</td><td>routine，定时加事件，上限每小时一次</td><td>launchd 每周一次。每周比每小时有用，因为你要看的是模式</td></tr>
+<tr><td>队列</td><td>工单系统</td><td>backlog 的 inbox，按根因分组，一组算一个决策单元</td></tr>
+<tr><td>复现闸</td><td>云端代理复现</td><td>本地验证技能。复现不了的条目留在观察区，不进待办</td></tr>
+<tr><td>否决窗口</td><td>一小时无人反对就合</td><td>不自动化合并。人工确认这一步在本地没有替代品</td></tr>
+</table>
+
+<p><b>准入闸。</b>这是整章唯一必须硬性执行的一条。新条目进队列前要答三个问题，答不出就不进。</p>
+
+<ol>
+<li>谁在什么场景下真的痛过。不是「理论上会痛」。</li>
+<li>怎么复现。答不出复现步骤，说明这条还是假设。</li>
+<li>修好之后用户能看到什么变化。看不到的，进观察区。</li>
+</ol>
+
+<div class="note"><b>为什么准入比排序重要。</b>队列里 119 条和 15 条，决策成本差一个数量级。排序能缓解，准入能根除。第 15 章那条「把纠正变成结构」的顺序在这里同样适用：能写进工具默认值的，不要写成提醒。</div>
+
+<h3>16.7 这一章的正确读法</h3>
+
+<p>不要记结论。用四个症状定位你缺哪一半。</p>
+
+<table>
+<tr><th>症状</th><th>缺的是</th><th>先做什么</th></tr>
+<tr><td>不知道今天该干什么，工具很全但空转</td><td>上排</td><td>先接一个信号源，只接一个</td></tr>
+<tr><td>待办越积越多，一件都没做完</td><td>不是更多条目，是决策闸</td><td>先做准入三问，再把队列按根因分组</td></tr>
+<tr><td>做完了但不敢放手</td><td>16.4 的第四步</td><td>挑一件低风险的事，真的不看它做完</td></tr>
+<tr><td>同一个错反复出现</td><td>环境</td><td>改结构，不加提醒</td></tr>
+</table>
+
+<p><b>一句话收尾。</b>下排决定你能不能做完，上排决定你有没有值得做完的东西。这本手册讲透了下排，上排只能给框架。具体接哪条信号流，取决于你每天真正在看什么。</p>
+
+<p class="muted">出处：一手是作者 2026-10-06 关于第一公里的公开推文；二手是一篇 2026-11-03 的中文转述，逐条标了出处。手册是离线单文件，不外链，两处原文请自行按日期检索。</p>
+
 <h2 id="cheat">附录 A 命令速查</h2>
 
 <pre><code># 总管
@@ -743,58 +868,124 @@ create-verification-skill  造一个能自己跑应用的验证技能</code></pr
 <tr><td>决策轨迹</td><td>长任务里每个决定的记录：做了什么、为什么、证据、结果</td></tr>
 </table>
 
-<hr>
-<p class="muted">本手册依据本机安装的 pstack 0.9.129 写成，离线可读，无外部依赖。版本升级后，第 3、4 章的数量与技能名可能变化，其余章节的判断不随版本改变。</p>
+<footer class="colophon">
+  <p class="closing">pstack 学习手册</p>
+  <p class="muted">本手册依据本机安装的 pstack 0.9.129 写成，单文件发布，样式与插图全部内联。版本升级后，第 3、4 章的数量与技能名可能变化，其余章节的判断不随版本改变。</p>
+</footer>
 </main>
 </div>
 <script>
 (function(){
+  var root=document.documentElement;
+
+  /* ---- entrance: numerals and headings rise as their section arrives ---- */
+  var targets=[];
+  function add(sel){
+    Array.prototype.forEach.call(document.querySelectorAll(sel),function(el){targets.push(el);});
+  }
+  add('.cover .ln, .cover .lede, .cover .stat, .cover .go');
+  // the heading's own spans move, never the h2 box: an anchor must land where it promised
+  add('main > h2 > .num, main > h2 > .ttl, main h3, main > figure.devfig, main > .tw, main > .note, main > blockquote');
+  Array.prototype.forEach.call(document.querySelectorAll('main > h2'),function(h){
+    var n=h.nextElementSibling;
+    if(n&&n.tagName==='P') targets.push(n);
+  });
+  // document order, so a section's parts enter top-down
+  targets.sort(function(a,b){
+    return a.compareDocumentPosition(b)&Node.DOCUMENT_POSITION_FOLLOWING?-1:1;
+  });
+  targets.forEach(function(el){el.setAttribute('data-rv','');});
+
+  function reveal(el){ el.classList.add('in'); }
+  if(window.IntersectionObserver){
+    var io=new IntersectionObserver(function(entries){
+      var shown=0;
+      entries.forEach(function(e){
+        if(!e.isIntersecting) return;
+        (function(el,step){ setTimeout(function(){ reveal(el); }, step*70); })(e.target,shown++);
+        io.unobserve(e.target);
+      });
+    },{rootMargin:'0px 0px -8% 0px',threshold:.08});
+    targets.forEach(function(el){io.observe(el);});
+  }else{
+    targets.forEach(reveal);
+  }
+  // if anything above still hides the text (script order, old browser), show it
+  window.addEventListener('load',function(){
+    setTimeout(function(){
+      targets.forEach(function(el){
+        if(!el.classList.contains('in')&&el.getBoundingClientRect().top<0) reveal(el);
+      });
+    },900);
+  });
+
+  /* ---- where am I: rail marker and the bar's own title ---- */
+  var links=Array.prototype.slice.call(document.querySelectorAll('.rail-list a'));
+  var byId={};
+  links.forEach(function(a){ byId[a.getAttribute('href').slice(1)]=a; });
+  var wordmark=document.querySelector('.wordmark');
+  var home=wordmark?wordmark.textContent:'';
+  var heads=Array.prototype.slice.call(document.querySelectorAll('main > h2[id]'));
+  function current(id){
+    links.forEach(function(a){ a.classList.toggle('on',a===byId[id]); });
+    if(!wordmark) return;
+    var a=byId[id];
+    if(!a||window.scrollY<80){ wordmark.textContent=home; return; }
+    wordmark.textContent=a.textContent.replace(/\s+/g,' ').trim();
+  }
+  if(window.IntersectionObserver){
+    var here=new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if(e.isIntersecting) current(e.target.id); });
+    },{rootMargin:'-12% 0px -72% 0px'});
+    heads.forEach(function(h){here.observe(h);});
+    var top=new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if(e.isIntersecting) current(null); });
+    },{rootMargin:'-5% 0px -90% 0px'});
+    var cover=document.querySelector('.cover');
+    if(cover) top.observe(cover);
+  }
+
+  /* ---- phone rail: tapping a chapter closes it ---- */
+  var toggle=document.getElementById('tocToggle');
+  links.forEach(function(a){
+    a.addEventListener('click',function(){ if(toggle) toggle.checked=false; });
+  });
+
+  /* ---- filter over the skill and playbook tables ---- */
   var input=document.getElementById('filter');
   if(input){
     input.addEventListener('input',function(){
       var q=input.value.trim().toLowerCase();
-      var tables=document.querySelectorAll('table.filterable');
-      tables.forEach(function(t){
+      Array.prototype.forEach.call(document.querySelectorAll('table.filterable'),function(t){
         var rows=t.querySelectorAll('tr');
         for(var i=1;i<rows.length;i++){
-          var r=rows[i];
-          r.style.display=(!q||r.textContent.toLowerCase().indexOf(q)>-1)?'':'none';
+          rows[i].style.display=(!q||rows[i].textContent.toLowerCase().indexOf(q)>-1)?'':'none';
         }
       });
     });
+    input.addEventListener('keydown',function(e){ if(e.key==='Escape'){ input.value=''; input.dispatchEvent(new Event('input')); } });
   }
-  // 移动端：图默认缩到整幅可见，点一下放大成可横向滚动
-  if(window.matchMedia && window.matchMedia('(max-width: 860px)').matches){
-    document.querySelectorAll('figure.devfig').forEach(function(fig){
-      fig.addEventListener('click',function(){
+
+  /* ---- phone figures: whole drawing first, tap for full size ---- */
+  function bindFigures(){
+    Array.prototype.forEach.call(document.querySelectorAll('figure.devfig'),function(fig){
+      if(fig.dataset.bound) return;
+      fig.dataset.bound='1';
+      var start=null;
+      fig.addEventListener('touchstart',function(e){
+        start=e.touches.length===1?{x:e.touches[0].clientX,y:e.touches[0].clientY}:null;
+      },{passive:true});
+      fig.addEventListener('click',function(e){
+        if(start&&(Math.abs(e.clientX-start.x)>10||Math.abs(e.clientY-start.y)>10)) return;
         fig.classList.toggle('zoom');
         var box=fig.querySelector('.figscroll');
-        if(box && fig.classList.contains('zoom')){
+        if(box&&fig.classList.contains('zoom')){
           box.scrollLeft=Math.max(0,(box.scrollWidth-box.clientWidth)/2);
         }
       });
     });
   }
-  // 手机上点目录项后自动收起，回到正文
-  var tocToggle=document.getElementById('tocToggle');
-  document.querySelectorAll('nav.toc a').forEach(function(a){
-    a.addEventListener('click',function(){ if(tocToggle) tocToggle.checked=false; });
-  });
-  var links=document.querySelectorAll('nav.toc a');
-  var map={};
-  links.forEach(function(a){var id=a.getAttribute('href').slice(1);var el=document.getElementById(id);if(el)map[id]=a;});
-  if('IntersectionObserver' in window){
-    var obs=new IntersectionObserver(function(es){
-      es.forEach(function(e){
-        if(e.isIntersecting){
-          links.forEach(function(a){a.style.color='';a.style.background='';});
-          var a=map[e.target.id];
-          if(a){a.style.color='var(--accent)';a.style.background='var(--panel2)';}
-        }
-      });
-    },{rootMargin:'-10% 0px -80% 0px'});
-    Object.keys(map).forEach(function(id){var el=document.getElementById(id);if(el)obs.observe(el);});
-  }
+  if(window.matchMedia&&window.matchMedia('(max-width: 860px)').matches) bindFigures();
 })();
 </script>
 </body>

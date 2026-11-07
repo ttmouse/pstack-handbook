@@ -2,152 +2,296 @@
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f6f5f2" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0c0d0f" media="(prefers-color-scheme: dark)">
+<meta name="description" content="pstack 学习手册：拿到任务能说出该走哪条流程、叫哪个技能、能预判它会怎么做。">
 <title>pstack 学习手册</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2317563b'/%3E%3Ctext x='16' y='24' font-family='Georgia,serif' font-size='22' font-weight='600' fill='%23f6f5f2' text-anchor='middle'%3Ep%3C/text%3E%3C/svg%3E">
+<script>document.documentElement.className+=' js';</script>
 <style>
 :root{
-  --bg:#0f1115; --panel:#171a21; --panel2:#1d212a; --fg:#e6e8ee; --muted:#9aa3b2;
-  --line:#2a2f3a; --accent:#7cc4ff; --accent2:#ffd479; --ok:#7ee2a8; --bad:#ff8f8f;
-  --code:#11141a;
+  --display:"Songti SC","Source Han Serif SC","Noto Serif CJK SC","Songti TC",Georgia,"Times New Roman",serif;
+  --text:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Noto Sans CJK SC","Microsoft YaHei",sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,monospace;
+
+  --ground:#f6f5f2;
+  --raise:#efeeea;
+  --raise-2:#e5e4de;
+  --ink:#16171a;
+  --muted:#6b6f75;
+  --brand:#17563b;
+  --brand-soft:#e3ebe5;
+  --warn-bg:#f3e9e3;
+  --good-bg:#e4ece6;
+  --line:#dcdad3;
+
+  --panel:#efeeea;   /* figure surfaces, read by the inlined SVGs */
+  --panel2:#e5e4de;
+  --fg:#16171a;
+  --accent:#1f5fd0;
+  --accent2:#8a5b12;
+  --ok:#17724a;
+  --bad:#a8321f;
+  --code:#efeeea;
+
+  --rail:212px;
+  --measure:37em;
+  --wide:62em;
 }
-@media (prefers-color-scheme: light){
-  :root{--bg:#fbfbfd;--panel:#fff;--panel2:#f3f4f7;--fg:#1b1f27;--muted:#5c6474;--line:#e2e5ec;--accent:#0b62c4;--accent2:#9a6b00;--ok:#0f7a45;--bad:#b3261e;--code:#f4f5f8}
+@media (prefers-color-scheme: dark){
+  :root{
+    --ground:#0c0d0f;--raise:#151619;--raise-2:#1d1f23;--ink:#ebeef1;--muted:#969ca4;
+    --brand:#7fd7a4;--brand-soft:#16241d;--warn-bg:#241a18;--good-bg:#16241d;--line:#2a2d33;
+    --panel:#151619;--panel2:#1d1f23;--fg:#ebeef1;
+    --accent:#7cb2ff;--accent2:#f0c46a;--ok:#79d9a2;--bad:#ff9a8a;--code:#151619;
+  }
 }
 *{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.75 -apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif}
-a{color:var(--accent);text-decoration:none}
-a:hover{text-decoration:underline}
-.layout{display:grid;grid-template-columns:286px minmax(0,1fr);min-height:100vh}
-nav.toc{position:sticky;top:0;height:100vh;overflow:auto;background:var(--panel);border-right:1px solid var(--line);padding:20px 16px}
-nav.toc h1{font-size:15px;margin:0 0 4px;letter-spacing:.02em}
-nav.toc .sub{color:var(--muted);font-size:12px;margin-bottom:14px}
-nav.toc ol{list-style:none;margin:0;padding:0;font-size:13.5px}
-nav.toc li{margin:2px 0}
-nav.toc a{display:block;padding:4px 8px;border-radius:6px;color:var(--muted)}
-nav.toc a:hover{background:var(--panel2);color:var(--fg);text-decoration:none}
-nav.toc .grp{margin:12px 0 4px;font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);opacity:.75}
-main{padding:36px 48px 96px;max-width:980px}
-h2{font-size:26px;margin:56px 0 8px;padding-top:18px;border-top:1px solid var(--line)}
-h2:first-of-type{border-top:0;margin-top:8px}
-h3{font-size:19px;margin:32px 0 6px}
-h4{font-size:16px;margin:22px 0 4px;color:var(--accent2)}
-p{margin:10px 0}
-ul,ol{margin:8px 0 8px 22px;padding:0}
-li{margin:4px 0}
-code{background:var(--code);border:1px solid var(--line);border-radius:5px;padding:1px 5px;font-size:13.5px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
-pre{background:var(--code);border:1px solid var(--line);border-radius:10px;padding:14px 16px;overflow:auto;font-size:13px;line-height:1.6}
-pre code{border:0;background:none;padding:0}
-blockquote{margin:14px 0;padding:10px 16px;border-left:3px solid var(--accent);background:var(--panel2);color:var(--fg)}
-blockquote p{margin:4px 0}
-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14px}
-th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
-th{color:var(--muted);font-weight:600;font-size:12.5px;text-transform:uppercase;letter-spacing:.04em}
-tr:hover td{background:var(--panel2)}
-.tag{display:inline-block;font-size:11.5px;padding:1px 7px;border:1px solid var(--line);border-radius:999px;color:var(--muted);margin-right:6px}
-.tag.hot{color:var(--accent2);border-color:var(--accent2)}
-.note{border:1px solid var(--line);background:var(--panel);border-radius:10px;padding:14px 16px;margin:16px 0}
-.note b{color:var(--accent2)}
-.warn{border-left:3px solid var(--bad)}
-.good{border-left:3px solid var(--ok)}
-.k{color:var(--accent2)}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--ground);color:var(--ink);
+  font-family:var(--text);font-size:17px;line-height:1.85;letter-spacing:.002em;
+  -webkit-font-smoothing:antialiased}
+::selection{background:var(--brand);color:var(--ground)}
+
+a{color:inherit;text-decoration:underline;text-decoration-thickness:1px;
+  text-decoration-color:var(--muted);text-underline-offset:.22em;
+  transition:color .22s ease,text-decoration-color .22s ease}
+a:hover{color:var(--brand);text-decoration-color:currentColor}
+a:focus-visible{outline:2px solid var(--brand);outline-offset:3px;border-radius:1px}
+
+.shell{display:grid;grid-template-columns:var(--rail) minmax(0,1fr);align-items:start}
+.toc-toggle{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+
+/* ---------- rail ---------- */
+.rail{position:sticky;top:0;z-index:30;height:100vh;overflow-y:auto;background:var(--raise);
+  padding:28px 16px 48px 22px;scrollbar-width:thin}
+.rail-head{display:flex;align-items:center;justify-content:space-between;margin:0 0 30px;padding:0 6px}
+.wordmark{font-family:var(--display);font-size:17px;line-height:1.4;letter-spacing:.01em}
+.chev{display:none}
+.rail-list{list-style:none;margin:0;padding:0;font-size:14px;line-height:1.5}
+.rail-list li{margin:0}
+.rail-list a{display:grid;grid-template-columns:1.9em minmax(0,1fr);align-items:baseline;
+  gap:.55em;padding:7px 8px 7px 6px;color:var(--muted);text-decoration:none;border-radius:2px;
+  transition:color .25s ease,background-color .25s ease}
+.rail-list .n{font-variant-numeric:tabular-nums;text-align:right;opacity:.8;
+  transition:color .25s ease,opacity .25s ease}
+.rail-list a:hover{color:var(--ink)}
+.rail-list a.on{color:var(--ink);background:var(--brand-soft)}
+.rail-list a.on .n{color:var(--brand);opacity:1}
+
+/* ---------- main column ---------- */
+main{padding:0 clamp(22px,4.6vw,80px) 140px;min-width:0}
+main > *{max-width:var(--wide)}
+main :is(p,ul,ol,h3,h4,blockquote,.note,.search){max-width:var(--measure)}
+
+/* ---------- cover ---------- */
+.cover{display:grid;grid-template-rows:auto 1fr auto;min-height:min(80vh,860px);
+  max-width:calc(var(--wide) + 4em);padding:clamp(26px,5vw,54px) 0 clamp(30px,4vw,48px)}
+.cover h1{margin:0;font-family:var(--display);font-weight:700;
+  font-size:clamp(2.8rem,8vw,6.6rem);line-height:1.03;letter-spacing:-.02em}
+.cover h1 .ln{display:block}
+.cover .lede{align-self:end;margin:0;padding:0 0 clamp(28px,4vh,44px);max-width:24em;
+  font-size:1.3125rem;line-height:1.82}
+.cover-foot{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;
+  gap:clamp(26px,5vw,56px);margin-top:auto;padding-top:clamp(38px,7vh,76px)}
+.stats{display:flex;flex-wrap:wrap;gap:clamp(22px,3.4vw,52px);margin:0}
+.stat b{display:block;font-family:var(--display);font-weight:600;
+  font-size:2.625rem;line-height:1;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.stat span{display:block;margin-top:10px;font-size:14px;color:var(--muted)}
+.go{display:inline-flex;align-items:center;min-height:48px;padding:0 26px;
+  background:var(--ink);color:var(--ground);text-decoration:none;font-size:17px;
+  transition:background-color .26s ease,color .26s ease,transform .26s ease}
+.go:hover{background:var(--brand);color:var(--ground);transform:translateY(-2px)}
+.go:active{transform:translateY(0)}
+
+/* ---------- headings ---------- */
+h2{display:grid;grid-template-columns:3.35em minmax(0,1fr);align-items:start;column-gap:1.1rem;
+  margin:clamp(80px,9.5vw,152px) 0 10px;font-family:var(--display);font-weight:600;
+  font-size:clamp(1.7rem,3vw,2.5rem);line-height:1.18;letter-spacing:-.012em}
+h2 .num{font-size:1.5em;font-weight:400;line-height:.9;color:var(--muted);opacity:.6;
+  font-variant-numeric:tabular-nums;letter-spacing:0;margin-top:-.04em;text-align:right}
+main > h2 + p{max-width:31em;margin:10px 0 20px;font-size:1.3125rem;line-height:1.78}
+main > h2:first-of-type{margin-top:clamp(44px,5vw,84px)}
+h3{margin:62px 0 12px;font-family:var(--display);font-size:1.3125rem;line-height:1.5;
+  font-weight:600;letter-spacing:-.008em}
+h4{margin:34px 0 6px;font-size:1rem;line-height:1.65;font-weight:600}
+h1,h2,h3,h4{text-wrap:balance}
+h2,h3,h4{scroll-margin-top:84px}
+
+/* ---------- text ---------- */
+p{margin:15px 0;text-wrap:pretty}
+ul,ol{margin:16px 0;padding-left:1.15em}
+li{margin:7px 0;padding-left:.2em}
+li::marker{color:var(--muted)}
+blockquote{margin:34px 0;padding:0;font-family:var(--display);font-size:1.14rem;line-height:1.78}
+code{font-family:var(--mono);font-size:14px;background:var(--raise-2);padding:.1em .38em;border-radius:2px}
+pre{margin:26px 0;padding:20px 22px;background:var(--raise);overflow-x:auto;
+  font-size:14px;line-height:1.75}
+pre code{background:none;padding:0;font-size:inherit}
 .muted{color:var(--muted)}
-.search{position:sticky;top:0;z-index:5;background:var(--bg);padding:10px 0 12px}
-.search input{width:100%;padding:9px 12px;border-radius:8px;border:1px solid var(--line);background:var(--panel);color:var(--fg);font-size:14px}
-.badge{font-size:11px;padding:1px 6px;border-radius:4px;background:var(--panel2);border:1px solid var(--line);color:var(--muted);margin-left:6px}
-hr{border:0;border-top:1px solid var(--line);margin:34px 0}
-.tw{max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
-.figscroll{max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
-figure.devfig.zoom .figscroll svg{width:900px;max-width:none}
-h2,h3,h4{scroll-margin-top:76px}
-.toc-toggle{display:none}
-.toc-bar{display:none}
-figure.devfig{margin:22px 0;padding:14px 16px 10px;border:1px solid var(--line);border-radius:12px;background:var(--panel)}
+hr{border:0;height:56px;margin:0}
+
+/* ---------- notes ---------- */
+.note{margin:34px 0;padding:22px 24px;background:var(--raise);line-height:1.85}
+.note.warn{background:var(--warn-bg)}
+.note.good{background:var(--good-bg)}
+.note p{margin:6px 0;max-width:none}
+.note b{font-weight:600}
+.tag{font-size:14px;font-weight:600}
+.tag::after{content:"·";margin:0 .45em;font-weight:400;color:var(--muted)}
+.tag.hot{color:var(--brand)}
+
+/* ---------- tables ---------- */
+.tw{max-width:52em;overflow-x:auto;margin:26px 0}
+table{width:100%;border-collapse:collapse;line-height:1.75}
+th{text-align:left;vertical-align:bottom;font-size:14px;font-weight:600;color:var(--muted);
+  white-space:nowrap;padding:0 18px 10px 0;border-bottom:1px solid var(--line)}
+td{vertical-align:top;padding:14px 18px 14px 0;border-bottom:1px solid var(--line)}
+td:first-child{font-weight:600}
+tr:last-child td{border-bottom:0}
+tr{transition:background-color .18s ease}
+tr:hover td{background:var(--raise)}
+
+/* ---------- figures ---------- */
+figure.devfig{margin:46px 0;max-width:52em}
+figure.devfig .figscroll{overflow-x:auto;background:var(--raise);padding:26px 26px 20px;
+  -webkit-overflow-scrolling:touch}
 figure.devfig svg{display:block;width:100%;height:auto}
-figure.devfig figcaption{margin-top:10px;font-size:12.5px;line-height:1.6;color:var(--muted)}
-@media (max-width: 860px){
-  body{font-size:16.5px;line-height:1.85}
-  .layout{grid-template-columns:minmax(0,1fr)}
-  main{min-width:0;overflow-wrap:break-word}
-  body{overflow-x:hidden}
-  nav.toc{position:static;height:auto;min-height:0;border-right:0;border-bottom:1px solid var(--line);padding:2px 16px 8px}
-  nav.toc h1,nav.toc .sub{display:none}
-  nav.toc ol{display:none;margin-top:4px;font-size:14.5px}
-  .toc-toggle:checked ~ nav.toc ol{display:block}
-  .toc-bar{display:flex;align-items:center;justify-content:space-between;padding:10px 0;font-size:15px;cursor:pointer;color:var(--fg)}
-  .toc-bar .chev{font-size:12.5px;color:var(--muted)}
-  .toc-bar .chev::after{content:"展开"}
-  .toc-toggle:checked ~ nav.toc .toc-bar .chev::after{content:"收起"}
-  nav.toc a{padding:9px 8px}
-  main{padding:16px 16px 72px;max-width:none}
-  h2{font-size:22px;margin:38px 0 6px;padding-top:14px}
-  h3{font-size:17.5px;margin:26px 0 4px}
-  h4{font-size:15.5px}
-  h2,h3,h4{scroll-margin-top:64px}
-  .search{padding:8px 0 10px}
-  pre{font-size:12.5px;padding:12px 12px;border-radius:8px}
-  code{font-size:13px}
-  .tw{margin:14px 0}
-  .tw table{min-width:520px;font-size:13.5px;margin:0}
-  .tw th,.tw td{padding:8px 9px}
-  figure.devfig{margin:18px -6px;padding:10px 8px 8px;border-radius:10px}
-  .figscroll{overflow-x:auto}
-  figure.devfig{cursor:zoom-in}
-  figure.devfig.zoom{cursor:zoom-out}
-  figure.devfig figcaption::after{content:"（轻点放大）";color:var(--accent);font-size:12px}
-  figure.devfig.zoom figcaption::after{content:"（轻点还原）"}
-  blockquote{margin:14px -4px;padding:10px 12px}
-  .note{padding:12px 13px}
-  ul,ol{margin-left:18px}
+figure.devfig svg text{font-family:var(--text)}
+figure.devfig figcaption{margin:12px 0 0;font-size:14px;line-height:1.7;color:var(--muted);max-width:44em}
+
+.colophon{margin:clamp(80px,10vw,150px) 0 0;max-width:52em}
+.colophon .closing{margin:0 0 14px;font-family:var(--display);font-weight:600;
+  font-size:clamp(1.7rem,3vw,2.5rem);line-height:1.15;letter-spacing:-.012em}
+.colophon .muted{max-width:38em;font-size:14px;line-height:1.75}
+
+/* ---------- filter ---------- */
+.search{padding:20px 0 14px;margin:0 0 8px}
+.search input{width:100%;min-height:48px;border:0;border-radius:2px;background:var(--raise);
+  padding:0 16px;font:inherit;font-size:17px;color:var(--ink)}
+.search input::placeholder{color:var(--muted)}
+.search input:focus{outline:2px solid var(--brand);outline-offset:-1px}
+
+/* ---------- motion ---------- */
+.js [data-rv]{opacity:0;transform:translateY(20px);
+  transition:opacity .78s cubic-bezier(.16,.84,.24,1),transform .78s cubic-bezier(.16,.84,.24,1)}
+.js [data-rv].in{opacity:1;transform:none}
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  .js [data-rv]{opacity:1;transform:none;transition:none}
 }
+
+/* ---------- narrow ---------- */
+@media (max-width:1080px){
+  .shell{display:block}
+  .rail{position:sticky;height:auto;max-height:100vh;padding:0;background:var(--raise)}
+  .rail-head{cursor:pointer;min-height:56px;margin:0;padding:0 clamp(20px,5vw,34px)}
+  .chev{display:block;width:8px;height:8px;border-right:1.5px solid var(--ink);
+    border-bottom:1.5px solid var(--ink);transform:rotate(45deg) translateY(-3px);
+    transition:transform .3s ease}
+  .toc-toggle:checked ~ .shell .chev{transform:rotate(-135deg) translateY(-3px)}
+  .rail-list{display:none;max-height:calc(100vh - 56px);overflow-y:auto;
+    padding:6px clamp(12px,4vw,28px) 22px;font-size:16px}
+  .rail-list a{padding:12px 8px;font-size:16px}
+  .rail-list .n{font-size:14px}
+  .toc-toggle:checked ~ .shell .rail-list{display:block}
+  .toc-toggle:focus-visible ~ .shell .rail-head{outline:2px solid var(--brand);outline-offset:-3px}
+  main{padding:0 clamp(20px,5vw,34px) 96px}
+  .cover{min-height:auto;padding-top:clamp(30px,7vw,64px)}
+  h2,h3,h4{scroll-margin-top:80px}
+}
+
+@media (max-width:860px){
+  body{font-size:16.5px;line-height:1.85}
+  h2{display:block;margin:clamp(92px,13vw,120px) 0 12px}
+  h2 .num{font-size:1em;opacity:.7;margin-right:.42em;vertical-align:.06em}
+  main > h2 + p{font-size:1.15rem;line-height:1.8;max-width:32em}
+  h3{margin-top:48px}
+  main :is(p,ul,ol,h3,h4,blockquote,.note,.search){max-width:42em}
+  .cover h1{font-size:clamp(2.6rem,11vw,3.6rem)}
+  .cover .lede{max-width:22em}
+  .cover-foot{flex-direction:column-reverse;align-items:flex-start}
+  .stats{gap:22px 30px}
+  figure.devfig{margin:36px 0}
+  figure.devfig .figscroll{padding:16px 14px 12px;cursor:zoom-in}
+  figure.devfig.zoom .figscroll{cursor:zoom-out}
+  figure.devfig.zoom .figscroll svg{width:900px;max-width:none}
+  /* tables read as stacked rows on a phone */
+  .tw{overflow:visible}
+  table{display:block;margin:22px 0}
+  table tr{display:block;padding:17px 0;border-bottom:1px solid var(--line)}
+  table tr:first-child{display:none}
+  table td{display:block;padding:2px 0;border:0}
+  table tr:last-child{border-bottom:0}
+  table td::before{content:attr(data-label);display:block;margin-bottom:3px;
+    font-size:14px;line-height:1.5;color:var(--muted)}
+  table td:first-child::before{display:none}
+  table td:first-child{font-weight:600;margin-bottom:5px}
+  .note{padding:18px 18px}
+}
+
 @media print{
-  nav.toc{display:none}
-  .layout{display:block}
-  main{max-width:none;padding:0}
-  body{background:#fff;color:#000}
-  pre,code{border-color:#ccc}
+  .rail,.search,.go,.chev{display:none!important}
+  .shell{display:block}
+  main{padding:0;max-width:none}
+  body{background:#fff;color:#000;font-size:10.5pt}
+  .js [data-rv]{opacity:1!important;transform:none!important}
+  h2{break-after:avoid}
+  figure.devfig,table,pre{break-inside:avoid}
 }
 </style>
 </head>
 <body>
-<div class="layout">
 <input type="checkbox" id="tocToggle" class="toc-toggle">
-<nav class="toc">
-  <label for="tocToggle" class="toc-bar">目录<span class="chev"></span></label>
-  <h1>pstack 学习手册</h1>
-  <div class="sub">离线版 · 基于本机 0.9.129</div>
-  <ol>
-    <li><a href="#howto">0 怎么用这本手册</a></li>
-    <li><a href="#story">0.5 十分钟，一个故事</a></li>
-    <li><a href="#map">1 全景：四层结构</a></li>
-    <li><a href="#mech">2 技能如何运行</a></li>
-    <li class="grp">体系拆解</li>
-    <li><a href="#playbooks">3 二十三本 playbook</a></li>
-    <li><a href="#skills">4 技能全解</a></li>
-    <li><a href="#principles">5 二十四条原则</a></li>
-    <li><a href="#ethos">6 五条心法</a></li>
-    <li class="grp">深水区</li>
-    <li><a href="#verify">7 验证体系</a></li>
-    <li><a href="#scale">8 并行与规模</a></li>
-    <li><a href="#cost">9 成本与失败模式</a></li>
-    <li class="grp">练习</li>
-    <li><a href="#offline">10 离线课</a></li>
-    <li><a href="#online">11 联网课</a></li>
-    <li><a href="#plan">12 七天计划</a></li>
-    <li><a href="#feynman">13 费曼层：讲回去</a></li>
-    <li><a href="#cases">14 原作者的案例</a></li>
-    <li><a href="#others">15 别人的判断（第三方分析）</a></li>
-    <li class="grp">附录</li>
-    <li><a href="#cheat">A 命令速查</a></li>
-    <li><a href="#files">B 文件地图</a></li>
-    <li><a href="#glossary">C 术语表</a></li>
+<div class="shell">
+<nav class="rail" aria-label="章节目录">
+  <label class="rail-head" for="tocToggle">
+    <span class="wordmark">pstack 学习手册</span>
+    <span class="chev" aria-hidden="true"></span>
+  </label>
+  <ol class="rail-list">
+    <li><a href="#howto"><span class="n">0</span>怎么用这本手册</a></li>
+    <li><a href="#story"><span class="n">0.5</span>十分钟，一个故事</a></li>
+    <li><a href="#map"><span class="n">1</span>全景：四层结构</a></li>
+    <li><a href="#mech"><span class="n">2</span>技能如何运行</a></li>
+    <li><a href="#playbooks"><span class="n">3</span>二十三本 playbook</a></li>
+    <li><a href="#skills"><span class="n">4</span>技能全解</a></li>
+    <li><a href="#principles"><span class="n">5</span>二十四条原则</a></li>
+    <li><a href="#ethos"><span class="n">6</span>五条心法</a></li>
+    <li><a href="#verify"><span class="n">7</span>验证体系</a></li>
+    <li><a href="#scale"><span class="n">8</span>并行与规模</a></li>
+    <li><a href="#cost"><span class="n">9</span>成本与失败模式</a></li>
+    <li><a href="#paper"><span class="n">10</span>纸笔课</a></li>
+    <li><a href="#practice"><span class="n">11</span>实操课</a></li>
+    <li><a href="#plan"><span class="n">12</span>七天计划</a></li>
+    <li><a href="#feynman"><span class="n">13</span>费曼层：讲回去</a></li>
+    <li><a href="#cases"><span class="n">14</span>原作者的案例</a></li>
+    <li><a href="#others"><span class="n">15</span>别人的判断</a></li>
+    <li><a href="#outer"><span class="n">16</span>外循环：需求之前那一环</a></li>
+    <li><a href="#cheat"><span class="n">A</span>命令速查</a></li>
+    <li><a href="#files"><span class="n">B</span>文件地图</a></li>
+    <li><a href="#glossary"><span class="n">C</span>术语表</a></li>
   </ol>
 </nav>
 <main>
 
-<h2 id="howto">0 怎么用这本手册</h2>
+<header class="cover">
+  <h1><span class="ln">pstack</span><span class="ln">学习手册</span></h1>
+  <p class="lede">拿到一个任务，能说出它该走哪条流程、叫哪个技能、会先做什么。学完自己判断，不用查。</p>
+  <div class="cover-foot">
+    <a class="go" href="#howto">开始读</a>
+    <div class="stats">
+      <div class="stat"><b>21</b><span>章</span></div>
+      <div class="stat"><b>23</b><span>本 playbook</span></div>
+      <div class="stat"><b>43</b><span>个技能</span></div>
+      <div class="stat"><b>24</b><span>条原则</span></div>
+    </div>
+  </div>
+</header>
+<h2 id="howto"><span class="num">0</span><span class="ttl">怎么用这本手册</span></h2>
 
-<p>这本手册只有一个目的：让你在没有网络的地方，把 pstack 的体系学明白，学完能自己判断一件事该走哪条流程、会用哪些技能、能预判它会怎么做。</p>
+<p>这本手册只有一个目的：让你把 pstack 的体系学明白，学完能自己判断一件事该走哪条流程、会用哪些技能、能预判它会怎么做。</p>
 
 <p>它不是命令大全。命令在附录 A，随查随用。正文讲的是「为什么这样设计」和「什么情况下选哪个」。</p>
 
@@ -159,7 +303,7 @@ figure.devfig figcaption{margin-top:10px;font-size:12.5px;line-height:1.6;color:
   <li>第二次读：只读第 3、4 章的表格，把每个技能名字和一句话用途对上号。目标是看到任务能立刻说出该叫谁。</li>
   <li>动手前读：第 7 章验证、第 8 章并行。这两章决定你最终能跑多大。</li>
   <li>想知道「这套东西边界在哪」：直接读第 15 章，不必先读前面。</li>
-  <li>飞机上：读第 1 到 6 章加第 10 章离线练习。所有练习都只要求纸笔或编辑器，不要求网络。</li>
+  <li>有整块时间：读第 1 到 6 章加第 10 章纸笔练习。练习只要求纸笔或一个空编辑器。</li>
 </ul>
 
 <h3>学完的验收标准</h3>
@@ -168,18 +312,18 @@ figure.devfig figcaption{margin-top:10px;font-size:12.5px;line-height:1.6;color:
 
 <div class="tw"><table>
 <tr><th>能力</th><th>检验方式</th><th>对应章节</th></tr>
-<tr><td>给一个任务，能说出它该走哪本 playbook</td><td>拿十个真实任务做盲测，至少八条选对</td><td>3</td></tr>
-<tr><td>能预判一本 playbook 的步骤顺序</td><td>先写步骤，再打开原文对照，顺序基本一致</td><td>3</td></tr>
-<tr><td>看到技能名能说出用途与触发词</td><td>从 43 个技能里随机抽 10 个，8 个答对</td><td>4</td></tr>
-<tr><td>能设计一次可被机器判定的验收</td><td>给一个改动写出验收标准，别人照着跑能得出同样结论</td><td>7</td></tr>
-<tr><td>能判断一次并行该开几路、瓶颈在哪</td><td>给出任务和人数，说出上限与理由</td><td>8</td></tr>
+<tr><td data-label="能力">给一个任务，能说出它该走哪本 playbook</td><td data-label="检验方式">拿十个真实任务做盲测，至少八条选对</td><td data-label="对应章节">3</td></tr>
+<tr><td data-label="能力">能预判一本 playbook 的步骤顺序</td><td data-label="检验方式">先写步骤，再打开原文对照，顺序基本一致</td><td data-label="对应章节">3</td></tr>
+<tr><td data-label="能力">看到技能名能说出用途与触发词</td><td data-label="检验方式">从 43 个技能里随机抽 10 个，8 个答对</td><td data-label="对应章节">4</td></tr>
+<tr><td data-label="能力">能设计一次可被机器判定的验收</td><td data-label="检验方式">给一个改动写出验收标准，别人照着跑能得出同样结论</td><td data-label="对应章节">7</td></tr>
+<tr><td data-label="能力">能判断一次并行该开几路、瓶颈在哪</td><td data-label="检验方式">给出任务和人数，说出上限与理由</td><td data-label="对应章节">8</td></tr>
 </table></div>
 
 <div class="note"><b>重要前提。</b>手册描述的是本机安装的版本 0.9.129。作者原文写于更早的版本，数量对不上是正常的。看到任何二手文章里的数字，先怀疑，再本机核对。</div>
 
 <div class="note warn"><b>如果第 1 章读着费劲，先跳到 0.5。</b>那一节不用任何术语，讲一个完整的故事。故事听懂了，再回来看结构，会顺很多。</div>
 
-<h2 id="story">0.5 十分钟，一个故事</h2>
+<h2 id="story"><span class="num">0.5</span><span class="ttl">十分钟，一个故事</span></h2>
 
 <p>先不看任何名词。讲一件事怎么从进来到做完。</p>
 
@@ -200,7 +344,7 @@ figure.devfig figcaption{margin-top:10px;font-size:12.5px;line-height:1.6;color:
   <li>把这次改动交上去，顺手写清楚是怎么回事。</li>
 </ol>
 
-<figure class="devfig"><div class="figscroll"><svg viewBox="0 0 900 600" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="一个缺陷从复现到提交的六个步骤，第五步不通过时回到第二步"><defs><marker id="story-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="var(--muted)"/></marker></defs><rect x="195.0" y="31.0" width="470.0" height="58.0" rx="10" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="430.0" y="53.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">1 先让它重现出来</text><text x="430.0" y="75.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">点几下，确认真的会吞</text><rect x="195.0" y="117.0" width="470.0" height="58.0" rx="10" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="430.0" y="139.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">2 猜几个可能的原因</text><text x="430.0" y="161.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">没收到？收到了被忽略？没画出来？</text><rect x="195.0" y="203.0" width="470.0" height="58.0" rx="10" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="430.0" y="225.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">3 一个个排除，拿到运行时证据</text><text x="430.0" y="247.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">加一行日志，看按键到底进没进来</text><rect x="195.0" y="289.0" width="470.0" height="58.0" rx="10" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="430.0" y="311.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">4 找到原因，只改那一处</text><text x="430.0" y="333.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">不是顺手多改几处</text><rect x="195.0" y="375.0" width="470.0" height="58.0" rx="10" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="430.0" y="397.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">5 回到同一个地方再试一遍</text><text x="430.0" y="419.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">同一个入口，同样的连按速度</text><rect x="195.0" y="461.0" width="470.0" height="58.0" rx="10" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="430.0" y="483.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">6 交上去，写清是怎么回事</text><text x="430.0" y="505.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">改了什么、为什么、怎么验的</text><line x1="430.0" y1="89.0" x2="430.0" y2="117.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#story-arrow)"/><line x1="430.0" y1="175.0" x2="430.0" y2="203.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#story-arrow)"/><line x1="430.0" y1="261.0" x2="430.0" y2="289.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#story-arrow)"/><line x1="430.0" y1="347.0" x2="430.0" y2="375.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#story-arrow)"/><line x1="430.0" y1="433.0" x2="430.0" y2="461.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#story-arrow)"/><path d="M 195.0 404.0 L 120.0 404.0 L 120.0 146.0 L 194.0 146.0" fill="none" stroke="var(--muted)" stroke-width="1.5" stroke-linejoin="round" stroke-dasharray="6 5" marker-end="url(#story-arrow)"/><text x="104.0" y="275.0" text-anchor="middle" font-size="12" font-weight="400" fill="var(--muted)" transform="rotate(-90 104.0 275.0)">不通就回头</text><rect x="672" y="208" width="212" height="128" rx="10" fill="none" stroke="var(--line)" stroke-dasharray="6 5"/><text x="686.0" y="236.0" text-anchor="start" font-size="12.5" font-weight="400" fill="var(--accent2)">最容易被跳过的两步</text><text x="686.0" y="264.0" text-anchor="start" font-size="12.5" font-weight="400" fill="var(--muted)">第 2 步 猜原因</text><text x="686.0" y="288.0" text-anchor="start" font-size="12.5" font-weight="400" fill="var(--muted)">第 5 步 回原地再试</text><text x="686.0" y="316.0" text-anchor="start" font-size="12" font-weight="400" fill="var(--muted)">跳了，结论就不可信</text></svg></div><figcaption>六步里最容易跳过的是第二步和第五步。整套流程只是把这两步固定下来。</figcaption></figure>
+<figure class="devfig"><div class="figscroll"><svg viewBox="0 0 900 600" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="一个缺陷从复现到提交的六个步骤，第五步不通过时回到第二步"><defs><marker id="story-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="var(--muted)"/></marker></defs><rect x="195.0" y="31.0" width="470.0" height="58.0" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="430.0" y="53.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">1 先让它重现出来</text><text x="430.0" y="75.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">点几下，确认真的会吞</text><rect x="195.0" y="117.0" width="470.0" height="58.0" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="430.0" y="139.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">2 猜几个可能的原因</text><text x="430.0" y="161.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">没收到？收到了被忽略？没画出来？</text><rect x="195.0" y="203.0" width="470.0" height="58.0" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="430.0" y="225.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">3 一个个排除，拿到运行时证据</text><text x="430.0" y="247.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">加一行日志，看按键到底进没进来</text><rect x="195.0" y="289.0" width="470.0" height="58.0" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="430.0" y="311.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">4 找到原因，只改那一处</text><text x="430.0" y="333.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">不是顺手多改几处</text><rect x="195.0" y="375.0" width="470.0" height="58.0" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="430.0" y="397.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">5 回到同一个地方再试一遍</text><text x="430.0" y="419.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">同一个入口，同样的连按速度</text><rect x="195.0" y="461.0" width="470.0" height="58.0" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="430.0" y="483.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">6 交上去，写清是怎么回事</text><text x="430.0" y="505.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">改了什么、为什么、怎么验的</text><line x1="430.0" y1="89.0" x2="430.0" y2="117.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#story-arrow)"/><line x1="430.0" y1="175.0" x2="430.0" y2="203.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#story-arrow)"/><line x1="430.0" y1="261.0" x2="430.0" y2="289.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#story-arrow)"/><line x1="430.0" y1="347.0" x2="430.0" y2="375.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#story-arrow)"/><line x1="430.0" y1="433.0" x2="430.0" y2="461.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#story-arrow)"/><path d="M 195.0 404.0 L 120.0 404.0 L 120.0 146.0 L 194.0 146.0" fill="none" stroke="var(--muted)" stroke-width="1.5" stroke-linejoin="round" stroke-dasharray="6 5" marker-end="url(#story-arrow)"/><text x="104.0" y="275.0" text-anchor="middle" font-size="12" font-weight="400" fill="var(--muted)" transform="rotate(-90 104.0 275.0)">不通就回头</text><rect x="672" y="208" width="212" height="128" fill="none" stroke="var(--line)" stroke-dasharray="6 5"/><text x="686.0" y="236.0" text-anchor="start" font-size="12.5" font-weight="400" fill="var(--accent2)">最容易被跳过的两步</text><text x="686.0" y="264.0" text-anchor="start" font-size="12.5" font-weight="400" fill="var(--muted)">第 2 步 猜原因</text><text x="686.0" y="288.0" text-anchor="start" font-size="12.5" font-weight="400" fill="var(--muted)">第 5 步 回原地再试</text><text x="686.0" y="316.0" text-anchor="start" font-size="12" font-weight="400" fill="var(--muted)">跳了，结论就不可信</text></svg></div><figcaption>六步里最容易跳过的是第二步和第五步。整套流程只是把这两步固定下来。</figcaption></figure>
 
 <p>这套东西做的，就是把这个顺序固定下来，并且要求每一步都留下能复查的痕迹。它不比你聪明，它只是不会偷懒跳过第二步和第五步。</p>
 
@@ -220,11 +364,11 @@ figure.devfig figcaption{margin-top:10px;font-size:12.5px;line-height:1.6;color:
 
 <div class="tw"><table>
 <tr><th>故事里的说法</th><th>正式名字</th><th>它解决什么</th></tr>
-<tr><td>一整套做事顺序</td><td>playbook</td><td>防止漏步、防止顺序颠倒</td></tr>
-<tr><td>看活派单的人</td><td>poteto-mode</td><td>判断这是哪类活</td></tr>
-<tr><td>清单里的一个专门动作</td><td>技能</td><td>把一件事做到位</td></tr>
-<tr><td>一句话提醒</td><td>原则</td><td>在取舍时纠偏</td></tr>
-<tr><td>回到原地再试一次</td><td>验证技能</td><td>让「做完了」可被证明</td></tr>
+<tr><td data-label="故事里的说法">一整套做事顺序</td><td data-label="正式名字">playbook</td><td data-label="它解决什么">防止漏步、防止顺序颠倒</td></tr>
+<tr><td data-label="故事里的说法">看活派单的人</td><td data-label="正式名字">poteto-mode</td><td data-label="它解决什么">判断这是哪类活</td></tr>
+<tr><td data-label="故事里的说法">清单里的一个专门动作</td><td data-label="正式名字">技能</td><td data-label="它解决什么">把一件事做到位</td></tr>
+<tr><td data-label="故事里的说法">一句话提醒</td><td data-label="正式名字">原则</td><td data-label="它解决什么">在取舍时纠偏</td></tr>
+<tr><td data-label="故事里的说法">回到原地再试一次</td><td data-label="正式名字">验证技能</td><td data-label="它解决什么">让「做完了」可被证明</td></tr>
 </table></div>
 
 <h3>为什么这套东西值钱</h3>
@@ -233,7 +377,7 @@ figure.devfig figcaption{margin-top:10px;font-size:12.5px;line-height:1.6;color:
 
 <p>剩下的十二章，都是在这六步上做加法。读完故事，你已经知道它在干什么了。</p>
 
-<h2 id="map">1 全景：四层结构</h2>
+<h2 id="map"><span class="num">1</span><span class="ttl">全景：四层结构</span></h2>
 
 <p>一句话：pstack 不是程序，是六十七份写给 AI 看的说明书，加一个负责分派的总管。</p>
 
@@ -243,13 +387,13 @@ figure.devfig figcaption{margin-top:10px;font-size:12.5px;line-height:1.6;color:
 
 <div class="tw"><table>
 <tr><th>层</th><th>是什么</th><th>数量</th><th>能不能直接叫</th></tr>
-<tr><td>路由器</td><td><code>poteto-mode</code>。判断任务类型，挑一本 playbook，把步骤抄进待办，然后按步骤调用技能和子代理</td><td>1</td><td>能，<code>/pstack:poteto-mode</code></td></tr>
-<tr><td>playbook</td><td>一类任务的步骤清单。修 bug 六步，做功能五步，看 PR 三步</td><td>23</td><td>不能。只能由 poteto-mode 读</td></tr>
-<tr><td>技能</td><td>一个具体动作或一种专门视角。理解代码、审 diff、写文档、生成验证器</td><td>43</td><td>能，<code>/pstack:&lt;名字&gt;</code></td></tr>
-<tr><td>原则</td><td>一条约束。写代码、测试、排查、重构时用来纠偏</td><td>24</td><td>能叫但很少叫，通常由 poteto-mode 引用</td></tr>
+<tr><td data-label="层">路由器</td><td data-label="是什么"><code>poteto-mode</code>。判断任务类型，挑一本 playbook，把步骤抄进待办，然后按步骤调用技能和子代理</td><td data-label="数量">1</td><td data-label="能不能直接叫">能，<code>/pstack:poteto-mode</code></td></tr>
+<tr><td data-label="层">playbook</td><td data-label="是什么">一类任务的步骤清单。修 bug 六步，做功能五步，看 PR 三步</td><td data-label="数量">23</td><td data-label="能不能直接叫">不能。只能由 poteto-mode 读</td></tr>
+<tr><td data-label="层">技能</td><td data-label="是什么">一个具体动作或一种专门视角。理解代码、审 diff、写文档、生成验证器</td><td data-label="数量">43</td><td data-label="能不能直接叫">能，<code>/pstack:&lt;名字&gt;</code></td></tr>
+<tr><td data-label="层">原则</td><td data-label="是什么">一条约束。写代码、测试、排查、重构时用来纠偏</td><td data-label="数量">24</td><td data-label="能不能直接叫">能叫但很少叫，通常由 poteto-mode 引用</td></tr>
 </table></div>
 
-<figure class="devfig"><div class="figscroll"><svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="四层结构：路由器调用流程清单，清单里的每一步由技能执行，原则被前两层引用"><defs><marker id="layers-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="var(--muted)"/></marker></defs><rect x="275.0" y="15.0" width="220.0" height="38.0" rx="10" fill="var(--panel2)" stroke="var(--accent)" stroke-width="1.4"/><text x="385.0" y="39.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">你的任务</text><line x1="385.0" y1="53.0" x2="385.0" y2="76.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#layers-arrow)"/><rect x="170.0" y="77.0" width="430.0" height="66.0" rx="10" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="385.0" y="103.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">路由器 poteto-mode</text><text x="385.0" y="125.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">判断类型，挑清单，抄步骤</text><rect x="530.0" y="83.0" width="36.0" height="18" rx="9" fill="none" stroke="var(--ok)" stroke-width="1"/><text x="548.0" y="95.8" text-anchor="middle" font-size="11" fill="var(--ok)">能叫</text><line x1="385.0" y1="143.0" x2="385.0" y2="192.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#layers-arrow)"/><text x="463.0" y="172.0" text-anchor="start" font-size="12" font-weight="400" fill="var(--muted)">选中一本</text><rect x="170.0" y="192.0" width="430.0" height="66.0" rx="10" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="385.0" y="218.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">流程清单 playbook × 23</text><text x="385.0" y="240.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">修缺陷六步、做功能五步</text><rect x="520.5" y="198.0" width="47.0" height="18" rx="9" fill="none" stroke="var(--bad)" stroke-width="1"/><text x="544.0" y="210.8" text-anchor="middle" font-size="11" fill="var(--bad)">不能叫</text><line x1="385.0" y1="258.0" x2="385.0" y2="307.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#layers-arrow)"/><text x="475.0" y="287.0" text-anchor="start" font-size="12" font-weight="400" fill="var(--muted)">每步翻译成技能调用</text><rect x="170.0" y="307.0" width="430.0" height="66.0" rx="10" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="385.0" y="333.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">技能 × 43 与子代理</text><text x="385.0" y="355.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">一个具体动作；重活派出去</text><rect x="530.0" y="313.0" width="36.0" height="18" rx="9" fill="none" stroke="var(--ok)" stroke-width="1"/><text x="548.0" y="325.8" text-anchor="middle" font-size="11" fill="var(--ok)">能叫</text><line x1="385.0" y1="373.0" x2="385.0" y2="415.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#layers-arrow)"/><rect x="170.0" y="421.0" width="430.0" height="58.0" rx="10" fill="var(--panel)" stroke="var(--ok)" stroke-width="1.4"/><text x="385.0" y="443.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">真实产物 + 证据</text><text x="385.0" y="465.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">截图、命令输出、断言结果</text><rect x="660" y="88" width="230" height="274" rx="10" fill="none" stroke="var(--muted)" stroke-dasharray="6 5"/><text x="775.0" y="128.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">原则 × 24</text><text x="775.0" y="158.0" text-anchor="middle" font-size="12.5" font-weight="400" fill="var(--muted)">一句话约束</text><text x="775.0" y="190.0" text-anchor="middle" font-size="12.5" font-weight="400" fill="var(--muted)">不单独执行，</text><text x="775.0" y="212.0" text-anchor="middle" font-size="12.5" font-weight="400" fill="var(--muted)">被前两层引用</text><text x="775.0" y="250.0" text-anchor="middle" font-size="12" font-weight="400" fill="var(--muted)">很少单独叫</text><path d="M 600.0 110.0 L 660.0 110.0" fill="none" stroke="var(--muted)" stroke-width="1.5" stroke-linejoin="round" stroke-dasharray="6 5"/><path d="M 600.0 340.0 L 660.0 340.0" fill="none" stroke="var(--muted)" stroke-width="1.5" stroke-linejoin="round" stroke-dasharray="6 5"/></svg></div><figcaption>任务从上往下走，只有路由器和技能能直接叫；流程清单只能被路由器读。</figcaption></figure>
+<figure class="devfig"><div class="figscroll"><svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="四层结构：路由器调用流程清单，清单里的每一步由技能执行，原则被前两层引用"><defs><marker id="layers-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="var(--muted)"/></marker></defs><rect x="275.0" y="15.0" width="220.0" height="38.0" fill="var(--panel2)" stroke="var(--accent)" stroke-width="1.4"/><text x="385.0" y="39.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">你的任务</text><line x1="385.0" y1="53.0" x2="385.0" y2="76.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#layers-arrow)"/><rect x="170.0" y="77.0" width="430.0" height="66.0" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="385.0" y="103.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">路由器 poteto-mode</text><text x="385.0" y="125.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">判断类型，挑清单，抄步骤</text><rect x="530.0" y="83.0" width="36.0" height="18" fill="none" stroke="var(--ok)" stroke-width="1"/><text x="548.0" y="95.8" text-anchor="middle" font-size="11" fill="var(--ok)">能叫</text><line x1="385.0" y1="143.0" x2="385.0" y2="192.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#layers-arrow)"/><text x="463.0" y="172.0" text-anchor="start" font-size="12" font-weight="400" fill="var(--muted)">选中一本</text><rect x="170.0" y="192.0" width="430.0" height="66.0" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="385.0" y="218.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">流程清单 playbook × 23</text><text x="385.0" y="240.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">修缺陷六步、做功能五步</text><rect x="520.5" y="198.0" width="47.0" height="18" fill="none" stroke="var(--bad)" stroke-width="1"/><text x="544.0" y="210.8" text-anchor="middle" font-size="11" fill="var(--bad)">不能叫</text><line x1="385.0" y1="258.0" x2="385.0" y2="307.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#layers-arrow)"/><text x="475.0" y="287.0" text-anchor="start" font-size="12" font-weight="400" fill="var(--muted)">每步翻译成技能调用</text><rect x="170.0" y="307.0" width="430.0" height="66.0" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="385.0" y="333.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">技能 × 43 与子代理</text><text x="385.0" y="355.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">一个具体动作；重活派出去</text><rect x="530.0" y="313.0" width="36.0" height="18" fill="none" stroke="var(--ok)" stroke-width="1"/><text x="548.0" y="325.8" text-anchor="middle" font-size="11" fill="var(--ok)">能叫</text><line x1="385.0" y1="373.0" x2="385.0" y2="415.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#layers-arrow)"/><rect x="170.0" y="421.0" width="430.0" height="58.0" fill="var(--panel)" stroke="var(--ok)" stroke-width="1.4"/><text x="385.0" y="443.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">真实产物 + 证据</text><text x="385.0" y="465.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">截图、命令输出、断言结果</text><rect x="660" y="88" width="230" height="274" fill="none" stroke="var(--muted)" stroke-dasharray="6 5"/><text x="775.0" y="128.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">原则 × 24</text><text x="775.0" y="158.0" text-anchor="middle" font-size="12.5" font-weight="400" fill="var(--muted)">一句话约束</text><text x="775.0" y="190.0" text-anchor="middle" font-size="12.5" font-weight="400" fill="var(--muted)">不单独执行，</text><text x="775.0" y="212.0" text-anchor="middle" font-size="12.5" font-weight="400" fill="var(--muted)">被前两层引用</text><text x="775.0" y="250.0" text-anchor="middle" font-size="12" font-weight="400" fill="var(--muted)">很少单独叫</text><path d="M 600.0 110.0 L 660.0 110.0" fill="none" stroke="var(--muted)" stroke-width="1.5" stroke-linejoin="round" stroke-dasharray="6 5"/><path d="M 600.0 340.0 L 660.0 340.0" fill="none" stroke="var(--muted)" stroke-width="1.5" stroke-linejoin="round" stroke-dasharray="6 5"/></svg></div><figcaption>任务从上往下走，只有路由器和技能能直接叫；流程清单只能被路由器读。</figcaption></figure>
 
 <p>为什么这样分。因为三种东西的生命周期不同。playbook 会随流程演进改，技能会随工具改，原则几乎不变。混在一起写，改一处就伤全局。</p>
 
@@ -286,7 +430,7 @@ figure.devfig figcaption{margin-top:10px;font-size:12.5px;line-height:1.6;color:
 
 <p>这也是为什么验证技能被作者称为关键基础设施，而别的技能只是工具。</p>
 
-<h2 id="mech">2 技能如何运行</h2>
+<h2 id="mech"><span class="num">2</span><span class="ttl">技能如何运行</span></h2>
 
 <p>这一章讲机制。理解机制，你才能预测它的行为，而不是背规则。</p>
 
@@ -310,7 +454,7 @@ description: Find what a change could break somewhere else before it ships...
 
 <p>所以「学会一个技能」等于「知道它的 description 覆盖哪些说法」。这也解释了为什么同一个技能，你说「影响面」它能触发，说「看看会不会坏」也可能触发，说「评估风险」就不一定。</p>
 
-<figure class="devfig"><div class="figscroll"><svg viewBox="0 0 900 440" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="常驻式与按需式的上下文占用对比：整篇文件每次加载，或只加载描述、命中后再读正文"><defs><marker id="context-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="var(--muted)"/></marker></defs><text x="200.0" y="40.0" text-anchor="middle" font-size="13.5" font-weight="600" fill="var(--accent2)">常驻式（写进 CLAUDE.md）</text><text x="640.0" y="40.0" text-anchor="middle" font-size="13.5" font-weight="600" fill="var(--accent2)">按需式（写成技能）</text><rect x="60" y="66" width="280" height="238" rx="10" fill="var(--panel2)" stroke="var(--line)"/><text x="200.0" y="130.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">整篇文件</text><text x="200.0" y="158.0" text-anchor="middle" font-size="12.5" font-weight="400" fill="var(--muted)">每次会话全文加载</text><text x="200.0" y="200.0" text-anchor="middle" font-size="12" font-weight="400" fill="var(--muted)">写五个技能就开始挤</text><text x="200.0" y="222.0" text-anchor="middle" font-size="12" font-weight="400" fill="var(--muted)">写二十个必然撑爆</text><rect x="171.0" y="253.0" width="58.0" height="18" rx="9" fill="none" stroke="var(--bad)" stroke-width="1"/><text x="200.0" y="265.8" text-anchor="middle" font-size="11" fill="var(--bad)">每次都付</text><rect x="500" y="66" width="280" height="9" rx="4" fill="var(--accent)" opacity="0.45"/><rect x="500" y="84" width="280" height="9" rx="4" fill="var(--accent)" opacity="0.45"/><rect x="500" y="102" width="280" height="9" rx="4" fill="var(--accent)" opacity="0.45"/><rect x="500" y="120" width="280" height="9" rx="4" fill="var(--accent)" opacity="0.45"/><rect x="500" y="138" width="280" height="9" rx="4" fill="var(--accent)" opacity="0.45"/><rect x="500" y="156" width="280" height="9" rx="4" fill="var(--accent)" opacity="0.45"/><text x="640.0" y="186.0" text-anchor="middle" font-size="12.5" font-weight="400" fill="var(--muted)">43 条描述常驻，很薄</text><text x="790.0" y="82.0" text-anchor="start" font-size="14" font-weight="400" fill="var(--muted)">…</text><line x1="640.0" y1="200.0" x2="640.0" y2="226.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#context-arrow)"/><rect x="500" y="230" width="280" height="74" rx="10" fill="var(--panel2)" stroke="var(--accent)"/><text x="640.0" y="258.0" text-anchor="middle" font-size="14" font-weight="600" fill="var(--fg)">命中才读正文</text><text x="640.0" y="282.0" text-anchor="middle" font-size="12" font-weight="400" fill="var(--muted)">读一次，答案留在结论里</text><rect x="611.0" y="313.0" width="58.0" height="18" rx="9" fill="none" stroke="var(--ok)" stroke-width="1"/><text x="640.0" y="325.8" text-anchor="middle" font-size="11" fill="var(--ok)">按需才付</text><text x="450.0" y="380.0" text-anchor="middle" font-size="12.5" font-weight="400" fill="var(--muted)">省下来的不是字数，是判断质量：上下文越干净，后面的取舍越准。</text><text x="450.0" y="406.0" text-anchor="middle" font-size="12.5" font-weight="400" fill="var(--accent2)">代价只有一条：描述写不好，这个技能就等于不存在。</text></svg></div><figcaption>左边每次都背整本书，右边平时只背目录。代价是目录必须写准。</figcaption></figure>
+<figure class="devfig"><div class="figscroll"><svg viewBox="0 0 900 440" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="常驻式与按需式的上下文占用对比：整篇文件每次加载，或只加载描述、命中后再读正文"><defs><marker id="context-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="var(--muted)"/></marker></defs><text x="200.0" y="40.0" text-anchor="middle" font-size="13.5" font-weight="600" fill="var(--accent2)">常驻式（写进 CLAUDE.md）</text><text x="640.0" y="40.0" text-anchor="middle" font-size="13.5" font-weight="600" fill="var(--accent2)">按需式（写成技能）</text><rect x="60" y="66" width="280" height="238" fill="var(--panel2)" stroke="var(--line)"/><text x="200.0" y="130.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">整篇文件</text><text x="200.0" y="158.0" text-anchor="middle" font-size="12.5" font-weight="400" fill="var(--muted)">每次会话全文加载</text><text x="200.0" y="200.0" text-anchor="middle" font-size="12" font-weight="400" fill="var(--muted)">写五个技能就开始挤</text><text x="200.0" y="222.0" text-anchor="middle" font-size="12" font-weight="400" fill="var(--muted)">写二十个必然撑爆</text><rect x="171.0" y="253.0" width="58.0" height="18" fill="none" stroke="var(--bad)" stroke-width="1"/><text x="200.0" y="265.8" text-anchor="middle" font-size="11" fill="var(--bad)">每次都付</text><rect x="500" y="66" width="280" height="9" fill="var(--accent)" opacity="0.45"/><rect x="500" y="84" width="280" height="9" fill="var(--accent)" opacity="0.45"/><rect x="500" y="102" width="280" height="9" fill="var(--accent)" opacity="0.45"/><rect x="500" y="120" width="280" height="9" fill="var(--accent)" opacity="0.45"/><rect x="500" y="138" width="280" height="9" fill="var(--accent)" opacity="0.45"/><rect x="500" y="156" width="280" height="9" fill="var(--accent)" opacity="0.45"/><text x="640.0" y="186.0" text-anchor="middle" font-size="12.5" font-weight="400" fill="var(--muted)">43 条描述常驻，很薄</text><text x="790.0" y="82.0" text-anchor="start" font-size="14" font-weight="400" fill="var(--muted)">…</text><line x1="640.0" y1="200.0" x2="640.0" y2="226.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#context-arrow)"/><rect x="500" y="230" width="280" height="74" fill="var(--panel2)" stroke="var(--accent)"/><text x="640.0" y="258.0" text-anchor="middle" font-size="14" font-weight="600" fill="var(--fg)">命中才读正文</text><text x="640.0" y="282.0" text-anchor="middle" font-size="12" font-weight="400" fill="var(--muted)">读一次，答案留在结论里</text><rect x="611.0" y="313.0" width="58.0" height="18" fill="none" stroke="var(--ok)" stroke-width="1"/><text x="640.0" y="325.8" text-anchor="middle" font-size="11" fill="var(--ok)">按需才付</text><text x="450.0" y="380.0" text-anchor="middle" font-size="12.5" font-weight="400" fill="var(--muted)">省下来的不是字数，是判断质量：上下文越干净，后面的取舍越准。</text><text x="450.0" y="406.0" text-anchor="middle" font-size="12.5" font-weight="400" fill="var(--accent2)">代价只有一条：描述写不好，这个技能就等于不存在。</text></svg></div><figcaption>左边每次都背整本书，右边平时只背目录。代价是目录必须写准。</figcaption></figure>
 
 <h3>启动钩子</h3>
 
@@ -342,12 +486,12 @@ description: Find what a change could break somewhere else before it ships...
   <li>收尾时按 playbook 自己的回报格式输出，并说明哪些步骤被跳过、为什么。</li>
 </ol>
 
-<figure class="devfig"><div class="figscroll"><svg viewBox="0 0 900 720" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="一次任务的处理流程：消息进入、判断类型、抄步骤、派活、验证、收尾，验证不通过回到对应步骤"><defs><marker id="flow-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="var(--muted)"/></marker></defs><rect x="165.0" y="22.0" width="470.0" height="64.0" rx="10" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="400.0" y="47.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">你的消息进主线程</text><text x="400.0" y="69.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">技能清单和启动指令已在上下文</text><line x1="400.0" y1="86.0" x2="400.0" y2="118.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#flow-arrow)"/><rect x="165.0" y="118.0" width="470.0" height="64.0" rx="10" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="400.0" y="143.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">判断任务类型</text><text x="400.0" y="165.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">命中一本流程清单</text><line x1="400.0" y1="182.0" x2="400.0" y2="214.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#flow-arrow)"/><rect x="165.0" y="214.0" width="470.0" height="64.0" rx="10" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="400.0" y="239.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">把步骤抄进待办</text><text x="400.0" y="261.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">这是最值得盯的地方</text><line x1="400.0" y1="278.0" x2="400.0" y2="310.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#flow-arrow)"/><rect x="165.0" y="310.0" width="470.0" height="64.0" rx="10" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="400.0" y="335.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">按步调技能，或派子代理</text><text x="400.0" y="357.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">重活出去，主线程只留判断</text><line x1="400.0" y1="374.0" x2="400.0" y2="416.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#flow-arrow)"/><polygon points="400,416 492,452 400,488 308,452" fill="var(--panel2)" stroke="var(--accent)" stroke-width="1.4"/><text x="400" y="456.5" text-anchor="middle" font-size="13" font-weight="600" fill="var(--fg)">需要验证？</text><text x="416.0" y="440.0" text-anchor="start" font-size="12" font-weight="400" fill="var(--muted)">是</text><line x1="400.0" y1="488.0" x2="400.0" y2="528.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#flow-arrow)"/><rect x="165.0" y="528.0" width="470.0" height="64.0" rx="10" fill="var(--panel2)" stroke="var(--accent)" stroke-width="1.4"/><text x="400.0" y="553.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">跑验证</text><text x="400.0" y="575.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">真实产物、同一次运行</text><line x1="400.0" y1="592.0" x2="400.0" y2="626.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#flow-arrow)"/><rect x="165.0" y="628.0" width="470.0" height="64.0" rx="10" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="400.0" y="653.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">收尾</text><text x="400.0" y="675.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">按要求回报，说明跳过哪几步</text><path d="M 165.0 560.0 L 88.0 560.0 L 88.0 342.0 L 164.0 342.0" fill="none" stroke="var(--muted)" stroke-width="1.5" stroke-linejoin="round" stroke-dasharray="6 5" marker-end="url(#flow-arrow)"/><text x="72.0" y="450.0" text-anchor="middle" font-size="12" font-weight="400" fill="var(--muted)" transform="rotate(-90 72.0 450.0)">不通过就回到对应步骤</text><path d="M 492.0 452.0 L 742.0 452.0 L 742.0 660.0 L 636.0 660.0" fill="none" stroke="var(--muted)" stroke-width="1.5" stroke-linejoin="round" stroke-dasharray="6 5" marker-end="url(#flow-arrow)"/><text x="700.0" y="442.0" text-anchor="start" font-size="12" font-weight="400" fill="var(--muted)">否</text><text x="762.0" y="560.0" text-anchor="middle" font-size="12" font-weight="400" fill="var(--muted)" transform="rotate(90 762.0 560.0)">直接收尾</text></svg></div><figcaption>蓝色菱形是唯一的分叉点。验证不通过时回到对应步骤，而不是从头再来。</figcaption></figure>
+<figure class="devfig"><div class="figscroll"><svg viewBox="0 0 900 720" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="一次任务的处理流程：消息进入、判断类型、抄步骤、派活、验证、收尾，验证不通过回到对应步骤"><defs><marker id="flow-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="var(--muted)"/></marker></defs><rect x="165.0" y="22.0" width="470.0" height="64.0" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="400.0" y="47.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">你的消息进主线程</text><text x="400.0" y="69.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">技能清单和启动指令已在上下文</text><line x1="400.0" y1="86.0" x2="400.0" y2="118.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#flow-arrow)"/><rect x="165.0" y="118.0" width="470.0" height="64.0" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="400.0" y="143.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">判断任务类型</text><text x="400.0" y="165.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">命中一本流程清单</text><line x1="400.0" y1="182.0" x2="400.0" y2="214.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#flow-arrow)"/><rect x="165.0" y="214.0" width="470.0" height="64.0" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="400.0" y="239.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">把步骤抄进待办</text><text x="400.0" y="261.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">这是最值得盯的地方</text><line x1="400.0" y1="278.0" x2="400.0" y2="310.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#flow-arrow)"/><rect x="165.0" y="310.0" width="470.0" height="64.0" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="400.0" y="335.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">按步调技能，或派子代理</text><text x="400.0" y="357.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">重活出去，主线程只留判断</text><line x1="400.0" y1="374.0" x2="400.0" y2="416.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#flow-arrow)"/><polygon points="400,416 492,452 400,488 308,452" fill="var(--panel2)" stroke="var(--accent)" stroke-width="1.4"/><text x="400" y="456.5" text-anchor="middle" font-size="13" font-weight="600" fill="var(--fg)">需要验证？</text><text x="416.0" y="440.0" text-anchor="start" font-size="12" font-weight="400" fill="var(--muted)">是</text><line x1="400.0" y1="488.0" x2="400.0" y2="528.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#flow-arrow)"/><rect x="165.0" y="528.0" width="470.0" height="64.0" fill="var(--panel2)" stroke="var(--accent)" stroke-width="1.4"/><text x="400.0" y="553.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">跑验证</text><text x="400.0" y="575.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">真实产物、同一次运行</text><line x1="400.0" y1="592.0" x2="400.0" y2="626.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#flow-arrow)"/><rect x="165.0" y="628.0" width="470.0" height="64.0" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="400.0" y="653.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">收尾</text><text x="400.0" y="675.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">按要求回报，说明跳过哪几步</text><path d="M 165.0 560.0 L 88.0 560.0 L 88.0 342.0 L 164.0 342.0" fill="none" stroke="var(--muted)" stroke-width="1.5" stroke-linejoin="round" stroke-dasharray="6 5" marker-end="url(#flow-arrow)"/><text x="72.0" y="450.0" text-anchor="middle" font-size="12" font-weight="400" fill="var(--muted)" transform="rotate(-90 72.0 450.0)">不通过就回到对应步骤</text><path d="M 492.0 452.0 L 742.0 452.0 L 742.0 660.0 L 636.0 660.0" fill="none" stroke="var(--muted)" stroke-width="1.5" stroke-linejoin="round" stroke-dasharray="6 5" marker-end="url(#flow-arrow)"/><text x="700.0" y="442.0" text-anchor="start" font-size="12" font-weight="400" fill="var(--muted)">否</text><text x="762.0" y="560.0" text-anchor="middle" font-size="12" font-weight="400" fill="var(--muted)" transform="rotate(90 762.0 560.0)">直接收尾</text></svg></div><figcaption>蓝色菱形是唯一的分叉点。验证不通过时回到对应步骤，而不是从头再来。</figcaption></figure>
 
 <p>第 2 步的产物是待办清单，你能直接看到它选了什么、准备怎么做。这是最值得盯的地方。选错 playbook，后面全歪。</p>
 
 <div class="note good"><b>一个可操作的习惯。</b>每次 poteto-mode 启动后，先看它抄进清单的前三条是不是你预期的步骤。不对就立刻停，说「这是新任务，应该按 X 处理」。改流程比改结果便宜。</div>
-<h2 id="playbooks">3 二十三本 playbook</h2>
+<h2 id="playbooks"><span class="num">3</span><span class="ttl">二十三本 playbook</span></h2>
 
 <p>playbook 不能直接调用，只能由 poteto-mode 按任务选中。你要学的是「什么任务对应哪本」，以及「这本会保证什么」。</p>
 
@@ -370,7 +514,7 @@ description: Find what a change could break somewhere else before it ships...
   <li><b>排列提交顺序。</b>失败的复现先落进历史，修复在后。有廉价测试就走测试先行，没有就跳过，不要为了形式造测试。</li>
   <li><b>开 PR。</b>描述里写清什么坏了、根因、修复、怎么验的，引用决定性的输出。</li>
 </ol>
-<figure class="devfig"><div class="figscroll"><svg viewBox="0 0 900 620" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="修缺陷六步：复现、二分排除、规划、同面验证、提交顺序、开 PR，验证失败回到规划"><defs><marker id="bugfix-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="var(--muted)"/></marker></defs><rect x="165.0" y="23.0" width="470.0" height="58.0" rx="10" fill="var(--panel2)" stroke="var(--accent)" stroke-width="1.4"/><text x="400.0" y="45.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">1 自己复现</text><text x="400.0" y="67.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">在出问题的同一个面上驱动，能重现才继续</text><rect x="165.0" y="121.0" width="470.0" height="58.0" rx="10" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="400.0" y="143.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">2 二分排因</text><text x="400.0" y="165.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">列假设、取运行证据、排除，直到剩一个</text><rect x="165.0" y="219.0" width="470.0" height="58.0" rx="10" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="400.0" y="241.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">3 规划修复</text><text x="400.0" y="263.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">跨函数边界先做设计，再派实现</text><rect x="165.0" y="317.0" width="470.0" height="58.0" rx="10" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="400.0" y="339.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">4 回同一个面验证</text><text x="400.0" y="361.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">原来失败的操作现在要过，不是跑单测</text><rect x="165.0" y="415.0" width="470.0" height="58.0" rx="10" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="400.0" y="437.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">5 排列提交顺序</text><text x="400.0" y="459.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">失败的复现先进历史，修复在后</text><rect x="165.0" y="513.0" width="470.0" height="58.0" rx="10" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="400.0" y="535.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">6 开 PR</text><text x="400.0" y="557.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">写清坏在哪、根因、修复、怎么验</text><line x1="400.0" y1="81.0" x2="400.0" y2="109.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#bugfix-arrow)"/><line x1="400.0" y1="179.0" x2="400.0" y2="207.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#bugfix-arrow)"/><line x1="400.0" y1="277.0" x2="400.0" y2="305.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#bugfix-arrow)"/><line x1="400.0" y1="375.0" x2="400.0" y2="403.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#bugfix-arrow)"/><line x1="400.0" y1="473.0" x2="400.0" y2="501.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#bugfix-arrow)"/><path d="M 635 150 C 700 150 700 128 637 128" fill="none" stroke="var(--muted)" stroke-width="1.5" stroke-dasharray="6 5" marker-end="url(#bugfix-arrow)"/><text x="700.0" y="104.0" text-anchor="middle" font-size="12" font-weight="400" fill="var(--muted)">再来一轮</text><path d="M 165.0 346.0 L 86.0 346.0 L 86.0 248.0 L 164.0 248.0" fill="none" stroke="var(--muted)" stroke-width="1.5" stroke-linejoin="round" stroke-dasharray="6 5" marker-end="url(#bugfix-arrow)"/><text x="70.0" y="300.0" text-anchor="middle" font-size="12" font-weight="400" fill="var(--muted)" transform="rotate(-90 70.0 300.0)">不通过</text></svg></div><figcaption>两个回环：排除没收敛就再切一刀；同面验证不通过，修改方案而不是修改判据。</figcaption></figure>
+<figure class="devfig"><div class="figscroll"><svg viewBox="0 0 900 620" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="修缺陷六步：复现、二分排除、规划、同面验证、提交顺序、开 PR，验证失败回到规划"><defs><marker id="bugfix-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="var(--muted)"/></marker></defs><rect x="165.0" y="23.0" width="470.0" height="58.0" fill="var(--panel2)" stroke="var(--accent)" stroke-width="1.4"/><text x="400.0" y="45.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">1 自己复现</text><text x="400.0" y="67.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">在出问题的同一个面上驱动，能重现才继续</text><rect x="165.0" y="121.0" width="470.0" height="58.0" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="400.0" y="143.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">2 二分排因</text><text x="400.0" y="165.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">列假设、取运行证据、排除，直到剩一个</text><rect x="165.0" y="219.0" width="470.0" height="58.0" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="400.0" y="241.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">3 规划修复</text><text x="400.0" y="263.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">跨函数边界先做设计，再派实现</text><rect x="165.0" y="317.0" width="470.0" height="58.0" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="400.0" y="339.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">4 回同一个面验证</text><text x="400.0" y="361.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">原来失败的操作现在要过，不是跑单测</text><rect x="165.0" y="415.0" width="470.0" height="58.0" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="400.0" y="437.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">5 排列提交顺序</text><text x="400.0" y="459.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">失败的复现先进历史，修复在后</text><rect x="165.0" y="513.0" width="470.0" height="58.0" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="400.0" y="535.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">6 开 PR</text><text x="400.0" y="557.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">写清坏在哪、根因、修复、怎么验</text><line x1="400.0" y1="81.0" x2="400.0" y2="109.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#bugfix-arrow)"/><line x1="400.0" y1="179.0" x2="400.0" y2="207.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#bugfix-arrow)"/><line x1="400.0" y1="277.0" x2="400.0" y2="305.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#bugfix-arrow)"/><line x1="400.0" y1="375.0" x2="400.0" y2="403.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#bugfix-arrow)"/><line x1="400.0" y1="473.0" x2="400.0" y2="501.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#bugfix-arrow)"/><path d="M 635 150 C 700 150 700 128 637 128" fill="none" stroke="var(--muted)" stroke-width="1.5" stroke-dasharray="6 5" marker-end="url(#bugfix-arrow)"/><text x="700.0" y="104.0" text-anchor="middle" font-size="12" font-weight="400" fill="var(--muted)">再来一轮</text><path d="M 165.0 346.0 L 86.0 346.0 L 86.0 248.0 L 164.0 248.0" fill="none" stroke="var(--muted)" stroke-width="1.5" stroke-linejoin="round" stroke-dasharray="6 5" marker-end="url(#bugfix-arrow)"/><text x="70.0" y="300.0" text-anchor="middle" font-size="12" font-weight="400" fill="var(--muted)" transform="rotate(-90 70.0 300.0)">不通过</text></svg></div><figcaption>两个回环：排除没收敛就再切一刀；同面验证不通过，修改方案而不是修改判据。</figcaption></figure>
 
 <div class="note"><b>一条硬规矩。</b>每一行改动都要能追溯到运行时证据。「可能有帮助」的保险代码属于假设，不上线。证据推翻了假设，就把当初因它而加的改动回滚掉。</div>
 
@@ -403,7 +547,7 @@ description: Find what a change could break somewhere else before it ships...
   <li><b>开 PR。</b>说清做了什么、为什么这样选、吞吐检查点、未决问题。</li>
 </ol>
 
-<figure class="devfig"><div class="figscroll"><svg viewBox="0 0 900 760" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="做功能的八步流程：先懂、并行设计、写吞吐检查点、派实现、同面验证、重排提交、对抗争议、开 PR"><defs><marker id="feature-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="var(--muted)"/></marker></defs><rect x="125.0" y="21.0" width="430.0" height="58.0" rx="10" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="340.0" y="43.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">1 先懂再改</text><text x="340.0" y="65.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">用 how 把受影响的子系统读一遍</text><rect x="125.0" y="113.0" width="430.0" height="58.0" rx="10" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="340.0" y="135.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">2 并行设计</text><text x="340.0" y="157.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">多个模型各出一版签名，交叉评审</text><rect x="125.0" y="205.0" width="430.0" height="58.0" rx="10" fill="var(--panel2)" stroke="var(--accent)" stroke-width="1.4"/><text x="340.0" y="227.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">3 写吞吐检查点</text><text x="340.0" y="249.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">四条待办，一项都不能删</text><rect x="125.0" y="297.0" width="430.0" height="58.0" rx="10" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="340.0" y="319.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">4 派实现</text><text x="340.0" y="341.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">文件、数据形状、成功标准，缺一不可</text><rect x="125.0" y="389.0" width="430.0" height="58.0" rx="10" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="340.0" y="411.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">5 同面验证</text><text x="340.0" y="433.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">换界面或结论不确定都不算过</text><rect x="125.0" y="481.0" width="430.0" height="58.0" rx="10" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="340.0" y="503.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">6 重排成小提交</text><text x="340.0" y="525.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">每段自证过，再下一段</text><rect x="125.0" y="573.0" width="430.0" height="58.0" rx="10" fill="var(--panel)" stroke="var(--muted)" stroke-width="1.4" stroke-dasharray="6 5"/><text x="340.0" y="595.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">7 有争议先对抗</text><text x="340.0" y="617.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">interrogate，小改动可跳过</text><rect x="125.0" y="665.0" width="430.0" height="58.0" rx="10" fill="var(--panel)" stroke="var(--ok)" stroke-width="1.4"/><text x="340.0" y="687.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">8 开 PR</text><text x="340.0" y="709.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">做了什么、为什么、检查点、未决</text><line x1="340.0" y1="79.0" x2="340.0" y2="107.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#feature-arrow)"/><line x1="340.0" y1="171.0" x2="340.0" y2="199.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#feature-arrow)"/><line x1="340.0" y1="263.0" x2="340.0" y2="291.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#feature-arrow)"/><line x1="340.0" y1="355.0" x2="340.0" y2="383.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#feature-arrow)"/><line x1="340.0" y1="447.0" x2="340.0" y2="475.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#feature-arrow)"/><line x1="340.0" y1="539.0" x2="340.0" y2="567.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#feature-arrow)"/><line x1="340.0" y1="631.0" x2="340.0" y2="659.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#feature-arrow)"/><rect x="588" y="176" width="292" height="140" rx="10" fill="none" stroke="var(--accent)" stroke-dasharray="6 5"/><text x="606.0" y="200.0" text-anchor="start" font-size="13" font-weight="600" fill="var(--accent2)">检查点四问</text><text x="606.0" y="226.0" text-anchor="start" font-size="12.5" font-weight="400" fill="var(--muted)">阻塞第一步</text><text x="606.0" y="248.0" text-anchor="start" font-size="12.5" font-weight="400" fill="var(--muted)">独立工作面</text><text x="606.0" y="270.0" text-anchor="start" font-size="12.5" font-weight="400" fill="var(--muted)">共享可变状态</text><text x="606.0" y="292.0" text-anchor="start" font-size="12.5" font-weight="400" fill="var(--muted)">最小安全拆分</text><path d="M 555.0 234.0 L 586.0 234.0" fill="none" stroke="var(--muted)" stroke-width="1.5" stroke-linejoin="round" stroke-dasharray="6 5"/></svg></div><figcaption>第三、四步是全套流程的分水岭：先想清楚怎么拆，再派活。第七步虚线框表示可以跳过。</figcaption></figure>
+<figure class="devfig"><div class="figscroll"><svg viewBox="0 0 900 760" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="做功能的八步流程：先懂、并行设计、写吞吐检查点、派实现、同面验证、重排提交、对抗争议、开 PR"><defs><marker id="feature-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="var(--muted)"/></marker></defs><rect x="125.0" y="21.0" width="430.0" height="58.0" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="340.0" y="43.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">1 先懂再改</text><text x="340.0" y="65.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">用 how 把受影响的子系统读一遍</text><rect x="125.0" y="113.0" width="430.0" height="58.0" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="340.0" y="135.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">2 并行设计</text><text x="340.0" y="157.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">多个模型各出一版签名，交叉评审</text><rect x="125.0" y="205.0" width="430.0" height="58.0" fill="var(--panel2)" stroke="var(--accent)" stroke-width="1.4"/><text x="340.0" y="227.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">3 写吞吐检查点</text><text x="340.0" y="249.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">四条待办，一项都不能删</text><rect x="125.0" y="297.0" width="430.0" height="58.0" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="340.0" y="319.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">4 派实现</text><text x="340.0" y="341.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">文件、数据形状、成功标准，缺一不可</text><rect x="125.0" y="389.0" width="430.0" height="58.0" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="340.0" y="411.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">5 同面验证</text><text x="340.0" y="433.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">换界面或结论不确定都不算过</text><rect x="125.0" y="481.0" width="430.0" height="58.0" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="340.0" y="503.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">6 重排成小提交</text><text x="340.0" y="525.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">每段自证过，再下一段</text><rect x="125.0" y="573.0" width="430.0" height="58.0" fill="var(--panel)" stroke="var(--muted)" stroke-width="1.4" stroke-dasharray="6 5"/><text x="340.0" y="595.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">7 有争议先对抗</text><text x="340.0" y="617.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">interrogate，小改动可跳过</text><rect x="125.0" y="665.0" width="430.0" height="58.0" fill="var(--panel)" stroke="var(--ok)" stroke-width="1.4"/><text x="340.0" y="687.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">8 开 PR</text><text x="340.0" y="709.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">做了什么、为什么、检查点、未决</text><line x1="340.0" y1="79.0" x2="340.0" y2="107.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#feature-arrow)"/><line x1="340.0" y1="171.0" x2="340.0" y2="199.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#feature-arrow)"/><line x1="340.0" y1="263.0" x2="340.0" y2="291.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#feature-arrow)"/><line x1="340.0" y1="355.0" x2="340.0" y2="383.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#feature-arrow)"/><line x1="340.0" y1="447.0" x2="340.0" y2="475.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#feature-arrow)"/><line x1="340.0" y1="539.0" x2="340.0" y2="567.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#feature-arrow)"/><line x1="340.0" y1="631.0" x2="340.0" y2="659.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#feature-arrow)"/><rect x="588" y="176" width="292" height="140" fill="none" stroke="var(--accent)" stroke-dasharray="6 5"/><text x="606.0" y="200.0" text-anchor="start" font-size="13" font-weight="600" fill="var(--accent2)">检查点四问</text><text x="606.0" y="226.0" text-anchor="start" font-size="12.5" font-weight="400" fill="var(--muted)">阻塞第一步</text><text x="606.0" y="248.0" text-anchor="start" font-size="12.5" font-weight="400" fill="var(--muted)">独立工作面</text><text x="606.0" y="270.0" text-anchor="start" font-size="12.5" font-weight="400" fill="var(--muted)">共享可变状态</text><text x="606.0" y="292.0" text-anchor="start" font-size="12.5" font-weight="400" fill="var(--muted)">最小安全拆分</text><path d="M 555.0 234.0 L 586.0 234.0" fill="none" stroke="var(--muted)" stroke-width="1.5" stroke-linejoin="round" stroke-dasharray="6 5"/></svg></div><figcaption>第三、四步是全套流程的分水岭：先想清楚怎么拆，再派活。第七步虚线框表示可以跳过。</figcaption></figure>
 
 <div class="note"><b>怎么读一份 SKILL.md。</b>四段顺序读：先看 frontmatter 的 description，它决定这个技能会不会被触发；再看开头的非协商项，那是约束；中间是步骤；最后看回报格式，那是你验收它的模板。正文不用背，知道去哪找就行。</div>
 
@@ -463,132 +607,132 @@ description: Find what a change could break somewhere else before it ships...
 
 <div class="note"><b>选错的成本。</b>选错 playbook 比做错一步贵。修 bug 用了 Feature 流程，会多出一堆设计与验收；做功能用了 Bug fix 流程，会缺设计、缺数据形状，返工更贵。判断不准时先问一句「这是新行为还是旧行为坏了」。</div>
 
-<h2 id="skills">4 技能全解</h2>
+<h2 id="skills"><span class="num">4</span><span class="ttl">技能全解</span></h2>
 
 <p>43 个可调用技能。读法：先记住分组，再记每组里你最常用的三四个。全部背下来没有意义，知道去哪个组找就够了。</p>
 
-<div class="search"><input id="filter" placeholder="输入关键词过滤下面的技能表，例如 验证 / PR / 设计"></div>
+<div class="search"><input id="filter" placeholder="过滤技能，例如 验证 / PR / 设计"></div>
 
 <h3>入口与元技能</h3>
 <div class="tw"><table class="filterable">
 <tr><th>技能</th><th>干什么</th><th>什么时候叫它</th></tr>
-<tr><td><code>poteto-mode</code></td><td>总管。判断任务类型、挑 playbook、派活、把关</td><td>任何非平凡任务。改一行、问一个事实不用</td></tr>
-<tr><td><code>poteto-help</code></td><td>讲这套系统怎么用，帮你把问题路由到对应技能</td><td>不确定该用哪个技能时</td></tr>
-<tr><td><code>setup-pstack</code></td><td>写模型覆盖表，配每个角色用哪个模型、默认推理强度</td><td>换模型、降成本、改自动路由</td></tr>
-<tr><td><code>in-your-own-words</code></td><td>让 agent 先复述它理解的你的目标</td><td>需求复杂、怕它理解偏时，动手前用</td></tr>
-<tr><td><code>sharpen</code></td><td>把 prompt 改深不改长，补上专业视角和外部检查</td><td>任务重要但你的描述很糙时</td></tr>
-<tr><td><code>bro</code></td><td>把上一条回复用人话重说一遍</td><td>术语太多、没看懂</td></tr>
-<tr><td><code>ketchup</code></td><td>把这个会话自你上次开口以来的变化讲清楚，列出等你决定的事</td><td>离开一阵回来，接不上</td></tr>
-<tr><td><code>ketchup-video</code></td><td>同上，用带字幕的短视频</td><td>要看演示而不是读文字</td></tr>
-<tr><td><code>recall</code></td><td>从你过去的会话里重建当前上下文，并用 git 核对状态</td><td>跨天工作，不想重新交代</td></tr>
-<tr><td><code>what-did-i-get-done</code></td><td>把一段时间内你提交的改动总结成进展</td><td>周报、复盘</td></tr>
+<tr><td data-label="技能"><code>poteto-mode</code></td><td data-label="干什么">总管。判断任务类型、挑 playbook、派活、把关</td><td data-label="什么时候叫它">任何非平凡任务。改一行、问一个事实不用</td></tr>
+<tr><td data-label="技能"><code>poteto-help</code></td><td data-label="干什么">讲这套系统怎么用，帮你把问题路由到对应技能</td><td data-label="什么时候叫它">不确定该用哪个技能时</td></tr>
+<tr><td data-label="技能"><code>setup-pstack</code></td><td data-label="干什么">写模型覆盖表，配每个角色用哪个模型、默认推理强度</td><td data-label="什么时候叫它">换模型、降成本、改自动路由</td></tr>
+<tr><td data-label="技能"><code>in-your-own-words</code></td><td data-label="干什么">让 agent 先复述它理解的你的目标</td><td data-label="什么时候叫它">需求复杂、怕它理解偏时，动手前用</td></tr>
+<tr><td data-label="技能"><code>sharpen</code></td><td data-label="干什么">把 prompt 改深不改长，补上专业视角和外部检查</td><td data-label="什么时候叫它">任务重要但你的描述很糙时</td></tr>
+<tr><td data-label="技能"><code>bro</code></td><td data-label="干什么">把上一条回复用人话重说一遍</td><td data-label="什么时候叫它">术语太多、没看懂</td></tr>
+<tr><td data-label="技能"><code>ketchup</code></td><td data-label="干什么">把这个会话自你上次开口以来的变化讲清楚，列出等你决定的事</td><td data-label="什么时候叫它">离开一阵回来，接不上</td></tr>
+<tr><td data-label="技能"><code>ketchup-video</code></td><td data-label="干什么">同上，用带字幕的短视频</td><td data-label="什么时候叫它">要看演示而不是读文字</td></tr>
+<tr><td data-label="技能"><code>recall</code></td><td data-label="干什么">从你过去的会话里重建当前上下文，并用 git 核对状态</td><td data-label="什么时候叫它">跨天工作，不想重新交代</td></tr>
+<tr><td data-label="技能"><code>what-did-i-get-done</code></td><td data-label="干什么">把一段时间内你提交的改动总结成进展</td><td data-label="什么时候叫它">周报、复盘</td></tr>
 </table></div>
 
 <h3>理解类</h3>
 <div class="tw"><table class="filterable">
 <tr><th>技能</th><th>干什么</th><th>什么时候叫它</th></tr>
-<tr><td><code>how</code></td><td>讲这段代码现在怎么工作。复杂问题会派多个探索者并行看</td><td>改之前先弄懂；问「新代码该放哪」</td></tr>
-<tr><td><code>why</code></td><td>讲当初为什么这样写，去 git、PR、工单、文档、监控里找证据，事实与推测分开</td><td>看到奇怪代码想删之前</td></tr>
-<tr><td><code>teach</code></td><td>在底层调用 how 和 why，讲到你真懂，先给最短完整回答再等你追问</td><td>要审查或接手别人的东西</td></tr>
+<tr><td data-label="技能"><code>how</code></td><td data-label="干什么">讲这段代码现在怎么工作。复杂问题会派多个探索者并行看</td><td data-label="什么时候叫它">改之前先弄懂；问「新代码该放哪」</td></tr>
+<tr><td data-label="技能"><code>why</code></td><td data-label="干什么">讲当初为什么这样写，去 git、PR、工单、文档、监控里找证据，事实与推测分开</td><td data-label="什么时候叫它">看到奇怪代码想删之前</td></tr>
+<tr><td data-label="技能"><code>teach</code></td><td data-label="干什么">在底层调用 how 和 why，讲到你真懂，先给最短完整回答再等你追问</td><td data-label="什么时候叫它">要审查或接手别人的东西</td></tr>
 </table></div>
 
 <h3>设计与对抗类</h3>
 <div class="tw"><table class="filterable">
 <tr><th>技能</th><th>干什么</th><th>什么时候叫它</th></tr>
-<tr><td><code>architect</code></td><td>先定类型、签名、模块形状，多个模型各出一版再合成，然后进入实现</td><td>代码要跨函数边界、要加子系统</td></tr>
-<tr><td><code>arena</code></td><td>N 个候选同时做同一件事，选一个做底，把其他版本的强项嫁接进来</td><td>设计或实现没有唯一答案</td></tr>
-<tr><td><code>interrogate</code></td><td>多个不同模型同时挑刺，试图攻破你的改动，意见分四档</td><td>改动重要、怕有盲区</td></tr>
-<tr><td><code>blast-radius</code></td><td>找出改动在别处可能弄坏什么，并运行真实代码证明「安全所依赖的那一个事实」</td><td>上线前；改公共接口前</td></tr>
-<tr><td><code>swarm</code></td><td>派一群工人并行跑，最后汇成一份报告</td><td>覆盖矩阵、赛跑、批量验证</td></tr>
+<tr><td data-label="技能"><code>architect</code></td><td data-label="干什么">先定类型、签名、模块形状，多个模型各出一版再合成，然后进入实现</td><td data-label="什么时候叫它">代码要跨函数边界、要加子系统</td></tr>
+<tr><td data-label="技能"><code>arena</code></td><td data-label="干什么">N 个候选同时做同一件事，选一个做底，把其他版本的强项嫁接进来</td><td data-label="什么时候叫它">设计或实现没有唯一答案</td></tr>
+<tr><td data-label="技能"><code>interrogate</code></td><td data-label="干什么">多个不同模型同时挑刺，试图攻破你的改动，意见分四档</td><td data-label="什么时候叫它">改动重要、怕有盲区</td></tr>
+<tr><td data-label="技能"><code>blast-radius</code></td><td data-label="干什么">找出改动在别处可能弄坏什么，并运行真实代码证明「安全所依赖的那一个事实」</td><td data-label="什么时候叫它">上线前；改公共接口前</td></tr>
+<tr><td data-label="技能"><code>swarm</code></td><td data-label="干什么">派一群工人并行跑，最后汇成一份报告</td><td data-label="什么时候叫它">覆盖矩阵、赛跑、批量验证</td></tr>
 </table></div>
 
 <h3>实现类</h3>
 <div class="tw"><table class="filterable">
 <tr><th>技能</th><th>干什么</th><th>什么时候叫它</th></tr>
-<tr><td><code>tdd</code></td><td>测试先行。只在有廉价本地测试目标时用</td><td>缺陷能用一个单元测试钉住</td></tr>
-<tr><td><code>typescript-best-practices</code></td><td>TS/TSX 的写法规范</td><td>读写任何 .ts/.tsx</td></tr>
+<tr><td data-label="技能"><code>tdd</code></td><td data-label="干什么">测试先行。只在有廉价本地测试目标时用</td><td data-label="什么时候叫它">缺陷能用一个单元测试钉住</td></tr>
+<tr><td data-label="技能"><code>typescript-best-practices</code></td><td data-label="干什么">TS/TSX 的写法规范</td><td data-label="什么时候叫它">读写任何 .ts/.tsx</td></tr>
 </table></div>
 
 <h3>验证类</h3>
 <div class="tw"><table class="filterable">
 <tr><th>技能</th><th>干什么</th><th>什么时候叫它</th></tr>
-<tr><td><code>create-verification-skill</code></td><td>研究仓库，生成项目专属验证技能和功能地图，生成后亲跑一遍才算交付</td><td>项目还没有能自动驱动 App 的验收方式</td></tr>
-<tr><td><code>maintain-verification-skill</code></td><td>定期审计验证技能与功能地图，每个功能读源码加真机跑一遍，最多产出一个纠正 PR</td><td>功能地图开始过时</td></tr>
-<tr><td><code>create-formal-verification-skill</code></td><td>对并发、重试、状态机、解析器做形式化验证</td><td>测试够不到、出错代价高的地方</td></tr>
-<tr><td><code>maintain-formal-verification-skill</code></td><td>代码变了之后把模型拉回一致，并判断失败是模型漂移还是真 bug</td><td>改动碰到已验证代码之后</td></tr>
-<tr><td><code>benchmark-checklist</code></td><td>报性能数字前先审这个数字本身</td><td>你要说「快了 X%」之前</td></tr>
-<tr><td><code>statechart</code></td><td>用 TLA+ 检查状态流转，给出破坏规则的最短路径，画成 Mermaid 图</td><td>协议、流程、状态机</td></tr>
+<tr><td data-label="技能"><code>create-verification-skill</code></td><td data-label="干什么">研究仓库，生成项目专属验证技能和功能地图，生成后亲跑一遍才算交付</td><td data-label="什么时候叫它">项目还没有能自动驱动 App 的验收方式</td></tr>
+<tr><td data-label="技能"><code>maintain-verification-skill</code></td><td data-label="干什么">定期审计验证技能与功能地图，每个功能读源码加真机跑一遍，最多产出一个纠正 PR</td><td data-label="什么时候叫它">功能地图开始过时</td></tr>
+<tr><td data-label="技能"><code>create-formal-verification-skill</code></td><td data-label="干什么">对并发、重试、状态机、解析器做形式化验证</td><td data-label="什么时候叫它">测试够不到、出错代价高的地方</td></tr>
+<tr><td data-label="技能"><code>maintain-formal-verification-skill</code></td><td data-label="干什么">代码变了之后把模型拉回一致，并判断失败是模型漂移还是真 bug</td><td data-label="什么时候叫它">改动碰到已验证代码之后</td></tr>
+<tr><td data-label="技能"><code>benchmark-checklist</code></td><td data-label="干什么">报性能数字前先审这个数字本身</td><td data-label="什么时候叫它">你要说「快了 X%」之前</td></tr>
+<tr><td data-label="技能"><code>statechart</code></td><td data-label="干什么">用 TLA+ 检查状态流转，给出破坏规则的最短路径，画成 Mermaid 图</td><td data-label="什么时候叫它">协议、流程、状态机</td></tr>
 </table></div>
 
 <h3>评审与清理类</h3>
 <div class="tw"><table class="filterable">
 <tr><th>技能</th><th>干什么</th><th>什么时候叫它</th></tr>
-<tr><td><code>no-comments</code></td><td>用一个没写过这些注释的代理砍掉叙述性注释</td><td>评审前</td></tr>
-<tr><td><code>deslop</code></td><td>清掉 AI 生成的冗余与套路代码</td><td>提交前</td></tr>
-<tr><td><code>thermo-nuclear-review</code></td><td>对分支改动做严格的安全与正确性审计</td><td>合并前的深审</td></tr>
-<tr><td><code>thermo-nuclear-code-quality-review</code></td><td>可维护性审计：抽象质量、巨型文件、条件分支蔓延</td><td>结构开始难读时</td></tr>
-<tr><td><code>thermos</code></td><td>同时跑上面两个，再合成结论</td><td>重要改动一次审完</td></tr>
-<tr><td><code>make-pr-easy-to-review</code></td><td>整理提交历史、写清 PR 描述、给评审人导航</td><td>PR 太大太乱</td></tr>
-<tr><td><code>get-pr-comments</code></td><td>拉取并归纳当前 PR 的评审意见</td><td>评审有反馈要处理</td></tr>
-<tr><td><code>fix-ci</code></td><td>找失败检查、读日志、做针对性修复</td><td>CI 红了</td></tr>
-<tr><td><code>fix-merge-conflicts</code></td><td>非交互解冲突并跑构建与测试</td><td>分支冲突</td></tr>
-<tr><td><code>babysit</code></td><td>独立技能版的看 PR，推到可合并</td><td>说「盯着这个 PR」时</td></tr>
+<tr><td data-label="技能"><code>no-comments</code></td><td data-label="干什么">用一个没写过这些注释的代理砍掉叙述性注释</td><td data-label="什么时候叫它">评审前</td></tr>
+<tr><td data-label="技能"><code>deslop</code></td><td data-label="干什么">清掉 AI 生成的冗余与套路代码</td><td data-label="什么时候叫它">提交前</td></tr>
+<tr><td data-label="技能"><code>thermo-nuclear-review</code></td><td data-label="干什么">对分支改动做严格的安全与正确性审计</td><td data-label="什么时候叫它">合并前的深审</td></tr>
+<tr><td data-label="技能"><code>thermo-nuclear-code-quality-review</code></td><td data-label="干什么">可维护性审计：抽象质量、巨型文件、条件分支蔓延</td><td data-label="什么时候叫它">结构开始难读时</td></tr>
+<tr><td data-label="技能"><code>thermos</code></td><td data-label="干什么">同时跑上面两个，再合成结论</td><td data-label="什么时候叫它">重要改动一次审完</td></tr>
+<tr><td data-label="技能"><code>make-pr-easy-to-review</code></td><td data-label="干什么">整理提交历史、写清 PR 描述、给评审人导航</td><td data-label="什么时候叫它">PR 太大太乱</td></tr>
+<tr><td data-label="技能"><code>get-pr-comments</code></td><td data-label="干什么">拉取并归纳当前 PR 的评审意见</td><td data-label="什么时候叫它">评审有反馈要处理</td></tr>
+<tr><td data-label="技能"><code>fix-ci</code></td><td data-label="干什么">找失败检查、读日志、做针对性修复</td><td data-label="什么时候叫它">CI 红了</td></tr>
+<tr><td data-label="技能"><code>fix-merge-conflicts</code></td><td data-label="干什么">非交互解冲突并跑构建与测试</td><td data-label="什么时候叫它">分支冲突</td></tr>
+<tr><td data-label="技能"><code>babysit</code></td><td data-label="干什么">独立技能版的看 PR，推到可合并</td><td data-label="什么时候叫它">说「盯着这个 PR」时</td></tr>
 </table></div>
 
 <h3>写作类</h3>
 <div class="tw"><table class="filterable">
 <tr><th>技能</th><th>干什么</th><th>什么时候叫它</th></tr>
-<tr><td><code>technical-writing</code></td><td>分层写作标准：Diátaxis 四类文档、句式规则、简明英语</td><td>写文档、RFC、README、PR 描述、提交信息</td></tr>
-<tr><td><code>unslop</code></td><td>去掉 AI 腔和套路表达</td><td>任何要给人看的文字</td></tr>
+<tr><td data-label="技能"><code>technical-writing</code></td><td data-label="干什么">分层写作标准：Diátaxis 四类文档、句式规则、简明英语</td><td data-label="什么时候叫它">写文档、RFC、README、PR 描述、提交信息</td></tr>
+<tr><td data-label="技能"><code>unslop</code></td><td data-label="干什么">去掉 AI 腔和套路表达</td><td data-label="什么时候叫它">任何要给人看的文字</td></tr>
 </table></div>
 
 <h3>维护与自省类</h3>
 <div class="tw"><table class="filterable">
 <tr><th>技能</th><th>干什么</th><th>什么时候叫它</th></tr>
-<tr><td><code>reflect</code></td><td>三个并行代理读本次会话，挑出可复用教训，落到具体技能改动</td><td>一次任务结束后</td></tr>
-<tr><td><code>correct</code></td><td>找出代理在本仓库反复犯的错，用结构消灭它：先架构，再类型，再 lint，再测试，最后才是文档</td><td>同样的错犯第二次时</td></tr>
-<tr><td><code>automate-me</code></td><td>把你的工作习惯沉淀成一个属于你的模式技能</td><td>你的偏好稳定成型后</td></tr>
-<tr><td><code>show-me-your-work</code></td><td>给长时间无人值守的工作留可审阅的决策轨迹</td><td>要跑通宵、要事后审计</td></tr>
-<tr><td><code>figure-it-out</code></td><td>没有现成 playbook 时，专门设计一次严谨的执行方案</td><td>大迁移、跨多个模块的改动</td></tr>
+<tr><td data-label="技能"><code>reflect</code></td><td data-label="干什么">三个并行代理读本次会话，挑出可复用教训，落到具体技能改动</td><td data-label="什么时候叫它">一次任务结束后</td></tr>
+<tr><td data-label="技能"><code>correct</code></td><td data-label="干什么">找出代理在本仓库反复犯的错，用结构消灭它：先架构，再类型，再 lint，再测试，最后才是文档</td><td data-label="什么时候叫它">同样的错犯第二次时</td></tr>
+<tr><td data-label="技能"><code>automate-me</code></td><td data-label="干什么">把你的工作习惯沉淀成一个属于你的模式技能</td><td data-label="什么时候叫它">你的偏好稳定成型后</td></tr>
+<tr><td data-label="技能"><code>show-me-your-work</code></td><td data-label="干什么">给长时间无人值守的工作留可审阅的决策轨迹</td><td data-label="什么时候叫它">要跑通宵、要事后审计</td></tr>
+<tr><td data-label="技能"><code>figure-it-out</code></td><td data-label="干什么">没有现成 playbook 时，专门设计一次严谨的执行方案</td><td data-label="什么时候叫它">大迁移、跨多个模块的改动</td></tr>
 </table></div>
 
-<h2 id="principles">5 二十四条原则</h2>
+<h2 id="principles"><span class="num">5</span><span class="ttl">二十四条原则</span></h2>
 
 <p>原则是单规则技能，平时不用叫。它们的作用是当 poteto-mode 面临取舍时提供偏向。你记住名字，就能用一句话纠正它，例如「按 prove it works，把真实输出贴出来」。</p>
 
 <div class="tw"><table class="filterable">
 <tr><th>原则</th><th>一句话</th><th>什么时候用它纠偏</th></tr>
-<tr><td>prove-it-works</td><td>验真实产物，不验代理指标</td><td>它说「编译通过」「测试绿了」就宣告完成</td></tr>
-<tr><td>fix-root-causes</td><td>顺症状追到第一次出错的地方</td><td>它在加防御性代码而不是找根因</td></tr>
-<tr><td>test-behavior-not-implementation</td><td>断言用户能观察到的行为</td><td>测试改了实现就碎</td></tr>
-<tr><td>sequence-verifiable-units</td><td>切成每段都有检查点的小单元</td><td>一次改动太大、无法中途验证</td></tr>
-<tr><td>laziness-protocol</td><td>能删就删，最小改动</td><td>它在加抽象、加层、加信号线程</td></tr>
-<tr><td>foundational-thinking</td><td>先把核心类型和数据结构定对</td><td>开工就写逻辑，没定数据形状</td></tr>
-<tr><td>redesign-from-first-principles</td><td>新需求进来时，按「一开始就该这样」重设计</td><td>在旧结构上打补丁</td></tr>
-<tr><td>attack-the-premise</td><td>两个修法失败且共享同一前提，就别再修，去验前提</td><td>第二次修复又没解决</td></tr>
-<tr><td>subtract-before-you-add</td><td>先删死代码和冗余，再加</td><td>在新旧并存的状态上继续叠</td></tr>
-<tr><td>minimize-reader-load</td><td>减少层数与隐藏状态</td><td>代码难追、需要来回跳</td></tr>
-<tr><td>outcome-oriented-execution</td><td>直奔目标架构，不保留过渡态</td><td>为兼容保留了没人要的中间态</td></tr>
-<tr><td>experience-first</td><td>用户感受优先于实现便利</td><td>在拿「实现麻烦」当理由砍体验</td></tr>
-<tr><td>exhaust-the-design-space</td><td>没有先例时，做两三个原型再定</td><td>直接采纳第一个方案</td></tr>
-<tr><td>build-the-lever</td><td>造工具去做或去证明，别手工重复</td><td>同一件事手工做了第三遍</td></tr>
-<tr><td>model-the-domain</td><td>用状态机、类型、表驱动代替散落条件</td><td>分支越写越多、形状假设重复</td></tr>
-<tr><td>boundary-discipline</td><td>校验集中在系统边界，内部信任类型</td><td>每个函数都在重复校验</td></tr>
-<tr><td>type-system-discipline</td><td>让非法状态无法表达</td><td>用布尔组合表示互斥状态</td></tr>
-<tr><td>make-operations-idempotent</td><td>崩溃重跑收敛到同一结果</td><td>重试会重复写、重复发</td></tr>
-<tr><td>migrate-callers-then-delete-legacy-apis</td><td>迁移与删除同一波做完</td><td>新旧 API 长期并存</td></tr>
-<tr><td>separate-before-serializing-shared-state</td><td>先消除共享，再谈串行化</td><td>多个执行者写同一文件或对象</td></tr>
-<tr><td>guard-the-context-window</td><td>大输出走子代理，主线只留结论</td><td>主线在堆原始日志</td></tr>
-<tr><td>never-block-on-the-human</td><td>可逆的事直接做，做完给人看</td><td>它在问「要不要我做」</td></tr>
-<tr><td>encode-lessons-in-structure</td><td>同一条指令写第二遍时，改成 lint 或脚本</td><td>你在反复提醒同一件事</td></tr>
-<tr><td>explain-the-number</td><td>报数字前先弄清它在量什么、被什么限制</td><td>任何性能或评测结论</td></tr>
+<tr><td data-label="原则">prove-it-works</td><td data-label="一句话">验真实产物，不验代理指标</td><td data-label="什么时候用它纠偏">它说「编译通过」「测试绿了」就宣告完成</td></tr>
+<tr><td data-label="原则">fix-root-causes</td><td data-label="一句话">顺症状追到第一次出错的地方</td><td data-label="什么时候用它纠偏">它在加防御性代码而不是找根因</td></tr>
+<tr><td data-label="原则">test-behavior-not-implementation</td><td data-label="一句话">断言用户能观察到的行为</td><td data-label="什么时候用它纠偏">测试改了实现就碎</td></tr>
+<tr><td data-label="原则">sequence-verifiable-units</td><td data-label="一句话">切成每段都有检查点的小单元</td><td data-label="什么时候用它纠偏">一次改动太大、无法中途验证</td></tr>
+<tr><td data-label="原则">laziness-protocol</td><td data-label="一句话">能删就删，最小改动</td><td data-label="什么时候用它纠偏">它在加抽象、加层、加信号线程</td></tr>
+<tr><td data-label="原则">foundational-thinking</td><td data-label="一句话">先把核心类型和数据结构定对</td><td data-label="什么时候用它纠偏">开工就写逻辑，没定数据形状</td></tr>
+<tr><td data-label="原则">redesign-from-first-principles</td><td data-label="一句话">新需求进来时，按「一开始就该这样」重设计</td><td data-label="什么时候用它纠偏">在旧结构上打补丁</td></tr>
+<tr><td data-label="原则">attack-the-premise</td><td data-label="一句话">两个修法失败且共享同一前提，就别再修，去验前提</td><td data-label="什么时候用它纠偏">第二次修复又没解决</td></tr>
+<tr><td data-label="原则">subtract-before-you-add</td><td data-label="一句话">先删死代码和冗余，再加</td><td data-label="什么时候用它纠偏">在新旧并存的状态上继续叠</td></tr>
+<tr><td data-label="原则">minimize-reader-load</td><td data-label="一句话">减少层数与隐藏状态</td><td data-label="什么时候用它纠偏">代码难追、需要来回跳</td></tr>
+<tr><td data-label="原则">outcome-oriented-execution</td><td data-label="一句话">直奔目标架构，不保留过渡态</td><td data-label="什么时候用它纠偏">为兼容保留了没人要的中间态</td></tr>
+<tr><td data-label="原则">experience-first</td><td data-label="一句话">用户感受优先于实现便利</td><td data-label="什么时候用它纠偏">在拿「实现麻烦」当理由砍体验</td></tr>
+<tr><td data-label="原则">exhaust-the-design-space</td><td data-label="一句话">没有先例时，做两三个原型再定</td><td data-label="什么时候用它纠偏">直接采纳第一个方案</td></tr>
+<tr><td data-label="原则">build-the-lever</td><td data-label="一句话">造工具去做或去证明，别手工重复</td><td data-label="什么时候用它纠偏">同一件事手工做了第三遍</td></tr>
+<tr><td data-label="原则">model-the-domain</td><td data-label="一句话">用状态机、类型、表驱动代替散落条件</td><td data-label="什么时候用它纠偏">分支越写越多、形状假设重复</td></tr>
+<tr><td data-label="原则">boundary-discipline</td><td data-label="一句话">校验集中在系统边界，内部信任类型</td><td data-label="什么时候用它纠偏">每个函数都在重复校验</td></tr>
+<tr><td data-label="原则">type-system-discipline</td><td data-label="一句话">让非法状态无法表达</td><td data-label="什么时候用它纠偏">用布尔组合表示互斥状态</td></tr>
+<tr><td data-label="原则">make-operations-idempotent</td><td data-label="一句话">崩溃重跑收敛到同一结果</td><td data-label="什么时候用它纠偏">重试会重复写、重复发</td></tr>
+<tr><td data-label="原则">migrate-callers-then-delete-legacy-apis</td><td data-label="一句话">迁移与删除同一波做完</td><td data-label="什么时候用它纠偏">新旧 API 长期并存</td></tr>
+<tr><td data-label="原则">separate-before-serializing-shared-state</td><td data-label="一句话">先消除共享，再谈串行化</td><td data-label="什么时候用它纠偏">多个执行者写同一文件或对象</td></tr>
+<tr><td data-label="原则">guard-the-context-window</td><td data-label="一句话">大输出走子代理，主线只留结论</td><td data-label="什么时候用它纠偏">主线在堆原始日志</td></tr>
+<tr><td data-label="原则">never-block-on-the-human</td><td data-label="一句话">可逆的事直接做，做完给人看</td><td data-label="什么时候用它纠偏">它在问「要不要我做」</td></tr>
+<tr><td data-label="原则">encode-lessons-in-structure</td><td data-label="一句话">同一条指令写第二遍时，改成 lint 或脚本</td><td data-label="什么时候用它纠偏">你在反复提醒同一件事</td></tr>
+<tr><td data-label="原则">explain-the-number</td><td data-label="一句话">报数字前先弄清它在量什么、被什么限制</td><td data-label="什么时候用它纠偏">任何性能或评测结论</td></tr>
 </table></div>
 
-<figure class="devfig"><div class="figscroll"><svg viewBox="0 0 900 430" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="三条必记的原则分别对应写之前、排查时、交付前，其余二十一条按场景查表"><defs><marker id="principles-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="var(--muted)"/></marker></defs><rect x="60.0" y="48.0" width="240.0" height="44.0" rx="10" fill="var(--panel)" stroke="var(--muted)" stroke-width="1.4"/><text x="180.0" y="75.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">写之前</text><line x1="180.0" y1="92.0" x2="180.0" y2="128.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#principles-arrow)"/><rect x="60.0" y="132.0" width="240.0" height="76.0" rx="10" fill="var(--panel2)" stroke="var(--accent)" stroke-width="1.4"/><text x="180.0" y="163.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">laziness-protocol</text><text x="180.0" y="185.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">能删就删，最小改动</text><rect x="330.0" y="48.0" width="240.0" height="44.0" rx="10" fill="var(--panel)" stroke="var(--muted)" stroke-width="1.4"/><text x="450.0" y="75.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">排查时</text><line x1="450.0" y1="92.0" x2="450.0" y2="128.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#principles-arrow)"/><rect x="330.0" y="132.0" width="240.0" height="76.0" rx="10" fill="var(--panel2)" stroke="var(--accent)" stroke-width="1.4"/><text x="450.0" y="163.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">fix-root-causes</text><text x="450.0" y="185.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">追到第一次出错的地方</text><rect x="600.0" y="48.0" width="240.0" height="44.0" rx="10" fill="var(--panel)" stroke="var(--muted)" stroke-width="1.4"/><text x="720.0" y="75.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">交付前</text><line x1="720.0" y1="92.0" x2="720.0" y2="128.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#principles-arrow)"/><rect x="600.0" y="132.0" width="240.0" height="76.0" rx="10" fill="var(--panel2)" stroke="var(--accent)" stroke-width="1.4"/><text x="720.0" y="163.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">prove-it-works</text><text x="720.0" y="185.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">验真实产物，不验代理指标</text><line x1="300.0" y1="70.0" x2="328.0" y2="70.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#principles-arrow)"/><line x1="570.0" y1="70.0" x2="598.0" y2="70.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#principles-arrow)"/><rect x="60" y="252" width="780" height="92" rx="10" fill="var(--panel2)" stroke="var(--line)" stroke-dasharray="6 5"/><text x="450.0" y="284.0" text-anchor="middle" font-size="13" font-weight="400" fill="var(--muted)">其余 21 条：设计取舍、边界与类型、并行与共享状态、上下文预算</text><text x="450.0" y="314.0" text-anchor="middle" font-size="12.5" font-weight="400" fill="var(--muted)">平时不用背，遇到具体场景回第 5 章那张表查</text></svg></div><figcaption>先记住这三条，剩下的遇到具体场景再查表，不要一次背二十四条。</figcaption></figure>
+<figure class="devfig"><div class="figscroll"><svg viewBox="0 0 900 430" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="三条必记的原则分别对应写之前、排查时、交付前，其余二十一条按场景查表"><defs><marker id="principles-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="var(--muted)"/></marker></defs><rect x="60.0" y="48.0" width="240.0" height="44.0" fill="var(--panel)" stroke="var(--muted)" stroke-width="1.4"/><text x="180.0" y="75.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">写之前</text><line x1="180.0" y1="92.0" x2="180.0" y2="128.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#principles-arrow)"/><rect x="60.0" y="132.0" width="240.0" height="76.0" fill="var(--panel2)" stroke="var(--accent)" stroke-width="1.4"/><text x="180.0" y="163.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">laziness-protocol</text><text x="180.0" y="185.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">能删就删，最小改动</text><rect x="330.0" y="48.0" width="240.0" height="44.0" fill="var(--panel)" stroke="var(--muted)" stroke-width="1.4"/><text x="450.0" y="75.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">排查时</text><line x1="450.0" y1="92.0" x2="450.0" y2="128.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#principles-arrow)"/><rect x="330.0" y="132.0" width="240.0" height="76.0" fill="var(--panel2)" stroke="var(--accent)" stroke-width="1.4"/><text x="450.0" y="163.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">fix-root-causes</text><text x="450.0" y="185.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">追到第一次出错的地方</text><rect x="600.0" y="48.0" width="240.0" height="44.0" fill="var(--panel)" stroke="var(--muted)" stroke-width="1.4"/><text x="720.0" y="75.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">交付前</text><line x1="720.0" y1="92.0" x2="720.0" y2="128.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#principles-arrow)"/><rect x="600.0" y="132.0" width="240.0" height="76.0" fill="var(--panel2)" stroke="var(--accent)" stroke-width="1.4"/><text x="720.0" y="163.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">prove-it-works</text><text x="720.0" y="185.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">验真实产物，不验代理指标</text><line x1="300.0" y1="70.0" x2="328.0" y2="70.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#principles-arrow)"/><line x1="570.0" y1="70.0" x2="598.0" y2="70.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#principles-arrow)"/><rect x="60" y="252" width="780" height="92" fill="var(--panel2)" stroke="var(--line)" stroke-dasharray="6 5"/><text x="450.0" y="284.0" text-anchor="middle" font-size="13" font-weight="400" fill="var(--muted)">其余 21 条：设计取舍、边界与类型、并行与共享状态、上下文预算</text><text x="450.0" y="314.0" text-anchor="middle" font-size="12.5" font-weight="400" fill="var(--muted)">平时不用背，遇到具体场景回第 5 章那张表查</text></svg></div><figcaption>先记住这三条，剩下的遇到具体场景再查表，不要一次背二十四条。</figcaption></figure>
 
 <div class="note"><b>怎么用原则。</b>不要一次背二十四条。记住三条就够撑起大部分判断：prove-it-works、fix-root-causes、laziness-protocol。其余在遇到具体场景时回这张表查。</div>
 
-<h2 id="ethos">6 五条心法</h2>
+<h2 id="ethos"><span class="num">6</span><span class="ttl">五条心法</span></h2>
 
 <p>前面是结构，这一章是判断。结构可以背，心法只能理解。五条按重要性排。</p>
 
@@ -616,7 +760,7 @@ description: Find what a change could break somewhere else before it ships...
 
 <blockquote><p>这五条不是并列的。第一条是地基，没有它，第二到第五条都会变成更快地生产次品。</p></blockquote>
 
-<h2 id="verify">7 验证体系</h2>
+<h2 id="verify"><span class="num">7</span><span class="ttl">验证体系</span></h2>
 
 <p>这一章是全书的重点。前面说过，验证是地基。地基不牢，并行越多越糟。</p>
 
@@ -628,14 +772,14 @@ description: Find what a change could break somewhere else before it ships...
 
 <div class="tw"><table>
 <tr><th>步骤</th><th>要求</th><th>常见漏项</th></tr>
-<tr><td>1 访谈仓库</td><td>从代码回答五个问题：用户碰的是什么界面、怎么启动、怎么程序化操作、能收集什么证据、能不能同时跑两个实例</td><td>跳过后两个，结果无法隔离、证据只有截图</td></tr>
-<tr><td>2 生成技能</td><td>六个必备段落：启动、体检、驱动、证据、清理、辅助脚本</td><td>没有「怎么判断就绪」，进程起来了但界面还没可用</td></tr>
-<tr><td>3 播种功能地图</td><td>README 加每个功能一个文件，固定四段：子功能、用户怎么到达、怎么驱动、坑</td><td>功能文件写成测试步骤，丢了用户视角</td></tr>
-<tr><td>4 交付前自证</td><td>按自己的说明完整跑一遍，跑不通不算交付</td><td>写完就交，从没执行过</td></tr>
-<tr><td>5 交棒维护</td><td>指向定期维护流程，说明节奏</td><td>没有维护记录，三个月后没人知道它还准不准</td></tr>
+<tr><td data-label="步骤">1 访谈仓库</td><td data-label="要求">从代码回答五个问题：用户碰的是什么界面、怎么启动、怎么程序化操作、能收集什么证据、能不能同时跑两个实例</td><td data-label="常见漏项">跳过后两个，结果无法隔离、证据只有截图</td></tr>
+<tr><td data-label="步骤">2 生成技能</td><td data-label="要求">六个必备段落：启动、体检、驱动、证据、清理、辅助脚本</td><td data-label="常见漏项">没有「怎么判断就绪」，进程起来了但界面还没可用</td></tr>
+<tr><td data-label="步骤">3 播种功能地图</td><td data-label="要求">README 加每个功能一个文件，固定四段：子功能、用户怎么到达、怎么驱动、坑</td><td data-label="常见漏项">功能文件写成测试步骤，丢了用户视角</td></tr>
+<tr><td data-label="步骤">4 交付前自证</td><td data-label="要求">按自己的说明完整跑一遍，跑不通不算交付</td><td data-label="常见漏项">写完就交，从没执行过</td></tr>
+<tr><td data-label="步骤">5 交棒维护</td><td data-label="要求">指向定期维护流程，说明节奏</td><td data-label="常见漏项">没有维护记录，三个月后没人知道它还准不准</td></tr>
 </table></div>
 
-<figure class="devfig"><div class="figscroll"><svg viewBox="0 0 900 700" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="验证链路：体检、单测门、驱动真实应用、取证、判定，不通过分产品不符与判据不成立两种"><defs><marker id="verify-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="var(--muted)"/></marker></defs><rect x="150.0" y="19.0" width="460.0" height="58.0" rx="10" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="380.0" y="41.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">1 体检</text><text x="380.0" y="63.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">进程号、版本、是不是这次启动的</text><line x1="380.0" y1="77.0" x2="380.0" y2="111.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#verify-arrow)"/><rect x="150.0" y="111.0" width="460.0" height="58.0" rx="10" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="380.0" y="133.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">2 单测门</text><text x="380.0" y="155.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">跑得快，先筛掉明显的</text><line x1="380.0" y1="169.0" x2="380.0" y2="203.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#verify-arrow)"/><rect x="150.0" y="203.0" width="460.0" height="58.0" rx="10" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="380.0" y="225.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">3 驱动真实应用</text><text x="380.0" y="247.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">用驱动工具，不靠手点和肉眼</text><line x1="380.0" y1="261.0" x2="380.0" y2="295.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#verify-arrow)"/><rect x="150.0" y="295.0" width="460.0" height="58.0" rx="10" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="380.0" y="317.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">4 取证</text><text x="380.0" y="339.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">截图、命令输出、含副作用的断言</text><line x1="380.0" y1="353.0" x2="380.0" y2="390.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#verify-arrow)"/><polygon points="380,388 472,424 380,460 288,424" fill="var(--panel2)" stroke="var(--accent)" stroke-width="1.4"/><text x="380" y="428.5" text-anchor="middle" font-size="13" font-weight="600" fill="var(--fg)">判定</text><line x1="380.0" y1="460.0" x2="380.0" y2="486.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#verify-arrow)"/><text x="392.0" y="476.0" text-anchor="start" font-size="12" font-weight="400" fill="var(--muted)">过</text><rect x="15.0" y="491.0" width="250.0" height="58.0" rx="10" fill="var(--panel)" stroke="var(--bad)" stroke-width="1.4"/><text x="140.0" y="513.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">产品不符</text><text x="140.0" y="535.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">回去修，不要改判据</text><rect x="275.0" y="491.0" width="250.0" height="58.0" rx="10" fill="var(--panel)" stroke="var(--ok)" stroke-width="1.4"/><text x="400.0" y="513.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">写状态文件</text><text x="400.0" y="535.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">判定 + 依据 + 证据路径</text><rect x="535.0" y="491.0" width="250.0" height="58.0" rx="10" fill="var(--panel2)" stroke="var(--accent)" stroke-width="1.4"/><text x="660.0" y="513.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">判据不成立</text><text x="660.0" y="535.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">改标准，再跑一次</text><path d="M 284.0 424.0 L 140.0 424.0 L 140.0 490.0" fill="none" stroke="var(--muted)" stroke-width="1.5" stroke-linejoin="round" marker-end="url(#verify-arrow)"/><text x="140.0" y="410.0" text-anchor="middle" font-size="12" font-weight="400" fill="var(--muted)">不过</text><path d="M 476.0 424.0 L 660.0 424.0 L 660.0 490.0" fill="none" stroke="var(--muted)" stroke-width="1.5" stroke-linejoin="round" marker-end="url(#verify-arrow)"/><text x="660.0" y="410.0" text-anchor="middle" font-size="12" font-weight="400" fill="var(--muted)">不过</text><line x1="400.0" y1="549.0" x2="400.0" y2="592.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#verify-arrow)"/><rect x="200.0" y="597.0" width="400.0" height="58.0" rx="10" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="400.0" y="619.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">维护日志加一行</text><text x="400.0" y="641.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">这次验了什么、哪里容易误判</text><path d="M 785.0 520.0 L 856.0 520.0 L 856.0 452.0 L 404.0 452.0" fill="none" stroke="var(--muted)" stroke-width="1.5" stroke-linejoin="round" stroke-dasharray="6 5" marker-end="url(#verify-arrow)"/><text x="872.0" y="486.0" text-anchor="middle" font-size="12" font-weight="400" fill="var(--muted)" transform="rotate(-90 872.0 486.0)">改完重跑</text></svg></div><figcaption>判定失败只有两种原因：产品真的不符，或者你的标准本身不成立。先分清，再动手。</figcaption></figure>
+<figure class="devfig"><div class="figscroll"><svg viewBox="0 0 900 700" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="验证链路：体检、单测门、驱动真实应用、取证、判定，不通过分产品不符与判据不成立两种"><defs><marker id="verify-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="var(--muted)"/></marker></defs><rect x="150.0" y="19.0" width="460.0" height="58.0" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="380.0" y="41.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">1 体检</text><text x="380.0" y="63.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">进程号、版本、是不是这次启动的</text><line x1="380.0" y1="77.0" x2="380.0" y2="111.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#verify-arrow)"/><rect x="150.0" y="111.0" width="460.0" height="58.0" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="380.0" y="133.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">2 单测门</text><text x="380.0" y="155.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">跑得快，先筛掉明显的</text><line x1="380.0" y1="169.0" x2="380.0" y2="203.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#verify-arrow)"/><rect x="150.0" y="203.0" width="460.0" height="58.0" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="380.0" y="225.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">3 驱动真实应用</text><text x="380.0" y="247.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">用驱动工具，不靠手点和肉眼</text><line x1="380.0" y1="261.0" x2="380.0" y2="295.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#verify-arrow)"/><rect x="150.0" y="295.0" width="460.0" height="58.0" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="380.0" y="317.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">4 取证</text><text x="380.0" y="339.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">截图、命令输出、含副作用的断言</text><line x1="380.0" y1="353.0" x2="380.0" y2="390.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#verify-arrow)"/><polygon points="380,388 472,424 380,460 288,424" fill="var(--panel2)" stroke="var(--accent)" stroke-width="1.4"/><text x="380" y="428.5" text-anchor="middle" font-size="13" font-weight="600" fill="var(--fg)">判定</text><line x1="380.0" y1="460.0" x2="380.0" y2="486.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#verify-arrow)"/><text x="392.0" y="476.0" text-anchor="start" font-size="12" font-weight="400" fill="var(--muted)">过</text><rect x="15.0" y="491.0" width="250.0" height="58.0" fill="var(--panel)" stroke="var(--bad)" stroke-width="1.4"/><text x="140.0" y="513.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">产品不符</text><text x="140.0" y="535.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">回去修，不要改判据</text><rect x="275.0" y="491.0" width="250.0" height="58.0" fill="var(--panel)" stroke="var(--ok)" stroke-width="1.4"/><text x="400.0" y="513.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">写状态文件</text><text x="400.0" y="535.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">判定 + 依据 + 证据路径</text><rect x="535.0" y="491.0" width="250.0" height="58.0" fill="var(--panel2)" stroke="var(--accent)" stroke-width="1.4"/><text x="660.0" y="513.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">判据不成立</text><text x="660.0" y="535.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">改标准，再跑一次</text><path d="M 284.0 424.0 L 140.0 424.0 L 140.0 490.0" fill="none" stroke="var(--muted)" stroke-width="1.5" stroke-linejoin="round" marker-end="url(#verify-arrow)"/><text x="140.0" y="410.0" text-anchor="middle" font-size="12" font-weight="400" fill="var(--muted)">不过</text><path d="M 476.0 424.0 L 660.0 424.0 L 660.0 490.0" fill="none" stroke="var(--muted)" stroke-width="1.5" stroke-linejoin="round" marker-end="url(#verify-arrow)"/><text x="660.0" y="410.0" text-anchor="middle" font-size="12" font-weight="400" fill="var(--muted)">不过</text><line x1="400.0" y1="549.0" x2="400.0" y2="592.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#verify-arrow)"/><rect x="200.0" y="597.0" width="400.0" height="58.0" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="400.0" y="619.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">维护日志加一行</text><text x="400.0" y="641.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">这次验了什么、哪里容易误判</text><path d="M 785.0 520.0 L 856.0 520.0 L 856.0 452.0 L 404.0 452.0" fill="none" stroke="var(--muted)" stroke-width="1.5" stroke-linejoin="round" stroke-dasharray="6 5" marker-end="url(#verify-arrow)"/><text x="872.0" y="486.0" text-anchor="middle" font-size="12" font-weight="400" fill="var(--muted)" transform="rotate(-90 872.0 486.0)">改完重跑</text></svg></div><figcaption>判定失败只有两种原因：产品真的不符，或者你的标准本身不成立。先分清，再动手。</figcaption></figure>
 
 <h3>功能地图为什么值钱</h3>
 
@@ -657,9 +801,9 @@ description: Find what a change could break somewhere else before it ships...
 
 <div class="tw"><table>
 <tr><th>问题</th><th>后果</th><th>修法</th></tr>
-<tr><td>启动流程无条件删掉已安装应用再装，然后 <code>open -a</code></td><td>旧进程继续用已删除的包运行，之后截的图是旧代码</td><td>安装前先退出应用，启动后再核对进程是否来自新包</td></tr>
-<tr><td>体检只看磁盘上的版本号</td><td>磁盘是新的、进程是旧的，体检照样绿</td><td>输出进程路径、启动时间、所在包版本，与期望比对</td></tr>
-<tr><td>证据放 /tmp</td><td>重启就没了，无法做跨天对比</td><td>改到用户目录下的持久位置</td></tr>
+<tr><td data-label="问题">启动流程无条件删掉已安装应用再装，然后 <code>open -a</code></td><td data-label="后果">旧进程继续用已删除的包运行，之后截的图是旧代码</td><td data-label="修法">安装前先退出应用，启动后再核对进程是否来自新包</td></tr>
+<tr><td data-label="问题">体检只看磁盘上的版本号</td><td data-label="后果">磁盘是新的、进程是旧的，体检照样绿</td><td data-label="修法">输出进程路径、启动时间、所在包版本，与期望比对</td></tr>
+<tr><td data-label="问题">证据放 /tmp</td><td data-label="后果">重启就没了，无法做跨天对比</td><td data-label="修法">改到用户目录下的持久位置</td></tr>
 </table></div>
 
 <p>第三类问题最难发现，因为它们不会报错，只会让你在错误的前提下得出结论。</p>
@@ -694,9 +838,9 @@ description: Find what a change could break somewhere else before it ships...
 
 <div class="tw"><table>
 <tr><th>权限</th><th>缺了会怎样</th><th>怎么给</th></tr>
-<tr><td>自动化</td><td>脚本调用系统事件时卡住，或直接失败</td><td>隐私与安全性 → 自动化 → 勾 System Events</td></tr>
-<tr><td>辅助功能</td><td>发不了按键、读不到界面元素</td><td>隐私与安全性 → 辅助功能</td></tr>
-<tr><td>屏幕录制</td><td>截图报 <code>could not create image from display</code>，连全屏都失败</td><td>隐私与安全性 → 屏幕录制；授权后必须完全退出宿主应用再开</td></tr>
+<tr><td data-label="权限">自动化</td><td data-label="缺了会怎样">脚本调用系统事件时卡住，或直接失败</td><td data-label="怎么给">隐私与安全性 → 自动化 → 勾 System Events</td></tr>
+<tr><td data-label="权限">辅助功能</td><td data-label="缺了会怎样">发不了按键、读不到界面元素</td><td data-label="怎么给">隐私与安全性 → 辅助功能</td></tr>
+<tr><td data-label="权限">屏幕录制</td><td data-label="缺了会怎样">截图报 <code>could not create image from display</code>，连全屏都失败</td><td data-label="怎么给">隐私与安全性 → 屏幕录制；授权后必须完全退出宿主应用再开</td></tr>
 </table></div>
 
 <p>注意最后一行。宿主应用不退出，授权不生效，症状看起来像「权限没给」。</p>
@@ -711,7 +855,7 @@ description: Find what a change could break somewhere else before it ships...
   <li><b>把一次通过当成长期有效。</b>地图会腐化，功能会漂移。没有维护记录的验证技能，三个月后就是过期文档。</li>
 </ul>
 
-<h2 id="scale">8 并行与规模</h2>
+<h2 id="scale"><span class="num">8</span><span class="ttl">并行与规模</span></h2>
 
 <p>先回答那个打动你的说法：一个人一个月合入两千多个 PR，同时还在给整个代码库做重构。以及由此引出的「人只能同时盯三五个，这套东西能盯几十上百个」。</p>
 
@@ -729,15 +873,15 @@ description: Find what a change could break somewhere else before it ships...
   <li><b>审阅排队。</b>你把瓶颈从写移到审。十个 PR 同时到，人还是要一个个看。</li>
 </ol>
 
-<figure class="devfig"><div class="figscroll"><svg viewBox="0 0 900 700" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="并行前要过的四道门：阻塞前置、文件不重叠、无共享写、单个更慢，任何一道不过就改变策略"><defs><marker id="parallel-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="var(--muted)"/></marker></defs><rect x="130.0" y="32.0" width="400.0" height="64.0" rx="10" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="330.0" y="57.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">第一步：有没有阻塞前置？</text><text x="330.0" y="79.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">必须做完才能开工的步骤</text><line x1="530.0" y1="64.0" x2="566.0" y2="64.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#parallel-arrow)"/><rect x="580.0" y="40.0" width="280.0" height="48.0" rx="10" fill="var(--panel)" stroke="var(--muted)" stroke-width="1.4"/><text x="720.0" y="69.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">先串行做完，再往下</text><text x="548.0" y="56.0" text-anchor="middle" font-size="11" font-weight="400" fill="var(--muted)">不满足</text><rect x="130.0" y="152.0" width="400.0" height="64.0" rx="10" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="330.0" y="177.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">各路文件、服务完全不重叠？</text><text x="330.0" y="199.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">同一文件就是同一个写者</text><line x1="530.0" y1="184.0" x2="566.0" y2="184.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#parallel-arrow)"/><rect x="580.0" y="160.0" width="280.0" height="48.0" rx="10" fill="var(--panel)" stroke="var(--muted)" stroke-width="1.4"/><text x="720.0" y="189.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">先拆分目标，或串行</text><text x="548.0" y="176.0" text-anchor="middle" font-size="11" font-weight="400" fill="var(--muted)">不满足</text><rect x="130.0" y="272.0" width="400.0" height="64.0" rx="10" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="330.0" y="297.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">有没有共享可变状态？</text><text x="330.0" y="319.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">两个代理写同一份数据</text><line x1="530.0" y1="304.0" x2="566.0" y2="304.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#parallel-arrow)"/><rect x="580.0" y="280.0" width="280.0" height="48.0" rx="10" fill="var(--panel)" stroke="var(--muted)" stroke-width="1.4"/><text x="720.0" y="309.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">只留一个写者</text><text x="548.0" y="296.0" text-anchor="middle" font-size="11" font-weight="400" fill="var(--muted)">不满足</text><rect x="130.0" y="392.0" width="400.0" height="64.0" rx="10" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="330.0" y="417.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">单个工人会不会更快？</text><text x="330.0" y="439.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">小改动不值得拆</text><line x1="530.0" y1="424.0" x2="566.0" y2="424.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#parallel-arrow)"/><rect x="580.0" y="400.0" width="280.0" height="48.0" rx="10" fill="var(--panel)" stroke="var(--muted)" stroke-width="1.4"/><text x="720.0" y="429.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">就开一路，写下理由</text><text x="548.0" y="416.0" text-anchor="middle" font-size="11" font-weight="400" fill="var(--muted)">不满足</text><line x1="330.0" y1="96.0" x2="330.0" y2="152.0" stroke="var(--muted)" stroke-width="1.5" stroke-dasharray="6 5" marker-end="url(#parallel-arrow)"/><text x="344.0" y="130.0" text-anchor="start" font-size="11" font-weight="400" fill="var(--muted)">满足</text><line x1="330.0" y1="216.0" x2="330.0" y2="272.0" stroke="var(--muted)" stroke-width="1.5" stroke-dasharray="6 5" marker-end="url(#parallel-arrow)"/><text x="344.0" y="250.0" text-anchor="start" font-size="11" font-weight="400" fill="var(--muted)">满足</text><line x1="330.0" y1="336.0" x2="330.0" y2="392.0" stroke="var(--muted)" stroke-width="1.5" stroke-dasharray="6 5" marker-end="url(#parallel-arrow)"/><text x="344.0" y="370.0" text-anchor="start" font-size="11" font-weight="400" fill="var(--muted)">满足</text><line x1="330.0" y1="456.0" x2="330.0" y2="496.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#parallel-arrow)"/><rect x="130.0" y="502.0" width="400.0" height="64.0" rx="10" fill="var(--panel)" stroke="var(--ok)" stroke-width="1.4"/><text x="330.0" y="527.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">开 N 路</text><text x="330.0" y="549.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">每路独立取证，最后只汇总差异</text><text x="330.0" y="620.0" text-anchor="middle" font-size="13" font-weight="400" fill="var(--accent2)">上限不在你能开几路，而在你能验几路。</text><text x="330.0" y="646.0" text-anchor="middle" font-size="12.5" font-weight="400" fill="var(--muted)">验不过来的那几路，等于没做。</text></svg></div><figcaption>四道门从上往下过。任何一道不过，先改变策略，不要硬拆。</figcaption></figure>
+<figure class="devfig"><div class="figscroll"><svg viewBox="0 0 900 700" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="并行前要过的四道门：阻塞前置、文件不重叠、无共享写、单个更慢，任何一道不过就改变策略"><defs><marker id="parallel-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="var(--muted)"/></marker></defs><rect x="130.0" y="32.0" width="400.0" height="64.0" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="330.0" y="57.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">第一步：有没有阻塞前置？</text><text x="330.0" y="79.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">必须做完才能开工的步骤</text><line x1="530.0" y1="64.0" x2="566.0" y2="64.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#parallel-arrow)"/><rect x="580.0" y="40.0" width="280.0" height="48.0" fill="var(--panel)" stroke="var(--muted)" stroke-width="1.4"/><text x="720.0" y="69.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">先串行做完，再往下</text><text x="548.0" y="56.0" text-anchor="middle" font-size="11" font-weight="400" fill="var(--muted)">不满足</text><rect x="130.0" y="152.0" width="400.0" height="64.0" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="330.0" y="177.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">各路文件、服务完全不重叠？</text><text x="330.0" y="199.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">同一文件就是同一个写者</text><line x1="530.0" y1="184.0" x2="566.0" y2="184.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#parallel-arrow)"/><rect x="580.0" y="160.0" width="280.0" height="48.0" fill="var(--panel)" stroke="var(--muted)" stroke-width="1.4"/><text x="720.0" y="189.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">先拆分目标，或串行</text><text x="548.0" y="176.0" text-anchor="middle" font-size="11" font-weight="400" fill="var(--muted)">不满足</text><rect x="130.0" y="272.0" width="400.0" height="64.0" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="330.0" y="297.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">有没有共享可变状态？</text><text x="330.0" y="319.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">两个代理写同一份数据</text><line x1="530.0" y1="304.0" x2="566.0" y2="304.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#parallel-arrow)"/><rect x="580.0" y="280.0" width="280.0" height="48.0" fill="var(--panel)" stroke="var(--muted)" stroke-width="1.4"/><text x="720.0" y="309.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">只留一个写者</text><text x="548.0" y="296.0" text-anchor="middle" font-size="11" font-weight="400" fill="var(--muted)">不满足</text><rect x="130.0" y="392.0" width="400.0" height="64.0" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="330.0" y="417.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">单个工人会不会更快？</text><text x="330.0" y="439.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">小改动不值得拆</text><line x1="530.0" y1="424.0" x2="566.0" y2="424.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#parallel-arrow)"/><rect x="580.0" y="400.0" width="280.0" height="48.0" fill="var(--panel)" stroke="var(--muted)" stroke-width="1.4"/><text x="720.0" y="429.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">就开一路，写下理由</text><text x="548.0" y="416.0" text-anchor="middle" font-size="11" font-weight="400" fill="var(--muted)">不满足</text><line x1="330.0" y1="96.0" x2="330.0" y2="152.0" stroke="var(--muted)" stroke-width="1.5" stroke-dasharray="6 5" marker-end="url(#parallel-arrow)"/><text x="344.0" y="130.0" text-anchor="start" font-size="11" font-weight="400" fill="var(--muted)">满足</text><line x1="330.0" y1="216.0" x2="330.0" y2="272.0" stroke="var(--muted)" stroke-width="1.5" stroke-dasharray="6 5" marker-end="url(#parallel-arrow)"/><text x="344.0" y="250.0" text-anchor="start" font-size="11" font-weight="400" fill="var(--muted)">满足</text><line x1="330.0" y1="336.0" x2="330.0" y2="392.0" stroke="var(--muted)" stroke-width="1.5" stroke-dasharray="6 5" marker-end="url(#parallel-arrow)"/><text x="344.0" y="370.0" text-anchor="start" font-size="11" font-weight="400" fill="var(--muted)">满足</text><line x1="330.0" y1="456.0" x2="330.0" y2="496.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#parallel-arrow)"/><rect x="130.0" y="502.0" width="400.0" height="64.0" fill="var(--panel)" stroke="var(--ok)" stroke-width="1.4"/><text x="330.0" y="527.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">开 N 路</text><text x="330.0" y="549.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">每路独立取证，最后只汇总差异</text><text x="330.0" y="620.0" text-anchor="middle" font-size="13" font-weight="400" fill="var(--accent2)">上限不在你能开几路，而在你能验几路。</text><text x="330.0" y="646.0" text-anchor="middle" font-size="12.5" font-weight="400" fill="var(--muted)">验不过来的那几路，等于没做。</text></svg></div><figcaption>四道门从上往下过。任何一道不过，先改变策略，不要硬拆。</figcaption></figure>
 
 <h3>三个并行工具怎么选</h3>
 
 <div class="tw"><table>
 <tr><th>工具</th><th>形态</th><th>适合</th><th>不适合</th></tr>
-<tr><td><code>swarm</code></td><td>同一任务切成片，或让多个工人赛跑，最后汇成一份报告</td><td>覆盖率检查、批量验证、样本够大才能下结论的性能对比</td><td>需要综合判断的分叉</td></tr>
-<tr><td><code>arena</code></td><td>同一任务给多个候选各做一版，选底稿再嫁接</td><td>设计没有唯一答案、想比较风格</td><td>答案确定的实现</td></tr>
-<tr><td>Autopilot</td><td>一批 PR 全部推到可合并，人只点合并</td><td>互不依赖的队列</td><td>互相依赖、需要边做边决策</td></tr>
+<tr><td data-label="工具"><code>swarm</code></td><td data-label="形态">同一任务切成片，或让多个工人赛跑，最后汇成一份报告</td><td data-label="适合">覆盖率检查、批量验证、样本够大才能下结论的性能对比</td><td data-label="不适合">需要综合判断的分叉</td></tr>
+<tr><td data-label="工具"><code>arena</code></td><td data-label="形态">同一任务给多个候选各做一版，选底稿再嫁接</td><td data-label="适合">设计没有唯一答案、想比较风格</td><td data-label="不适合">答案确定的实现</td></tr>
+<tr><td data-label="工具">Autopilot</td><td data-label="形态">一批 PR 全部推到可合并，人只点合并</td><td data-label="适合">互不依赖的队列</td><td data-label="不适合">互相依赖、需要边做边决策</td></tr>
 </table></div>
 
 <h3>你自己的上限在哪</h3>
@@ -765,18 +909,18 @@ description: Find what a change could break somewhere else before it ships...
 
 <div class="note"><b>为什么必须自己测。</b>别人的倍数建立在别人的仓库、别人的验证成熟度、别人的合并习惯上。这三个变量你一个都复制不了。测一次，你得到的是自己的上限。</div>
 
-<figure class="devfig"><div class="figscroll"><svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="判断要不要走完整流程的三道门：改一行、能不能判定、要不要复现真实产物"><defs><marker id="decide-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="var(--muted)"/></marker></defs><polygon points="300,38 450,80 300,122 150,80" fill="var(--panel2)" stroke="var(--accent)" stroke-width="1.4"/><text x="300" y="84.5" text-anchor="middle" font-size="13" font-weight="600" fill="var(--fg)">改一行、查事实、跑命令？</text><polygon points="300,163 450,205 300,247 150,205" fill="var(--panel2)" stroke="var(--accent)" stroke-width="1.4"/><text x="300" y="209.5" text-anchor="middle" font-size="13" font-weight="600" fill="var(--fg)">完成标准能写成可判定的？</text><polygon points="300,288 450,330 300,372 150,330" fill="var(--panel2)" stroke="var(--accent)" stroke-width="1.4"/><text x="300" y="334.5" text-anchor="middle" font-size="13" font-weight="600" fill="var(--fg)">要复现或验证真实产物？</text><rect x="130.0" y="417.0" width="340.0" height="62.0" rx="10" fill="var(--panel2)" stroke="var(--accent)" stroke-width="1.4"/><text x="300.0" y="441.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">走完整流程</text><text x="300.0" y="463.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">poteto-mode 按类型选清单</text><line x1="450.0" y1="80.0" x2="553.0" y2="80.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#decide-arrow)"/><rect x="555.0" y="52.0" width="290.0" height="56.0" rx="10" fill="var(--panel)" stroke="var(--muted)" stroke-width="1.4"/><text x="700.0" y="73.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">直接做</text><text x="700.0" y="95.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">不走任何流程</text><text x="500.0" y="70.0" text-anchor="middle" font-size="12" font-weight="400" fill="var(--muted)">是</text><line x1="450.0" y1="205.0" x2="553.0" y2="205.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#decide-arrow)"/><rect x="555.0" y="177.0" width="290.0" height="56.0" rx="10" fill="var(--panel)" stroke="var(--muted)" stroke-width="1.4"/><text x="700.0" y="198.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">先定义完成标准</text><text x="700.0" y="220.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">流程救不了模糊目标</text><text x="500.0" y="195.0" text-anchor="middle" font-size="12" font-weight="400" fill="var(--muted)">否</text><line x1="450.0" y1="330.0" x2="553.0" y2="330.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#decide-arrow)"/><rect x="555.0" y="302.0" width="290.0" height="56.0" rx="10" fill="var(--panel)" stroke="var(--muted)" stroke-width="1.4"/><text x="700.0" y="323.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">单个技能够用</text><text x="700.0" y="345.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">how / why / teach</text><text x="500.0" y="320.0" text-anchor="middle" font-size="12" font-weight="400" fill="var(--muted)">否</text><line x1="300.0" y1="122.0" x2="300.0" y2="163.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#decide-arrow)"/><text x="314.0" y="148.0" text-anchor="start" font-size="12" font-weight="400" fill="var(--muted)">否</text><line x1="300.0" y1="247.0" x2="300.0" y2="288.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#decide-arrow)"/><text x="314.0" y="273.0" text-anchor="start" font-size="12" font-weight="400" fill="var(--muted)">是</text><line x1="300.0" y1="372.0" x2="300.0" y2="415.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#decide-arrow)"/><text x="314.0" y="398.0" text-anchor="start" font-size="12" font-weight="400" fill="var(--muted)">是</text></svg></div><figcaption>从上往下问，第一个命中的就停。判断不了就先当成要验证，多花的钱比返工便宜。</figcaption></figure>
+<figure class="devfig"><div class="figscroll"><svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="判断要不要走完整流程的三道门：改一行、能不能判定、要不要复现真实产物"><defs><marker id="decide-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="var(--muted)"/></marker></defs><polygon points="300,38 450,80 300,122 150,80" fill="var(--panel2)" stroke="var(--accent)" stroke-width="1.4"/><text x="300" y="84.5" text-anchor="middle" font-size="13" font-weight="600" fill="var(--fg)">改一行、查事实、跑命令？</text><polygon points="300,163 450,205 300,247 150,205" fill="var(--panel2)" stroke="var(--accent)" stroke-width="1.4"/><text x="300" y="209.5" text-anchor="middle" font-size="13" font-weight="600" fill="var(--fg)">完成标准能写成可判定的？</text><polygon points="300,288 450,330 300,372 150,330" fill="var(--panel2)" stroke="var(--accent)" stroke-width="1.4"/><text x="300" y="334.5" text-anchor="middle" font-size="13" font-weight="600" fill="var(--fg)">要复现或验证真实产物？</text><rect x="130.0" y="417.0" width="340.0" height="62.0" fill="var(--panel2)" stroke="var(--accent)" stroke-width="1.4"/><text x="300.0" y="441.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">走完整流程</text><text x="300.0" y="463.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">poteto-mode 按类型选清单</text><line x1="450.0" y1="80.0" x2="553.0" y2="80.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#decide-arrow)"/><rect x="555.0" y="52.0" width="290.0" height="56.0" fill="var(--panel)" stroke="var(--muted)" stroke-width="1.4"/><text x="700.0" y="73.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">直接做</text><text x="700.0" y="95.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">不走任何流程</text><text x="500.0" y="70.0" text-anchor="middle" font-size="12" font-weight="400" fill="var(--muted)">是</text><line x1="450.0" y1="205.0" x2="553.0" y2="205.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#decide-arrow)"/><rect x="555.0" y="177.0" width="290.0" height="56.0" fill="var(--panel)" stroke="var(--muted)" stroke-width="1.4"/><text x="700.0" y="198.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">先定义完成标准</text><text x="700.0" y="220.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">流程救不了模糊目标</text><text x="500.0" y="195.0" text-anchor="middle" font-size="12" font-weight="400" fill="var(--muted)">否</text><line x1="450.0" y1="330.0" x2="553.0" y2="330.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#decide-arrow)"/><rect x="555.0" y="302.0" width="290.0" height="56.0" fill="var(--panel)" stroke="var(--muted)" stroke-width="1.4"/><text x="700.0" y="323.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">单个技能够用</text><text x="700.0" y="345.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">how / why / teach</text><text x="500.0" y="320.0" text-anchor="middle" font-size="12" font-weight="400" fill="var(--muted)">否</text><line x1="300.0" y1="122.0" x2="300.0" y2="163.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#decide-arrow)"/><text x="314.0" y="148.0" text-anchor="start" font-size="12" font-weight="400" fill="var(--muted)">否</text><line x1="300.0" y1="247.0" x2="300.0" y2="288.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#decide-arrow)"/><text x="314.0" y="273.0" text-anchor="start" font-size="12" font-weight="400" fill="var(--muted)">是</text><line x1="300.0" y1="372.0" x2="300.0" y2="415.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#decide-arrow)"/><text x="314.0" y="398.0" text-anchor="start" font-size="12" font-weight="400" fill="var(--muted)">是</text></svg></div><figcaption>从上往下问，第一个命中的就停。判断不了就先当成要验证，多花的钱比返工便宜。</figcaption></figure>
 
-<h2 id="cost">9 成本与失败模式</h2>
+<h2 id="cost"><span class="num">9</span><span class="ttl">成本与失败模式</span></h2>
 
 <h3>钱花在哪</h3>
 
 <div class="tw"><table>
 <tr><th>行为</th><th>成本量级</th><th>怎么省</th></tr>
-<tr><td>面板类技能（arena、architect、interrogate）</td><td>单次约为单模型的 N 倍，N 是面板长度</td><td>缩短面板、降推理强度、只在大改动用</td></tr>
-<tr><td>子代理读大文件</td><td>按读取量算</td><td>给路径和范围，不要整篇复制进提示</td></tr>
-<tr><td>长时间自主运行</td><td>与轮次成正比</td><td>先写死完成条件，避免空转</td></tr>
-<tr><td>自动路由</td><td>小改动也被拉进完整流程</td><td>模型表里关掉钩子，手动叫</td></tr>
+<tr><td data-label="行为">面板类技能（arena、architect、interrogate）</td><td data-label="成本量级">单次约为单模型的 N 倍，N 是面板长度</td><td data-label="怎么省">缩短面板、降推理强度、只在大改动用</td></tr>
+<tr><td data-label="行为">子代理读大文件</td><td data-label="成本量级">按读取量算</td><td data-label="怎么省">给路径和范围，不要整篇复制进提示</td></tr>
+<tr><td data-label="行为">长时间自主运行</td><td data-label="成本量级">与轮次成正比</td><td data-label="怎么省">先写死完成条件，避免空转</td></tr>
+<tr><td data-label="行为">自动路由</td><td data-label="成本量级">小改动也被拉进完整流程</td><td data-label="怎么省">模型表里关掉钩子，手动叫</td></tr>
 </table></div>
 
 <h3>五种常见失败</h3>
@@ -800,9 +944,9 @@ description: Find what a change could break somewhere else before it ships...
 
 <p class="muted">这一章讲的是原理。想看真实的成本数字和第三方实测，翻到 15.2。</p>
 
-<h2 id="offline">10 离线课</h2>
+<h2 id="paper"><span class="num">10</span><span class="ttl">纸笔课</span></h2>
 
-<p>飞机上没有网络也能做。全部只要求这本手册和一支笔，或一个空编辑器。</p>
+<p>全部只要求这本手册和一支笔，或一个空编辑器。</p>
 
 <h3>练习一 路由盲测</h3>
 <p>下面十个任务，先各写一本 playbook，再看答案。目标八个以上。</p>
@@ -836,9 +980,9 @@ description: Find what a change could break somewhere else before it ships...
 <h3>练习六 画图</h3>
 <p>不看书，画一张四层结构图，标出哪层能直接调用、哪层不能。画完对照第 1 章。</p>
 
-<h2 id="online">11 联网课</h2>
+<h2 id="practice"><span class="num">11</span><span class="ttl">实操课</span></h2>
 
-<p>有网络和系统权限之后再跑。每条给出命令与通过标准。</p>
+<p>在自己的机器上跑。每条给出命令与通过标准。</p>
 
 <h3>课一 体检</h3>
 <pre><code>cd &lt;你的项目&gt;
@@ -865,20 +1009,20 @@ description: Find what a change could break somewhere else before it ships...
 <pre><code>/pstack:swarm 用验证技能把 &lt;功能&gt; 的三个入口各跑一遍，汇总差异</code></pre>
 <p>通过标准：每个工人独立取证，汇总报告能看出哪一路与另两路不同。</p>
 
-<h2 id="plan">12 七天计划</h2>
+<h2 id="plan"><span class="num">12</span><span class="ttl">七天计划</span></h2>
 
 <div class="tw"><table>
 <tr><th>天</th><th>做什么</th><th>产出</th></tr>
-<tr><td>1</td><td>读第 1 到 3 章，做练习一</td><td>能对十类任务选对流程</td></tr>
-<tr><td>2</td><td>读第 4、5 章，做练习三</td><td>技能名到用途能对上</td></tr>
-<tr><td>3</td><td>读第 6、7 章</td><td>能写出别人可复跑的验收标准</td></tr>
-<tr><td>4</td><td>课一、课二</td><td>验证链路跑通，维护日志有记录</td></tr>
-<tr><td>5</td><td>课四</td><td>一次真实修复，四件事都做到</td></tr>
-<tr><td>6</td><td>读第 8 章，课六</td><td>自己的并行上限有初步数字</td></tr>
-<tr><td>7</td><td>课三、课五，写复盘</td><td>知道自己最容易在哪误判</td></tr>
+<tr><td data-label="天">1</td><td data-label="做什么">读第 1 到 3 章，做练习一</td><td data-label="产出">能对十类任务选对流程</td></tr>
+<tr><td data-label="天">2</td><td data-label="做什么">读第 4、5 章，做练习三</td><td data-label="产出">技能名到用途能对上</td></tr>
+<tr><td data-label="天">3</td><td data-label="做什么">读第 6、7 章</td><td data-label="产出">能写出别人可复跑的验收标准</td></tr>
+<tr><td data-label="天">4</td><td data-label="做什么">课一、课二</td><td data-label="产出">验证链路跑通，维护日志有记录</td></tr>
+<tr><td data-label="天">5</td><td data-label="做什么">课四</td><td data-label="产出">一次真实修复，四件事都做到</td></tr>
+<tr><td data-label="天">6</td><td data-label="做什么">读第 8 章，课六</td><td data-label="产出">自己的并行上限有初步数字</td></tr>
+<tr><td data-label="天">7</td><td data-label="做什么">课三、课五，写复盘</td><td data-label="产出">知道自己最容易在哪误判</td></tr>
 </table></div>
 
-<h2 id="feynman">13 费曼层：讲回去</h2>
+<h2 id="feynman"><span class="num">13</span><span class="ttl">费曼层：讲回去</span></h2>
 
 <p>前面十二章是解释。解释不等于学会。费曼那套方法的核心不是「讲得简单」，是「讲不出来就说明没懂」，然后回去补，再讲一遍。</p>
 
@@ -888,13 +1032,13 @@ description: Find what a change could break somewhere else before it ships...
 
 <div class="tw"><table>
 <tr><th>原步骤</th><th>在这里怎么做</th></tr>
-<tr><td>选定概念</td><td>一次只挑一章。不要一次讲整个体系</td></tr>
-<tr><td>讲给外行</td><td>两分钟口述，或写一段不出现任何英文技能名的解释</td></tr>
-<tr><td>找卡壳处</td><td>卡住、绕回、开始用「就是说」的时候，记下来，回读那一节</td></tr>
-<tr><td>简化并类比</td><td>换一个比方重讲。同一个概念能换三种比方，才算真懂</td></tr>
+<tr><td data-label="原步骤">选定概念</td><td data-label="在这里怎么做">一次只挑一章。不要一次讲整个体系</td></tr>
+<tr><td data-label="原步骤">讲给外行</td><td data-label="在这里怎么做">两分钟口述，或写一段不出现任何英文技能名的解释</td></tr>
+<tr><td data-label="原步骤">找卡壳处</td><td data-label="在这里怎么做">卡住、绕回、开始用「就是说」的时候，记下来，回读那一节</td></tr>
+<tr><td data-label="原步骤">简化并类比</td><td data-label="在这里怎么做">换一个比方重讲。同一个概念能换三种比方，才算真懂</td></tr>
 </table></div>
 
-<figure class="devfig"><div class="figscroll"><svg viewBox="0 0 900 560" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="费曼循环：选一个概念、讲给外行听、在卡住处停下、回读那一节，再讲一遍"><defs><marker id="feynman-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="var(--muted)"/></marker></defs><text x="60.0" y="108.0" text-anchor="start" font-size="13.5" font-weight="600" fill="var(--accent2)">选一个概念</text><text x="60.0" y="132.0" text-anchor="start" font-size="12" font-weight="400" fill="var(--muted)">小到能一口气讲完</text><line x1="200.0" y1="120.0" x2="296.0" y2="120.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#feynman-arrow)"/><rect x="300.0" y="88.0" width="300.0" height="64.0" rx="10" fill="var(--panel2)" stroke="var(--accent)" stroke-width="1.4"/><text x="450.0" y="113.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">讲给外行听</text><text x="450.0" y="135.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">不许用术语，不许跳过</text><rect x="530.0" y="438.0" width="300.0" height="64.0" rx="10" fill="var(--panel)" stroke="var(--bad)" stroke-width="1.4"/><text x="680.0" y="463.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">在卡住的地方停下</text><text x="680.0" y="485.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">卡住就是知识缺口</text><rect x="70.0" y="438.0" width="300.0" height="64.0" rx="10" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="220.0" y="463.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">回读那一节</text><text x="220.0" y="485.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">只补卡住的那一段</text><path d="M 540.0 158.0 L 646.0 420.0" fill="none" stroke="var(--muted)" stroke-width="1.5" stroke-linejoin="round" marker-end="url(#feynman-arrow)"/><text x="612.0" y="292.0" text-anchor="middle" font-size="12" font-weight="400" fill="var(--muted)">讲不下去</text><path d="M 528.0 470.0 L 374.0 470.0" fill="none" stroke="var(--muted)" stroke-width="1.5" stroke-linejoin="round" marker-end="url(#feynman-arrow)"/><text x="450.0" y="458.0" text-anchor="middle" font-size="12" font-weight="400" fill="var(--muted)">翻回去补</text><path d="M 352.0 438.0 L 404.0 158.0" fill="none" stroke="var(--muted)" stroke-width="1.5" stroke-linejoin="round" marker-end="url(#feynman-arrow)"/><text x="336.0" y="300.0" text-anchor="end" font-size="12" font-weight="400" fill="var(--muted)">再讲一遍</text><text x="450.0" y="330.0" text-anchor="middle" font-size="14" font-weight="600" fill="var(--accent2)">讲不通，就是没学会</text></svg></div><figcaption>三个动作走一圈。卡住的那一句，就是你没真懂的地方。</figcaption></figure>
+<figure class="devfig"><div class="figscroll"><svg viewBox="0 0 900 560" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="费曼循环：选一个概念、讲给外行听、在卡住处停下、回读那一节，再讲一遍"><defs><marker id="feynman-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="var(--muted)"/></marker></defs><text x="60.0" y="108.0" text-anchor="start" font-size="13.5" font-weight="600" fill="var(--accent2)">选一个概念</text><text x="60.0" y="132.0" text-anchor="start" font-size="12" font-weight="400" fill="var(--muted)">小到能一口气讲完</text><line x1="200.0" y1="120.0" x2="296.0" y2="120.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#feynman-arrow)"/><rect x="300.0" y="88.0" width="300.0" height="64.0" fill="var(--panel2)" stroke="var(--accent)" stroke-width="1.4"/><text x="450.0" y="113.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">讲给外行听</text><text x="450.0" y="135.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">不许用术语，不许跳过</text><rect x="530.0" y="438.0" width="300.0" height="64.0" fill="var(--panel)" stroke="var(--bad)" stroke-width="1.4"/><text x="680.0" y="463.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">在卡住的地方停下</text><text x="680.0" y="485.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">卡住就是知识缺口</text><rect x="70.0" y="438.0" width="300.0" height="64.0" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="220.0" y="463.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">回读那一节</text><text x="220.0" y="485.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">只补卡住的那一段</text><path d="M 540.0 158.0 L 646.0 420.0" fill="none" stroke="var(--muted)" stroke-width="1.5" stroke-linejoin="round" marker-end="url(#feynman-arrow)"/><text x="612.0" y="292.0" text-anchor="middle" font-size="12" font-weight="400" fill="var(--muted)">讲不下去</text><path d="M 528.0 470.0 L 374.0 470.0" fill="none" stroke="var(--muted)" stroke-width="1.5" stroke-linejoin="round" marker-end="url(#feynman-arrow)"/><text x="450.0" y="458.0" text-anchor="middle" font-size="12" font-weight="400" fill="var(--muted)">翻回去补</text><path d="M 352.0 438.0 L 404.0 158.0" fill="none" stroke="var(--muted)" stroke-width="1.5" stroke-linejoin="round" marker-end="url(#feynman-arrow)"/><text x="336.0" y="300.0" text-anchor="end" font-size="12" font-weight="400" fill="var(--muted)">再讲一遍</text><text x="450.0" y="330.0" text-anchor="middle" font-size="14" font-weight="600" fill="var(--accent2)">讲不通，就是没学会</text></svg></div><figcaption>三个动作走一圈。卡住的那一句，就是你没真懂的地方。</figcaption></figure>
 
 <h3>十二张复述卡</h3>
 
@@ -955,7 +1099,7 @@ description: Find what a change could break somewhere else before it ships...
 <h4>第 10 到 12 章 练习与计划</h4>
 <p><b>外行版。</b>练习不是测验，是暴露。做不出来才知道哪一章白读了。</p>
 <p><b>常见误解。</b>按顺序做完就算学完。做错却不回读，做十遍也没用。</p>
-<p><b>口述题。</b>六个离线练习里，哪一个错得最多，错在哪一章？</p>
+<p><b>口述题。</b>六个纸笔练习里，哪一个错得最多，错在哪一章？</p>
 
 <h3>讲错诊断</h3>
 
@@ -963,12 +1107,12 @@ description: Find what a change could break somewhere else before it ships...
 
 <div class="tw"><table>
 <tr><th>你可能会说</th><th>说明什么</th><th>回去读</th></tr>
-<tr><td>「它就是一个自动写代码的工具」</td><td>把流程当成了生成器，没看见判断层</td><td>第 1 章四层</td></tr>
-<tr><td>「技能就是提示词」</td><td>没理解按需加载与路由</td><td>第 2 章机制</td></tr>
-<tr><td>「步骤差不多，顺序无所谓」</td><td>没抓住每本 playbook 的核心保证</td><td>第 3 章</td></tr>
-<tr><td>「测试绿了就是验过了」</td><td>把代理指标当成真实产物</td><td>第 7 章反模式第一条</td></tr>
-<tr><td>「并行越多越快」</td><td>忽略了共享状态与审阅瓶颈</td><td>第 8 章三种失效</td></tr>
-<tr><td>「贵就换便宜模型」</td><td>只看单价不看次数</td><td>第 9 章成本表</td></tr>
+<tr><td data-label="你可能会说">「它就是一个自动写代码的工具」</td><td data-label="说明什么">把流程当成了生成器，没看见判断层</td><td data-label="回去读">第 1 章四层</td></tr>
+<tr><td data-label="你可能会说">「技能就是提示词」</td><td data-label="说明什么">没理解按需加载与路由</td><td data-label="回去读">第 2 章机制</td></tr>
+<tr><td data-label="你可能会说">「步骤差不多，顺序无所谓」</td><td data-label="说明什么">没抓住每本 playbook 的核心保证</td><td data-label="回去读">第 3 章</td></tr>
+<tr><td data-label="你可能会说">「测试绿了就是验过了」</td><td data-label="说明什么">把代理指标当成真实产物</td><td data-label="回去读">第 7 章反模式第一条</td></tr>
+<tr><td data-label="你可能会说">「并行越多越快」</td><td data-label="说明什么">忽略了共享状态与审阅瓶颈</td><td data-label="回去读">第 8 章三种失效</td></tr>
+<tr><td data-label="你可能会说">「贵就换便宜模型」</td><td data-label="说明什么">只看单价不看次数</td><td data-label="回去读">第 9 章成本表</td></tr>
 </table></div>
 
 <h3>四问自评</h3>
@@ -993,7 +1137,7 @@ description: Find what a change could break somewhere else before it ships...
 3 如果我用了没解释的术语，直接指出，不要放过。
 不要替我总结，不要夸我。</code></pre>
 
-<h2 id="cases">14 原作者的案例</h2>
+<h2 id="cases"><span class="num">14</span><span class="ttl">原作者的案例</span></h2>
 
 <div class="note warn"><b>来源说明。</b>这一章的内容来自作者公开发布的长文，以及一篇 2026-09-26 的中文转述。转述本身是二手材料，里面有些数字未经独立核实。凡是我无法在本机源码里验证的，都标了「自报」。读的时候把它当故事，不要当证据。</div>
 
@@ -1049,16 +1193,16 @@ description: Find what a change could break somewhere else before it ships...
 <h3>代价，作者自己也认</h3>
 <div class="tw"><table>
 <tr><th>代价</th><th>表现</th><th>缓解</th></tr>
-<tr><td>贵</td><td>多模型面板一次约为单模型的三倍以上</td><td>缩短面板、降强度、只在大改动用</td></tr>
-<tr><td>慢</td><td>复现、设计、多做几版、验证，每步都要时间</td><td>小任务别用</td></tr>
-<tr><td>挑环境</td><td>默认你在 git 仓库里、托管在 GitHub、装了命令行工具</td><td>先补齐基础设施</td></tr>
-<tr><td>会自己往外发消息</td><td>默认规则里，发团队消息、更新工单不需要问你</td><td>在自己的规则里写清哪些对外动作必须先问</td></tr>
-<tr><td>会读你的聊天记录</td><td>回忆类技能读当前项目的历史对话</td><td>知道这一点，别在同一个项目里聊不该进上下文的东西</td></tr>
+<tr><td data-label="代价">贵</td><td data-label="表现">多模型面板一次约为单模型的三倍以上</td><td data-label="缓解">缩短面板、降强度、只在大改动用</td></tr>
+<tr><td data-label="代价">慢</td><td data-label="表现">复现、设计、多做几版、验证，每步都要时间</td><td data-label="缓解">小任务别用</td></tr>
+<tr><td data-label="代价">挑环境</td><td data-label="表现">默认你在 git 仓库里、托管在 GitHub、装了命令行工具</td><td data-label="缓解">先补齐基础设施</td></tr>
+<tr><td data-label="代价">会自己往外发消息</td><td data-label="表现">默认规则里，发团队消息、更新工单不需要问你</td><td data-label="缓解">在自己的规则里写清哪些对外动作必须先问</td></tr>
+<tr><td data-label="代价">会读你的聊天记录</td><td data-label="表现">回忆类技能读当前项目的历史对话</td><td data-label="缓解">知道这一点，别在同一个项目里聊不该进上下文的东西</td></tr>
 </table></div>
 
 <div class="note"><b>这一章的正确读法。</b>不要记故事。记每个故事对应哪个技能，以及它为什么值得单独做成一个技能。故事会过时，判断不会。</div>
 
-<h2 id="others">15 别人的判断：第三方分析</h2>
+<h2 id="others"><span class="num">15</span><span class="ttl">别人的判断：第三方分析</span></h2>
 
 <div class="note warn"><b>来源说明。</b>这一章的材料来自一篇 2026-10-22 的中文第三方分析（作者陈成，查了镜像仓库提交、上游仓库、作者 19 条推文、两篇长文、一场 38 分钟演讲）。它和第 14 章的区别是：第 14 章是作者自己怎么讲，这一章是别人读完之后怎么判断，包括不好的部分。文中的数字和版本号截止那天，本机装的版本已经不同。</div>
 
@@ -1074,13 +1218,13 @@ description: Find what a change could break somewhere else before it ships...
 
 <div class="tw"><table>
 <tr><th>原本</th><th>搬过来之后</th><th>后果</th></tr>
-<tr><td>评审团里有 Claude 也有 Grok，不同模型家族互相看</td><td>非 Claude 模型被写成「沿用父模型」</td><td>两个席位跑同一个家族。它自己说「换一个模型给第二意见，一致才是强信号」，这个前提在纯 Claude 环境里打了折</td></tr>
-<tr><td>每个代理一台云机器</td><td>换成隔离的工作树</td><td>作者本人反而劝人别用工作树做并行，吃磁盘和机器资源，本地大约十个就到头</td></tr>
-<tr><td>技能之间互相调用</td><td>改成让代理直接读那个技能文件</td><td>能用，但多一步，也多吃上下文</td></tr>
-<tr><td>云端的定时任务、自动看板、缺陷机器人</td><td>替换成一行「本环境跳过」</td><td>每日维护验证技能这件事，得自己排定时任务补上</td></tr>
+<tr><td data-label="原本">评审团里有 Claude 也有 Grok，不同模型家族互相看</td><td data-label="搬过来之后">非 Claude 模型被写成「沿用父模型」</td><td data-label="后果">两个席位跑同一个家族。它自己说「换一个模型给第二意见，一致才是强信号」，这个前提在纯 Claude 环境里打了折</td></tr>
+<tr><td data-label="原本">每个代理一台云机器</td><td data-label="搬过来之后">换成隔离的工作树</td><td data-label="后果">作者本人反而劝人别用工作树做并行，吃磁盘和机器资源，本地大约十个就到头</td></tr>
+<tr><td data-label="原本">技能之间互相调用</td><td data-label="搬过来之后">改成让代理直接读那个技能文件</td><td data-label="后果">能用，但多一步，也多吃上下文</td></tr>
+<tr><td data-label="原本">云端的定时任务、自动看板、缺陷机器人</td><td data-label="搬过来之后">替换成一行「本环境跳过」</td><td data-label="后果">每日维护验证技能这件事，得自己排定时任务补上</td></tr>
 </table></div>
 
-<p>还有一层根本没有搬过来：外循环。作者工作环境里有一层接聊天工具、监控、告警的东西，看到异常自动派代理去复现、开改动请求。这一层不属于插件，本地也没有现成对应物，要自己搭。</p>
+<p>还有一层根本没有搬过来：外循环。作者工作环境里有一层接聊天工具、监控、告警的东西，看到异常自动派代理去复现、开改动请求。这一层不属于插件，本地也没有现成对应物，要自己搭。第 <a href="#outer">16 章</a>专门讲这一层。</p>
 
 <div class="note"><b>一条可操作的检查。</b>打开你的模型表，看面板类那几行。如果全是同一个家族，就别把「两边一致」当成结论，那只是同一个人说了两遍。</div>
 
@@ -1094,7 +1238,7 @@ description: Find what a change could break somewhere else before it ships...
 
 <p><b>唯一一个公开的独立对比。</b>一位用户用同一个模型跑了 5 个带隐藏测试的小任务：不加这套流程 15/15 通过，花了 2.435 美元；加了之后也是 15/15 通过，花了 3.455 美元。约 1.4 倍，效果没有区别。他自己也说任务太简单，说明不了难题上的表现。</p>
 
-<figure class="devfig"><div class="figscroll"><svg viewBox="0 0 900 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="固定上下文成本随子代理线性放大，以及同一批任务加与不加流程的花费对比"><defs><marker id="cost-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="var(--muted)"/></marker></defs><text x="40.0" y="40.0" text-anchor="start" font-size="13" font-weight="600" fill="var(--accent2)">一 固定上下文怎么放大</text><rect x="20.0" y="68.0" width="300.0" height="64.0" rx="10" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="170.0" y="93.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">主线程 3,600 词</text><text x="170.0" y="115.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">每次进流程都读一遍</text><rect x="385.0" y="68.0" width="110.0" height="64.0" rx="10" fill="var(--panel)" stroke="var(--muted)" stroke-width="1.4"/><text x="440.0" y="93.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">子代理</text><text x="440.0" y="115.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">3,600 词</text><line x1="320.0" y1="100.0" x2="385.0" y2="100.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#cost-arrow)"/><rect x="505.0" y="68.0" width="110.0" height="64.0" rx="10" fill="var(--panel)" stroke="var(--muted)" stroke-width="1.4"/><text x="560.0" y="93.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">子代理</text><text x="560.0" y="115.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">3,600 词</text><rect x="625.0" y="68.0" width="110.0" height="64.0" rx="10" fill="var(--panel)" stroke="var(--muted)" stroke-width="1.4"/><text x="680.0" y="93.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">子代理</text><text x="680.0" y="115.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">3,600 词</text><text x="450.0" y="158.0" text-anchor="start" font-size="12" font-weight="400" fill="var(--muted)">每开一路子代理，固定部分就再叠一份</text><text x="450.0" y="182.0" text-anchor="start" font-size="12" font-weight="400" fill="var(--muted)">按三路算：4 × 3,600 词，这部分和任务难度无关</text><text x="40.0" y="226.0" text-anchor="start" font-size="13" font-weight="600" fill="var(--accent2)">二 同一批任务的第三方实测（5 个小题，两边都 15/15 通过）</text><text x="170.0" y="268.0" text-anchor="end" font-size="12.5" font-weight="400" fill="var(--muted)">不加流程</text><rect x="180" y="250" width="451" height="30" rx="6" fill="var(--panel2)" stroke="var(--line)"/><text x="640.0" y="270.0" text-anchor="start" font-size="12.5" font-weight="400" fill="var(--muted)">$2.44</text><text x="170.0" y="328.0" text-anchor="end" font-size="12.5" font-weight="400" fill="var(--muted)">加了流程</text><rect x="180" y="310" width="640" height="30" rx="6" fill="var(--accent)" opacity="0.75"/><text x="828.0" y="330.0" text-anchor="start" font-size="12.5" font-weight="400" fill="var(--muted)">$3.46</text><text x="40.0" y="386.0" text-anchor="start" font-size="12.5" font-weight="400" fill="var(--muted)">多花约四成，结果一样。简单任务上，这套流程是纯成本。</text></svg></div><figcaption>上：固定上下文按子代理数线性叠加。下：唯一一个公开的第三方对比，结果没有区别。</figcaption></figure>
+<figure class="devfig"><div class="figscroll"><svg viewBox="0 0 900 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="固定上下文成本随子代理线性放大，以及同一批任务加与不加流程的花费对比"><defs><marker id="cost-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="var(--muted)"/></marker></defs><text x="40.0" y="40.0" text-anchor="start" font-size="13" font-weight="600" fill="var(--accent2)">一 固定上下文怎么放大</text><rect x="20.0" y="68.0" width="300.0" height="64.0" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="170.0" y="93.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">主线程 3,600 词</text><text x="170.0" y="115.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">每次进流程都读一遍</text><rect x="385.0" y="68.0" width="110.0" height="64.0" fill="var(--panel)" stroke="var(--muted)" stroke-width="1.4"/><text x="440.0" y="93.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">子代理</text><text x="440.0" y="115.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">3,600 词</text><line x1="320.0" y1="100.0" x2="385.0" y2="100.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#cost-arrow)"/><rect x="505.0" y="68.0" width="110.0" height="64.0" fill="var(--panel)" stroke="var(--muted)" stroke-width="1.4"/><text x="560.0" y="93.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">子代理</text><text x="560.0" y="115.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">3,600 词</text><rect x="625.0" y="68.0" width="110.0" height="64.0" fill="var(--panel)" stroke="var(--muted)" stroke-width="1.4"/><text x="680.0" y="93.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">子代理</text><text x="680.0" y="115.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">3,600 词</text><text x="450.0" y="158.0" text-anchor="start" font-size="12" font-weight="400" fill="var(--muted)">每开一路子代理，固定部分就再叠一份</text><text x="450.0" y="182.0" text-anchor="start" font-size="12" font-weight="400" fill="var(--muted)">按三路算：4 × 3,600 词，这部分和任务难度无关</text><text x="40.0" y="226.0" text-anchor="start" font-size="13" font-weight="600" fill="var(--accent2)">二 同一批任务的第三方实测（5 个小题，两边都 15/15 通过）</text><text x="170.0" y="268.0" text-anchor="end" font-size="12.5" font-weight="400" fill="var(--muted)">不加流程</text><rect x="180" y="250" width="451" height="30" fill="var(--panel2)" stroke="var(--line)"/><text x="640.0" y="270.0" text-anchor="start" font-size="12.5" font-weight="400" fill="var(--muted)">$2.44</text><text x="170.0" y="328.0" text-anchor="end" font-size="12.5" font-weight="400" fill="var(--muted)">加了流程</text><rect x="180" y="310" width="640" height="30" fill="var(--accent)" opacity="0.75"/><text x="828.0" y="330.0" text-anchor="start" font-size="12.5" font-weight="400" fill="var(--muted)">$3.46</text><text x="40.0" y="386.0" text-anchor="start" font-size="12.5" font-weight="400" fill="var(--muted)">多花约四成，结果一样。简单任务上，这套流程是纯成本。</text></svg></div><figcaption>上：固定上下文按子代理数线性叠加。下：唯一一个公开的第三方对比，结果没有区别。</figcaption></figure>
 
 <p>这个样本很小，但方向和直觉一致：<b>在简单任务上，这套流程基本是纯成本。收益只可能出现在需要复现、验证、设计取舍的任务上。</b></p>
 
@@ -1112,12 +1256,12 @@ description: Find what a change could break somewhere else before it ships...
 
 <div class="tw"><table>
 <tr><th>要求</th><th>为什么</th></tr>
-<tr><td>可组合，能接管道</td><td>代理可以把几条命令串起来跑一条完整路径</td></tr>
-<tr><td>会改东西的命令必须带「只预演不执行」开关</td><td>代理试探成本低，人敢放它跑</td></tr>
-<tr><td>用子命令逐步暴露功能</td><td>帮助信息本身就是地图，代理照着走不会迷路</td></tr>
-<tr><td>报错信息写清楚下一步该做什么</td><td>读错误的人（或代理）不需要回头问你</td></tr>
-<tr><td>帮助信息写得详细</td><td>这份帮助就是给代理看的文档</td></tr>
-<tr><td>输出 JSON</td><td>能断言，不用靠正则抓屏</td></tr>
+<tr><td data-label="要求">可组合，能接管道</td><td data-label="为什么">代理可以把几条命令串起来跑一条完整路径</td></tr>
+<tr><td data-label="要求">会改东西的命令必须带「只预演不执行」开关</td><td data-label="为什么">代理试探成本低，人敢放它跑</td></tr>
+<tr><td data-label="要求">用子命令逐步暴露功能</td><td data-label="为什么">帮助信息本身就是地图，代理照着走不会迷路</td></tr>
+<tr><td data-label="要求">报错信息写清楚下一步该做什么</td><td data-label="为什么">读错误的人（或代理）不需要回头问你</td></tr>
+<tr><td data-label="要求">帮助信息写得详细</td><td data-label="为什么">这份帮助就是给代理看的文档</td></tr>
+<tr><td data-label="要求">输出 JSON</td><td data-label="为什么">能断言，不用靠正则抓屏</td></tr>
 </table></div>
 
 <p>对着你自己的工具自查一遍。多数人第一条和第六条就不过关：命令得靠人看屏幕判断结果，那就没法自动判定。</p>
@@ -1152,10 +1296,10 @@ description: Find what a change could break somewhere else before it ships...
 
 <div class="tw"><table>
 <tr><th>级别</th><th>做法</th><th>效果</th></tr>
-<tr><td>一</td><td>改架构或数据结构，让这个错写不出来</td><td>根除</td></tr>
-<tr><td>二</td><td>加检查规则或测试，让流水线拦下来</td><td>拦住，但要人维护</td></tr>
-<tr><td>三</td><td>写进技能或规则文档</td><td>靠它读到并照做</td></tr>
-<tr><td>四</td><td>在评审里口头说一遍</td><td>最差，下次还会犯</td></tr>
+<tr><td data-label="级别">一</td><td data-label="做法">改架构或数据结构，让这个错写不出来</td><td data-label="效果">根除</td></tr>
+<tr><td data-label="级别">二</td><td data-label="做法">加检查规则或测试，让流水线拦下来</td><td data-label="效果">拦住，但要人维护</td></tr>
+<tr><td data-label="级别">三</td><td data-label="做法">写进技能或规则文档</td><td data-label="效果">靠它读到并照做</td></tr>
+<tr><td data-label="级别">四</td><td data-label="做法">在评审里口头说一遍</td><td data-label="效果">最差，下次还会犯</td></tr>
 </table></div>
 
 <p>作者把第四级标成「没戏」。这条判断和第 6 章的心法对得上：能被结构表达的，不要靠自觉。</p>
@@ -1170,7 +1314,7 @@ description: Find what a change could break somewhere else before it ships...
 
 <p>一个具体案例：用导入依赖图强制隔开主进程和渲染进程。起因是渲染线程被误引入了耗时代码，而渲染线程每帧只有 16 毫秒（60 帧）或 8 毫秒（120 帧）。这件事的重点不是那个框架，而是把原本散落在评审评论里的经验，写进了结构。</p>
 
-<figure class="devfig"><div class="figscroll"><svg viewBox="0 0 900 470" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="把纠正变成结构的四级顺序，从改架构到口头提醒，效果依次递减"><defs><marker id="levels-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="var(--muted)"/></marker></defs><rect x="40.0" y="30.0" width="820.0" height="90.0" rx="10" fill="var(--panel)" stroke="var(--ok)" stroke-width="1.4"/><text x="450.0" y="68.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">第一级 改架构或数据结构 → 根除</text><text x="450.0" y="90.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">让这个错在类型或结构上写不出来</text><rect x="40.0" y="140.0" width="720.0" height="90.0" rx="10" fill="var(--panel2)" stroke="var(--accent)" stroke-width="1.4"/><text x="400.0" y="178.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">第二级 加检查规则或测试 → 拦住</text><text x="400.0" y="200.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">流水线里过不去，不靠人记</text><rect x="40.0" y="250.0" width="620.0" height="90.0" rx="10" fill="var(--panel)" stroke="var(--muted)" stroke-width="1.4"/><text x="350.0" y="288.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">第三级 写进技能或规则文档 → 靠自觉</text><text x="350.0" y="310.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">它读到了才生效，读不到等于没写</text><rect x="40.0" y="360.0" width="520.0" height="90.0" rx="10" fill="var(--panel)" stroke="var(--bad)" stroke-width="1.4"/><text x="300.0" y="398.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">第四级 评审时口头说一遍 → 没戏</text><text x="300.0" y="420.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">下次还会犯，你已经说过三遍了</text><text x="470.0" y="24.0" text-anchor="middle" font-size="12.5" font-weight="400" fill="var(--muted)">效果从强到弱</text></svg></div><figcaption>从上往下，效果递减。你在第四级说过三遍的事，应该往上挪一级。</figcaption></figure>
+<figure class="devfig"><div class="figscroll"><svg viewBox="0 0 900 470" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="把纠正变成结构的四级顺序，从改架构到口头提醒，效果依次递减"><defs><marker id="levels-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="var(--muted)"/></marker></defs><rect x="40.0" y="30.0" width="820.0" height="90.0" fill="var(--panel)" stroke="var(--ok)" stroke-width="1.4"/><text x="450.0" y="68.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">第一级 改架构或数据结构 → 根除</text><text x="450.0" y="90.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">让这个错在类型或结构上写不出来</text><rect x="40.0" y="140.0" width="720.0" height="90.0" fill="var(--panel2)" stroke="var(--accent)" stroke-width="1.4"/><text x="400.0" y="178.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">第二级 加检查规则或测试 → 拦住</text><text x="400.0" y="200.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">流水线里过不去，不靠人记</text><rect x="40.0" y="250.0" width="620.0" height="90.0" fill="var(--panel)" stroke="var(--muted)" stroke-width="1.4"/><text x="350.0" y="288.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">第三级 写进技能或规则文档 → 靠自觉</text><text x="350.0" y="310.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">它读到了才生效，读不到等于没写</text><rect x="40.0" y="360.0" width="520.0" height="90.0" fill="var(--panel)" stroke="var(--bad)" stroke-width="1.4"/><text x="300.0" y="398.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">第四级 评审时口头说一遍 → 没戏</text><text x="300.0" y="420.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">下次还会犯，你已经说过三遍了</text><text x="470.0" y="24.0" text-anchor="middle" font-size="12.5" font-weight="400" fill="var(--muted)">效果从强到弱</text></svg></div><figcaption>从上往下，效果递减。你在第四级说过三遍的事，应该往上挪一级。</figcaption></figure>
 
 <h3>15.6 删注释：一个有争议但值得知道的立场</h3>
 
@@ -1188,10 +1332,10 @@ description: Find what a change could break somewhere else before it ships...
 
 <div class="tw"><table>
 <tr><th>对照项</th><th>精简版的做法</th></tr>
-<tr><td>原则</td><td>留 16 条（标题几乎照搬），去掉 8 条</td></tr>
-<tr><td>新增</td><td>测试驱动、重构、留日志、清理工作树、提交并推送</td></tr>
-<tr><td>整层去掉</td><td>任务路由、23 本流程清单、子代理、多模型评审、验证技能、功能地图</td></tr>
-<tr><td>补回来的约束</td><td>三个确定性工具，用阈值和退出码卡关</td></tr>
+<tr><td data-label="对照项">原则</td><td data-label="精简版的做法">留 16 条（标题几乎照搬），去掉 8 条</td></tr>
+<tr><td data-label="对照项">新增</td><td data-label="精简版的做法">测试驱动、重构、留日志、清理工作树、提交并推送</td></tr>
+<tr><td data-label="对照项">整层去掉</td><td data-label="精简版的做法">任务路由、23 本流程清单、子代理、多模型评审、验证技能、功能地图</td></tr>
+<tr><td data-label="对照项">补回来的约束</td><td data-label="精简版的做法">三个确定性工具，用阈值和退出码卡关</td></tr>
 </table></div>
 
 <p>被去掉的 8 条原则里，最值得注意的是「证明它能工作」。这正好解释了它的短板：它不要求代理去操作真实应用，所以对界面、性能、端到端行为几乎不设防。</p>
@@ -1200,9 +1344,9 @@ description: Find what a change could break somewhere else before it ships...
 
 <div class="tw"><table>
 <tr><th>工具</th><th>算什么</th><th>阈值与退出码</th></tr>
-<tr><td>复杂度分数</td><td>圈复杂度平方乘（1 减覆盖率）的立方，再加圈复杂度</td><td>圈复杂度 3、覆盖率 0 得 12 分，过不了 10；覆盖率到 100% 只剩 3 分。超阈值退出码 2，可直接接流水线</td></tr>
-<tr><td>结构重复</td><td>去掉变量名和字面量后的结构指纹，算相似度</td><td>默认阈值 0.82，技能里写 0.8，照技能跑要手动传</td></tr>
-<tr><td>变异测试</td><td>改掉一个运算符或条件，测试还能过就算「存活」</td><td>有存活变异体时退出码 3。第二次起只重跑存活的和改过的</td></tr>
+<tr><td data-label="工具">复杂度分数</td><td data-label="算什么">圈复杂度平方乘（1 减覆盖率）的立方，再加圈复杂度</td><td data-label="阈值与退出码">圈复杂度 3、覆盖率 0 得 12 分，过不了 10；覆盖率到 100% 只剩 3 分。超阈值退出码 2，可直接接流水线</td></tr>
+<tr><td data-label="工具">结构重复</td><td data-label="算什么">去掉变量名和字面量后的结构指纹，算相似度</td><td data-label="阈值与退出码">默认阈值 0.82，技能里写 0.8，照技能跑要手动传</td></tr>
+<tr><td data-label="工具">变异测试</td><td data-label="算什么">改掉一个运算符或条件，测试还能过就算「存活」</td><td data-label="阈值与退出码">有存活变异体时退出码 3。第二次起只重跑存活的和改过的</td></tr>
 </table></div>
 
 <p>第一个工具的分数的意义：同一个函数，补测试和拆函数都能降分。所以它逼你在这两条路里选一条，而不是喊口号。</p>
@@ -1230,10 +1374,10 @@ description: Find what a change could break somewhere else before it ships...
 
 <div class="tw"><table>
 <tr><th>说法</th><th>实际情况</th></tr>
-<tr><td>一个月两千多个改动请求</td><td>8 月 19 日说一千，8 月 31 日说两千，9 月 21 日说两千五。口径在变，且都依赖特定的云环境、外循环和他本人的判断力</td></tr>
-<tr><td>产出提升一到三个数量级</td><td>自报，无第三方数据</td></tr>
-<tr><td>精简 10% 且行为无损</td><td>作者自述做过评测，但没有公开数据</td></tr>
-<tr><td>版本稳定</td><td>18 天里二十来个补丁版本。技能文本一直在变，评测结果也会跟着变</td></tr>
+<tr><td data-label="说法">一个月两千多个改动请求</td><td data-label="实际情况">8 月 19 日说一千，8 月 31 日说两千，9 月 21 日说两千五。口径在变，且都依赖特定的云环境、外循环和他本人的判断力</td></tr>
+<tr><td data-label="说法">产出提升一到三个数量级</td><td data-label="实际情况">自报，无第三方数据</td></tr>
+<tr><td data-label="说法">精简 10% 且行为无损</td><td data-label="实际情况">作者自述做过评测，但没有公开数据</td></tr>
+<tr><td data-label="说法">版本稳定</td><td data-label="实际情况">18 天里二十来个补丁版本。技能文本一直在变，评测结果也会跟着变</td></tr>
 </table></div>
 
 <p>读任何二手文章都照这个顺序：先看日期，再看数字是谁说的，最后看有没有人独立复现过。这一章自己也是二手材料，同一个标准适用。</p>
@@ -1260,7 +1404,132 @@ create-verification-skill  造一个能自己跑应用的验证技能</code></pr
 
 <div class="note"><b>这一章的正确读法。</b>它不是在说这套流程不好，是在说它的边界在哪。一个方法的价值，等于它能做到的事减去它的代价。只看前者，你会高估它；只看后者，你会错过验证技能那一块真正能带走的东西。</div>
 
-<h2 id="cheat">附录 A 命令速查</h2>
+<h2 id="outer"><span class="num">16</span><span class="ttl">外循环：需求之前那一环</span></h2>
+
+<div class="note warn"><b>来源说明。</b>这一章的材料分三层。<b>一手</b>是作者 2026-10-06 的一条公开推文，讲第一公里。<b>二手</b>是一篇 2026-11-03 的中文转述，逐条标了出处，本章出现的每一句引文都来自它，是中文转述而不是英文原文。<b>归纳</b>是我从这两份材料推出来的判断，标了「归纳」的地方不是作者自己的话。还有一件事要说清：本机装的 0.9.129 里没有外循环对应的技能，所以这一章不教「怎么用技能」，只讲「要自己搭什么」。</div>
+
+<h3>16.1 两条环，先分开</h3>
+
+<p>前面十五章讲的都是内循环。一次任务进来之后，怎么判断类型、走哪条清单、怎么验证、怎么交出去。</p>
+
+<p>但整条产线还有另一半。作者的分法是这样的。</p>
+
+<figure class="devfig"><div class="figscroll"><svg viewBox="0 0 900 620" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="两条环：上排外循环决定做什么，下排内循环决定做完了；派活往下走，结果回流往上走"><defs><marker id="outerloop-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="var(--muted)"/></marker></defs><text x="40.0" y="72.0" text-anchor="start" font-size="14" font-weight="600" fill="var(--accent2)">外循环 · 决定做什么</text><text x="40.0" y="536.0" text-anchor="start" font-size="14" font-weight="600" fill="var(--accent2)">内循环 · 决定做完了</text><rect x="24.0" y="89.0" width="176.0" height="58.0" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="112.0" y="111.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">信号流</text><text x="112.0" y="133.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">工单 语音 聊天</text><rect x="250.0" y="89.0" width="176.0" height="58.0" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="338.0" y="111.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">队列</text><text x="338.0" y="133.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">先攒后看，找模式</text><rect x="476.0" y="89.0" width="176.0" height="58.0" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="564.0" y="111.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">复现闸</text><text x="564.0" y="133.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">复现不了就不修</text><rect x="702.0" y="89.0" width="176.0" height="58.0" fill="var(--panel2)" stroke="var(--accent)" stroke-width="1.4"/><text x="790.0" y="111.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">一条主线</text><text x="790.0" y="133.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">其余明确判死</text><rect x="24.0" y="409.0" width="176.0" height="58.0" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="112.0" y="431.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">交接</text><text x="112.0" y="453.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">说清怎么验的</text><rect x="250.0" y="409.0" width="176.0" height="58.0" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="338.0" y="431.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">验证</text><text x="338.0" y="453.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">真实产物</text><rect x="476.0" y="409.0" width="176.0" height="58.0" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="564.0" y="431.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">实现</text><text x="564.0" y="453.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">最小改动</text><rect x="702.0" y="409.0" width="176.0" height="58.0" fill="var(--panel2)" stroke="var(--accent)" stroke-width="1.4"/><text x="790.0" y="431.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">认领</text><text x="790.0" y="453.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">一句话带背景</text><line x1="200.0" y1="118.0" x2="250.0" y2="118.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#outerloop-arrow)"/><line x1="250.0" y1="438.0" x2="200.0" y2="438.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#outerloop-arrow)"/><line x1="426.0" y1="118.0" x2="476.0" y2="118.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#outerloop-arrow)"/><line x1="476.0" y1="438.0" x2="426.0" y2="438.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#outerloop-arrow)"/><line x1="652.0" y1="118.0" x2="702.0" y2="118.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#outerloop-arrow)"/><line x1="702.0" y1="438.0" x2="652.0" y2="438.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#outerloop-arrow)"/><line x1="790.0" y1="147.0" x2="790.0" y2="409.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#outerloop-arrow)"/><text x="806.0" y="268.0" text-anchor="middle" font-size="12" font-weight="400" fill="var(--muted)" transform="rotate(90 806.0 268.0)">派活：目标 + 完成标准</text><line x1="112.0" y1="409.0" x2="112.0" y2="147.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#outerloop-arrow)"/><text x="96.0" y="268.0" text-anchor="middle" font-size="12" font-weight="400" fill="var(--muted)" transform="rotate(-90 96.0 268.0)">结果与教训回流</text><text x="450.0" y="236.0" text-anchor="middle" font-size="12.5" font-weight="400" fill="var(--bad)">只装下排：工具很全，但不知道今天该干什么。</text><text x="450.0" y="266.0" text-anchor="middle" font-size="12.5" font-weight="400" fill="var(--bad)">只装上排：知道该做什么，但每件事都做不完。</text><text x="450.0" y="574.0" text-anchor="middle" font-size="12.5" font-weight="400" fill="var(--accent2)">两排之间只传两样东西：一句带完成标准的话，和一条回流的教训。</text></svg></div><figcaption>上排没有任何插件提供，要自己搭。下排是这本手册第 1 到 13 章的全部内容。</figcaption></figure>
+
+<p><b>外循环决定做什么，内循环决定做完了。</b>她管前者叫第一公里，原话的意思是「你到底该做哪件事」。后者是最后一公里。</p>
+
+<p>这个分法解释了一个很容易困惑的现象。有人问她，这套工作流为什么不自己找活干。因为找活不归内循环管。它属于外循环，靠把 bot 接进真实信号流来完成，判断留给人。</p>
+
+<div class="note"><b>为什么这一章放在最后。</b>手册前面全在下排。把 pstack 装好、技能配齐，你拿到的也只是下排。上排没有任何插件给你。只装一半的症状很像：工具很全，但不知道今天该干什么。</div>
+
+<h3>16.2 上排的五个动作</h3>
+
+<div class="tw"><table>
+<tr><th>动作</th><th>她的做法</th><th>缺了会怎样</th></tr>
+<tr><td data-label="动作">接进信号流</td><td data-label="她的做法">把 bot 接到日历、客户系统、聊天工具、邮件上，让它直接读上下文，不靠你转述</td><td data-label="缺了会怎样">你转述一次，信息掉一半，还要花你的注意力</td></tr>
+<tr><td data-label="动作">一句话带背景派活</td><td data-label="她的做法">给意图和约束，不给操作步骤</td><td data-label="缺了会怎样">微操是把代理当实习生，它永远不会做你没说到的事</td></tr>
+<tr><td data-label="动作">用 routine 自动化发现</td><td data-label="她的做法">定时加事件触发，频率不超过每小时</td><td data-label="缺了会怎样">发现要靠你想起，等于没做</td></tr>
+<tr><td data-label="动作">中间加一个队列</td><td data-label="她的做法">坏模式先记下来，隔几天一起看，再合并成根因需求</td><td data-label="缺了会怎样">你会一直在来一单做一单，看不到规律</td></tr>
+<tr><td data-label="动作">原型代替需求文档</td><td data-label="她的做法">她常说 why not today</td><td data-label="缺了会怎样">需求在纸上永远定不下来，做着做着就散了</td></tr>
+</table></div>
+
+<p>第三条最容易被跳过，第五条最容易被误解。<b>用原型回答需求，不是反对写文档，是承认一件事：需求的形态靠做出来才知道，靠讨论定不下来。</b></p>
+
+<h3>16.3 最后一公里是一条固定闭环</h3>
+
+<p>内循环也不是自由的。她的闭环起点是一个具体的频道，不是一个抽象目标。</p>
+
+<pre><code>盯反馈频道 → 开单 → 云端代理复现 → 修复 → 小群代理测试 → 否决窗口 → 自动合并</code></pre>
+
+<p>两个设计值得抄。</p>
+
+<p><b>复现前置。</b>单开出来不是给人读的，是给代理复现的。复现不了就不修。这一条把「我觉得这里有问题」挡在了队列外面。</p>
+
+<p><b>否决窗口。</b>绿灯之后不是等人批准，是给人一小时说「不行」，超时自动合。把「人必须主动批准」换成「人必须主动否决」，队列才流动得起来。人从瓶颈变成刹车。</p>
+
+<div class="note"><b>和第 7 章的关系。</b>验证体系决定「绿灯是不是真的绿」，否决窗口决定「绿灯之后谁来停」。两样缺一样，自动合并都会出事。</div>
+
+<h3>16.4 信任是分四步给的</h3>
+
+<p>她不会一上来就把合并权交出去。顺序是固定的四步。</p>
+
+<div class="tw"><table>
+<tr><th>步</th><th>做什么</th><th>你的注意力花在哪</th></tr>
+<tr><td data-label="步">一 看</td><td data-label="做什么">看它完整做一遍</td><td data-label="你的注意力花在哪">花在这里</td></tr>
+<tr><td data-label="步">二 存为技能</td><td data-label="做什么">把这次的过程写成技能，下次照做</td><td data-label="你的注意力花在哪">花在这里</td></tr>
+<tr><td data-label="步">三 一次纠正</td><td data-label="做什么">它做错了，纠正一次，让它记住</td><td data-label="你的注意力花在哪">花在这里</td></tr>
+<tr><td data-label="步">四 例行</td><td data-label="做什么">不再看，只在异常时介入</td><td data-label="你的注意力花在哪">不该再花</td></tr>
+</table></div>
+
+<p><b>第四步还不放手，说明这套东西没省下任何东西。</b>这是最值得自查的一条。</p>
+
+<h3>16.5 她砍东西的判据</h3>
+
+<p>这一节是整章最实用的部分。她判断一件事要不要做，不靠优先级矩阵。</p>
+
+<blockquote>
+<p>目标不是更多的代码，是用最少的代码产生最大的影响。</p>
+</blockquote>
+
+<blockquote>
+<p>不可能每道菜都尝，但也永远不能一道都不尝。</p>
+</blockquote>
+
+<blockquote>
+<p>只出现一次的问题，可能不用管。好几个 bot 都犯同一个错，才说明该改厨房。</p>
+</blockquote>
+
+<p class="muted">三句都是中文转述，不是英文原文。来源见 16.7。</p>
+
+<p>把它们翻译成可操作的判据，是这四条。</p>
+
+<ul>
+<li><b>抽查，不逐条。</b>反馈不逐条看，也不一条不看。抽样之后找重复模式。</li>
+<li><b>一次只推一条主线。</b>其余明确处理掉，不是挂着。挂着的待办不产生决策。</li>
+<li><b>队列用来找规律，不是用来清空。</b>攒着不是欠债。攒着是为了看清模式。</li>
+<li><b>改厨房，不是改这道菜。</b>同一个错犯第二次，问题在让它犯错的环境里，不在那一次的输出里。</li>
+</ul>
+
+<h3>16.6 本地最小替代</h3>
+
+<p>外循环没有插件，但不需要按她的规模搭。下面是最小可行的一套，每一项都能从今天开始。</p>
+
+<div class="tw"><table>
+<tr><th>能力</th><th>她的做法</th><th>本地最小替代</th></tr>
+<tr><td data-label="能力">信号接入</td><td data-label="她的做法">bot 接聊天工具、工单、日历、客户系统</td><td data-label="本地最小替代">一个只追加的采集脚本，把版本、队列数量、巡检结果写成一行 JSON</td></tr>
+<tr><td data-label="能力">发现自动化</td><td data-label="她的做法">routine，定时加事件，上限每小时一次</td><td data-label="本地最小替代">launchd 每周一次。每周比每小时有用，因为你要看的是模式</td></tr>
+<tr><td data-label="能力">队列</td><td data-label="她的做法">工单系统</td><td data-label="本地最小替代">backlog 的 inbox，按根因分组，一组算一个决策单元</td></tr>
+<tr><td data-label="能力">复现闸</td><td data-label="她的做法">云端代理复现</td><td data-label="本地最小替代">本地验证技能。复现不了的条目留在观察区，不进待办</td></tr>
+<tr><td data-label="能力">否决窗口</td><td data-label="她的做法">一小时无人反对就合</td><td data-label="本地最小替代">不自动化合并。人工确认这一步在本地没有替代品</td></tr>
+</table></div>
+
+<p><b>准入闸。</b>这是整章唯一必须硬性执行的一条。新条目进队列前要答三个问题，答不出就不进。</p>
+
+<ol>
+<li>谁在什么场景下真的痛过。不是「理论上会痛」。</li>
+<li>怎么复现。答不出复现步骤，说明这条还是假设。</li>
+<li>修好之后用户能看到什么变化。看不到的，进观察区。</li>
+</ol>
+
+<div class="note"><b>为什么准入比排序重要。</b>队列里 119 条和 15 条，决策成本差一个数量级。排序能缓解，准入能根除。第 15 章那条「把纠正变成结构」的顺序在这里同样适用：能写进工具默认值的，不要写成提醒。</div>
+
+<h3>16.7 这一章的正确读法</h3>
+
+<p>不要记结论。用四个症状定位你缺哪一半。</p>
+
+<div class="tw"><table>
+<tr><th>症状</th><th>缺的是</th><th>先做什么</th></tr>
+<tr><td data-label="症状">不知道今天该干什么，工具很全但空转</td><td data-label="缺的是">上排</td><td data-label="先做什么">先接一个信号源，只接一个</td></tr>
+<tr><td data-label="症状">待办越积越多，一件都没做完</td><td data-label="缺的是">不是更多条目，是决策闸</td><td data-label="先做什么">先做准入三问，再把队列按根因分组</td></tr>
+<tr><td data-label="症状">做完了但不敢放手</td><td data-label="缺的是">16.4 的第四步</td><td data-label="先做什么">挑一件低风险的事，真的不看它做完</td></tr>
+<tr><td data-label="症状">同一个错反复出现</td><td data-label="缺的是">环境</td><td data-label="先做什么">改结构，不加提醒</td></tr>
+</table></div>
+
+<p><b>一句话收尾。</b>下排决定你能不能做完，上排决定你有没有值得做完的东西。这本手册讲透了下排，上排只能给框架。具体接哪条信号流，取决于你每天真正在看什么。</p>
+
+<p class="muted">出处：一手是作者 2026-10-06 关于第一公里的公开推文；二手是一篇 2026-11-03 的中文转述，逐条标了出处。手册是离线单文件，不外链，两处原文请自行按日期检索。</p>
+
+<h2 id="cheat"><span class="num">附录</span><span class="ttl">A 命令速查</span></h2>
 
 <pre><code># 总管
 /pstack:poteto-mode &lt;目标 + 可判定的完成标准&gt;
@@ -1298,7 +1567,7 @@ create-verification-skill  造一个能自己跑应用的验证技能</code></pr
 
 <p class="muted">playbook 没有斜杠命令。用 <code>/pstack:poteto-mode</code> 加任务描述触发，例如「babysit this PR」「land the stack」「run the eval playbook」。</p>
 
-<h2 id="files">附录 B 文件地图</h2>
+<h2 id="files"><span class="num">附录</span><span class="ttl">B 文件地图</span></h2>
 
 <pre><code>~/.claude/plugins/cache/pstack-claude/pstack/&lt;version&gt;/
   skills/
@@ -1317,74 +1586,140 @@ create-verification-skill  造一个能自己跑应用的验证技能</code></pr
   features/README.md + 每个功能一个文件
   scripts/doctor.sh  scripts/capture-window.sh</code></pre>
 
-<h2 id="glossary">附录 C 术语表</h2>
+<h2 id="glossary"><span class="num">附录</span><span class="ttl">C 术语表</span></h2>
 
 <div class="tw"><table>
 <tr><th>词</th><th>意思</th></tr>
-<tr><td>playbook</td><td>一类任务的步骤清单，由 poteto-mode 读取，不能直接调用</td></tr>
-<tr><td>路由</td><td>按任务描述选中某本 playbook 的过程</td></tr>
-<tr><td>描述即触发</td><td>技能的 description 是所有路由的唯一依据，写不好等于不存在</td></tr>
-<tr><td>面板</td><td>同一任务起多个模型并行，列表长度决定花费</td></tr>
-<tr><td>出菜口</td><td>验证环节的比喻。没过这道关，不算完成</td></tr>
-<tr><td>功能地图</td><td>按功能组织的验收配方，给代理省上下文的压缩记忆</td></tr>
-<tr><td>证据</td><td>可复查的产物：截图、日志、命令输出、数据行</td></tr>
-<tr><td>判定</td><td>能写成一行比较的通过条件，不是观感</td></tr>
-<tr><td>盲测</td><td>候选者不知道在被测，评委不知道来源的对比实验</td></tr>
-<tr><td>决策轨迹</td><td>长任务里每个决定的记录：做了什么、为什么、证据、结果</td></tr>
+<tr><td data-label="词">playbook</td><td data-label="意思">一类任务的步骤清单，由 poteto-mode 读取，不能直接调用</td></tr>
+<tr><td data-label="词">路由</td><td data-label="意思">按任务描述选中某本 playbook 的过程</td></tr>
+<tr><td data-label="词">描述即触发</td><td data-label="意思">技能的 description 是所有路由的唯一依据，写不好等于不存在</td></tr>
+<tr><td data-label="词">面板</td><td data-label="意思">同一任务起多个模型并行，列表长度决定花费</td></tr>
+<tr><td data-label="词">出菜口</td><td data-label="意思">验证环节的比喻。没过这道关，不算完成</td></tr>
+<tr><td data-label="词">功能地图</td><td data-label="意思">按功能组织的验收配方，给代理省上下文的压缩记忆</td></tr>
+<tr><td data-label="词">证据</td><td data-label="意思">可复查的产物：截图、日志、命令输出、数据行</td></tr>
+<tr><td data-label="词">判定</td><td data-label="意思">能写成一行比较的通过条件，不是观感</td></tr>
+<tr><td data-label="词">盲测</td><td data-label="意思">候选者不知道在被测，评委不知道来源的对比实验</td></tr>
+<tr><td data-label="词">决策轨迹</td><td data-label="意思">长任务里每个决定的记录：做了什么、为什么、证据、结果</td></tr>
 </table></div>
 
-<hr>
-<p class="muted">本手册依据本机安装的 pstack 0.9.129 写成，离线可读，无外部依赖。版本升级后，第 3、4 章的数量与技能名可能变化，其余章节的判断不随版本改变。</p>
+<footer class="colophon">
+  <p class="closing">pstack 学习手册</p>
+  <p class="muted">本手册依据本机安装的 pstack 0.9.129 写成，单文件发布，样式与插图全部内联。版本升级后，第 3、4 章的数量与技能名可能变化，其余章节的判断不随版本改变。</p>
+</footer>
 </main>
 </div>
 <script>
 (function(){
+  var root=document.documentElement;
+
+  /* ---- entrance: numerals and headings rise as their section arrives ---- */
+  var targets=[];
+  function add(sel){
+    Array.prototype.forEach.call(document.querySelectorAll(sel),function(el){targets.push(el);});
+  }
+  add('.cover .ln, .cover .lede, .cover .stat, .cover .go');
+  // the heading's own spans move, never the h2 box: an anchor must land where it promised
+  add('main > h2 > .num, main > h2 > .ttl, main h3, main > figure.devfig, main > .tw, main > .note, main > blockquote');
+  Array.prototype.forEach.call(document.querySelectorAll('main > h2'),function(h){
+    var n=h.nextElementSibling;
+    if(n&&n.tagName==='P') targets.push(n);
+  });
+  // document order, so a section's parts enter top-down
+  targets.sort(function(a,b){
+    return a.compareDocumentPosition(b)&Node.DOCUMENT_POSITION_FOLLOWING?-1:1;
+  });
+  targets.forEach(function(el){el.setAttribute('data-rv','');});
+
+  function reveal(el){ el.classList.add('in'); }
+  if(window.IntersectionObserver){
+    var io=new IntersectionObserver(function(entries){
+      var shown=0;
+      entries.forEach(function(e){
+        if(!e.isIntersecting) return;
+        (function(el,step){ setTimeout(function(){ reveal(el); }, step*70); })(e.target,shown++);
+        io.unobserve(e.target);
+      });
+    },{rootMargin:'0px 0px -8% 0px',threshold:.08});
+    targets.forEach(function(el){io.observe(el);});
+  }else{
+    targets.forEach(reveal);
+  }
+  // if anything above still hides the text (script order, old browser), show it
+  window.addEventListener('load',function(){
+    setTimeout(function(){
+      targets.forEach(function(el){
+        if(!el.classList.contains('in')&&el.getBoundingClientRect().top<0) reveal(el);
+      });
+    },900);
+  });
+
+  /* ---- where am I: rail marker and the bar's own title ---- */
+  var links=Array.prototype.slice.call(document.querySelectorAll('.rail-list a'));
+  var byId={};
+  links.forEach(function(a){ byId[a.getAttribute('href').slice(1)]=a; });
+  var wordmark=document.querySelector('.wordmark');
+  var home=wordmark?wordmark.textContent:'';
+  var heads=Array.prototype.slice.call(document.querySelectorAll('main > h2[id]'));
+  function current(id){
+    links.forEach(function(a){ a.classList.toggle('on',a===byId[id]); });
+    if(!wordmark) return;
+    var a=byId[id];
+    if(!a||window.scrollY<80){ wordmark.textContent=home; return; }
+    wordmark.textContent=a.textContent.replace(/\s+/g,' ').trim();
+  }
+  if(window.IntersectionObserver){
+    var here=new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if(e.isIntersecting) current(e.target.id); });
+    },{rootMargin:'-12% 0px -72% 0px'});
+    heads.forEach(function(h){here.observe(h);});
+    var top=new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if(e.isIntersecting) current(null); });
+    },{rootMargin:'-5% 0px -90% 0px'});
+    var cover=document.querySelector('.cover');
+    if(cover) top.observe(cover);
+  }
+
+  /* ---- phone rail: tapping a chapter closes it ---- */
+  var toggle=document.getElementById('tocToggle');
+  links.forEach(function(a){
+    a.addEventListener('click',function(){ if(toggle) toggle.checked=false; });
+  });
+
+  /* ---- filter over the skill and playbook tables ---- */
   var input=document.getElementById('filter');
   if(input){
     input.addEventListener('input',function(){
       var q=input.value.trim().toLowerCase();
-      var tables=document.querySelectorAll('table.filterable');
-      tables.forEach(function(t){
+      Array.prototype.forEach.call(document.querySelectorAll('table.filterable'),function(t){
         var rows=t.querySelectorAll('tr');
         for(var i=1;i<rows.length;i++){
-          var r=rows[i];
-          r.style.display=(!q||r.textContent.toLowerCase().indexOf(q)>-1)?'':'none';
+          rows[i].style.display=(!q||rows[i].textContent.toLowerCase().indexOf(q)>-1)?'':'none';
         }
       });
     });
+    input.addEventListener('keydown',function(e){ if(e.key==='Escape'){ input.value=''; input.dispatchEvent(new Event('input')); } });
   }
-  // 移动端：图默认缩到整幅可见，点一下放大成可横向滚动
-  if(window.matchMedia && window.matchMedia('(max-width: 860px)').matches){
-    document.querySelectorAll('figure.devfig').forEach(function(fig){
-      fig.addEventListener('click',function(){
+
+  /* ---- phone figures: whole drawing first, tap for full size ---- */
+  function bindFigures(){
+    Array.prototype.forEach.call(document.querySelectorAll('figure.devfig'),function(fig){
+      if(fig.dataset.bound) return;
+      fig.dataset.bound='1';
+      var start=null;
+      fig.addEventListener('touchstart',function(e){
+        start=e.touches.length===1?{x:e.touches[0].clientX,y:e.touches[0].clientY}:null;
+      },{passive:true});
+      fig.addEventListener('click',function(e){
+        if(start&&(Math.abs(e.clientX-start.x)>10||Math.abs(e.clientY-start.y)>10)) return;
         fig.classList.toggle('zoom');
         var box=fig.querySelector('.figscroll');
-        if(box && fig.classList.contains('zoom')){
+        if(box&&fig.classList.contains('zoom')){
           box.scrollLeft=Math.max(0,(box.scrollWidth-box.clientWidth)/2);
         }
       });
     });
   }
-  // 手机上点目录项后自动收起，回到正文
-  var tocToggle=document.getElementById('tocToggle');
-  document.querySelectorAll('nav.toc a').forEach(function(a){
-    a.addEventListener('click',function(){ if(tocToggle) tocToggle.checked=false; });
-  });
-  var links=document.querySelectorAll('nav.toc a');
-  var map={};
-  links.forEach(function(a){var id=a.getAttribute('href').slice(1);var el=document.getElementById(id);if(el)map[id]=a;});
-  if('IntersectionObserver' in window){
-    var obs=new IntersectionObserver(function(es){
-      es.forEach(function(e){
-        if(e.isIntersecting){
-          links.forEach(function(a){a.style.color='';a.style.background='';});
-          var a=map[e.target.id];
-          if(a){a.style.color='var(--accent)';a.style.background='var(--panel2)';}
-        }
-      });
-    },{rootMargin:'-10% 0px -80% 0px'});
-    Object.keys(map).forEach(function(id){var el=document.getElementById(id);if(el)obs.observe(el);});
-  }
+  if(window.matchMedia&&window.matchMedia('(max-width: 860px)').matches) bindFigures();
 })();
 </script>
 </body>
