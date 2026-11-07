@@ -1669,15 +1669,20 @@ create-verification-skill  造一个能自己跑应用的验证技能</code></pr
   var wordmark=document.querySelector('.wordmark');
   var home=wordmark?wordmark.textContent:'';
   var heads=Array.prototype.slice.call(document.querySelectorAll('main > h2[id]'));
+  // only the collapsed rail needs a chapter label in its head; on the wide rail
+  // the highlighted row already says where you are, so the title stays put
+  var narrow=window.matchMedia('(max-width: 1080px)'), at=null;
   function current(id){
+    at=id;
     links.forEach(function(a){ a.classList.toggle('on',a===byId[id]); });
     if(!wordmark) return;
     var a=byId[id];
-    if(!a||window.scrollY<80){ wordmark.textContent=home; return; }
+    if(!a||window.scrollY<80||!narrow.matches){ wordmark.textContent=home; return; }
     var n=a.querySelector('.n');
     var label=a.lastChild&&a.lastChild.nodeType===3?a.lastChild.textContent:a.textContent;
     wordmark.textContent=(n?n.textContent.trim()+' ':'')+label.replace(/\s+/g,' ').trim();
   }
+  narrow.addEventListener('change',function(){ current(at); });
   if(window.IntersectionObserver){
     var here=new IntersectionObserver(function(entries){
       entries.forEach(function(e){ if(e.isIntersecting) current(e.target.id); });
