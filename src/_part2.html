@@ -1,0 +1,240 @@
+<h2 id="playbooks">3 二十三本 playbook</h2>
+
+<p>playbook 不能直接调用，只能由 poteto-mode 按任务选中。你要学的是「什么任务对应哪本」，以及「这本会保证什么」。</p>
+
+<p>下面按使用频率分组。每本给四样东西：什么时候选它、它保证什么、产物是什么、什么时候别用。</p>
+
+<h3>诊断类</h3>
+
+<h4>Investigation 调查</h4>
+<p><span class="tag">只读</span><span class="tag">最常见</span>用于「这是怎么跑的」「当初为什么这么写」「我们确定吗」。不写代码，只产出带引用来源的答案。产物是一份说明，每个结论都指向具体文件和行。<b>别用</b>在你要它顺手改掉的地方。</p>
+
+<h4>Bug fix 修缺陷</h4>
+<p><span class="tag hot">高频</span>有明确症状的缺陷。它保证三件事：在真实界面上复现、每一步有运行时证据、修复前先放能复现问题的测试。产物是修复加证据，通常还有一个 PR。<b>别用</b>在你只有一个模糊感觉的时候，那属于 Investigation。</p>
+
+<p><b>原文六步，以及你会看到什么。</b></p>
+<ol>
+  <li><b>自己复现。</b>在出问题的同一个界面上驱动一遍，不让你去复现。复现不了就合成触发条件、收紧条件、加埋点，直到它稳定出现。你会看到一条真实命令和它的输出。</li>
+  <li><b>二分排因。</b>先列候选假设，再逐个排除。用 <code>how</code> 看这块子系统怎么跑，用 <code>why</code> 查回归历史。每轮挑最能缩小问题空间的那一刀。状态看不清就加日志，不猜。确认的是机制，不是症状。</li>
+  <li><b>规划修复。</b>跨函数边界先 <code>architect</code>，然后按具体范围派实现子代理。范围要写清文件、数据形状、成功标准。</li>
+  <li><b>回同一界面验证。</b>原来失败的操作现在通过才算过。「不确定」或者换了界面验证都不算。单测只能证明分支行为，不能证明缺陷消失。</li>
+  <li><b>排列提交顺序。</b>失败的复现先落进历史，修复在后。有廉价测试就走测试先行，没有就跳过，不要为了形式造测试。</li>
+  <li><b>开 PR。</b>描述里写清什么坏了、根因、修复、怎么验的，引用决定性的输出。</li>
+</ol>
+<!--FIG:bugfix-->
+
+<div class="note"><b>一条硬规矩。</b>每一行改动都要能追溯到运行时证据。「可能有帮助」的保险代码属于假设，不上线。证据推翻了假设，就把当初因它而加的改动回滚掉。</div>
+
+<h4>Perf issue 性能问题</h4>
+<p>有可测的慢。核心是把每个修复绑定到一个测量，先建基线再改。产物是前后数字。<b>别用</b>在「感觉有点卡」这种没有指标的场景，先做 Investigation 或 Runtime forensics。</p>
+
+<h4>Hillclimb 爬坡</h4>
+<p>一个指标要长期、科学地提升，不是一次修好。每轮一个假设，前后测量，接受就提交一个 commit，写决策日志。产物是一串可回滚的小胜。<b>别用</b>在一次性修复上，那是 Perf issue。</p>
+
+<h4>Runtime forensics 运行时取证</h4>
+<p>进程还活着，症状是泄漏、空转、偶发卡死。做活体观测，不靠读代码猜。产物是诊断，不是修复。</p>
+
+<h4>Trace forensics 轨迹取证</h4>
+<p>别人给了你一份已经抓下来的 profile、trace、spindump 或堆快照。产物同样是诊断。</p>
+
+<h3>开发类</h3>
+
+<h4>Feature 新功能</h4>
+<p><span class="tag hot">高频</span>新行为或行为变化。第一个动作是命名数据结构，再定实现形状，然后设计、实施、验证。产物是功能加验收证据。<b>别用</b>在纯结构调整，那是 Refactoring。</p>
+
+<p><b>原文八步。</b></p>
+<ol>
+  <li><b>先懂再改。</b>用 <code>how</code> 把受影响的子系统读一遍。</li>
+  <li><b>并行设计。</b><code>architect</code> 让多个模型各出一版类型与签名，交叉评审后合成。</li>
+  <li><b>写吞吐检查点。</b>四条待办：哪些步骤必须先做、哪些工作流互不依赖可并行、哪些共享可变状态要先拆、最小安全拆分是什么。不适用也要保留条目写 <code>n/a: 原因</code>，不能删。</li>
+  <li><b>派实现。</b>给子代理文件路径、命名的数据形状与组织方式（状态机而不是散落布尔、表驱动而不是分支堆叠、类型化模型而不是重复形状假设）、成功标准。实现有多种合理形状时改用 <code>arena</code>。每个写文件的代理给独立工作树，不许在一份共享文件上并行。</li>
+  <li><b>在匹配的界面验证。</b>换了界面或者结论不确定都不算通过。</li>
+  <li><b>重排提交。</b>拆成小的、有顺序的提交，每段自证后再下一段。</li>
+  <li><b>争议设计先对抗。</b>设计有争议就 <code>interrogate</code>，再交付。</li>
+  <li><b>开 PR。</b>说清做了什么、为什么这样选、吞吐检查点、未决问题。</li>
+</ol>
+
+<!--FIG:feature-->
+
+<div class="note"><b>怎么读一份 SKILL.md。</b>四段顺序读：先看 frontmatter 的 description，它决定这个技能会不会被触发；再看开头的非协商项，那是约束；中间是步骤；最后看回报格式，那是你验收它的模板。正文不用背，知道去哪找就行。</div>
+
+<h4>Refactoring 重构</h4>
+<p>行为不变，只改形状。它保证每一步都有等价的检查点。<b>别用</b>在你会顺手加功能的时候，那会同时改行为和形状，出了问题分不清是哪边。</p>
+
+<h4>Prototype 原型</h4>
+<p>一个决定凭推理定不了，做个一次性的东西让结果说话。可以是布局、交互、也可以是「这个方案到底跑不跑得动」。产物是决定，代码扔掉。<b>别用</b>在你已经知道要什么、只缺实现的时候。</p>
+
+<h4>Visual parity 像素对齐</h4>
+<p>两套实现要看起来完全一样，或者迁移样式系统。基线是规格，不能动。产物是图像 diff 证据。</p>
+
+<h4>Authoring a skill 写技能</h4>
+<p>写或改一份 SKILL.md。它管的是技能的语气、触发描述、结构和自证方式。</p>
+
+<h4>Eval 盲测</h4>
+<p>验证一次技能或提示词的改动，是否真的改变了 agent 行为。做法是给候选者不含任何评测词汇的自然任务，用不同模型各跑一遍，再由一个不知道来源的评委按评分表打分。<b>别用</b>在你只想跑一次看看效果，那是直接执行。</p>
+
+<h3>交付类</h3>
+
+<h4>Babysit 看 PR</h4>
+<p><span class="tag hot">高频</span>PR 开着，要把它推到可合并。处理冲突、跑 CI、挑评审意见。产物是可合并状态，<b>不合并</b>。合并权永远在人。</p>
+
+<h4>Shipping 上线</h4>
+<p>一串 PR 已经绿了。绿不等于安全。每个 PR 先由一个没写过这段代码的代理独立验证，只有从根部连续通过的那一段才落地。</p>
+
+<h4>Opening a PR 开 PR</h4>
+<p>每本 playbook 的收尾步骤。它管 PR 描述的结构、自测说明、风险与回滚。</p>
+
+<h3>自主类</h3>
+
+<h4>Autonomous run 自主运行</h4>
+<p>「一直跑到 X 为止」。你必须先给出一个能判定的完成条件，它才有停止的依据。<b>没有判定条件时别用</b>，会变成无限循环。</p>
+
+<h4>Orchestrate 编排</h4>
+<p>多天、多 PR、几十个子代理的项目，交给一个协调会话。它和 Autonomous run 的区别是规模与形态，不是自主程度。</p>
+
+<h4>Autopilot-full 全自动队列</h4>
+<p>一批互不依赖的 PR，全部推到可合并。每个 PR 一个负责人，根部再统一验证。操作者负责点合并。</p>
+
+<h4>Autopilot-stack 堆叠队列</h4>
+<p>和上面一样，但 PR 之间有依赖，最后交给人一次性落地。</p>
+
+<h3>衔接与清理类</h3>
+
+<h4>Session pickup 接手</h4>
+<p>接别人的分支、别人的会话。先读已有记录，不重做。</p>
+
+<h4>Pause safely 安全暂停</h4>
+<p>要断线、要重启、上下文快满了。产出一个冷启动能接上的检查点。</p>
+
+<h4>Multi-phase plan 多阶段计划</h4>
+<p>跨阶段或跨 PR 的工作，先出计划，不实施。</p>
+
+<h4>Worktree and simulator cleanup 清理</h4>
+<p>清磁盘。审计后只删已合并或已放弃的工作树和过期模拟器。</p>
+
+<div class="note"><b>选错的成本。</b>选错 playbook 比做错一步贵。修 bug 用了 Feature 流程，会多出一堆设计与验收；做功能用了 Bug fix 流程，会缺设计、缺数据形状，返工更贵。判断不准时先问一句「这是新行为还是旧行为坏了」。</div>
+
+<h2 id="skills">4 技能全解</h2>
+
+<p>43 个可调用技能。读法：先记住分组，再记每组里你最常用的三四个。全部背下来没有意义，知道去哪个组找就够了。</p>
+
+<div class="search"><input id="filter" placeholder="输入关键词过滤下面的技能表，例如 验证 / PR / 设计"></div>
+
+<h3>入口与元技能</h3>
+<table class="filterable">
+<tr><th>技能</th><th>干什么</th><th>什么时候叫它</th></tr>
+<tr><td><code>poteto-mode</code></td><td>总管。判断任务类型、挑 playbook、派活、把关</td><td>任何非平凡任务。改一行、问一个事实不用</td></tr>
+<tr><td><code>poteto-help</code></td><td>讲这套系统怎么用，帮你把问题路由到对应技能</td><td>不确定该用哪个技能时</td></tr>
+<tr><td><code>setup-pstack</code></td><td>写模型覆盖表，配每个角色用哪个模型、默认推理强度</td><td>换模型、降成本、改自动路由</td></tr>
+<tr><td><code>in-your-own-words</code></td><td>让 agent 先复述它理解的你的目标</td><td>需求复杂、怕它理解偏时，动手前用</td></tr>
+<tr><td><code>sharpen</code></td><td>把 prompt 改深不改长，补上专业视角和外部检查</td><td>任务重要但你的描述很糙时</td></tr>
+<tr><td><code>bro</code></td><td>把上一条回复用人话重说一遍</td><td>术语太多、没看懂</td></tr>
+<tr><td><code>ketchup</code></td><td>把这个会话自你上次开口以来的变化讲清楚，列出等你决定的事</td><td>离开一阵回来，接不上</td></tr>
+<tr><td><code>ketchup-video</code></td><td>同上，用带字幕的短视频</td><td>要看演示而不是读文字</td></tr>
+<tr><td><code>recall</code></td><td>从你过去的会话里重建当前上下文，并用 git 核对状态</td><td>跨天工作，不想重新交代</td></tr>
+<tr><td><code>what-did-i-get-done</code></td><td>把一段时间内你提交的改动总结成进展</td><td>周报、复盘</td></tr>
+</table>
+
+<h3>理解类</h3>
+<table class="filterable">
+<tr><th>技能</th><th>干什么</th><th>什么时候叫它</th></tr>
+<tr><td><code>how</code></td><td>讲这段代码现在怎么工作。复杂问题会派多个探索者并行看</td><td>改之前先弄懂；问「新代码该放哪」</td></tr>
+<tr><td><code>why</code></td><td>讲当初为什么这样写，去 git、PR、工单、文档、监控里找证据，事实与推测分开</td><td>看到奇怪代码想删之前</td></tr>
+<tr><td><code>teach</code></td><td>在底层调用 how 和 why，讲到你真懂，先给最短完整回答再等你追问</td><td>要审查或接手别人的东西</td></tr>
+</table>
+
+<h3>设计与对抗类</h3>
+<table class="filterable">
+<tr><th>技能</th><th>干什么</th><th>什么时候叫它</th></tr>
+<tr><td><code>architect</code></td><td>先定类型、签名、模块形状，多个模型各出一版再合成，然后进入实现</td><td>代码要跨函数边界、要加子系统</td></tr>
+<tr><td><code>arena</code></td><td>N 个候选同时做同一件事，选一个做底，把其他版本的强项嫁接进来</td><td>设计或实现没有唯一答案</td></tr>
+<tr><td><code>interrogate</code></td><td>多个不同模型同时挑刺，试图攻破你的改动，意见分四档</td><td>改动重要、怕有盲区</td></tr>
+<tr><td><code>blast-radius</code></td><td>找出改动在别处可能弄坏什么，并运行真实代码证明「安全所依赖的那一个事实」</td><td>上线前；改公共接口前</td></tr>
+<tr><td><code>swarm</code></td><td>派一群工人并行跑，最后汇成一份报告</td><td>覆盖矩阵、赛跑、批量验证</td></tr>
+</table>
+
+<h3>实现类</h3>
+<table class="filterable">
+<tr><th>技能</th><th>干什么</th><th>什么时候叫它</th></tr>
+<tr><td><code>tdd</code></td><td>测试先行。只在有廉价本地测试目标时用</td><td>缺陷能用一个单元测试钉住</td></tr>
+<tr><td><code>typescript-best-practices</code></td><td>TS/TSX 的写法规范</td><td>读写任何 .ts/.tsx</td></tr>
+</table>
+
+<h3>验证类</h3>
+<table class="filterable">
+<tr><th>技能</th><th>干什么</th><th>什么时候叫它</th></tr>
+<tr><td><code>create-verification-skill</code></td><td>研究仓库，生成项目专属验证技能和功能地图，生成后亲跑一遍才算交付</td><td>项目还没有能自动驱动 App 的验收方式</td></tr>
+<tr><td><code>maintain-verification-skill</code></td><td>定期审计验证技能与功能地图，每个功能读源码加真机跑一遍，最多产出一个纠正 PR</td><td>功能地图开始过时</td></tr>
+<tr><td><code>create-formal-verification-skill</code></td><td>对并发、重试、状态机、解析器做形式化验证</td><td>测试够不到、出错代价高的地方</td></tr>
+<tr><td><code>maintain-formal-verification-skill</code></td><td>代码变了之后把模型拉回一致，并判断失败是模型漂移还是真 bug</td><td>改动碰到已验证代码之后</td></tr>
+<tr><td><code>benchmark-checklist</code></td><td>报性能数字前先审这个数字本身</td><td>你要说「快了 X%」之前</td></tr>
+<tr><td><code>statechart</code></td><td>用 TLA+ 检查状态流转，给出破坏规则的最短路径，画成 Mermaid 图</td><td>协议、流程、状态机</td></tr>
+</table>
+
+<h3>评审与清理类</h3>
+<table class="filterable">
+<tr><th>技能</th><th>干什么</th><th>什么时候叫它</th></tr>
+<tr><td><code>no-comments</code></td><td>用一个没写过这些注释的代理砍掉叙述性注释</td><td>评审前</td></tr>
+<tr><td><code>deslop</code></td><td>清掉 AI 生成的冗余与套路代码</td><td>提交前</td></tr>
+<tr><td><code>thermo-nuclear-review</code></td><td>对分支改动做严格的安全与正确性审计</td><td>合并前的深审</td></tr>
+<tr><td><code>thermo-nuclear-code-quality-review</code></td><td>可维护性审计：抽象质量、巨型文件、条件分支蔓延</td><td>结构开始难读时</td></tr>
+<tr><td><code>thermos</code></td><td>同时跑上面两个，再合成结论</td><td>重要改动一次审完</td></tr>
+<tr><td><code>make-pr-easy-to-review</code></td><td>整理提交历史、写清 PR 描述、给评审人导航</td><td>PR 太大太乱</td></tr>
+<tr><td><code>get-pr-comments</code></td><td>拉取并归纳当前 PR 的评审意见</td><td>评审有反馈要处理</td></tr>
+<tr><td><code>fix-ci</code></td><td>找失败检查、读日志、做针对性修复</td><td>CI 红了</td></tr>
+<tr><td><code>fix-merge-conflicts</code></td><td>非交互解冲突并跑构建与测试</td><td>分支冲突</td></tr>
+<tr><td><code>babysit</code></td><td>独立技能版的看 PR，推到可合并</td><td>说「盯着这个 PR」时</td></tr>
+</table>
+
+<h3>写作类</h3>
+<table class="filterable">
+<tr><th>技能</th><th>干什么</th><th>什么时候叫它</th></tr>
+<tr><td><code>technical-writing</code></td><td>分层写作标准：Diátaxis 四类文档、句式规则、简明英语</td><td>写文档、RFC、README、PR 描述、提交信息</td></tr>
+<tr><td><code>unslop</code></td><td>去掉 AI 腔和套路表达</td><td>任何要给人看的文字</td></tr>
+</table>
+
+<h3>维护与自省类</h3>
+<table class="filterable">
+<tr><th>技能</th><th>干什么</th><th>什么时候叫它</th></tr>
+<tr><td><code>reflect</code></td><td>三个并行代理读本次会话，挑出可复用教训，落到具体技能改动</td><td>一次任务结束后</td></tr>
+<tr><td><code>correct</code></td><td>找出代理在本仓库反复犯的错，用结构消灭它：先架构，再类型，再 lint，再测试，最后才是文档</td><td>同样的错犯第二次时</td></tr>
+<tr><td><code>automate-me</code></td><td>把你的工作习惯沉淀成一个属于你的模式技能</td><td>你的偏好稳定成型后</td></tr>
+<tr><td><code>show-me-your-work</code></td><td>给长时间无人值守的工作留可审阅的决策轨迹</td><td>要跑通宵、要事后审计</td></tr>
+<tr><td><code>figure-it-out</code></td><td>没有现成 playbook 时，专门设计一次严谨的执行方案</td><td>大迁移、跨多个模块的改动</td></tr>
+</table>
+
+<h2 id="principles">5 二十四条原则</h2>
+
+<p>原则是单规则技能，平时不用叫。它们的作用是当 poteto-mode 面临取舍时提供偏向。你记住名字，就能用一句话纠正它，例如「按 prove it works，把真实输出贴出来」。</p>
+
+<table class="filterable">
+<tr><th>原则</th><th>一句话</th><th>什么时候用它纠偏</th></tr>
+<tr><td>prove-it-works</td><td>验真实产物，不验代理指标</td><td>它说「编译通过」「测试绿了」就宣告完成</td></tr>
+<tr><td>fix-root-causes</td><td>顺症状追到第一次出错的地方</td><td>它在加防御性代码而不是找根因</td></tr>
+<tr><td>test-behavior-not-implementation</td><td>断言用户能观察到的行为</td><td>测试改了实现就碎</td></tr>
+<tr><td>sequence-verifiable-units</td><td>切成每段都有检查点的小单元</td><td>一次改动太大、无法中途验证</td></tr>
+<tr><td>laziness-protocol</td><td>能删就删，最小改动</td><td>它在加抽象、加层、加信号线程</td></tr>
+<tr><td>foundational-thinking</td><td>先把核心类型和数据结构定对</td><td>开工就写逻辑，没定数据形状</td></tr>
+<tr><td>redesign-from-first-principles</td><td>新需求进来时，按「一开始就该这样」重设计</td><td>在旧结构上打补丁</td></tr>
+<tr><td>attack-the-premise</td><td>两个修法失败且共享同一前提，就别再修，去验前提</td><td>第二次修复又没解决</td></tr>
+<tr><td>subtract-before-you-add</td><td>先删死代码和冗余，再加</td><td>在新旧并存的状态上继续叠</td></tr>
+<tr><td>minimize-reader-load</td><td>减少层数与隐藏状态</td><td>代码难追、需要来回跳</td></tr>
+<tr><td>outcome-oriented-execution</td><td>直奔目标架构，不保留过渡态</td><td>为兼容保留了没人要的中间态</td></tr>
+<tr><td>experience-first</td><td>用户感受优先于实现便利</td><td>在拿「实现麻烦」当理由砍体验</td></tr>
+<tr><td>exhaust-the-design-space</td><td>没有先例时，做两三个原型再定</td><td>直接采纳第一个方案</td></tr>
+<tr><td>build-the-lever</td><td>造工具去做或去证明，别手工重复</td><td>同一件事手工做了第三遍</td></tr>
+<tr><td>model-the-domain</td><td>用状态机、类型、表驱动代替散落条件</td><td>分支越写越多、形状假设重复</td></tr>
+<tr><td>boundary-discipline</td><td>校验集中在系统边界，内部信任类型</td><td>每个函数都在重复校验</td></tr>
+<tr><td>type-system-discipline</td><td>让非法状态无法表达</td><td>用布尔组合表示互斥状态</td></tr>
+<tr><td>make-operations-idempotent</td><td>崩溃重跑收敛到同一结果</td><td>重试会重复写、重复发</td></tr>
+<tr><td>migrate-callers-then-delete-legacy-apis</td><td>迁移与删除同一波做完</td><td>新旧 API 长期并存</td></tr>
+<tr><td>separate-before-serializing-shared-state</td><td>先消除共享，再谈串行化</td><td>多个执行者写同一文件或对象</td></tr>
+<tr><td>guard-the-context-window</td><td>大输出走子代理，主线只留结论</td><td>主线在堆原始日志</td></tr>
+<tr><td>never-block-on-the-human</td><td>可逆的事直接做，做完给人看</td><td>它在问「要不要我做」</td></tr>
+<tr><td>encode-lessons-in-structure</td><td>同一条指令写第二遍时，改成 lint 或脚本</td><td>你在反复提醒同一件事</td></tr>
+<tr><td>explain-the-number</td><td>报数字前先弄清它在量什么、被什么限制</td><td>任何性能或评测结论</td></tr>
+</table>
+
+<!--FIG:principles-->
+
+<div class="note"><b>怎么用原则。</b>不要一次背二十四条。记住三条就够撑起大部分判断：prove-it-works、fix-root-causes、laziness-protocol。其余在遇到具体场景时回这张表查。</div>

@@ -1,0 +1,456 @@
+{
+ "skills": [
+  {
+   "name": "architect",
+   "desc": "Sketch types, signatures, and module structure before code, then stay in the loop while implementation fills in. Use for /architect, 'architect this', 'design this', or non-trivial work where jumping to code would lock in the wrong shape.",
+   "invocable": ""
+  },
+  {
+   "name": "arena",
+   "desc": "Spawn N parallel candidates at the same task, pick a base, graft the strongest parts of the losers into it. Use for /arena, 'arena this', 'throw it in the arena', or when one attempt at a non-trivial artifact would lock in the wrong shape.",
+   "invocable": ""
+  },
+  {
+   "name": "automate-me",
+   "desc": "Use for \\\"automate me\\\", \\\"create/update/refresh my -mode skill\\\", \\\"turn/capture my preferences or working style into a skill\\\", or wanting agents to follow how the user works. Drafts or revises a personal -mode skill via plugin-dev:skill-development + unslop, optionally pulling fresh evidence from recent transcripts.",
+   "invocable": ""
+  },
+  {
+   "name": "babysit",
+   "desc": "Watch an open PR — fix failing CI, handle the straightforward review comments, and drive it to a mergeable state. Claude Code analog of Cursor's built-in /babysit. Use after opening a PR when the user wants the agent to shepherd it without re-prompting.",
+   "invocable": ""
+  },
+  {
+   "name": "benchmark-checklist",
+   "desc": "Vet a perf measurement (limiter, tuning, limits, errors, repeatability, relevance, and whether the work happened) before you report or act on it. Use when you run a benchmark or report a speedup or regression you measured.",
+   "invocable": ""
+  },
+  {
+   "name": "blast-radius",
+   "desc": "Find what a change could break somewhere else before it ships, beyond the diff, and prove the one fact it's safe because of by running real code instead of writing it up. Use for 'blast radius of X', 'what could this break', reviewing a small diff you don't trust, or a brief that asserts something about existing code ('make X public', 'X already handles Y') before you design against that assertion.",
+   "invocable": ""
+  },
+  {
+   "name": "bro",
+   "desc": "Restate the last message in plain human language, with no jargon. Use for /bro or when asked to say it plainly.",
+   "invocable": ""
+  },
+  {
+   "name": "correct",
+   "desc": "Find the mistakes agents keep repeating in this repo and make each one impossible. Try architecture first, then types, then a lint whose error names the fix, then a test, and write docs last. Prove each check fails on a real past mistake. Repeat this each time the operator corrects you. Use for /correct.",
+   "invocable": ""
+  },
+  {
+   "name": "create-formal-verification-skill",
+   "desc": "Generate a project-local skill that formally verifies the code where a bug costs the most and tests reach the least, in any language, with whichever verification tool fits. Use for /create-formal-verification-skill, \\\"model-check this race\\\", \\\"prove this invariant\\\", or when concurrency, retries, state machines, parsers, or unsafe code need more than tests.",
+   "invocable": ""
+  },
+  {
+   "name": "create-verification-skill",
+   "desc": "Generate a project-local verification skill that drives your app the way a user does — any language, framework, or platform. Use for /create-verification-skill, \\\"make a control skill for this repo\\\", \\\"make a driver skill for this repo\\\", or when a project has no scripted way to prove UI/CLI/service behavior.",
+   "invocable": ""
+  },
+  {
+   "name": "deslop",
+   "desc": "Remove AI-generated code slop and clean up code style",
+   "invocable": ""
+  },
+  {
+   "name": "figure-it-out",
+   "desc": "Design an auditable playbook when no narrower one fits: a large migration, an ambitious multi-part change, or work a human reviews after stepping away. Scales rigor to the task, runs a hypothesis loop, and logs decisions. Use for /figure-it-out or 'figure it out'.",
+   "invocable": ""
+  },
+  {
+   "name": "fix-ci",
+   "desc": "Find failing PR checks, inspect logs or external check links, and apply focused fixes",
+   "invocable": ""
+  },
+  {
+   "name": "fix-merge-conflicts",
+   "desc": "Resolve merge conflicts non-interactively, validate build and tests, and finalize conflict resolution",
+   "invocable": ""
+  },
+  {
+   "name": "get-pr-comments",
+   "desc": "Fetch and summarize review comments from the active pull request",
+   "invocable": ""
+  },
+  {
+   "name": "how",
+   "desc": "Use for \\\"how does X work\\\", code walkthroughs before changing something, and placement / ownership / layering questions (\\\"where should this live\\\", \\\"which package owns this\\\", \\\"is this the right layer\\\"). Explains subsystem architecture, runtime flow, onboarding mental models. Use why for motivation.",
+   "invocable": ""
+  },
+  {
+   "name": "in-your-own-words",
+   "desc": "Restate in your own words what you think the user's goals are and what problem they're trying to solve. Use for /in-your-own-words.",
+   "invocable": ""
+  },
+  {
+   "name": "interrogate",
+   "desc": "Use for \\\"interrogate\\\", \\\"adversarial review\\\", \\\"multi-model review\\\", \\\"challenge this\\\", \\\"stress test this code\\\", \\\"find blind spots\\\", or \\\"tear this apart\\\". Adversaries try to break a change or design, and only findings proven by a run survive.",
+   "invocable": ""
+  },
+  {
+   "name": "ketchup",
+   "desc": "Catch the user up on what changed in this chat since their last message, in plain words and small visuals. List every item waiting on them with what they need to decide it from the reply alone. Use for /ketchup.",
+   "invocable": ""
+  },
+  {
+   "name": "ketchup-video",
+   "desc": "Catch the user up like /ketchup, with a short subtitled video of slides for what happened and the waiting calls as text under it. Use for /ketchup-video.",
+   "invocable": ""
+  },
+  {
+   "name": "maintain-formal-verification-skill",
+   "desc": "Bring a project's formal verification back in line with the code after the code changes: find the commits that touched verified code, update the model, harness, or properties to describe the code as it is now, rerun, and say whether each failure is drift in the verification or a bug in the code. Use for /maintain-formal-verification-skill, \\\"is the model still true to the code\\\", or after merges and refactors that touched verified code without rechecking it.",
+   "invocable": ""
+  },
+  {
+   "name": "maintain-verification-skill",
+   "desc": "Periodic pass that keeps a project's verification skill and feature map honest: parallel source readers per feature, one live session driving every feature, at most one PR of proven corrections. Use for /maintain-verification-skill or \\\"audit the verify skill\\\".",
+   "invocable": ""
+  },
+  {
+   "name": "make-pr-easy-to-review",
+   "desc": "Prepare PRs for review by cleaning noisy history, improving PR descriptions, and adding reviewer guidance without changing code behavior. Use for \"make this easy to review\", \"tidy this PR\", \"clean up commits\", or \"annotate the diff\".",
+   "invocable": ""
+  },
+  {
+   "name": "no-comments",
+   "desc": "Spawn the comment-sicko subagent, fix accepted findings, and offer encodings for claimed constraints.",
+   "invocable": ""
+  },
+  {
+   "name": "poteto-help",
+   "desc": "Guides users through pstack setup, /poteto-mode, and picking the skill, playbook, or principle for a task. Type /poteto-help with a question.",
+   "invocable": ""
+  },
+  {
+   "name": "poteto-mode",
+   "desc": "poteto's agent style for concise, detailed responses, deliberate subagents, unslopped prose, simple code, and verified work. Use for poteto, /poteto-mode, or requests to work in this style.",
+   "invocable": ""
+  },
+  {
+   "name": "principle-attack-the-premise",
+   "desc": "Apply when two or more fixes that share one premise have failed the same gate. Write the premise down and test it directly before you write another fix that assumes it.",
+   "invocable": "false"
+  },
+  {
+   "name": "principle-boundary-discipline",
+   "desc": "Apply when wiring validation, error handling, or framework adapters. Concentrate guards at system boundaries (CLI, config, network, external APIs); trust internal types and keep business logic in pure functions.",
+   "invocable": "false"
+  },
+  {
+   "name": "principle-build-the-lever",
+   "desc": "Apply to any non-trivial work, not just bulk work: edits, migrations, analyses, checks. Build the tool that does it or proves it (codemod, script, generator, or a skill your subagents follow) instead of working by hand. The tool is the artifact a reviewer can rerun.",
+   "invocable": "false"
+  },
+  {
+   "name": "principle-encode-lessons-in-structure",
+   "desc": "Apply when you catch yourself writing the same instruction a second time, or notice a recurring correction. Encode the rule as a lint, metadata flag, runtime check, or script instead of more text.",
+   "invocable": "false"
+  },
+  {
+   "name": "principle-exhaust-the-design-space",
+   "desc": "Apply when facing a novel UI interaction or architectural decision with no precedent in the codebase. Build 2-3 competing prototypes and compare side by side before committing.",
+   "invocable": "false"
+  },
+  {
+   "name": "principle-experience-first",
+   "desc": "Apply when product, UX, or feature-scope tradeoffs come up. Choose user delight over implementation convenience; ship fewer polished features over more rough ones.",
+   "invocable": "false"
+  },
+  {
+   "name": "principle-explain-the-number",
+   "desc": "Apply before you measure, and before you trust, report, or act on a number you measured: a speedup, a regression, a throughput, a latency, or an eval result. Find what limits it, and rule out that it measured something other than the work you think.",
+   "invocable": "false"
+  },
+  {
+   "name": "principle-fix-root-causes",
+   "desc": "Apply when debugging. Trace each symptom back to the first place the system went wrong and fix it there. A guard is a fix only when the state it handles is legitimate.",
+   "invocable": "false"
+  },
+  {
+   "name": "principle-foundational-thinking",
+   "desc": "Apply before writing logic: choosing core types and data structures, sequencing scaffold-vs-feature work, asking what concurrent actors share. Get the data structures right so downstream code becomes obvious.",
+   "invocable": "false"
+  },
+  {
+   "name": "principle-guard-the-context-window",
+   "desc": "Apply when context is filling up: large outputs, long files, repeated reads, fan-out planning. Route bulk to subagents; keep summaries in the main thread, not raw payloads.",
+   "invocable": "false"
+  },
+  {
+   "name": "principle-laziness-protocol",
+   "desc": "Apply when refactoring, evaluating diff size, or tempted to add abstractions, layers, or signal threading. Bias toward deletion and the smallest change that solves the problem.",
+   "invocable": "false"
+  },
+  {
+   "name": "principle-make-operations-idempotent",
+   "desc": "Apply when designing commands, lifecycle steps, or processing loops that run amid crashes, restarts, and retries. Converge to the same end state regardless of partial prior runs.",
+   "invocable": "false"
+  },
+  {
+   "name": "principle-migrate-callers-then-delete-legacy-apis",
+   "desc": "Apply when introducing a new internal API while old callers still exist. Migrate callers and delete the old API in the same wave instead of preserving compatibility layers.",
+   "invocable": "false"
+  },
+  {
+   "name": "principle-minimize-reader-load",
+   "desc": "Apply when reviewing or shaping code that's hard to trace. Count layers between question and answer, and hidden state in the reader's head; collapse one-caller wrappers and shrink mutable scope.",
+   "invocable": "false"
+  },
+  {
+   "name": "principle-model-the-domain",
+   "desc": "Apply when writing stateful logic, or when code branches a lot or repeats a shape assumption across files.",
+   "invocable": "false"
+  },
+  {
+   "name": "principle-never-block-on-the-human",
+   "desc": "Apply when tempted to ask 'should I do X?' on reversible work.",
+   "invocable": "false"
+  },
+  {
+   "name": "principle-outcome-oriented-execution",
+   "desc": "Apply during planned rewrites and migrations with explicit phase boundaries. Converge on the target architecture; don't preserve smooth intermediate states with throwaway compatibility code.",
+   "invocable": "false"
+  },
+  {
+   "name": "principle-prove-it-works",
+   "desc": "Apply after completing a task, before declaring done. Verify against the real artifact (run the feature, read the actual value, inspect the diff), not a proxy, self-report, or 'it compiles.'",
+   "invocable": "false"
+  },
+  {
+   "name": "principle-redesign-from-first-principles",
+   "desc": "Apply when integrating a new requirement into an existing design.",
+   "invocable": "false"
+  },
+  {
+   "name": "principle-separate-before-serializing-shared-state",
+   "desc": "Apply when concurrent actors might write to the same file, branch, key, or state object. Eliminate the sharing first; serialize structurally only when one shared writer is a real invariant.",
+   "invocable": "false"
+  },
+  {
+   "name": "principle-sequence-verifiable-units",
+   "desc": "Apply to multi-step work (sweeps, migrations, runs of similar edits) and to how you stack commits and PRs. Break work into small units that each end in a verifiable state, check each before the next, and order delivery so the sequence proves itself to a reviewer.",
+   "invocable": "false"
+  },
+  {
+   "name": "principle-subtract-before-you-add",
+   "desc": "Apply when sequencing an addition, refactor, or rewrite. Remove dead code, redundant validators, and stub references first, then build on the simpler base.",
+   "invocable": "false"
+  },
+  {
+   "name": "principle-test-behavior-not-implementation",
+   "desc": "Apply when you write, change, or keep a test. Assert what the code's users can observe, so that the test fails when that behavior breaks and keeps passing when only the internals change.",
+   "invocable": "false"
+  },
+  {
+   "name": "principle-type-system-discipline",
+   "desc": "Apply when designing types, reviewing a function signature, or writing code in any statically-typed language. Make illegal states unrepresentable, brand semantic primitives, parse external data at boundaries, exhaust variants, derive from authoritative schemas.",
+   "invocable": "false"
+  },
+  {
+   "name": "recall",
+   "desc": "Reconstruct your recent working context from your own chat history, live state, and the shared record (user reports, prior fixes, incidents), then hand back a tight current-state brief. Use for 'recall my work on X', 'catch me up', 'what have I been working on', 'where did I leave off', before starting or resuming work, and before telling the user that something was never recorded.",
+   "invocable": ""
+  },
+  {
+   "name": "reflect",
+   "desc": "Spawn three parallel review subagents over the active transcript, surface learnings, and route each to a concrete edit on an existing skill. Use when the user says reflect.",
+   "invocable": ""
+  },
+  {
+   "name": "setup-pstack",
+   "desc": "Configure which models pstack uses per role. Detects available models and writes the current runtime's override sheet. Use for /setup-pstack, \"configure pstack models\", changing pstack's model choices, or turning the SessionStart hook on or off.",
+   "invocable": ""
+  },
+  {
+   "name": "sharpen",
+   "desc": "Make a task deeper, not bigger, then rewrite the prompt. Use for /sharpen.",
+   "invocable": ""
+  },
+  {
+   "name": "show-me-your-work",
+   "desc": "Keep a reviewable decision trail for long-running or unattended work: a TSV log with one row per decision (what, why, evidence, result). Local by default; commit it when a reviewer needs the trail to trust the result. Use for /show-me-your-work, autonomous or multi-phase runs, or work a human reviews after stepping away.",
+   "invocable": ""
+  },
+  {
+   "name": "statechart",
+   "desc": "Check a TLA+ model of a system that moves between states, such as a product flow, a protocol, or a service, and draw it as a Mermaid statechart. The report gives the shortest path to each state that breaks a rule. Use for /statechart, or to show a bug as a path through states.",
+   "invocable": ""
+  },
+  {
+   "name": "swarm",
+   "desc": "Fan out N parallel workers, drain them, and return one report. Use for /swarm, 'swarm this', or parallel coverage, races, gauntlets, and exploration.",
+   "invocable": ""
+  },
+  {
+   "name": "tdd",
+   "desc": "Use only when the user explicitly asks for TDD, a failing test, or a regression test, OR when the bug has an obvious cheap local test target. Skip when the test path is unclear, expensive, integration-heavy, or not requested.",
+   "invocable": ""
+  },
+  {
+   "name": "teach",
+   "desc": "Explain a body of work plainly so a person actually understands it. Runs the `how` and `why` skills and weaves what they find into one clear explanation. Use for 'teach me this', 'help me really understand X', 'explain this change or subsystem to me'.",
+   "invocable": ""
+  },
+  {
+   "name": "technical-writing",
+   "desc": "Layered technical-writing standard: Diátaxis structure, Google developer style sentences, STE instruction rules, Global English syntax. Use for /technical-writing or when writing or reviewing docs, RFCs, readmes, PR descriptions, or commit messages.",
+   "invocable": ""
+  },
+  {
+   "name": "thermo-nuclear-code-quality-review",
+   "desc": "Run an extremely strict maintainability review for abstraction quality, giant files, and spaghetti-condition growth. Use for a thermo-nuclear code quality review, thermonuclear review, deep code quality audit, or especially harsh maintainability review.",
+   "invocable": ""
+  },
+  {
+   "name": "thermo-nuclear-review",
+   "desc": "Comprehensive security and correctness audit of a branch's changes. Use for thermo nuclear, thermonuclear, or deep review requests, or branch/PR diff audits focused on bugs, breaking changes, security issues, devex regressions, and feature-gate leaks.",
+   "invocable": ""
+  },
+  {
+   "name": "thermos",
+   "desc": "Launch both thermo-nuclear review subagents in parallel, then synthesize their findings. Use for thermos, double thermo review, or combined bug/security and code-quality branch audits.",
+   "invocable": ""
+  },
+  {
+   "name": "typescript-best-practices",
+   "desc": "TypeScript best practices. Use when reading or editing any .ts or .tsx file.",
+   "invocable": ""
+  },
+  {
+   "name": "unslop",
+   "desc": "Cut AI tells from any writing.",
+   "invocable": ""
+  },
+  {
+   "name": "what-did-i-get-done",
+   "desc": "Summarize authored commits over a user-specified time period into a concise update",
+   "invocable": ""
+  },
+  {
+   "name": "why",
+   "desc": "Use for 'why does X work this way', 'why we picked Y', design rationale, regressions, postmortems, or data-backed thresholds. Discovers available MCPs and queries each evidence category (source control, issue tracker, long-form docs, real-time chat, infrastructure observability, error tracking, product analytics warehouse) in parallel, then returns a cited read on decisions and tradeoffs. Use how for runtime behavior.",
+   "invocable": ""
+  }
+ ],
+ "playbooks": [
+  {
+   "file": "authoring-a-skill.md",
+   "title": "Authoring or modifying a skill",
+   "lead": "**You own the skill's voice.**"
+  },
+  {
+   "file": "autonomous-run.md",
+   "title": "Autonomous run",
+   "lead": "**You own the exit condition. Define done, then drive to it without stopping.**"
+  },
+  {
+   "file": "autopilot-full.md",
+   "title": "Autopilot-full",
+   "lead": "Resolve the driver skill through [poteto-mode's Non-negotiables](../SKILL.md#non-negotiables)."
+  },
+  {
+   "file": "autopilot-stack.md",
+   "title": "Autopilot-stack",
+   "lead": "Run the Autopilot-full playbook, but do not merge."
+  },
+  {
+   "file": "babysit.md",
+   "title": "Babysit",
+   "lead": "**You own the merge frontier. Declare a mode, clear one PR at a time, stop where the human's call begins.** This playbook supersedes the bundled **babysit** ski"
+  },
+  {
+   "file": "bug-fix.md",
+   "title": "Bug fix",
+   "lead": "**You own this task. Plan, review, verify.** Delegate investigation and the fix to subagents, stay in the lead. Pick each subagent's reasoning level for the job"
+  },
+  {
+   "file": "eval.md",
+   "title": "Eval",
+   "lead": "**You own the experiment design. Plan, blind, run, synthesize.**"
+  },
+  {
+   "file": "feature.md",
+   "title": "Feature",
+   "lead": "**You own the design. Plan, review, verify.** Delegate implementation. Stay in the lead."
+  },
+  {
+   "file": "hillclimb.md",
+   "title": "Hillclimb",
+   "lead": "**You own the metric and the experiment's integrity. Supervise and review. Delegate the attempts.** For sustained, iterative improvement of one measurable thing"
+  },
+  {
+   "file": "investigation.md",
+   "title": "Investigation",
+   "lead": "**You own the answer. Plan, route, write.**"
+  },
+  {
+   "file": "multi-phase-plan.md",
+   "title": "Multi-phase or multi-PR plan",
+   "lead": "Resolve the driver skill through [poteto-mode's Non-negotiables](../SKILL.md#non-negotiables)."
+  },
+  {
+   "file": "opening-a-pr.md",
+   "title": "Opening a PR",
+   "lead": "Invoked at the end of every other playbook."
+  },
+  {
+   "file": "orchestrate.md",
+   "title": "Orchestrate",
+   "lead": "Resolve the driver skill through [poteto-mode's Non-negotiables](../SKILL.md#non-negotiables)."
+  },
+  {
+   "file": "pause-safely.md",
+   "title": "Pause safely",
+   "lead": "**You own a clean stop. Leave a checkpoint a cold-start agent can resume from.** This is explicit only. On \"keep going\", \"going to bed, keep going\", or \"don't s"
+  },
+  {
+   "file": "perf-issue.md",
+   "title": "Perf issue",
+   "lead": "**You own the measurement story. Plan, review, verify the numbers.** Tie every fix to a measurement, don't read source instead of measuring."
+  },
+  {
+   "file": "prototype.md",
+   "title": "Prototype",
+   "lead": "**You own the design decision, not the code. The prototype is a throwaway instrument. The real build follows Feature.**"
+  },
+  {
+   "file": "refactoring.md",
+   "title": "Refactoring",
+   "lead": "Resolve the driver skill through [poteto-mode's Non-negotiables](../SKILL.md#non-negotiables)."
+  },
+  {
+   "file": "runtime-forensics.md",
+   "title": "Runtime forensics",
+   "lead": "**You own the diagnosis. Instrument the live process, don't theorize from source.** The deliverable is a cited diagnosis, not a fix."
+  },
+  {
+   "file": "session-pickup.md",
+   "title": "Session pickup",
+   "lead": "**You own the resume point. Read the prior trail, don't redo it.**"
+  },
+  {
+   "file": "shipping.md",
+   "title": "Shipping",
+   "lead": "Resolve the driver skill through [poteto-mode's Non-negotiables](../SKILL.md#non-negotiables)."
+  },
+  {
+   "file": "trace-forensics.md",
+   "title": "Trace forensics",
+   "lead": "**You own the diagnosis from the artifact.**"
+  },
+  {
+   "file": "visual-parity.md",
+   "title": "Visual parity",
+   "lead": "**You own pixel-exact equivalence. The baseline is the spec. You do not touch it.** Equivalence is verified by image diff, not by eye."
+  },
+  {
+   "file": "worktree-cleanup.md",
+   "title": "Worktree and simulator cleanup",
+   "lead": "1. Snapshot and audit. Record `df -h /`, then run `skills/poteto-mode/scripts/worktree-audit.mjs` under the installed plugin (principle-build-the-lever). It rea"
+  }
+ ]
+}

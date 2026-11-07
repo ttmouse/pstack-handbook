@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>pstack 学习手册</title>
+<style>
+:root{
+  --bg:#0f1115; --panel:#171a21; --panel2:#1d212a; --fg:#e6e8ee; --muted:#9aa3b2;
+  --line:#2a2f3a; --accent:#7cc4ff; --accent2:#ffd479; --ok:#7ee2a8; --bad:#ff8f8f;
+  --code:#11141a;
+}
+@media (prefers-color-scheme: light){
+  :root{--bg:#fbfbfd;--panel:#fff;--panel2:#f3f4f7;--fg:#1b1f27;--muted:#5c6474;--line:#e2e5ec;--accent:#0b62c4;--accent2:#9a6b00;--ok:#0f7a45;--bad:#b3261e;--code:#f4f5f8}
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.75 -apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+.layout{display:grid;grid-template-columns:286px minmax(0,1fr);min-height:100vh}
+nav.toc{position:sticky;top:0;height:100vh;overflow:auto;background:var(--panel);border-right:1px solid var(--line);padding:20px 16px}
+nav.toc h1{font-size:15px;margin:0 0 4px;letter-spacing:.02em}
+nav.toc .sub{color:var(--muted);font-size:12px;margin-bottom:14px}
+nav.toc ol{list-style:none;margin:0;padding:0;font-size:13.5px}
+nav.toc li{margin:2px 0}
+nav.toc a{display:block;padding:4px 8px;border-radius:6px;color:var(--muted)}
+nav.toc a:hover{background:var(--panel2);color:var(--fg);text-decoration:none}
+nav.toc .grp{margin:12px 0 4px;font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);opacity:.75}
+main{padding:36px 48px 96px;max-width:980px}
+h2{font-size:26px;margin:56px 0 8px;padding-top:18px;border-top:1px solid var(--line)}
+h2:first-of-type{border-top:0;margin-top:8px}
+h3{font-size:19px;margin:32px 0 6px}
+h4{font-size:16px;margin:22px 0 4px;color:var(--accent2)}
+p{margin:10px 0}
+ul,ol{margin:8px 0 8px 22px;padding:0}
+li{margin:4px 0}
+code{background:var(--code);border:1px solid var(--line);border-radius:5px;padding:1px 5px;font-size:13.5px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+pre{background:var(--code);border:1px solid var(--line);border-radius:10px;padding:14px 16px;overflow:auto;font-size:13px;line-height:1.6}
+pre code{border:0;background:none;padding:0}
+blockquote{margin:14px 0;padding:10px 16px;border-left:3px solid var(--accent);background:var(--panel2);color:var(--fg)}
+blockquote p{margin:4px 0}
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--muted);font-weight:600;font-size:12.5px;text-transform:uppercase;letter-spacing:.04em}
+tr:hover td{background:var(--panel2)}
+.tag{display:inline-block;font-size:11.5px;padding:1px 7px;border:1px solid var(--line);border-radius:999px;color:var(--muted);margin-right:6px}
+.tag.hot{color:var(--accent2);border-color:var(--accent2)}
+.note{border:1px solid var(--line);background:var(--panel);border-radius:10px;padding:14px 16px;margin:16px 0}
+.note b{color:var(--accent2)}
+.warn{border-left:3px solid var(--bad)}
+.good{border-left:3px solid var(--ok)}
+.k{color:var(--accent2)}
+.muted{color:var(--muted)}
+.search{position:sticky;top:0;z-index:5;background:var(--bg);padding:10px 0 12px}
+.search input{width:100%;padding:9px 12px;border-radius:8px;border:1px solid var(--line);background:var(--panel);color:var(--fg);font-size:14px}
+.badge{font-size:11px;padding:1px 6px;border-radius:4px;background:var(--panel2);border:1px solid var(--line);color:var(--muted);margin-left:6px}
+hr{border:0;border-top:1px solid var(--line);margin:34px 0}
+.tw{max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.figscroll{max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+figure.devfig.zoom .figscroll svg{width:900px;max-width:none}
+h2,h3,h4{scroll-margin-top:76px}
+.toc-toggle{display:none}
+.toc-bar{display:none}
+figure.devfig{margin:22px 0;padding:14px 16px 10px;border:1px solid var(--line);border-radius:12px;background:var(--panel)}
+figure.devfig svg{display:block;width:100%;height:auto}
+figure.devfig figcaption{margin-top:10px;font-size:12.5px;line-height:1.6;color:var(--muted)}
+@media (max-width: 860px){
+  body{font-size:16.5px;line-height:1.85}
+  .layout{grid-template-columns:minmax(0,1fr)}
+  main{min-width:0;overflow-wrap:break-word}
+  body{overflow-x:hidden}
+  nav.toc{position:static;height:auto;min-height:0;border-right:0;border-bottom:1px solid var(--line);padding:2px 16px 8px}
+  nav.toc h1,nav.toc .sub{display:none}
+  nav.toc ol{display:none;margin-top:4px;font-size:14.5px}
+  .toc-toggle:checked ~ nav.toc ol{display:block}
+  .toc-bar{display:flex;align-items:center;justify-content:space-between;padding:10px 0;font-size:15px;cursor:pointer;color:var(--fg)}
+  .toc-bar .chev{font-size:12.5px;color:var(--muted)}
+  .toc-bar .chev::after{content:"展开"}
+  .toc-toggle:checked ~ nav.toc .toc-bar .chev::after{content:"收起"}
+  nav.toc a{padding:9px 8px}
+  main{padding:16px 16px 72px;max-width:none}
+  h2{font-size:22px;margin:38px 0 6px;padding-top:14px}
+  h3{font-size:17.5px;margin:26px 0 4px}
+  h4{font-size:15.5px}
+  h2,h3,h4{scroll-margin-top:64px}
+  .search{padding:8px 0 10px}
+  pre{font-size:12.5px;padding:12px 12px;border-radius:8px}
+  code{font-size:13px}
+  .tw{margin:14px 0}
+  .tw table{min-width:520px;font-size:13.5px;margin:0}
+  .tw th,.tw td{padding:8px 9px}
+  figure.devfig{margin:18px -6px;padding:10px 8px 8px;border-radius:10px}
+  .figscroll{overflow-x:auto}
+  figure.devfig{cursor:zoom-in}
+  figure.devfig.zoom{cursor:zoom-out}
+  figure.devfig figcaption::after{content:"（轻点放大）";color:var(--accent);font-size:12px}
+  figure.devfig.zoom figcaption::after{content:"（轻点还原）"}
+  blockquote{margin:14px -4px;padding:10px 12px}
+  .note{padding:12px 13px}
+  ul,ol{margin-left:18px}
+}
+@media print{
+  nav.toc{display:none}
+  .layout{display:block}
+  main{max-width:none;padding:0}
+  body{background:#fff;color:#000}
+  pre,code{border-color:#ccc}
+}
+</style>
+</head>
+<body>
+<div class="layout">
+<input type="checkbox" id="tocToggle" class="toc-toggle">
+<nav class="toc">
+  <label for="tocToggle" class="toc-bar">目录<span class="chev"></span></label>
+  <h1>pstack 学习手册</h1>
+  <div class="sub">离线版 · 基于本机 0.9.129</div>
+  <ol>
+    <li><a href="#howto">0 怎么用这本手册</a></li>
+    <li><a href="#story">0.5 十分钟，一个故事</a></li>
+    <li><a href="#map">1 全景：四层结构</a></li>
+    <li><a href="#mech">2 技能如何运行</a></li>
+    <li class="grp">体系拆解</li>
+    <li><a href="#playbooks">3 二十三本 playbook</a></li>
+    <li><a href="#skills">4 技能全解</a></li>
+    <li><a href="#principles">5 二十四条原则</a></li>
+    <li><a href="#ethos">6 五条心法</a></li>
+    <li class="grp">深水区</li>
+    <li><a href="#verify">7 验证体系</a></li>
+    <li><a href="#scale">8 并行与规模</a></li>
+    <li><a href="#cost">9 成本与失败模式</a></li>
+    <li class="grp">练习</li>
+    <li><a href="#offline">10 离线课</a></li>
+    <li><a href="#online">11 联网课</a></li>
+    <li><a href="#plan">12 七天计划</a></li>
+    <li><a href="#feynman">13 费曼层：讲回去</a></li>
+    <li><a href="#cases">14 原作者的案例</a></li>
+    <li><a href="#others">15 别人的判断（第三方分析）</a></li>
+    <li class="grp">附录</li>
+    <li><a href="#cheat">A 命令速查</a></li>
+    <li><a href="#files">B 文件地图</a></li>
+    <li><a href="#glossary">C 术语表</a></li>
+  </ol>
+</nav>
+<main>
+
+<h2 id="howto">0 怎么用这本手册</h2>
+
+<p>这本手册只有一个目的：让你在没有网络的地方，把 pstack 的体系学明白，学完能自己判断一件事该走哪条流程、会用哪些技能、能预判它会怎么做。</p>
+
+<p>它不是命令大全。命令在附录 A，随查随用。正文讲的是「为什么这样设计」和「什么情况下选哪个」。</p>
+
+<h3>怎么读</h3>
+
+<ul>
+  <li>第一次读：从第 1 章顺序读到第 6 章。大约 90 分钟，不需要电脑，只需要这本手册。</li>
+  <li>每读完一章，翻到第 13 章做对应那张复述卡。讲不出来就回读，不要往下翻。</li>
+  <li>第二次读：只读第 3、4 章的表格，把每个技能名字和一句话用途对上号。目标是看到任务能立刻说出该叫谁。</li>
+  <li>动手前读：第 7 章验证、第 8 章并行。这两章决定你最终能跑多大。</li>
+  <li>想知道「这套东西边界在哪」：直接读第 15 章，不必先读前面。</li>
+  <li>飞机上：读第 1 到 6 章加第 10 章离线练习。所有练习都只要求纸笔或编辑器，不要求网络。</li>
+</ul>
+
+<h3>学完的验收标准</h3>
+
+<p>手册开头说的「原作者的七八成」，拆成下面五条可检验的能力。全部做到算达到，做不到的条目回对应章节补。</p>
+
+<table>
+<tr><th>能力</th><th>检验方式</th><th>对应章节</th></tr>
+<tr><td>给一个任务，能说出它该走哪本 playbook</td><td>拿十个真实任务做盲测，至少八条选对</td><td>3</td></tr>
+<tr><td>能预判一本 playbook 的步骤顺序</td><td>先写步骤，再打开原文对照，顺序基本一致</td><td>3</td></tr>
+<tr><td>看到技能名能说出用途与触发词</td><td>从 43 个技能里随机抽 10 个，8 个答对</td><td>4</td></tr>
+<tr><td>能设计一次可被机器判定的验收</td><td>给一个改动写出验收标准，别人照着跑能得出同样结论</td><td>7</td></tr>
+<tr><td>能判断一次并行该开几路、瓶颈在哪</td><td>给出任务和人数，说出上限与理由</td><td>8</td></tr>
+</table>
+
+<div class="note"><b>重要前提。</b>手册描述的是本机安装的版本 0.9.129。作者原文写于更早的版本，数量对不上是正常的。看到任何二手文章里的数字，先怀疑，再本机核对。</div>
+
+<div class="note warn"><b>如果第 1 章读着费劲，先跳到 0.5。</b>那一节不用任何术语，讲一个完整的故事。故事听懂了，再回来看结构，会顺很多。</div>
+
+<h2 id="story">0.5 十分钟，一个故事</h2>
+
+<p>先不看任何名词。讲一件事怎么从进来到做完。</p>
+
+<h3>事情</h3>
+
+<p>你发现一个毛病：快速连按快捷键切换侧栏，中间几次像是没反应。你想让它修好。</p>
+
+<h3>你会怎么做</h3>
+
+<p>如果你自己动手，大概是这几步。</p>
+
+<ol>
+  <li>先让它重现出来。点几下，确认真的会吞。</li>
+  <li>猜几个原因。是按键没收到，还是收到了被忽略，还是界面没来得及画。</li>
+  <li>一个个排除。加一行日志，看按键到底有没有进来。</li>
+  <li>找到原因，改那一处。</li>
+  <li>回到同一个地方再点一遍，确认不吞了。</li>
+  <li>把这次改动交上去，顺手写清楚是怎么回事。</li>
+</ol>
+
+<!--FIG:story-->
+
+<p>这套东西做的，就是把这个顺序固定下来，并且要求每一步都留下能复查的痕迹。它不比你聪明，它只是不会偷懒跳过第二步和第五步。</p>
+
+<h3>名词是怎么长出来的</h3>
+
+<p>上面那六步，被写成一份清单。清单不止一份，修毛病有一份，做新功能有一份，看别人提交的改动也有一份。这些清单叫 playbook。</p>
+
+<p>谁负责看你的话，判断该翻哪一份清单？一个专门的角色，叫 poteto-mode。</p>
+
+<p>清单里某一步需要一个专门动作，比如「先把这块代码读懂再动手」。这个动作也有一份说明，叫技能。它和清单的区别是：清单一整本，技能一个小动作。</p>
+
+<p>做的过程中容易走偏的地方，用一句话提醒自己，比如「没验证过的不算完成」。这些话叫原则。</p>
+
+<p>最后，「回到同一个地方再点一遍」这一步，被单独做大了。因为作者认为，前面都做得对，只要这一步偷懒，结果就是不可信的。这套东西叫验证技能。</p>
+
+<h3>一张对照表</h3>
+
+<table>
+<tr><th>故事里的说法</th><th>正式名字</th><th>它解决什么</th></tr>
+<tr><td>一整套做事顺序</td><td>playbook</td><td>防止漏步、防止顺序颠倒</td></tr>
+<tr><td>看活派单的人</td><td>poteto-mode</td><td>判断这是哪类活</td></tr>
+<tr><td>清单里的一个专门动作</td><td>技能</td><td>把一件事做到位</td></tr>
+<tr><td>一句话提醒</td><td>原则</td><td>在取舍时纠偏</td></tr>
+<tr><td>回到原地再试一次</td><td>验证技能</td><td>让「做完了」可被证明</td></tr>
+</table>
+
+<h3>为什么这套东西值钱</h3>
+
+<p>因为它把「靠自觉」换成了「靠流程」。自觉靠不住，尤其是让机器干活的时候。流程可以检查，自觉不能。</p>
+
+<p>剩下的十二章，都是在这六步上做加法。读完故事，你已经知道它在干什么了。</p>
+
+<h2 id="map">1 全景：四层结构</h2>
+
+<p>一句话：pstack 不是程序，是六十七份写给 AI 看的说明书，加一个负责分派的总管。</p>
+
+<p>它的组织形式和一般「提示词库」不同。提示词库是平铺的，越用越乱。它是四层，每层职责单一。</p>
+
+<h3>四层</h3>
+
+<table>
+<tr><th>层</th><th>是什么</th><th>数量</th><th>能不能直接叫</th></tr>
+<tr><td>路由器</td><td><code>poteto-mode</code>。判断任务类型，挑一本 playbook，把步骤抄进待办，然后按步骤调用技能和子代理</td><td>1</td><td>能，<code>/pstack:poteto-mode</code></td></tr>
+<tr><td>playbook</td><td>一类任务的步骤清单。修 bug 六步，做功能五步，看 PR 三步</td><td>23</td><td>不能。只能由 poteto-mode 读</td></tr>
+<tr><td>技能</td><td>一个具体动作或一种专门视角。理解代码、审 diff、写文档、生成验证器</td><td>43</td><td>能，<code>/pstack:&lt;名字&gt;</code></td></tr>
+<tr><td>原则</td><td>一条约束。写代码、测试、排查、重构时用来纠偏</td><td>24</td><td>能叫但很少叫，通常由 poteto-mode 引用</td></tr>
+</table>
+
+<!--FIG:layers-->
+
+<p>为什么这样分。因为三种东西的生命周期不同。playbook 会随流程演进改，技能会随工具改，原则几乎不变。混在一起写，改一处就伤全局。</p>
+
+<h3>为什么 playbook 不能直接叫</h3>
+
+<p>这一点最容易误解，也最能说明设计意图。playbook 是「步骤清单」，不是「动作」。清单单独执行没有意义，它需要有人先判断任务类型，再把清单里的每步翻译成具体的技能调用和子代理派发。</p>
+
+<p>所以正确的用法是描述任务，不是描述步骤。你自己列步骤，反而会把 playbook 里更合理的顺序打乱。</p>
+
+<p>别这样写：</p>
+<pre><code>/pstack:poteto-mode 先读代码，再写测试，再改，再跑测试</code></pre>
+
+<p>这样写：</p>
+<pre><code>/pstack:poteto-mode 修好快速连按 ⌘B 会吞键的问题。完成标准是在真实 App 里 6 次连按全部生效，并且给我前后截图。</code></pre>
+
+<p>三种最常用的开口方式，直接复制改括号里的内容。</p>
+
+<pre><code># 1 修缺陷
+/pstack:poteto-mode 修好 &lt;可复现的症状&gt;。用 verify 技能复现，修好后给我前后证据。
+
+# 2 做功能
+/pstack:poteto-mode 给 &lt;某个页面或模块&gt; 加 &lt;功能&gt;。先定数据形状，再实现，完成后用 verify 技能验证并给我截图。
+
+# 3 只问不改
+/pstack:how &lt;某段代码或某个流程&gt; 是怎么工作的？给我文件路径和关键函数。</code></pre>
+
+<h3>它和 CLAUDE.md 的区别</h3>
+
+<p>CLAUDE.md 是常驻上下文，每次会话都全文加载。pstack 的技能是按需加载，只有 <code>description</code> 常驻，正文在命中时才读。这让它可以放很多技能而不撑爆上下文，代价是路由必须准确，描述写不好就等于这个技能不存在。</p>
+
+<h3>核心赌注</h3>
+
+<p>整套东西押在一个判断上：如果 AI 能自己验证工作，人的角色就从「盯着每一步」变成「定义什么算完成」。验证能力是地基，其余是上层建筑。</p>
+
+<p>这也是为什么验证技能被作者称为关键基础设施，而别的技能只是工具。</p>
+
+<h2 id="mech">2 技能如何运行</h2>
+
+<p>这一章讲机制。理解机制，你才能预测它的行为，而不是背规则。</p>
+
+<h3>一个技能就是一个目录</h3>
+
+<pre><code>skills/
+  how/
+    SKILL.md        &lt;- 唯一必需的文件
+  create-verification-skill/
+    SKILL.md
+    references/     &lt;- 可选，正文按需引用
+</code></pre>
+
+<p><code>SKILL.md</code> 开头是 YAML frontmatter，其中 <code>description</code> 是全文最关键的一行。会话启动时，所有技能的 description 被注入上下文，模型按语义匹配。匹配不上，正文永远不会被读。</p>
+
+<pre><code>---
+name: blast-radius
+description: Find what a change could break somewhere else before it ships...
+---
+</code></pre>
+
+<p>所以「学会一个技能」等于「知道它的 description 覆盖哪些说法」。这也解释了为什么同一个技能，你说「影响面」它能触发，说「看看会不会坏」也可能触发，说「评估风险」就不一定。</p>
+
+<!--FIG:context-->
+
+<h3>启动钩子</h3>
+
+<p>插件装了一个 <code>SessionStart</code> hook，在启动、恢复、清空、压缩上下文时注入 poteto-mode 的强制段。其中一条是：改动涉及两个以上文件时，建议进入 poteto-mode。</p>
+
+<p>这就是为什么你只是随口让它改点东西，它却开始走流程。不想要这个行为，在模型表里写 <code>session hook: off</code>，重启会话生效。</p>
+
+<h3>模型表</h3>
+
+<p>技能本身不绑定模型。哪个角色用哪个模型，由运行时读一份覆盖表决定，路径是 <code>~/.claude/pstack-models.md</code>。表里每行是「角色: 模型」，可以带推理强度后缀，例如 <code>opus @xhigh</code>。</p>
+
+<p>面板类角色（arena、architect、interrogate）的值是列表，列表里每一项都会起一个子代理，所以列表长度直接决定花费。</p>
+
+<div class="note"><b>关键区别。</b>模型表只影响「谁来干」，不影响「干什么」。改模型表不会改变流程，只会改变成本和一次跑几个。</div>
+
+<h3>子代理</h3>
+
+<p>重活都派给子代理。主线程只保留判断和汇总，不保留大段原始输出。这不是风格问题，是上下文预算问题。一次读十个文件、跑十次验证，主线程自己干，上下文很快被塞满，后面的判断质量会下降。</p>
+
+<p>子代理分两种用法：新任务开新的，只有确实需要它本地状态时才续用旧的。续用旧代理时，中途追加的指令有丢失风险，重要变更要重新完整交代。</p>
+
+<h3>一次任务进来，发生了什么</h3>
+
+<ol>
+  <li>你的消息进入主线程，同时技能清单和钩子指令已在上下文里。</li>
+  <li>主线程判断这是哪类任务，命中某本 playbook，把步骤抄进待办清单。</li>
+  <li>按步骤调用技能，或派子代理执行。</li>
+  <li>需要验证时调用验证技能，失败就回到对应步骤。</li>
+  <li>收尾时按 playbook 自己的回报格式输出，并说明哪些步骤被跳过、为什么。</li>
+</ol>
+
+<!--FIG:flow-->
+
+<p>第 2 步的产物是待办清单，你能直接看到它选了什么、准备怎么做。这是最值得盯的地方。选错 playbook，后面全歪。</p>
+
+<div class="note good"><b>一个可操作的习惯。</b>每次 poteto-mode 启动后，先看它抄进清单的前三条是不是你预期的步骤。不对就立刻停，说「这是新任务，应该按 X 处理」。改流程比改结果便宜。</div>
+</main>
+</div>
+</body>
+</html>
