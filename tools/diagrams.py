@@ -178,8 +178,8 @@ def fig_story():
 
 def fig_layers():
     f = Fig("layers", 520,
-            "四层结构：路由器调用流程清单，清单里的每一步由技能执行，原则被前两层引用",
-            "任务从上往下走，只有路由器和技能能直接叫；流程清单只能被路由器读。")
+            "四层结构：路由器调用流程清单，清单里的每一步由技能执行，原则由路由器按场景自选",
+            "任务从上往下走，只有路由器和技能能直接叫；流程清单只能被路由器读，原则由它按场景自选。")
     cx, bw = 385, 430
     f.box(cx, 34, "你的任务", w=220, h=38, kind="accent")
     f.line(cx, 53, cx, 76)
@@ -207,9 +207,8 @@ def fig_layers():
                    'stroke="var(--muted)" stroke-dasharray="6 5"/>')
     f.note(775, 128, "原则 × 24", size=15, weight="600", color="var(--fg)")
     f.note(775, 158, "一句话约束", size=12.5)
-    f.note(775, 190, "不单独执行，", size=12.5)
-    f.note(775, 212, "被前两层引用", size=12.5)
-    f.note(775, 250, "很少单独叫", size=12)
+    f.note(775, 190, "不单独执行", size=12.5)
+    f.note(775, 224, "路由器按场景挑", size=12)
     f.path([(cx + bw / 2, 110), (660, 110)], dash="6 5", arrow=False)
     f.path([(cx + bw / 2, 340), (660, 340)], dash="6 5", arrow=False)
     return f
@@ -428,8 +427,8 @@ def fig_feynman():
 
 def fig_principles():
     f = Fig("principles", 430,
-            "三条必记的原则分别对应写之前、排查时、交付前，其余二十一条按场景查表",
-            "先记住这三条，剩下的遇到具体场景再查表，不要一次背二十四条。")
+            "三条最常救场的原则分别对应写之前、排查时、交付前，其余二十一条由 poteto-mode 按场景自选",
+            "这三条对应三个最容易走偏的时刻。其余二十一条由 poteto-mode 按场景挑选，挑中的才读全文。")
     phases = [
         (180, "写之前", "laziness-protocol", "能删就删，最小改动"),
         (450, "排查时", "fix-root-causes", "追到第一次出错的地方"),
@@ -445,7 +444,7 @@ def fig_principles():
     f.parts.append('<rect x="60" y="252" width="780" height="92" rx="10" fill="var(--panel2)" '
                    'stroke="var(--line)" stroke-dasharray="6 5"/>')
     f.note(450, 284, "其余 21 条：设计取舍、边界与类型、并行与共享状态、上下文预算", size=13)
-    f.note(450, 314, "平时不用背，遇到具体场景回第 5 章那张表查", size=12.5)
+    f.note(450, 314, "索引写在 poteto-mode 正文里，它按场景自己挑，挑中的才读全文", size=12.5)
     return f
 
 

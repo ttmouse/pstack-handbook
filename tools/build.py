@@ -62,6 +62,89 @@ def split_numbers(html):
     return re.sub(r"<h2([^>]*)>(.*?)</h2>", repl, html, flags=re.S)
 
 
+# Where an entry's English name stops: at the first character outside ASCII.
+NON_ASCII = r"(?=[^\x00-\x7f])"
+
+# Playbook numbers are pinned here, by the English half of the entry title, and
+# never counted off the page. A reader who cites "第 3 章 06" must keep landing on
+# Trace forensics after the chapter is edited or a new playbook is inserted, so
+# inserting one means giving it a number here — not shifting the twenty below it.
+# Nothing here reaches the playbook files themselves: routing is by description,
+# and numbering the handbook cannot change what poteto-mode selects.
+PLAYBOOK_NUMBERS = {
+    "Investigation": 1,
+    "Bug fix": 2,
+    "Perf issue": 3,
+    "Hillclimb": 4,
+    "Runtime forensics": 5,
+    "Trace forensics": 6,
+    "Feature": 7,
+    "Refactoring": 8,
+    "Prototype": 9,
+    "Visual parity": 10,
+    "Authoring a skill": 11,
+    "Eval": 12,
+    "Babysit": 13,
+    "Shipping": 14,
+    "Opening a PR": 15,
+    "Autonomous run": 16,
+    "Orchestrate": 17,
+    "Autopilot-full": 18,
+    "Autopilot-stack": 19,
+    "Session pickup": 20,
+    "Pause safely": 21,
+    "Multi-phase plan": 22,
+    "Worktree and simulator cleanup": 23,
+}
+
+
+def number_playbooks(html):
+    """Pin the playbook entries in chapter 3 to their number, so one can be cited as "第 3 章 06".
+
+    The number lives in the published page only: it is assigned here from
+    PLAYBOOK_NUMBERS and nowhere in the playbook files themselves. Both directions
+    are checked — an entry with no number and a number with no entry both fail the
+    build, so the two can never drift apart in silence.
+    """
+    start = html.find('<h2 id="playbooks">')
+    if start < 0:
+        return html, 0
+    end = html.find("<h2 ", start + 1)
+    if end < 0:
+        end = len(html)
+    head, body, tail = html[:start], html[start:end], html[end:]
+    numbers, unnumbered = [], []
+
+    def repl(m):
+        title = m.group(1).strip()
+        # The English half ends at the first non-ASCII character: "Bug fix 修缺陷" -> "Bug fix".
+        # Matching the whole key against it keeps "Eval runs" from quietly passing as "Eval".
+        english = re.split(NON_ASCII, title, maxsplit=1)[0].strip()
+        if english not in PLAYBOOK_NUMBERS:
+            unnumbered.append(title)
+            return m.group(0)
+        # The title is published exactly as written; only the English half is used,
+        # to look the number up. Splitting it for display would drop the space
+        # between "Trace forensics" and "轨迹取证" when the line is copied.
+        n = PLAYBOOK_NUMBERS[english]
+        numbers.append(english)
+        return (f'<h4 class="pb" id="pb-{n:02d}">'
+                f'<span class="pbnum">{n:02d}</span>'
+                f'<span class="pbtitle">{title}</span></h4>')
+
+    body = re.sub(r"<h4>(.*?)</h4>", repl, body, flags=re.S)
+    doc = head + body + tail
+
+    missing = sorted(set(PLAYBOOK_NUMBERS) - set(numbers))
+    repeated = sorted({k for k in numbers if numbers.count(k) > 1})
+    if unnumbered or missing or repeated:
+        sys.exit("playbook numbering out of step with PLAYBOOK_NUMBERS\n"
+                 f"  entries with no number: {unnumbered}\n"
+                 f"  numbers with no entry: {missing}\n"
+                 f"  entries matched twice: {repeated}")
+    return doc, len(numbers)
+
+
 def label_cells(html):
     """Copy each column's header text onto its cells as data-label, so a phone can stack the table."""
     def repl(m):
@@ -95,6 +178,7 @@ def main():
     doc, used = inline_figures(doc)
     doc = square_figures(doc)
     doc = split_numbers(doc)
+    doc, n_playbooks = number_playbooks(doc)
     doc = label_cells(doc)
     doc, n_tables = re.subn(r"(<table[^>]*>.*?</table>)", r'<div class="tw">\1</div>',
                             doc, flags=re.S)
@@ -115,6 +199,7 @@ def main():
     print(f"bytes     {len(doc.encode())}")
     print(f"figures   {len(used)}: {', '.join(used)}")
     print(f"h2        {len(re.findall(r'<h2 ', doc))}")
+    print(f"playbooks {n_playbooks} (numbered 01+)")
     print(f"tables    {n_tables} (wrapped for mobile scroll)")
     print(f"pre       {len(re.findall(r'<pre>', doc))}")
     print(f"missing   {missing}")

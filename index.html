@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#f6f5f2" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0c0d0f" media="(prefers-color-scheme: dark)">
-<meta name="description" content="pstack 学习手册：拿到任务能说出该走哪条流程、叫哪个技能、能预判它会怎么做。">
+<meta name="description" content="pstack 学习手册：拿到任务能判断该走哪条流程、核对技能选择、预判它会怎么做。">
 <title>pstack 学习手册</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2317563b'/%3E%3Ctext x='16' y='24' font-family='Georgia,serif' font-size='22' font-weight='600' fill='%23f6f5f2' text-anchor='middle'%3Ep%3C/text%3E%3C/svg%3E">
 <script>document.documentElement.className+=' js';</script>
@@ -19,7 +19,7 @@
   --raise:#efeeea;
   --raise-2:#e5e4de;
   --ink:#16171a;
-  --muted:#6b6f75;
+  --muted:#64686f;
   --brand:#17563b;
   --brand-soft:#e3ebe5;
   --warn-bg:#f3e9e3;
@@ -121,6 +121,12 @@ main > h2:first-of-type{margin-top:clamp(44px,5vw,84px)}
 h3{margin:62px 0 12px;font-family:var(--display);font-size:1.3125rem;line-height:1.5;
   font-weight:600;letter-spacing:-.008em}
 h4{margin:34px 0 6px;font-size:1rem;line-height:1.65;font-weight:600}
+/* numbered playbook entries: index in its own column, so a wrapped title hangs
+   under itself the way the chapter numeral hangs in the margin. The number is a
+   citation handle, not ornament, so it holds AA contrast on its own */
+h4.pb{display:grid;grid-template-columns:2.2em minmax(0,1fr);column-gap:.55em;align-items:baseline}
+h4.pb .pbnum{font-weight:400;font-size:.92em;color:var(--muted);
+  font-variant-numeric:tabular-nums;text-align:right;font-family:var(--display)}
 h1,h2,h3,h4{text-wrap:balance}
 h2,h3,h4{scroll-margin-top:84px}
 
@@ -287,7 +293,7 @@ figure.devfig figcaption{margin:12px 0 0;font-size:14px;line-height:1.7;color:va
 
 <header class="cover">
   <h1><span class="ln">pstack</span><span class="ln">学习手册</span></h1>
-  <p class="lede">拿到一个任务，能说出它该走哪条流程、叫哪个技能、会先做什么。学完自己判断，不用查。</p>
+  <p class="lede">拿到一个任务，能判断它该走哪条流程、核对技能选择、预判它会先做什么。陌生技能随时查。</p>
   <div class="cover-foot">
     <a class="go" href="#howto">开始读</a>
     <div class="stats">
@@ -300,7 +306,7 @@ figure.devfig figcaption{margin:12px 0 0;font-size:14px;line-height:1.7;color:va
 </header>
 <h2 id="howto"><span class="num">0</span><span class="ttl">怎么用这本手册</span></h2>
 
-<p>这本手册只有一个目的：让你把 pstack 的体系学明白，学完能自己判断一件事该走哪条流程、会用哪些技能、能预判它会怎么做。</p>
+<p>这本手册只有一个目的：让你把 pstack 的体系学明白，能判断任务该走哪条流程、核对 AI 选的技能、预判它会怎么做。</p>
 
 <p>它不是命令大全。命令在附录 A，随查随用。正文讲的是「为什么这样设计」和「什么情况下选哪个」。</p>
 
@@ -309,7 +315,7 @@ figure.devfig figcaption{margin:12px 0 0;font-size:14px;line-height:1.7;color:va
 <ul>
   <li>第一次读：从第 1 章顺序读到第 6 章。大约 90 分钟，不需要电脑，只需要这本手册。</li>
   <li>每读完一章，翻到第 13 章做对应那张复述卡。讲不出来就回读，不要往下翻。</li>
-  <li>第二次读：只读第 3、4 章的表格，把每个技能名字和一句话用途对上号。目标是看到任务能立刻说出该叫谁。</li>
+  <li>第二次读：只读第 3、4 章的表格。记住技能分组和常用的几个技能；遇到陌生技能时，回表核对用途和触发条件。</li>
   <li>动手前读：第 7 章验证、第 8 章并行。这两章决定你最终能跑多大。</li>
   <li>想知道「这套东西边界在哪」：直接读第 15 章，不必先读前面。</li>
   <li>有整块时间：读第 1 到 6 章加第 10 章纸笔练习。练习只要求纸笔或一个空编辑器。</li>
@@ -323,7 +329,7 @@ figure.devfig figcaption{margin:12px 0 0;font-size:14px;line-height:1.7;color:va
 <tr><th>能力</th><th>检验方式</th><th>对应章节</th></tr>
 <tr><td data-label="能力">给一个任务，能说出它该走哪本 playbook</td><td data-label="检验方式">拿十个真实任务做盲测，至少八条选对</td><td data-label="对应章节">3</td></tr>
 <tr><td data-label="能力">能预判一本 playbook 的步骤顺序</td><td data-label="检验方式">先写步骤，再打开原文对照，顺序基本一致</td><td data-label="对应章节">3</td></tr>
-<tr><td data-label="能力">看到技能名能说出用途与触发词</td><td data-label="检验方式">从 43 个技能里随机抽 10 个，8 个答对</td><td data-label="对应章节">4</td></tr>
+<tr><td data-label="能力">能核对技能选择是否合适</td><td data-label="检验方式">给三个真实任务，先选技能分组，再查表说明具体技能何时该用、何时不该用</td><td data-label="对应章节">4</td></tr>
 <tr><td data-label="能力">能设计一次可被机器判定的验收</td><td data-label="检验方式">给一个改动写出验收标准，别人照着跑能得出同样结论</td><td data-label="对应章节">7</td></tr>
 <tr><td data-label="能力">能判断一次并行该开几路、瓶颈在哪</td><td data-label="检验方式">给出任务和人数，说出上限与理由</td><td data-label="对应章节">8</td></tr>
 </table></div>
@@ -365,7 +371,7 @@ figure.devfig figcaption{margin:12px 0 0;font-size:14px;line-height:1.7;color:va
 
 <p>清单里某一步需要一个专门动作，比如「先把这块代码读懂再动手」。这个动作也有一份说明，叫技能。它和清单的区别是：清单一整本，技能一个小动作。</p>
 
-<p>做的过程中容易走偏的地方，用一句话提醒自己，比如「没验证过的不算完成」。这些话叫原则。</p>
+<p>做的过程中容易走偏的地方，给它留一句话，比如「没验证过的不算完成」。这些话叫原则。</p>
 
 <p>最后，「回到同一个地方再点一遍」这一步，被单独做大了。因为作者认为，前面都做得对，只要这一步偷懒，结果就是不可信的。这套东西叫验证技能。</p>
 
@@ -399,10 +405,10 @@ figure.devfig figcaption{margin:12px 0 0;font-size:14px;line-height:1.7;color:va
 <tr><td data-label="层">路由器</td><td data-label="是什么"><code>poteto-mode</code>。判断任务类型，挑一本 playbook，把步骤抄进待办，然后按步骤调用技能和子代理</td><td data-label="数量">1</td><td data-label="能不能直接叫">能，<code>/pstack:poteto-mode</code></td></tr>
 <tr><td data-label="层">playbook</td><td data-label="是什么">一类任务的步骤清单。修 bug 六步，做功能五步，看 PR 三步</td><td data-label="数量">23</td><td data-label="能不能直接叫">不能。只能由 poteto-mode 读</td></tr>
 <tr><td data-label="层">技能</td><td data-label="是什么">一个具体动作或一种专门视角。理解代码、审 diff、写文档、生成验证器</td><td data-label="数量">43</td><td data-label="能不能直接叫">能，<code>/pstack:&lt;名字&gt;</code></td></tr>
-<tr><td data-label="层">原则</td><td data-label="是什么">一条约束。写代码、测试、排查、重构时用来纠偏</td><td data-label="数量">24</td><td data-label="能不能直接叫">能叫但很少叫，通常由 poteto-mode 引用</td></tr>
+<tr><td data-label="层">原则</td><td data-label="是什么">一条约束。写代码、测试、排查、重构时用来纠偏</td><td data-label="数量">24</td><td data-label="能不能直接叫">不能。由 poteto-mode 按场景自选，挑中的才读全文</td></tr>
 </table></div>
 
-<figure class="devfig"><div class="figscroll"><svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="四层结构：路由器调用流程清单，清单里的每一步由技能执行，原则被前两层引用"><defs><marker id="layers-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="var(--muted)"/></marker></defs><rect x="275.0" y="15.0" width="220.0" height="38.0" fill="var(--panel2)" stroke="var(--accent)" stroke-width="1.4"/><text x="385.0" y="39.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">你的任务</text><line x1="385.0" y1="53.0" x2="385.0" y2="76.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#layers-arrow)"/><rect x="170.0" y="77.0" width="430.0" height="66.0" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="385.0" y="103.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">路由器 poteto-mode</text><text x="385.0" y="125.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">判断类型，挑清单，抄步骤</text><rect x="530.0" y="83.0" width="36.0" height="18" fill="none" stroke="var(--ok)" stroke-width="1"/><text x="548.0" y="95.8" text-anchor="middle" font-size="11" fill="var(--ok)">能叫</text><line x1="385.0" y1="143.0" x2="385.0" y2="192.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#layers-arrow)"/><text x="463.0" y="172.0" text-anchor="start" font-size="12" font-weight="400" fill="var(--muted)">选中一本</text><rect x="170.0" y="192.0" width="430.0" height="66.0" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="385.0" y="218.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">流程清单 playbook × 23</text><text x="385.0" y="240.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">修缺陷六步、做功能五步</text><rect x="520.5" y="198.0" width="47.0" height="18" fill="none" stroke="var(--bad)" stroke-width="1"/><text x="544.0" y="210.8" text-anchor="middle" font-size="11" fill="var(--bad)">不能叫</text><line x1="385.0" y1="258.0" x2="385.0" y2="307.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#layers-arrow)"/><text x="475.0" y="287.0" text-anchor="start" font-size="12" font-weight="400" fill="var(--muted)">每步翻译成技能调用</text><rect x="170.0" y="307.0" width="430.0" height="66.0" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="385.0" y="333.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">技能 × 43 与子代理</text><text x="385.0" y="355.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">一个具体动作；重活派出去</text><rect x="530.0" y="313.0" width="36.0" height="18" fill="none" stroke="var(--ok)" stroke-width="1"/><text x="548.0" y="325.8" text-anchor="middle" font-size="11" fill="var(--ok)">能叫</text><line x1="385.0" y1="373.0" x2="385.0" y2="415.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#layers-arrow)"/><rect x="170.0" y="421.0" width="430.0" height="58.0" fill="var(--panel)" stroke="var(--ok)" stroke-width="1.4"/><text x="385.0" y="443.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">真实产物 + 证据</text><text x="385.0" y="465.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">截图、命令输出、断言结果</text><rect x="660" y="88" width="230" height="274" fill="none" stroke="var(--muted)" stroke-dasharray="6 5"/><text x="775.0" y="128.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">原则 × 24</text><text x="775.0" y="158.0" text-anchor="middle" font-size="12.5" font-weight="400" fill="var(--muted)">一句话约束</text><text x="775.0" y="190.0" text-anchor="middle" font-size="12.5" font-weight="400" fill="var(--muted)">不单独执行，</text><text x="775.0" y="212.0" text-anchor="middle" font-size="12.5" font-weight="400" fill="var(--muted)">被前两层引用</text><text x="775.0" y="250.0" text-anchor="middle" font-size="12" font-weight="400" fill="var(--muted)">很少单独叫</text><path d="M 600.0 110.0 L 660.0 110.0" fill="none" stroke="var(--muted)" stroke-width="1.5" stroke-linejoin="round" stroke-dasharray="6 5"/><path d="M 600.0 340.0 L 660.0 340.0" fill="none" stroke="var(--muted)" stroke-width="1.5" stroke-linejoin="round" stroke-dasharray="6 5"/></svg></div><figcaption>任务从上往下走，只有路由器和技能能直接叫；流程清单只能被路由器读。</figcaption></figure>
+<figure class="devfig"><div class="figscroll"><svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="四层结构：路由器调用流程清单，清单里的每一步由技能执行，原则由路由器按场景自选"><defs><marker id="layers-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="var(--muted)"/></marker></defs><rect x="275.0" y="15.0" width="220.0" height="38.0" fill="var(--panel2)" stroke="var(--accent)" stroke-width="1.4"/><text x="385.0" y="39.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">你的任务</text><line x1="385.0" y1="53.0" x2="385.0" y2="76.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#layers-arrow)"/><rect x="170.0" y="77.0" width="430.0" height="66.0" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="385.0" y="103.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">路由器 poteto-mode</text><text x="385.0" y="125.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">判断类型，挑清单，抄步骤</text><rect x="530.0" y="83.0" width="36.0" height="18" fill="none" stroke="var(--ok)" stroke-width="1"/><text x="548.0" y="95.8" text-anchor="middle" font-size="11" fill="var(--ok)">能叫</text><line x1="385.0" y1="143.0" x2="385.0" y2="192.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#layers-arrow)"/><text x="463.0" y="172.0" text-anchor="start" font-size="12" font-weight="400" fill="var(--muted)">选中一本</text><rect x="170.0" y="192.0" width="430.0" height="66.0" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="385.0" y="218.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">流程清单 playbook × 23</text><text x="385.0" y="240.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">修缺陷六步、做功能五步</text><rect x="520.5" y="198.0" width="47.0" height="18" fill="none" stroke="var(--bad)" stroke-width="1"/><text x="544.0" y="210.8" text-anchor="middle" font-size="11" fill="var(--bad)">不能叫</text><line x1="385.0" y1="258.0" x2="385.0" y2="307.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#layers-arrow)"/><text x="475.0" y="287.0" text-anchor="start" font-size="12" font-weight="400" fill="var(--muted)">每步翻译成技能调用</text><rect x="170.0" y="307.0" width="430.0" height="66.0" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="385.0" y="333.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">技能 × 43 与子代理</text><text x="385.0" y="355.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">一个具体动作；重活派出去</text><rect x="530.0" y="313.0" width="36.0" height="18" fill="none" stroke="var(--ok)" stroke-width="1"/><text x="548.0" y="325.8" text-anchor="middle" font-size="11" fill="var(--ok)">能叫</text><line x1="385.0" y1="373.0" x2="385.0" y2="415.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#layers-arrow)"/><rect x="170.0" y="421.0" width="430.0" height="58.0" fill="var(--panel)" stroke="var(--ok)" stroke-width="1.4"/><text x="385.0" y="443.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">真实产物 + 证据</text><text x="385.0" y="465.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">截图、命令输出、断言结果</text><rect x="660" y="88" width="230" height="274" fill="none" stroke="var(--muted)" stroke-dasharray="6 5"/><text x="775.0" y="128.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">原则 × 24</text><text x="775.0" y="158.0" text-anchor="middle" font-size="12.5" font-weight="400" fill="var(--muted)">一句话约束</text><text x="775.0" y="190.0" text-anchor="middle" font-size="12.5" font-weight="400" fill="var(--muted)">不单独执行</text><text x="775.0" y="224.0" text-anchor="middle" font-size="12" font-weight="400" fill="var(--muted)">路由器按场景挑</text><path d="M 600.0 110.0 L 660.0 110.0" fill="none" stroke="var(--muted)" stroke-width="1.5" stroke-linejoin="round" stroke-dasharray="6 5"/><path d="M 600.0 340.0 L 660.0 340.0" fill="none" stroke="var(--muted)" stroke-width="1.5" stroke-linejoin="round" stroke-dasharray="6 5"/></svg></div><figcaption>任务从上往下走，只有路由器和技能能直接叫；流程清单只能被路由器读，原则由它按场景自选。</figcaption></figure>
 
 <p>为什么这样分。因为三种东西的生命周期不同。playbook 会随流程演进改，技能会随工具改，原则几乎不变。混在一起写，改一处就伤全局。</p>
 
@@ -461,7 +467,7 @@ description: Find what a change could break somewhere else before it ships...
 ---
 </code></pre>
 
-<p>所以「学会一个技能」等于「知道它的 description 覆盖哪些说法」。这也解释了为什么同一个技能，你说「影响面」它能触发，说「看看会不会坏」也可能触发，说「评估风险」就不一定。</p>
+<p>判断一个技能何时会被触发，关键是看它的 description 覆盖哪些说法，不必背下全文。比如同一个技能，你说「影响面」它能触发，说「看看会不会坏」也可能触发，说「评估风险」就不一定。</p>
 
 <figure class="devfig"><div class="figscroll"><svg viewBox="0 0 900 440" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="常驻式与按需式的上下文占用对比：整篇文件每次加载，或只加载描述、命中后再读正文"><defs><marker id="context-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="var(--muted)"/></marker></defs><text x="200.0" y="40.0" text-anchor="middle" font-size="13.5" font-weight="600" fill="var(--accent2)">常驻式（写进 CLAUDE.md）</text><text x="640.0" y="40.0" text-anchor="middle" font-size="13.5" font-weight="600" fill="var(--accent2)">按需式（写成技能）</text><rect x="60" y="66" width="280" height="238" fill="var(--panel2)" stroke="var(--line)"/><text x="200.0" y="130.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">整篇文件</text><text x="200.0" y="158.0" text-anchor="middle" font-size="12.5" font-weight="400" fill="var(--muted)">每次会话全文加载</text><text x="200.0" y="200.0" text-anchor="middle" font-size="12" font-weight="400" fill="var(--muted)">写五个技能就开始挤</text><text x="200.0" y="222.0" text-anchor="middle" font-size="12" font-weight="400" fill="var(--muted)">写二十个必然撑爆</text><rect x="171.0" y="253.0" width="58.0" height="18" fill="none" stroke="var(--bad)" stroke-width="1"/><text x="200.0" y="265.8" text-anchor="middle" font-size="11" fill="var(--bad)">每次都付</text><rect x="500" y="66" width="280" height="9" fill="var(--accent)" opacity="0.45"/><rect x="500" y="84" width="280" height="9" fill="var(--accent)" opacity="0.45"/><rect x="500" y="102" width="280" height="9" fill="var(--accent)" opacity="0.45"/><rect x="500" y="120" width="280" height="9" fill="var(--accent)" opacity="0.45"/><rect x="500" y="138" width="280" height="9" fill="var(--accent)" opacity="0.45"/><rect x="500" y="156" width="280" height="9" fill="var(--accent)" opacity="0.45"/><text x="640.0" y="186.0" text-anchor="middle" font-size="12.5" font-weight="400" fill="var(--muted)">43 条描述常驻，很薄</text><text x="790.0" y="82.0" text-anchor="start" font-size="14" font-weight="400" fill="var(--muted)">…</text><line x1="640.0" y1="200.0" x2="640.0" y2="226.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#context-arrow)"/><rect x="500" y="230" width="280" height="74" fill="var(--panel2)" stroke="var(--accent)"/><text x="640.0" y="258.0" text-anchor="middle" font-size="14" font-weight="600" fill="var(--fg)">命中才读正文</text><text x="640.0" y="282.0" text-anchor="middle" font-size="12" font-weight="400" fill="var(--muted)">读一次，答案留在结论里</text><rect x="611.0" y="313.0" width="58.0" height="18" fill="none" stroke="var(--ok)" stroke-width="1"/><text x="640.0" y="325.8" text-anchor="middle" font-size="11" fill="var(--ok)">按需才付</text><text x="450.0" y="380.0" text-anchor="middle" font-size="12.5" font-weight="400" fill="var(--muted)">省下来的不是字数，是判断质量：上下文越干净，后面的取舍越准。</text><text x="450.0" y="406.0" text-anchor="middle" font-size="12.5" font-weight="400" fill="var(--accent2)">代价只有一条：描述写不好，这个技能就等于不存在。</text></svg></div><figcaption>左边每次都背整本书，右边平时只背目录。代价是目录必须写准。</figcaption></figure>
 
@@ -504,14 +510,14 @@ description: Find what a change could break somewhere else before it ships...
 
 <p>playbook 不能直接调用，只能由 poteto-mode 按任务选中。你要学的是「什么任务对应哪本」，以及「这本会保证什么」。</p>
 
-<p>下面按使用频率分组。每本给四样东西：什么时候选它、它保证什么、产物是什么、什么时候别用。</p>
+<p>下面按使用频率分组。每本给四样东西：什么时候选它、它保证什么、产物是什么、什么时候别用。每本前面有一个两位编号，只属于这份手册，指某一本时直接报号就行，比如「第 3 章 06」。编号跟着这一本走，不跟着位置走，所以插进新的一本也不会把后面的号挪掉。</p>
 
 <h3>诊断类</h3>
 
-<h4>Investigation 调查</h4>
+<h4 class="pb" id="pb-01"><span class="pbnum">01</span><span class="pbtitle">Investigation 调查</span></h4>
 <p><span class="tag">只读</span><span class="tag">最常见</span>用于「这是怎么跑的」「当初为什么这么写」「我们确定吗」。不写代码，只产出带引用来源的答案。产物是一份说明，每个结论都指向具体文件和行。<b>别用</b>在你要它顺手改掉的地方。</p>
 
-<h4>Bug fix 修缺陷</h4>
+<h4 class="pb" id="pb-02"><span class="pbnum">02</span><span class="pbtitle">Bug fix 修缺陷</span></h4>
 <p><span class="tag hot">高频</span>有明确症状的缺陷。它保证三件事：在真实界面上复现、每一步有运行时证据、修复前先放能复现问题的测试。产物是修复加证据，通常还有一个 PR。<b>别用</b>在你只有一个模糊感觉的时候，那属于 Investigation。</p>
 
 <p><b>原文六步，以及你会看到什么。</b></p>
@@ -527,21 +533,21 @@ description: Find what a change could break somewhere else before it ships...
 
 <div class="note"><b>一条硬规矩。</b>每一行改动都要能追溯到运行时证据。「可能有帮助」的保险代码属于假设，不上线。证据推翻了假设，就把当初因它而加的改动回滚掉。</div>
 
-<h4>Perf issue 性能问题</h4>
+<h4 class="pb" id="pb-03"><span class="pbnum">03</span><span class="pbtitle">Perf issue 性能问题</span></h4>
 <p>有可测的慢。核心是把每个修复绑定到一个测量，先建基线再改。产物是前后数字。<b>别用</b>在「感觉有点卡」这种没有指标的场景，先做 Investigation 或 Runtime forensics。</p>
 
-<h4>Hillclimb 爬坡</h4>
+<h4 class="pb" id="pb-04"><span class="pbnum">04</span><span class="pbtitle">Hillclimb 爬坡</span></h4>
 <p>一个指标要长期、科学地提升，不是一次修好。每轮一个假设，前后测量，接受就提交一个 commit，写决策日志。产物是一串可回滚的小胜。<b>别用</b>在一次性修复上，那是 Perf issue。</p>
 
-<h4>Runtime forensics 运行时取证</h4>
+<h4 class="pb" id="pb-05"><span class="pbnum">05</span><span class="pbtitle">Runtime forensics 运行时取证</span></h4>
 <p>进程还活着，症状是泄漏、空转、偶发卡死。做活体观测，不靠读代码猜。产物是诊断，不是修复。</p>
 
-<h4>Trace forensics 轨迹取证</h4>
+<h4 class="pb" id="pb-06"><span class="pbnum">06</span><span class="pbtitle">Trace forensics 轨迹取证</span></h4>
 <p>别人给了你一份已经抓下来的 profile、trace、spindump 或堆快照。产物同样是诊断。</p>
 
 <h3>开发类</h3>
 
-<h4>Feature 新功能</h4>
+<h4 class="pb" id="pb-07"><span class="pbnum">07</span><span class="pbtitle">Feature 新功能</span></h4>
 <p><span class="tag hot">高频</span>新行为或行为变化。第一个动作是命名数据结构，再定实现形状，然后设计、实施、验证。产物是功能加验收证据。<b>别用</b>在纯结构调整，那是 Refactoring。</p>
 
 <p><b>原文八步。</b></p>
@@ -560,58 +566,58 @@ description: Find what a change could break somewhere else before it ships...
 
 <div class="note"><b>怎么读一份 SKILL.md。</b>四段顺序读：先看 frontmatter 的 description，它决定这个技能会不会被触发；再看开头的非协商项，那是约束；中间是步骤；最后看回报格式，那是你验收它的模板。正文不用背，知道去哪找就行。</div>
 
-<h4>Refactoring 重构</h4>
+<h4 class="pb" id="pb-08"><span class="pbnum">08</span><span class="pbtitle">Refactoring 重构</span></h4>
 <p>行为不变，只改形状。它保证每一步都有等价的检查点。<b>别用</b>在你会顺手加功能的时候，那会同时改行为和形状，出了问题分不清是哪边。</p>
 
-<h4>Prototype 原型</h4>
+<h4 class="pb" id="pb-09"><span class="pbnum">09</span><span class="pbtitle">Prototype 原型</span></h4>
 <p>一个决定凭推理定不了，做个一次性的东西让结果说话。可以是布局、交互、也可以是「这个方案到底跑不跑得动」。产物是决定，代码扔掉。<b>别用</b>在你已经知道要什么、只缺实现的时候。</p>
 
-<h4>Visual parity 像素对齐</h4>
+<h4 class="pb" id="pb-10"><span class="pbnum">10</span><span class="pbtitle">Visual parity 像素对齐</span></h4>
 <p>两套实现要看起来完全一样，或者迁移样式系统。基线是规格，不能动。产物是图像 diff 证据。</p>
 
-<h4>Authoring a skill 写技能</h4>
+<h4 class="pb" id="pb-11"><span class="pbnum">11</span><span class="pbtitle">Authoring a skill 写技能</span></h4>
 <p>写或改一份 SKILL.md。它管的是技能的语气、触发描述、结构和自证方式。</p>
 
-<h4>Eval 盲测</h4>
+<h4 class="pb" id="pb-12"><span class="pbnum">12</span><span class="pbtitle">Eval 盲测</span></h4>
 <p>验证一次技能或提示词的改动，是否真的改变了 agent 行为。做法是给候选者不含任何评测词汇的自然任务，用不同模型各跑一遍，再由一个不知道来源的评委按评分表打分。<b>别用</b>在你只想跑一次看看效果，那是直接执行。</p>
 
 <h3>交付类</h3>
 
-<h4>Babysit 看 PR</h4>
+<h4 class="pb" id="pb-13"><span class="pbnum">13</span><span class="pbtitle">Babysit 看 PR</span></h4>
 <p><span class="tag hot">高频</span>PR 开着，要把它推到可合并。处理冲突、跑 CI、挑评审意见。产物是可合并状态，<b>不合并</b>。合并权永远在人。</p>
 
-<h4>Shipping 上线</h4>
+<h4 class="pb" id="pb-14"><span class="pbnum">14</span><span class="pbtitle">Shipping 上线</span></h4>
 <p>一串 PR 已经绿了。绿不等于安全。每个 PR 先由一个没写过这段代码的代理独立验证，只有从根部连续通过的那一段才落地。</p>
 
-<h4>Opening a PR 开 PR</h4>
+<h4 class="pb" id="pb-15"><span class="pbnum">15</span><span class="pbtitle">Opening a PR 开 PR</span></h4>
 <p>每本 playbook 的收尾步骤。它管 PR 描述的结构、自测说明、风险与回滚。</p>
 
 <h3>自主类</h3>
 
-<h4>Autonomous run 自主运行</h4>
+<h4 class="pb" id="pb-16"><span class="pbnum">16</span><span class="pbtitle">Autonomous run 自主运行</span></h4>
 <p>「一直跑到 X 为止」。你必须先给出一个能判定的完成条件，它才有停止的依据。<b>没有判定条件时别用</b>，会变成无限循环。</p>
 
-<h4>Orchestrate 编排</h4>
+<h4 class="pb" id="pb-17"><span class="pbnum">17</span><span class="pbtitle">Orchestrate 编排</span></h4>
 <p>多天、多 PR、几十个子代理的项目，交给一个协调会话。它和 Autonomous run 的区别是规模与形态，不是自主程度。</p>
 
-<h4>Autopilot-full 全自动队列</h4>
+<h4 class="pb" id="pb-18"><span class="pbnum">18</span><span class="pbtitle">Autopilot-full 全自动队列</span></h4>
 <p>一批互不依赖的 PR，全部推到可合并。每个 PR 一个负责人，根部再统一验证。操作者负责点合并。</p>
 
-<h4>Autopilot-stack 堆叠队列</h4>
+<h4 class="pb" id="pb-19"><span class="pbnum">19</span><span class="pbtitle">Autopilot-stack 堆叠队列</span></h4>
 <p>和上面一样，但 PR 之间有依赖，最后交给人一次性落地。</p>
 
 <h3>衔接与清理类</h3>
 
-<h4>Session pickup 接手</h4>
+<h4 class="pb" id="pb-20"><span class="pbnum">20</span><span class="pbtitle">Session pickup 接手</span></h4>
 <p>接别人的分支、别人的会话。先读已有记录，不重做。</p>
 
-<h4>Pause safely 安全暂停</h4>
+<h4 class="pb" id="pb-21"><span class="pbnum">21</span><span class="pbtitle">Pause safely 安全暂停</span></h4>
 <p>要断线、要重启、上下文快满了。产出一个冷启动能接上的检查点。</p>
 
-<h4>Multi-phase plan 多阶段计划</h4>
+<h4 class="pb" id="pb-22"><span class="pbnum">22</span><span class="pbtitle">Multi-phase plan 多阶段计划</span></h4>
 <p>跨阶段或跨 PR 的工作，先出计划，不实施。</p>
 
-<h4>Worktree and simulator cleanup 清理</h4>
+<h4 class="pb" id="pb-23"><span class="pbnum">23</span><span class="pbtitle">Worktree and simulator cleanup 清理</span></h4>
 <p>清磁盘。审计后只删已合并或已放弃的工作树和过期模拟器。</p>
 
 <div class="note"><b>选错的成本。</b>选错 playbook 比做错一步贵。修 bug 用了 Feature 流程，会多出一堆设计与验收；做功能用了 Bug fix 流程，会缺设计、缺数据形状，返工更贵。判断不准时先问一句「这是新行为还是旧行为坏了」。</div>
@@ -707,39 +713,41 @@ description: Find what a change could break somewhere else before it ships...
 
 <h2 id="principles"><span class="num">5</span><span class="ttl">二十四条原则</span></h2>
 
-<p>原则是单规则技能，平时不用叫。它们的作用是当 poteto-mode 面临取舍时提供偏向。你记住名字，就能用一句话纠正它，例如「按 prove it works，把真实输出贴出来」。</p>
+<p>原则是给 AI 挑的，不是给人查的。二十四条的索引就在 poteto-mode 的正文里，每条后面跟一句「什么时候适用」：「写完一个任务、宣布完成之前」对 prove-it-works，「排查故障」对 fix-root-causes。它拿当前这一步去撞这些条件，撞中了才把那一条的全文读进来。</p>
+
+<p>二十四条技能在 frontmatter 里标了 <code>user-invocable: false</code>，在支持这个设置的斜杠菜单里不出现。通常由 poteto-mode 按场景选用；你也能直接要求 AI 按某条原则重新判断。你不用背全表。它挑错了或漏选了，指出场景和原则名就行。回报里它也要点名用了哪条原则、改了什么决定。</p>
 
 <div class="tw"><table class="filterable">
-<tr><th>原则</th><th>一句话</th><th>什么时候用它纠偏</th></tr>
-<tr><td data-label="原则">prove-it-works</td><td data-label="一句话">验真实产物，不验代理指标</td><td data-label="什么时候用它纠偏">它说「编译通过」「测试绿了」就宣告完成</td></tr>
-<tr><td data-label="原则">fix-root-causes</td><td data-label="一句话">顺症状追到第一次出错的地方</td><td data-label="什么时候用它纠偏">它在加防御性代码而不是找根因</td></tr>
-<tr><td data-label="原则">test-behavior-not-implementation</td><td data-label="一句话">断言用户能观察到的行为</td><td data-label="什么时候用它纠偏">测试改了实现就碎</td></tr>
-<tr><td data-label="原则">sequence-verifiable-units</td><td data-label="一句话">切成每段都有检查点的小单元</td><td data-label="什么时候用它纠偏">一次改动太大、无法中途验证</td></tr>
-<tr><td data-label="原则">laziness-protocol</td><td data-label="一句话">能删就删，最小改动</td><td data-label="什么时候用它纠偏">它在加抽象、加层、加信号线程</td></tr>
-<tr><td data-label="原则">foundational-thinking</td><td data-label="一句话">先把核心类型和数据结构定对</td><td data-label="什么时候用它纠偏">开工就写逻辑，没定数据形状</td></tr>
-<tr><td data-label="原则">redesign-from-first-principles</td><td data-label="一句话">新需求进来时，按「一开始就该这样」重设计</td><td data-label="什么时候用它纠偏">在旧结构上打补丁</td></tr>
-<tr><td data-label="原则">attack-the-premise</td><td data-label="一句话">两个修法失败且共享同一前提，就别再修，去验前提</td><td data-label="什么时候用它纠偏">第二次修复又没解决</td></tr>
-<tr><td data-label="原则">subtract-before-you-add</td><td data-label="一句话">先删死代码和冗余，再加</td><td data-label="什么时候用它纠偏">在新旧并存的状态上继续叠</td></tr>
-<tr><td data-label="原则">minimize-reader-load</td><td data-label="一句话">减少层数与隐藏状态</td><td data-label="什么时候用它纠偏">代码难追、需要来回跳</td></tr>
-<tr><td data-label="原则">outcome-oriented-execution</td><td data-label="一句话">直奔目标架构，不保留过渡态</td><td data-label="什么时候用它纠偏">为兼容保留了没人要的中间态</td></tr>
-<tr><td data-label="原则">experience-first</td><td data-label="一句话">用户感受优先于实现便利</td><td data-label="什么时候用它纠偏">在拿「实现麻烦」当理由砍体验</td></tr>
-<tr><td data-label="原则">exhaust-the-design-space</td><td data-label="一句话">没有先例时，做两三个原型再定</td><td data-label="什么时候用它纠偏">直接采纳第一个方案</td></tr>
-<tr><td data-label="原则">build-the-lever</td><td data-label="一句话">造工具去做或去证明，别手工重复</td><td data-label="什么时候用它纠偏">同一件事手工做了第三遍</td></tr>
-<tr><td data-label="原则">model-the-domain</td><td data-label="一句话">用状态机、类型、表驱动代替散落条件</td><td data-label="什么时候用它纠偏">分支越写越多、形状假设重复</td></tr>
-<tr><td data-label="原则">boundary-discipline</td><td data-label="一句话">校验集中在系统边界，内部信任类型</td><td data-label="什么时候用它纠偏">每个函数都在重复校验</td></tr>
-<tr><td data-label="原则">type-system-discipline</td><td data-label="一句话">让非法状态无法表达</td><td data-label="什么时候用它纠偏">用布尔组合表示互斥状态</td></tr>
-<tr><td data-label="原则">make-operations-idempotent</td><td data-label="一句话">崩溃重跑收敛到同一结果</td><td data-label="什么时候用它纠偏">重试会重复写、重复发</td></tr>
-<tr><td data-label="原则">migrate-callers-then-delete-legacy-apis</td><td data-label="一句话">迁移与删除同一波做完</td><td data-label="什么时候用它纠偏">新旧 API 长期并存</td></tr>
-<tr><td data-label="原则">separate-before-serializing-shared-state</td><td data-label="一句话">先消除共享，再谈串行化</td><td data-label="什么时候用它纠偏">多个执行者写同一文件或对象</td></tr>
-<tr><td data-label="原则">guard-the-context-window</td><td data-label="一句话">大输出走子代理，主线只留结论</td><td data-label="什么时候用它纠偏">主线在堆原始日志</td></tr>
-<tr><td data-label="原则">never-block-on-the-human</td><td data-label="一句话">可逆的事直接做，做完给人看</td><td data-label="什么时候用它纠偏">它在问「要不要我做」</td></tr>
-<tr><td data-label="原则">encode-lessons-in-structure</td><td data-label="一句话">同一条指令写第二遍时，改成 lint 或脚本</td><td data-label="什么时候用它纠偏">你在反复提醒同一件事</td></tr>
-<tr><td data-label="原则">explain-the-number</td><td data-label="一句话">报数字前先弄清它在量什么、被什么限制</td><td data-label="什么时候用它纠偏">任何性能或评测结论</td></tr>
+<tr><th>原则</th><th>一句话</th><th>什么时候用得上，你怎么纠偏</th></tr>
+<tr><td data-label="原则">prove-it-works</td><td data-label="一句话">验真实产物，不验代理指标</td><td data-label="什么时候用得上，你怎么纠偏">它说「编译通过」「测试绿了」就宣告完成</td></tr>
+<tr><td data-label="原则">fix-root-causes</td><td data-label="一句话">顺症状追到第一次出错的地方</td><td data-label="什么时候用得上，你怎么纠偏">它在加防御性代码而不是找根因</td></tr>
+<tr><td data-label="原则">test-behavior-not-implementation</td><td data-label="一句话">断言用户能观察到的行为</td><td data-label="什么时候用得上，你怎么纠偏">测试改了实现就碎</td></tr>
+<tr><td data-label="原则">sequence-verifiable-units</td><td data-label="一句话">切成每段都有检查点的小单元</td><td data-label="什么时候用得上，你怎么纠偏">一次改动太大、无法中途验证</td></tr>
+<tr><td data-label="原则">laziness-protocol</td><td data-label="一句话">能删就删，最小改动</td><td data-label="什么时候用得上，你怎么纠偏">它在加抽象、加层、加信号线程</td></tr>
+<tr><td data-label="原则">foundational-thinking</td><td data-label="一句话">先把核心类型和数据结构定对</td><td data-label="什么时候用得上，你怎么纠偏">开工就写逻辑，没定数据形状</td></tr>
+<tr><td data-label="原则">redesign-from-first-principles</td><td data-label="一句话">新需求进来时，按「一开始就该这样」重设计</td><td data-label="什么时候用得上，你怎么纠偏">在旧结构上打补丁</td></tr>
+<tr><td data-label="原则">attack-the-premise</td><td data-label="一句话">两个修法失败且共享同一前提，就别再修，去验前提</td><td data-label="什么时候用得上，你怎么纠偏">第二次修复又没解决</td></tr>
+<tr><td data-label="原则">subtract-before-you-add</td><td data-label="一句话">先删死代码和冗余，再加</td><td data-label="什么时候用得上，你怎么纠偏">在新旧并存的状态上继续叠</td></tr>
+<tr><td data-label="原则">minimize-reader-load</td><td data-label="一句话">减少层数与隐藏状态</td><td data-label="什么时候用得上，你怎么纠偏">代码难追、需要来回跳</td></tr>
+<tr><td data-label="原则">outcome-oriented-execution</td><td data-label="一句话">直奔目标架构，不保留过渡态</td><td data-label="什么时候用得上，你怎么纠偏">为兼容保留了没人要的中间态</td></tr>
+<tr><td data-label="原则">experience-first</td><td data-label="一句话">用户感受优先于实现便利</td><td data-label="什么时候用得上，你怎么纠偏">在拿「实现麻烦」当理由砍体验</td></tr>
+<tr><td data-label="原则">exhaust-the-design-space</td><td data-label="一句话">没有先例时，做两三个原型再定</td><td data-label="什么时候用得上，你怎么纠偏">直接采纳第一个方案</td></tr>
+<tr><td data-label="原则">build-the-lever</td><td data-label="一句话">造工具去做或去证明，别手工重复</td><td data-label="什么时候用得上，你怎么纠偏">同一件事手工做了第三遍</td></tr>
+<tr><td data-label="原则">model-the-domain</td><td data-label="一句话">用状态机、类型、表驱动代替散落条件</td><td data-label="什么时候用得上，你怎么纠偏">分支越写越多、形状假设重复</td></tr>
+<tr><td data-label="原则">boundary-discipline</td><td data-label="一句话">校验集中在系统边界，内部信任类型</td><td data-label="什么时候用得上，你怎么纠偏">每个函数都在重复校验</td></tr>
+<tr><td data-label="原则">type-system-discipline</td><td data-label="一句话">让非法状态无法表达</td><td data-label="什么时候用得上，你怎么纠偏">用布尔组合表示互斥状态</td></tr>
+<tr><td data-label="原则">make-operations-idempotent</td><td data-label="一句话">崩溃重跑收敛到同一结果</td><td data-label="什么时候用得上，你怎么纠偏">重试会重复写、重复发</td></tr>
+<tr><td data-label="原则">migrate-callers-then-delete-legacy-apis</td><td data-label="一句话">迁移与删除同一波做完</td><td data-label="什么时候用得上，你怎么纠偏">新旧 API 长期并存</td></tr>
+<tr><td data-label="原则">separate-before-serializing-shared-state</td><td data-label="一句话">先消除共享，再谈串行化</td><td data-label="什么时候用得上，你怎么纠偏">多个执行者写同一文件或对象</td></tr>
+<tr><td data-label="原则">guard-the-context-window</td><td data-label="一句话">大输出走子代理，主线只留结论</td><td data-label="什么时候用得上，你怎么纠偏">主线在堆原始日志</td></tr>
+<tr><td data-label="原则">never-block-on-the-human</td><td data-label="一句话">可逆的事直接做，做完给人看</td><td data-label="什么时候用得上，你怎么纠偏">它在问「要不要我做」</td></tr>
+<tr><td data-label="原则">encode-lessons-in-structure</td><td data-label="一句话">同一条指令写第二遍时，改成 lint 或脚本</td><td data-label="什么时候用得上，你怎么纠偏">你在反复提醒同一件事</td></tr>
+<tr><td data-label="原则">explain-the-number</td><td data-label="一句话">报数字前先弄清它在量什么、被什么限制</td><td data-label="什么时候用得上，你怎么纠偏">任何性能或评测结论</td></tr>
 </table></div>
 
-<figure class="devfig"><div class="figscroll"><svg viewBox="0 0 900 430" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="三条必记的原则分别对应写之前、排查时、交付前，其余二十一条按场景查表"><defs><marker id="principles-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="var(--muted)"/></marker></defs><rect x="60.0" y="48.0" width="240.0" height="44.0" fill="var(--panel)" stroke="var(--muted)" stroke-width="1.4"/><text x="180.0" y="75.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">写之前</text><line x1="180.0" y1="92.0" x2="180.0" y2="128.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#principles-arrow)"/><rect x="60.0" y="132.0" width="240.0" height="76.0" fill="var(--panel2)" stroke="var(--accent)" stroke-width="1.4"/><text x="180.0" y="163.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">laziness-protocol</text><text x="180.0" y="185.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">能删就删，最小改动</text><rect x="330.0" y="48.0" width="240.0" height="44.0" fill="var(--panel)" stroke="var(--muted)" stroke-width="1.4"/><text x="450.0" y="75.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">排查时</text><line x1="450.0" y1="92.0" x2="450.0" y2="128.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#principles-arrow)"/><rect x="330.0" y="132.0" width="240.0" height="76.0" fill="var(--panel2)" stroke="var(--accent)" stroke-width="1.4"/><text x="450.0" y="163.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">fix-root-causes</text><text x="450.0" y="185.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">追到第一次出错的地方</text><rect x="600.0" y="48.0" width="240.0" height="44.0" fill="var(--panel)" stroke="var(--muted)" stroke-width="1.4"/><text x="720.0" y="75.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">交付前</text><line x1="720.0" y1="92.0" x2="720.0" y2="128.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#principles-arrow)"/><rect x="600.0" y="132.0" width="240.0" height="76.0" fill="var(--panel2)" stroke="var(--accent)" stroke-width="1.4"/><text x="720.0" y="163.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">prove-it-works</text><text x="720.0" y="185.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">验真实产物，不验代理指标</text><line x1="300.0" y1="70.0" x2="328.0" y2="70.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#principles-arrow)"/><line x1="570.0" y1="70.0" x2="598.0" y2="70.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#principles-arrow)"/><rect x="60" y="252" width="780" height="92" fill="var(--panel2)" stroke="var(--line)" stroke-dasharray="6 5"/><text x="450.0" y="284.0" text-anchor="middle" font-size="13" font-weight="400" fill="var(--muted)">其余 21 条：设计取舍、边界与类型、并行与共享状态、上下文预算</text><text x="450.0" y="314.0" text-anchor="middle" font-size="12.5" font-weight="400" fill="var(--muted)">平时不用背，遇到具体场景回第 5 章那张表查</text></svg></div><figcaption>先记住这三条，剩下的遇到具体场景再查表，不要一次背二十四条。</figcaption></figure>
+<figure class="devfig"><div class="figscroll"><svg viewBox="0 0 900 430" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="三条最常救场的原则分别对应写之前、排查时、交付前，其余二十一条由 poteto-mode 按场景自选"><defs><marker id="principles-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="var(--muted)"/></marker></defs><rect x="60.0" y="48.0" width="240.0" height="44.0" fill="var(--panel)" stroke="var(--muted)" stroke-width="1.4"/><text x="180.0" y="75.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">写之前</text><line x1="180.0" y1="92.0" x2="180.0" y2="128.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#principles-arrow)"/><rect x="60.0" y="132.0" width="240.0" height="76.0" fill="var(--panel2)" stroke="var(--accent)" stroke-width="1.4"/><text x="180.0" y="163.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">laziness-protocol</text><text x="180.0" y="185.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">能删就删，最小改动</text><rect x="330.0" y="48.0" width="240.0" height="44.0" fill="var(--panel)" stroke="var(--muted)" stroke-width="1.4"/><text x="450.0" y="75.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">排查时</text><line x1="450.0" y1="92.0" x2="450.0" y2="128.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#principles-arrow)"/><rect x="330.0" y="132.0" width="240.0" height="76.0" fill="var(--panel2)" stroke="var(--accent)" stroke-width="1.4"/><text x="450.0" y="163.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">fix-root-causes</text><text x="450.0" y="185.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">追到第一次出错的地方</text><rect x="600.0" y="48.0" width="240.0" height="44.0" fill="var(--panel)" stroke="var(--muted)" stroke-width="1.4"/><text x="720.0" y="75.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">交付前</text><line x1="720.0" y1="92.0" x2="720.0" y2="128.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#principles-arrow)"/><rect x="600.0" y="132.0" width="240.0" height="76.0" fill="var(--panel2)" stroke="var(--accent)" stroke-width="1.4"/><text x="720.0" y="163.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">prove-it-works</text><text x="720.0" y="185.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">验真实产物，不验代理指标</text><line x1="300.0" y1="70.0" x2="328.0" y2="70.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#principles-arrow)"/><line x1="570.0" y1="70.0" x2="598.0" y2="70.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#principles-arrow)"/><rect x="60" y="252" width="780" height="92" fill="var(--panel2)" stroke="var(--line)" stroke-dasharray="6 5"/><text x="450.0" y="284.0" text-anchor="middle" font-size="13" font-weight="400" fill="var(--muted)">其余 21 条：设计取舍、边界与类型、并行与共享状态、上下文预算</text><text x="450.0" y="314.0" text-anchor="middle" font-size="12.5" font-weight="400" fill="var(--muted)">索引写在 poteto-mode 正文里，它按场景自己挑，挑中的才读全文</text></svg></div><figcaption>这三条对应三个最容易走偏的时刻。其余二十一条由 poteto-mode 按场景挑选，挑中的才读全文。</figcaption></figure>
 
-<div class="note"><b>怎么用原则。</b>不要一次背二十四条。记住三条就够撑起大部分判断：prove-it-works、fix-root-causes、laziness-protocol。其余在遇到具体场景时回这张表查。</div>
+<div class="note"><b>怎么用原则。</b>表格的用处是看懂它为什么这样挑，以及它挑错时叫得出名字。真要记，先记 prove-it-works、fix-root-causes、laziness-protocol，这三条最常需要你开口。</div>
 
 <h2 id="ethos"><span class="num">6</span><span class="ttl">五条心法</span></h2>
 
@@ -971,13 +979,13 @@ description: Find what a change could break somewhere else before it ships...
   <li>把三个 PR 依次上线</li>
   <li>不确定这个方案行不行，想比较两种交互</li>
 </ol>
-<p class="muted">答案：1 Bug fix（先复现）或 Runtime forensics；2 Visual parity；3 Perf issue；4 Babysit；5 Investigation；6 Feature；7 Refactoring；8 Runtime forensics；9 Shipping；10 Prototype。</p>
+<p class="muted">答案：1 → 02 Bug fix（先复现）或 05 Runtime forensics；2 → 10 Visual parity；3 → 03 Perf issue；4 → 13 Babysit；5 → 01 Investigation；6 → 07 Feature；7 → 08 Refactoring；8 → 05 Runtime forensics；9 → 14 Shipping；10 → 09 Prototype。</p>
 
 <h3>练习二 步骤预言</h3>
-<p>选 Bug fix，先不看第 3 章，写下你认为的步骤，至少五步。然后对照。差别最大的那一步，就是你理解偏差所在。</p>
+<p>选 02 Bug fix，先不看第 3 章，写下你认为的步骤，至少五步。然后对照。差别最大的那一步，就是你理解偏差所在。</p>
 
-<h3>练习三 技能连线</h3>
-<p>随机挑十五个技能名，各写一句用途和一个触发说法。写完回第 4 章核对。错三个以内算过关。</p>
+<h3>练习三 核对技能选择</h3>
+<p>选三个你做过的任务，先写每个任务会用哪一类技能，再到第 4 章找具体技能。说明它什么时候该用、什么时候不该用。答不出就查表。练的是判断 AI 有没有选错，不是背下 43 个技能名。</p>
 
 <h3>练习四 写验收标准</h3>
 <p>给「侧栏折叠」写一份别人能照着跑的验收：操作、证据、判定、失败条件。要求判定必须是可比较的结果，不能是「看起来正常」。</p>
@@ -1067,7 +1075,7 @@ description: Find what a change could break somewhere else before it ships...
 <p><b>外行版。</b>菜谱。菜谱不能当菜吃，但没有菜谱，每个人做出来的味道都不一样。</p>
 <p><b>常见误解。</b>以为步骤可以随手调换。顺序本身就是设计，先复现再修，和先修再复现，是两种完全不同的工作。</p>
 <p><b>口述题。</b>把一个缺陷当成新功能来做，会多出什么、缺掉什么？</p>
-<p class="muted">卡住回读：第 3 章开头与 Bug fix 六步。</p>
+<p class="muted">卡住回读：第 3 章开头与 02 Bug fix 六步。</p>
 
 <h4>第 4 章 技能全解</h4>
 <p><b>外行版。</b>一柜子专用工具。常用的是螺丝刀和卷尺，不是全部。</p>
@@ -1077,7 +1085,7 @@ description: Find what a change could break somewhere else before it ships...
 
 <h4>第 5 章 原则</h4>
 <p><b>外行版。</b>不是法律，是偏向。遇到两难时往哪边倒的默认值。</p>
-<p><b>常见误解。</b>把原则当硬约束，逐条打卡执行。它是在具体取舍时用一句话纠正方向。</p>
+<p><b>常见误解。</b>把原则当硬约束，逐条打卡执行。它是在具体取舍时用一句话纠正方向。你不用自己查表挑原则，poteto-mode 会按场景选用。发现选错或漏选时，指出具体场景和原则名。</p>
 <p><b>口述题。</b>如果只能留三条，你留哪三条，为什么？</p>
 <p class="muted">卡住回读：第 5 章末尾的「怎么用原则」。</p>
 
@@ -1540,41 +1548,98 @@ create-verification-skill  造一个能自己跑应用的验证技能</code></pr
 
 <h2 id="cheat"><span class="num">附录</span><span class="ttl">A 命令速查</span></h2>
 
-<pre><code># 总管
-/pstack:poteto-mode &lt;目标 + 可判定的完成标准&gt;
-/pstack:poteto-help
+<p>第 4 章把 43 个技能逐个讲全；这一页回答另一个问题：人需要记几个。答案：9 个。剩下的不用背——技能靠描述路由，你把任务说清楚，poteto-mode 自己挑；想点名时，回下面的表里查。</p>
 
-# 理解
-/pstack:how &lt;某段代码怎么工作&gt;
-/pstack:why &lt;为什么这样设计&gt;
-/pstack:teach &lt;讲到我懂&gt;
+<h3>记这 9 个</h3>
 
-# 设计与对抗
-/pstack:architect &lt;要跨边界的改动&gt;
-/pstack:arena &lt;没有唯一答案的任务&gt;
-/pstack:interrogate &lt;审这个改动并试图攻破&gt;
-/pstack:blast-radius &lt;这个改动会影响哪里&gt;
+<p>正好是一天的圈：起活、弄懂、放手、收尾、补课、交账、复盘。</p>
 
-# 验证
-/pstack:create-verification-skill
-/pstack:create-formal-verification-skill
-/pstack:maintain-verification-skill
-/pstack:benchmark-checklist
+<div class="tw"><table>
+<tr><th>命令</th><th>干什么</th></tr>
+<tr><td data-label="命令"><code>/pstack:poteto-mode</code></td><td data-label="干什么">总管。说目标加可判定的完成标准；不知道用哪个，就敲它</td></tr>
+<tr><td data-label="命令"><code>/pstack:how</code></td><td data-label="干什么">这段代码现在怎么工作</td></tr>
+<tr><td data-label="命令"><code>/pstack:why</code></td><td data-label="干什么">当初为什么这样设计</td></tr>
+<tr><td data-label="命令"><code>/pstack:teach</code></td><td data-label="干什么">讲到我真懂，how 加 why 织成一条线</td></tr>
+<tr><td data-label="命令"><code>/pstack:babysit</code></td><td data-label="干什么">照看开出去的 PR，推到可合并</td></tr>
+<tr><td data-label="命令"><code>/pstack:deslop</code></td><td data-label="干什么">交付前清掉 AI 套路代码</td></tr>
+<tr><td data-label="命令"><code>/pstack:ketchup</code></td><td data-label="干什么">离开一阵回来，把错过的变化讲清楚，列出等你决定的事</td></tr>
+<tr><td data-label="命令"><code>/pstack:what-did-i-get-done</code></td><td data-label="干什么">一段时间内的提交汇成进展，周报、复盘用</td></tr>
+<tr><td data-label="命令"><code>/pstack:reflect</code></td><td data-label="干什么">一次任务结束后复盘本场对话，教训落到技能改动</td></tr>
+</table></div>
 
-# 交付
-/pstack:poteto-mode 照看 PR &lt;编号&gt;，推到可合并
-/pstack:no-comments
-/pstack:deslop
+<h3>其余 33 个，按场景查</h3>
 
-# 自省
-/pstack:reflect
-/pstack:correct
-/pstack:show-me-your-work
+<p><b>设计与并行。</b></p>
+<div class="tw"><table>
+<tr><th>命令</th><th>什么时候想起它</th></tr>
+<tr><td data-label="命令"><code>/pstack:architect</code></td><td data-label="什么时候想起它">要跨函数边界、加子系统，先定类型与模块形状</td></tr>
+<tr><td data-label="命令"><code>/pstack:arena</code></td><td data-label="什么时候想起它">设计或实现没有唯一答案，N 个候选同题并行再嫁接</td></tr>
+<tr><td data-label="命令"><code>/pstack:sharpen</code></td><td data-label="什么时候想起它">任务重要但描述很糙，先把它改深不改长</td></tr>
+<tr><td data-label="命令"><code>/pstack:figure-it-out</code></td><td data-label="什么时候想起它">大迁移、跨多模块的改动，没有现成 playbook 时现编一份严谨方案</td></tr>
+<tr><td data-label="命令"><code>/pstack:statechart</code></td><td data-label="什么时候想起它">协议、流程、状态机，用 TLA+ 找破坏规则的最短路径</td></tr>
+<tr><td data-label="命令"><code>/pstack:swarm</code></td><td data-label="什么时候想起它">覆盖矩阵、赛跑、批量验证，派一群工人并行跑再收成一份报告</td></tr>
+</table></div>
 
-# 配置
-/pstack:setup-pstack</code></pre>
+<p><b>审查与对抗。</b></p>
+<div class="tw"><table>
+<tr><th>命令</th><th>什么时候想起它</th></tr>
+<tr><td data-label="命令"><code>/pstack:interrogate</code></td><td data-label="什么时候想起它">改动重要、怕有盲区，多个模型同时挑刺</td></tr>
+<tr><td data-label="命令"><code>/pstack:blast-radius</code></td><td data-label="什么时候想起它">上线前、改公共接口前，找出会弄坏哪里并跑真实代码证明</td></tr>
+<tr><td data-label="命令"><code>/pstack:thermos</code></td><td data-label="什么时候想起它">重要改动一次审完，两个热核审查并行再合成</td></tr>
+<tr><td data-label="命令"><code>/pstack:thermo-nuclear-review</code></td><td data-label="什么时候想起它">合并前的安全与正确性深审</td></tr>
+<tr><td data-label="命令"><code>/pstack:thermo-nuclear-code-quality-review</code></td><td data-label="什么时候想起它">结构开始难读，做可维护性审计</td></tr>
+</table></div>
 
-<p class="muted">playbook 没有斜杠命令。用 <code>/pstack:poteto-mode</code> 加任务描述触发，例如「babysit this PR」「land the stack」「run the eval playbook」。</p>
+<p><b>PR 流水线。</b></p>
+<div class="tw"><table>
+<tr><th>命令</th><th>什么时候想起它</th></tr>
+<tr><td data-label="命令"><code>/pstack:fix-ci</code></td><td data-label="什么时候想起它">CI 红了，读日志做针对性修复</td></tr>
+<tr><td data-label="命令"><code>/pstack:fix-merge-conflicts</code></td><td data-label="什么时候想起它">分支冲突，非交互解掉并跑构建与测试</td></tr>
+<tr><td data-label="命令"><code>/pstack:get-pr-comments</code></td><td data-label="什么时候想起它">评审有反馈要处理，先拉取归纳</td></tr>
+<tr><td data-label="命令"><code>/pstack:make-pr-easy-to-review</code></td><td data-label="什么时候想起它">PR 太大太乱，整理历史、写清描述、给评审人指路</td></tr>
+<tr><td data-label="命令"><code>/pstack:no-comments</code></td><td data-label="什么时候想起它">评审前，砍掉叙述性注释</td></tr>
+</table></div>
+
+<p><b>验证。</b></p>
+<div class="tw"><table>
+<tr><th>命令</th><th>什么时候想起它</th></tr>
+<tr><td data-label="命令"><code>/pstack:create-verification-skill</code></td><td data-label="什么时候想起它">项目还没有能自动驱动 App 的验收方式，生成验证技能与功能地图</td></tr>
+<tr><td data-label="命令"><code>/pstack:maintain-verification-skill</code></td><td data-label="什么时候想起它">功能地图开始过时，定期审计拉回诚实</td></tr>
+<tr><td data-label="命令"><code>/pstack:create-formal-verification-skill</code></td><td data-label="什么时候想起它">并发、重试、状态机、解析器这些测试够不到的地方，做形式化验证</td></tr>
+<tr><td data-label="命令"><code>/pstack:maintain-formal-verification-skill</code></td><td data-label="什么时候想起它">改动碰到已验证代码之后，把模型拉回一致</td></tr>
+<tr><td data-label="命令"><code>/pstack:benchmark-checklist</code></td><td data-label="什么时候想起它">要说「快了 X%」之前，先审数字本身</td></tr>
+<tr><td data-label="命令"><code>/pstack:tdd</code></td><td data-label="什么时候想起它">缺陷能用一个单元测试钉住时，测试先行</td></tr>
+</table></div>
+
+<p><b>写作与表达。</b></p>
+<div class="tw"><table>
+<tr><th>命令</th><th>什么时候想起它</th></tr>
+<tr><td data-label="命令"><code>/pstack:bro</code></td><td data-label="什么时候想起它">术语太多没看懂，用人话重说一遍</td></tr>
+<tr><td data-label="命令"><code>/pstack:in-your-own-words</code></td><td data-label="什么时候想起它">需求复杂、怕理解偏，动手前先让代理复述你的目标</td></tr>
+<tr><td data-label="命令"><code>/pstack:unslop</code></td><td data-label="什么时候想起它">任何给人看的文字，去掉 AI 腔</td></tr>
+<tr><td data-label="命令"><code>/pstack:technical-writing</code></td><td data-label="什么时候想起它">写文档、RFC、README、PR 描述、提交信息</td></tr>
+<tr><td data-label="命令"><code>/pstack:ketchup-video</code></td><td data-label="什么时候想起它">要看演示而不是读文字，ketchup 的短视频版</td></tr>
+</table></div>
+
+<p><b>上下文与配置。</b></p>
+<div class="tw"><table>
+<tr><th>命令</th><th>什么时候想起它</th></tr>
+<tr><td data-label="命令"><code>/pstack:recall</code></td><td data-label="什么时候想起它">跨天工作不想重新交代，从旧会话重建上下文</td></tr>
+<tr><td data-label="命令"><code>/pstack:correct</code></td><td data-label="什么时候想起它">同样的错犯第二次，用结构消灭它</td></tr>
+<tr><td data-label="命令"><code>/pstack:show-me-your-work</code></td><td data-label="什么时候想起它">要跑通宵、要事后审计，留可审阅的决策轨迹</td></tr>
+<tr><td data-label="命令"><code>/pstack:automate-me</code></td><td data-label="什么时候想起它">偏好稳定成型后，沉淀成个人模式技能</td></tr>
+<tr><td data-label="命令"><code>/pstack:setup-pstack</code></td><td data-label="什么时候想起它">换模型、降成本、改自动路由，写模型覆盖表</td></tr>
+<tr><td data-label="命令"><code>/pstack:poteto-help</code></td><td data-label="什么时候想起它">不确定该用哪个，让它帮你路由</td></tr>
+</table></div>
+
+<h3>不用记的</h3>
+
+<div class="tw"><table>
+<tr><th>东西</th><th>为什么不用记</th></tr>
+<tr><td data-label="东西">24 条 principle-*</td><td data-label="为什么不用记">不是命令，不可调用。poteto-mode 按场景自动套用</td></tr>
+<tr><td data-label="东西">23 本 playbook</td><td data-label="为什么不用记">没有斜杠命令。用 <code>/pstack:poteto-mode</code> 加任务描述触发，例如「babysit this PR」「land the stack」「run the eval playbook」</td></tr>
+<tr><td data-label="东西"><code>typescript-best-practices</code></td><td data-label="为什么不用记">唯一一个不用敲的命令：读写任何 .ts/.tsx 时按描述自动生效</td></tr>
+</table></div>
 
 <h2 id="files"><span class="num">附录</span><span class="ttl">B 文件地图</span></h2>
 

@@ -1,17 +1,22 @@
 # pstack 学习手册
 
-单文件手册，依据本机安装的 pstack 0.9.129 写成。
+单文件手册，依据本机安装的 pstack 0.9.129 与 Lauren（@poteto）的 pstack 系列公开写作写成。
 
 线上版：https://ttmouse.github.io/pstack-handbook/
 本地打开：双击 `index.html`，或浏览器打开 `file:///Users/douba/Projects/pstack-handbook/index.html`。
 样式与插图全部内联，页面不加载任何外部资源。
+
+资料来源：
+
+- 方法论与案例：Lauren（@poteto）的 pstack 系列公开写作（The Complete Guide to pstack Pt. 1/2 等），原文与提炼收藏在 `~/Projects/human/contacts/Lauren/`；2026-11-08 起该目录作为本手册的源头，人物档案见同夹 `Lauren.md`。
+- 功能事实：本机安装的 pstack 0.9.129，技能与 playbook 元数据见 `_data.json`。
 
 内容：
 - 0 读法
 - 0.5 十分钟一个故事（零术语入口，配六步流程图）
 - 1 四层结构（配结构图）
 - 2 技能如何运行（配一次任务流程图、上下文占用对比图）
-- 3 二十三本 playbook（修缺陷六步图含两个回环，做功能八步图含检查点四问）
+- 3 二十三本 playbook（每本一个两位编号，可报号引用；修缺陷六步图含两个回环，做功能八步图含检查点四问）
 - 4 四十三技能全解（带过滤框）
 - 5 二十四条原则（配三条核心原则的落点图）
 - 6 五条心法
@@ -33,6 +38,8 @@
 python3 tools/diagrams.py   # 生成 14 张 SVG，越界与文字超宽会报错
 python3 tools/build.py      # 拼接 shard、内联图、校验锚点与标签
 ```
+
+playbook 编号在 `tools/build.py` 的 `PLAYBOOK_NUMBERS` 里按英文名钉死，构建时写进页面，构建后 `index.html` 里每本都有 `#pb-01`…`#pb-23` 锚点。编号跟着某一本走，不跟位置走：插进新的一本只需给它一个号，不会把后面的号挪掉，报号引用因此不会失效。改了页面上某本的英文标题而没改这张表，构建会直接失败并列出对不上的两边，不会静默错位。编号只存在于这份手册，playbook 文件本身不带号，poteto-mode 靠 SKILL.md 里的触发列表挑，不受影响。
 
 图是内联 SVG，颜色走 CSS 变量，深浅色和打印都跟随；不依赖任何外部资源。
 

@@ -228,13 +228,13 @@
   <li>把三个 PR 依次上线</li>
   <li>不确定这个方案行不行，想比较两种交互</li>
 </ol>
-<p class="muted">答案：1 Bug fix（先复现）或 Runtime forensics；2 Visual parity；3 Perf issue；4 Babysit；5 Investigation；6 Feature；7 Refactoring；8 Runtime forensics；9 Shipping；10 Prototype。</p>
+<p class="muted">答案：1 → 02 Bug fix（先复现）或 05 Runtime forensics；2 → 10 Visual parity；3 → 03 Perf issue；4 → 13 Babysit；5 → 01 Investigation；6 → 07 Feature；7 → 08 Refactoring；8 → 05 Runtime forensics；9 → 14 Shipping；10 → 09 Prototype。</p>
 
 <h3>练习二 步骤预言</h3>
-<p>选 Bug fix，先不看第 3 章，写下你认为的步骤，至少五步。然后对照。差别最大的那一步，就是你理解偏差所在。</p>
+<p>选 02 Bug fix，先不看第 3 章，写下你认为的步骤，至少五步。然后对照。差别最大的那一步，就是你理解偏差所在。</p>
 
-<h3>练习三 技能连线</h3>
-<p>随机挑十五个技能名，各写一句用途和一个触发说法。写完回第 4 章核对。错三个以内算过关。</p>
+<h3>练习三 核对技能选择</h3>
+<p>选三个你做过的任务，先写每个任务会用哪一类技能，再到第 4 章找具体技能。说明它什么时候该用、什么时候不该用。答不出就查表。练的是判断 AI 有没有选错，不是背下 43 个技能名。</p>
 
 <h3>练习四 写验收标准</h3>
 <p>给「侧栏折叠」写一份别人能照着跑的验收：操作、证据、判定、失败条件。要求判定必须是可比较的结果，不能是「看起来正常」。</p>
@@ -324,7 +324,7 @@
 <p><b>外行版。</b>菜谱。菜谱不能当菜吃，但没有菜谱，每个人做出来的味道都不一样。</p>
 <p><b>常见误解。</b>以为步骤可以随手调换。顺序本身就是设计，先复现再修，和先修再复现，是两种完全不同的工作。</p>
 <p><b>口述题。</b>把一个缺陷当成新功能来做，会多出什么、缺掉什么？</p>
-<p class="muted">卡住回读：第 3 章开头与 Bug fix 六步。</p>
+<p class="muted">卡住回读：第 3 章开头与 02 Bug fix 六步。</p>
 
 <h4>第 4 章 技能全解</h4>
 <p><b>外行版。</b>一柜子专用工具。常用的是螺丝刀和卷尺，不是全部。</p>
@@ -334,7 +334,7 @@
 
 <h4>第 5 章 原则</h4>
 <p><b>外行版。</b>不是法律，是偏向。遇到两难时往哪边倒的默认值。</p>
-<p><b>常见误解。</b>把原则当硬约束，逐条打卡执行。它是在具体取舍时用一句话纠正方向。</p>
+<p><b>常见误解。</b>把原则当硬约束，逐条打卡执行。它是在具体取舍时用一句话纠正方向。你不用自己查表挑原则，poteto-mode 会按场景选用。发现选错或漏选时，指出具体场景和原则名。</p>
 <p><b>口述题。</b>如果只能留三条，你留哪三条，为什么？</p>
 <p class="muted">卡住回读：第 5 章末尾的「怎么用原则」。</p>
 
@@ -797,41 +797,98 @@ create-verification-skill  造一个能自己跑应用的验证技能</code></pr
 
 <h2 id="cheat">附录 A 命令速查</h2>
 
-<pre><code># 总管
-/pstack:poteto-mode &lt;目标 + 可判定的完成标准&gt;
-/pstack:poteto-help
+<p>第 4 章把 43 个技能逐个讲全；这一页回答另一个问题：人需要记几个。答案：9 个。剩下的不用背——技能靠描述路由，你把任务说清楚，poteto-mode 自己挑；想点名时，回下面的表里查。</p>
 
-# 理解
-/pstack:how &lt;某段代码怎么工作&gt;
-/pstack:why &lt;为什么这样设计&gt;
-/pstack:teach &lt;讲到我懂&gt;
+<h3>记这 9 个</h3>
 
-# 设计与对抗
-/pstack:architect &lt;要跨边界的改动&gt;
-/pstack:arena &lt;没有唯一答案的任务&gt;
-/pstack:interrogate &lt;审这个改动并试图攻破&gt;
-/pstack:blast-radius &lt;这个改动会影响哪里&gt;
+<p>正好是一天的圈：起活、弄懂、放手、收尾、补课、交账、复盘。</p>
 
-# 验证
-/pstack:create-verification-skill
-/pstack:create-formal-verification-skill
-/pstack:maintain-verification-skill
-/pstack:benchmark-checklist
+<table>
+<tr><th>命令</th><th>干什么</th></tr>
+<tr><td><code>/pstack:poteto-mode</code></td><td>总管。说目标加可判定的完成标准；不知道用哪个，就敲它</td></tr>
+<tr><td><code>/pstack:how</code></td><td>这段代码现在怎么工作</td></tr>
+<tr><td><code>/pstack:why</code></td><td>当初为什么这样设计</td></tr>
+<tr><td><code>/pstack:teach</code></td><td>讲到我真懂，how 加 why 织成一条线</td></tr>
+<tr><td><code>/pstack:babysit</code></td><td>照看开出去的 PR，推到可合并</td></tr>
+<tr><td><code>/pstack:deslop</code></td><td>交付前清掉 AI 套路代码</td></tr>
+<tr><td><code>/pstack:ketchup</code></td><td>离开一阵回来，把错过的变化讲清楚，列出等你决定的事</td></tr>
+<tr><td><code>/pstack:what-did-i-get-done</code></td><td>一段时间内的提交汇成进展，周报、复盘用</td></tr>
+<tr><td><code>/pstack:reflect</code></td><td>一次任务结束后复盘本场对话，教训落到技能改动</td></tr>
+</table>
 
-# 交付
-/pstack:poteto-mode 照看 PR &lt;编号&gt;，推到可合并
-/pstack:no-comments
-/pstack:deslop
+<h3>其余 33 个，按场景查</h3>
 
-# 自省
-/pstack:reflect
-/pstack:correct
-/pstack:show-me-your-work
+<p><b>设计与并行。</b></p>
+<table>
+<tr><th>命令</th><th>什么时候想起它</th></tr>
+<tr><td><code>/pstack:architect</code></td><td>要跨函数边界、加子系统，先定类型与模块形状</td></tr>
+<tr><td><code>/pstack:arena</code></td><td>设计或实现没有唯一答案，N 个候选同题并行再嫁接</td></tr>
+<tr><td><code>/pstack:sharpen</code></td><td>任务重要但描述很糙，先把它改深不改长</td></tr>
+<tr><td><code>/pstack:figure-it-out</code></td><td>大迁移、跨多模块的改动，没有现成 playbook 时现编一份严谨方案</td></tr>
+<tr><td><code>/pstack:statechart</code></td><td>协议、流程、状态机，用 TLA+ 找破坏规则的最短路径</td></tr>
+<tr><td><code>/pstack:swarm</code></td><td>覆盖矩阵、赛跑、批量验证，派一群工人并行跑再收成一份报告</td></tr>
+</table>
 
-# 配置
-/pstack:setup-pstack</code></pre>
+<p><b>审查与对抗。</b></p>
+<table>
+<tr><th>命令</th><th>什么时候想起它</th></tr>
+<tr><td><code>/pstack:interrogate</code></td><td>改动重要、怕有盲区，多个模型同时挑刺</td></tr>
+<tr><td><code>/pstack:blast-radius</code></td><td>上线前、改公共接口前，找出会弄坏哪里并跑真实代码证明</td></tr>
+<tr><td><code>/pstack:thermos</code></td><td>重要改动一次审完，两个热核审查并行再合成</td></tr>
+<tr><td><code>/pstack:thermo-nuclear-review</code></td><td>合并前的安全与正确性深审</td></tr>
+<tr><td><code>/pstack:thermo-nuclear-code-quality-review</code></td><td>结构开始难读，做可维护性审计</td></tr>
+</table>
 
-<p class="muted">playbook 没有斜杠命令。用 <code>/pstack:poteto-mode</code> 加任务描述触发，例如「babysit this PR」「land the stack」「run the eval playbook」。</p>
+<p><b>PR 流水线。</b></p>
+<table>
+<tr><th>命令</th><th>什么时候想起它</th></tr>
+<tr><td><code>/pstack:fix-ci</code></td><td>CI 红了，读日志做针对性修复</td></tr>
+<tr><td><code>/pstack:fix-merge-conflicts</code></td><td>分支冲突，非交互解掉并跑构建与测试</td></tr>
+<tr><td><code>/pstack:get-pr-comments</code></td><td>评审有反馈要处理，先拉取归纳</td></tr>
+<tr><td><code>/pstack:make-pr-easy-to-review</code></td><td>PR 太大太乱，整理历史、写清描述、给评审人指路</td></tr>
+<tr><td><code>/pstack:no-comments</code></td><td>评审前，砍掉叙述性注释</td></tr>
+</table>
+
+<p><b>验证。</b></p>
+<table>
+<tr><th>命令</th><th>什么时候想起它</th></tr>
+<tr><td><code>/pstack:create-verification-skill</code></td><td>项目还没有能自动驱动 App 的验收方式，生成验证技能与功能地图</td></tr>
+<tr><td><code>/pstack:maintain-verification-skill</code></td><td>功能地图开始过时，定期审计拉回诚实</td></tr>
+<tr><td><code>/pstack:create-formal-verification-skill</code></td><td>并发、重试、状态机、解析器这些测试够不到的地方，做形式化验证</td></tr>
+<tr><td><code>/pstack:maintain-formal-verification-skill</code></td><td>改动碰到已验证代码之后，把模型拉回一致</td></tr>
+<tr><td><code>/pstack:benchmark-checklist</code></td><td>要说「快了 X%」之前，先审数字本身</td></tr>
+<tr><td><code>/pstack:tdd</code></td><td>缺陷能用一个单元测试钉住时，测试先行</td></tr>
+</table>
+
+<p><b>写作与表达。</b></p>
+<table>
+<tr><th>命令</th><th>什么时候想起它</th></tr>
+<tr><td><code>/pstack:bro</code></td><td>术语太多没看懂，用人话重说一遍</td></tr>
+<tr><td><code>/pstack:in-your-own-words</code></td><td>需求复杂、怕理解偏，动手前先让代理复述你的目标</td></tr>
+<tr><td><code>/pstack:unslop</code></td><td>任何给人看的文字，去掉 AI 腔</td></tr>
+<tr><td><code>/pstack:technical-writing</code></td><td>写文档、RFC、README、PR 描述、提交信息</td></tr>
+<tr><td><code>/pstack:ketchup-video</code></td><td>要看演示而不是读文字，ketchup 的短视频版</td></tr>
+</table>
+
+<p><b>上下文与配置。</b></p>
+<table>
+<tr><th>命令</th><th>什么时候想起它</th></tr>
+<tr><td><code>/pstack:recall</code></td><td>跨天工作不想重新交代，从旧会话重建上下文</td></tr>
+<tr><td><code>/pstack:correct</code></td><td>同样的错犯第二次，用结构消灭它</td></tr>
+<tr><td><code>/pstack:show-me-your-work</code></td><td>要跑通宵、要事后审计，留可审阅的决策轨迹</td></tr>
+<tr><td><code>/pstack:automate-me</code></td><td>偏好稳定成型后，沉淀成个人模式技能</td></tr>
+<tr><td><code>/pstack:setup-pstack</code></td><td>换模型、降成本、改自动路由，写模型覆盖表</td></tr>
+<tr><td><code>/pstack:poteto-help</code></td><td>不确定该用哪个，让它帮你路由</td></tr>
+</table>
+
+<h3>不用记的</h3>
+
+<table>
+<tr><th>东西</th><th>为什么不用记</th></tr>
+<tr><td>24 条 principle-*</td><td>不是命令，不可调用。poteto-mode 按场景自动套用</td></tr>
+<tr><td>23 本 playbook</td><td>没有斜杠命令。用 <code>/pstack:poteto-mode</code> 加任务描述触发，例如「babysit this PR」「land the stack」「run the eval playbook」</td></tr>
+<tr><td><code>typescript-best-practices</code></td><td>唯一一个不用敲的命令：读写任何 .ts/.tsx 时按描述自动生效</td></tr>
+</table>
 
 <h2 id="files">附录 B 文件地图</h2>
 

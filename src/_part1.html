@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#f6f5f2" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0c0d0f" media="(prefers-color-scheme: dark)">
-<meta name="description" content="pstack 学习手册：拿到任务能说出该走哪条流程、叫哪个技能、能预判它会怎么做。">
+<meta name="description" content="pstack 学习手册：拿到任务能判断该走哪条流程、核对技能选择、预判它会怎么做。">
 <title>pstack 学习手册</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2317563b'/%3E%3Ctext x='16' y='24' font-family='Georgia,serif' font-size='22' font-weight='600' fill='%23f6f5f2' text-anchor='middle'%3Ep%3C/text%3E%3C/svg%3E">
 <script>document.documentElement.className+=' js';</script>
@@ -19,7 +19,7 @@
   --raise:#efeeea;
   --raise-2:#e5e4de;
   --ink:#16171a;
-  --muted:#6b6f75;
+  --muted:#64686f;
   --brand:#17563b;
   --brand-soft:#e3ebe5;
   --warn-bg:#f3e9e3;
@@ -121,6 +121,12 @@ main > h2:first-of-type{margin-top:clamp(44px,5vw,84px)}
 h3{margin:62px 0 12px;font-family:var(--display);font-size:1.3125rem;line-height:1.5;
   font-weight:600;letter-spacing:-.008em}
 h4{margin:34px 0 6px;font-size:1rem;line-height:1.65;font-weight:600}
+/* numbered playbook entries: index in its own column, so a wrapped title hangs
+   under itself the way the chapter numeral hangs in the margin. The number is a
+   citation handle, not ornament, so it holds AA contrast on its own */
+h4.pb{display:grid;grid-template-columns:2.2em minmax(0,1fr);column-gap:.55em;align-items:baseline}
+h4.pb .pbnum{font-weight:400;font-size:.92em;color:var(--muted);
+  font-variant-numeric:tabular-nums;text-align:right;font-family:var(--display)}
 h1,h2,h3,h4{text-wrap:balance}
 h2,h3,h4{scroll-margin-top:84px}
 
@@ -287,7 +293,7 @@ figure.devfig figcaption{margin:12px 0 0;font-size:14px;line-height:1.7;color:va
 
 <header class="cover">
   <h1><span class="ln">pstack</span><span class="ln">学习手册</span></h1>
-  <p class="lede">拿到一个任务，能说出它该走哪条流程、叫哪个技能、会先做什么。学完自己判断，不用查。</p>
+  <p class="lede">拿到一个任务，能判断它该走哪条流程、核对技能选择、预判它会先做什么。陌生技能随时查。</p>
   <div class="cover-foot">
     <a class="go" href="#howto">开始读</a>
     <div class="stats">
@@ -300,7 +306,7 @@ figure.devfig figcaption{margin:12px 0 0;font-size:14px;line-height:1.7;color:va
 </header>
 <h2 id="howto">0 怎么用这本手册</h2>
 
-<p>这本手册只有一个目的：让你把 pstack 的体系学明白，学完能自己判断一件事该走哪条流程、会用哪些技能、能预判它会怎么做。</p>
+<p>这本手册只有一个目的：让你把 pstack 的体系学明白，能判断任务该走哪条流程、核对 AI 选的技能、预判它会怎么做。</p>
 
 <p>它不是命令大全。命令在附录 A，随查随用。正文讲的是「为什么这样设计」和「什么情况下选哪个」。</p>
 
@@ -309,7 +315,7 @@ figure.devfig figcaption{margin:12px 0 0;font-size:14px;line-height:1.7;color:va
 <ul>
   <li>第一次读：从第 1 章顺序读到第 6 章。大约 90 分钟，不需要电脑，只需要这本手册。</li>
   <li>每读完一章，翻到第 13 章做对应那张复述卡。讲不出来就回读，不要往下翻。</li>
-  <li>第二次读：只读第 3、4 章的表格，把每个技能名字和一句话用途对上号。目标是看到任务能立刻说出该叫谁。</li>
+  <li>第二次读：只读第 3、4 章的表格。记住技能分组和常用的几个技能；遇到陌生技能时，回表核对用途和触发条件。</li>
   <li>动手前读：第 7 章验证、第 8 章并行。这两章决定你最终能跑多大。</li>
   <li>想知道「这套东西边界在哪」：直接读第 15 章，不必先读前面。</li>
   <li>有整块时间：读第 1 到 6 章加第 10 章纸笔练习。练习只要求纸笔或一个空编辑器。</li>
@@ -323,7 +329,7 @@ figure.devfig figcaption{margin:12px 0 0;font-size:14px;line-height:1.7;color:va
 <tr><th>能力</th><th>检验方式</th><th>对应章节</th></tr>
 <tr><td>给一个任务，能说出它该走哪本 playbook</td><td>拿十个真实任务做盲测，至少八条选对</td><td>3</td></tr>
 <tr><td>能预判一本 playbook 的步骤顺序</td><td>先写步骤，再打开原文对照，顺序基本一致</td><td>3</td></tr>
-<tr><td>看到技能名能说出用途与触发词</td><td>从 43 个技能里随机抽 10 个，8 个答对</td><td>4</td></tr>
+<tr><td>能核对技能选择是否合适</td><td>给三个真实任务，先选技能分组，再查表说明具体技能何时该用、何时不该用</td><td>4</td></tr>
 <tr><td>能设计一次可被机器判定的验收</td><td>给一个改动写出验收标准，别人照着跑能得出同样结论</td><td>7</td></tr>
 <tr><td>能判断一次并行该开几路、瓶颈在哪</td><td>给出任务和人数，说出上限与理由</td><td>8</td></tr>
 </table>
@@ -365,7 +371,7 @@ figure.devfig figcaption{margin:12px 0 0;font-size:14px;line-height:1.7;color:va
 
 <p>清单里某一步需要一个专门动作，比如「先把这块代码读懂再动手」。这个动作也有一份说明，叫技能。它和清单的区别是：清单一整本，技能一个小动作。</p>
 
-<p>做的过程中容易走偏的地方，用一句话提醒自己，比如「没验证过的不算完成」。这些话叫原则。</p>
+<p>做的过程中容易走偏的地方，给它留一句话，比如「没验证过的不算完成」。这些话叫原则。</p>
 
 <p>最后，「回到同一个地方再点一遍」这一步，被单独做大了。因为作者认为，前面都做得对，只要这一步偷懒，结果就是不可信的。这套东西叫验证技能。</p>
 
@@ -399,7 +405,7 @@ figure.devfig figcaption{margin:12px 0 0;font-size:14px;line-height:1.7;color:va
 <tr><td>路由器</td><td><code>poteto-mode</code>。判断任务类型，挑一本 playbook，把步骤抄进待办，然后按步骤调用技能和子代理</td><td>1</td><td>能，<code>/pstack:poteto-mode</code></td></tr>
 <tr><td>playbook</td><td>一类任务的步骤清单。修 bug 六步，做功能五步，看 PR 三步</td><td>23</td><td>不能。只能由 poteto-mode 读</td></tr>
 <tr><td>技能</td><td>一个具体动作或一种专门视角。理解代码、审 diff、写文档、生成验证器</td><td>43</td><td>能，<code>/pstack:&lt;名字&gt;</code></td></tr>
-<tr><td>原则</td><td>一条约束。写代码、测试、排查、重构时用来纠偏</td><td>24</td><td>能叫但很少叫，通常由 poteto-mode 引用</td></tr>
+<tr><td>原则</td><td>一条约束。写代码、测试、排查、重构时用来纠偏</td><td>24</td><td>不能。由 poteto-mode 按场景自选，挑中的才读全文</td></tr>
 </table>
 
 <!--FIG:layers-->
@@ -461,7 +467,7 @@ description: Find what a change could break somewhere else before it ships...
 ---
 </code></pre>
 
-<p>所以「学会一个技能」等于「知道它的 description 覆盖哪些说法」。这也解释了为什么同一个技能，你说「影响面」它能触发，说「看看会不会坏」也可能触发，说「评估风险」就不一定。</p>
+<p>判断一个技能何时会被触发，关键是看它的 description 覆盖哪些说法，不必背下全文。比如同一个技能，你说「影响面」它能触发，说「看看会不会坏」也可能触发，说「评估风险」就不一定。</p>
 
 <!--FIG:context-->
 

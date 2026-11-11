@@ -2,7 +2,7 @@
 
 <p>playbook 不能直接调用，只能由 poteto-mode 按任务选中。你要学的是「什么任务对应哪本」，以及「这本会保证什么」。</p>
 
-<p>下面按使用频率分组。每本给四样东西：什么时候选它、它保证什么、产物是什么、什么时候别用。</p>
+<p>下面按使用频率分组。每本给四样东西：什么时候选它、它保证什么、产物是什么、什么时候别用。每本前面有一个两位编号，只属于这份手册，指某一本时直接报号就行，比如「第 3 章 06」。编号跟着这一本走，不跟着位置走，所以插进新的一本也不会把后面的号挪掉。</p>
 
 <h3>诊断类</h3>
 
@@ -205,10 +205,12 @@
 
 <h2 id="principles">5 二十四条原则</h2>
 
-<p>原则是单规则技能，平时不用叫。它们的作用是当 poteto-mode 面临取舍时提供偏向。你记住名字，就能用一句话纠正它，例如「按 prove it works，把真实输出贴出来」。</p>
+<p>原则是给 AI 挑的，不是给人查的。二十四条的索引就在 poteto-mode 的正文里，每条后面跟一句「什么时候适用」：「写完一个任务、宣布完成之前」对 prove-it-works，「排查故障」对 fix-root-causes。它拿当前这一步去撞这些条件，撞中了才把那一条的全文读进来。</p>
+
+<p>二十四条技能在 frontmatter 里标了 <code>user-invocable: false</code>，在支持这个设置的斜杠菜单里不出现。通常由 poteto-mode 按场景选用；你也能直接要求 AI 按某条原则重新判断。你不用背全表。它挑错了或漏选了，指出场景和原则名就行。回报里它也要点名用了哪条原则、改了什么决定。</p>
 
 <table class="filterable">
-<tr><th>原则</th><th>一句话</th><th>什么时候用它纠偏</th></tr>
+<tr><th>原则</th><th>一句话</th><th>什么时候用得上，你怎么纠偏</th></tr>
 <tr><td>prove-it-works</td><td>验真实产物，不验代理指标</td><td>它说「编译通过」「测试绿了」就宣告完成</td></tr>
 <tr><td>fix-root-causes</td><td>顺症状追到第一次出错的地方</td><td>它在加防御性代码而不是找根因</td></tr>
 <tr><td>test-behavior-not-implementation</td><td>断言用户能观察到的行为</td><td>测试改了实现就碎</td></tr>
@@ -237,4 +239,4 @@
 
 <!--FIG:principles-->
 
-<div class="note"><b>怎么用原则。</b>不要一次背二十四条。记住三条就够撑起大部分判断：prove-it-works、fix-root-causes、laziness-protocol。其余在遇到具体场景时回这张表查。</div>
+<div class="note"><b>怎么用原则。</b>表格的用处是看懂它为什么这样挑，以及它挑错时叫得出名字。真要记，先记 prove-it-works、fix-root-causes、laziness-protocol，这三条最常需要你开口。</div>
