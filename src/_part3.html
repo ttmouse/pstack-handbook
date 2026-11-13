@@ -1082,6 +1082,189 @@ create-verification-skill  造一个能自己跑应用的验证技能</code></pr
     input.addEventListener('keydown',function(e){ if(e.key==='Escape'){ input.value=''; input.dispatchEvent(new Event('input')); } });
   }
 
+  /* ---- full-text search over the sections ---- */
+  var search=document.getElementById('search');
+  if(search){
+    var mainEl=document.querySelector('main');
+    var railList=document.querySelector('.rail-list');
+    var railResults=document.querySelector('.rail-results');
+    var railNone=document.querySelector('.rail-none');
+    var hitMarks=[];
+    var sections=[];
+    var chap='',chapAt=-1,cur=null;
+
+    function headingText(h){
+      var parts=[];
+      Array.prototype.forEach.call(h.children,function(c){
+        if(c.tagName==='SPAN') parts.push(c.textContent);
+      });
+      return (parts.length?parts.join(' '):h.textContent).replace(/\s+/g,' ').trim();
+    }
+    // one walk in document order: a heading opens a section, everything before
+    // the next heading is its body text
+    Array.prototype.forEach.call(mainEl.children,function(el){
+      var tag=el.tagName;
+      if(tag==='HEADER'||tag==='FOOTER'||el.classList.contains('search')) return;
+      if(tag==='H2'||tag==='H3'||tag==='H4'){
+        if(cur) sections.push(cur);
+        if(tag==='H2'){
+          var n=el.querySelector('.num'),t=el.querySelector('.ttl');
+          chap=(n&&t)?n.textContent.trim()+' '+t.textContent.replace(/\s+/g,' ').trim():headingText(el);
+          chapAt=sections.length;
+        }
+        cur={el:el,chap:chap,title:headingText(el),text:'',h2:chapAt,chapter:tag==='H2'};
+      }else if(cur){
+        cur.text+=' '+el.textContent;
+      }
+    });
+    if(cur) sections.push(cur);
+    sections.forEach(function(s,i){
+      s.text=s.text.replace(/\s+/g,' ').trim();
+      s.i=i;
+      if(!s.el.id) s.el.id='qs'+i;
+    });
+
+    function clearMarks(){
+      hitMarks.forEach(function(m){
+        if(m.parentNode) m.parentNode.replaceChild(m.firstChild,m);
+      });
+      hitMarks=[];
+    }
+    // original-case match on purpose: the wrapped mark shows the text as written
+    function markInto(root,q,cap){
+      var w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,function(n){
+        var p=n.parentNode;
+        while(p&&p!==mainEl){
+          var t=p.tagName.toLowerCase();
+          if(t==='svg'||t==='script'||t==='mark') return NodeFilter.FILTER_REJECT;
+          p=p.parentNode;
+        }
+        return NodeFilter.FILTER_ACCEPT;
+      });
+      for(var n;(n=w.nextNode())&&cap>0;){
+        var idx=n.nodeValue.indexOf(q);
+        while(idx>-1&&cap>0){
+          var rest=n.splitText(idx+q.length);
+          var hit=n.splitText(idx);
+          var m=document.createElement('mark');
+          m.appendChild(document.createTextNode(hit.nodeValue));
+          hit.parentNode.replaceChild(m,hit);
+          hitMarks.push(m);
+          cap--;
+          n=rest;
+          idx=rest.nodeValue.indexOf(q);
+        }
+      }
+      return cap;
+    }
+    function fragmentOf(text,idx,len){
+      var f=document.createDocumentFragment();
+      f.appendChild(document.createTextNode(text.slice(0,idx)));
+      var m=document.createElement('mark');
+      m.appendChild(document.createTextNode(text.slice(idx,idx+len)));
+      f.appendChild(m);
+      f.appendChild(document.createTextNode(text.slice(idx+len)));
+      return f;
+    }
+    function excerptOf(s,q){
+      var at=s.text.toLowerCase().indexOf(q);
+      if(at<0) return null;
+      var from=Math.max(0,at-40),to=Math.min(s.text.length,at+q.length+40);
+      var pad=from>0?1:0;
+      var ex=(pad?'…':'')+s.text.slice(from,to)+(to<s.text.length?'…':'');
+      return fragmentOf(ex,at-from+pad,q.length);
+    }
+    function render(q){
+      while(railResults.firstChild) railResults.removeChild(railResults.firstChild);
+      var lower=q.toLowerCase(),childHit={},rows=[];
+      sections.forEach(function(s){
+        if((s.chap+'\n'+s.title+'\n'+s.text).toLowerCase().indexOf(lower)>-1){
+          rows.push(s);
+          if(!s.chapter) childHit[s.h2]=1;
+        }
+      });
+      // a chapter row only when none of its own subsections matched
+      rows=rows.filter(function(s){ return !(s.chapter&&childHit[s.h2]); });
+      rows.slice(0,30).forEach(function(s){
+        var li=document.createElement('li');
+        var a=document.createElement('a');
+        a.setAttribute('href','#');
+        a.setAttribute('data-i',String(s.i));
+        var t=document.createElement('span');
+        t.className='r-t';
+        var ti=s.title.toLowerCase().indexOf(lower);
+        if(ti>-1) t.appendChild(fragmentOf(s.title,ti,lower.length));
+        else t.textContent=s.title;
+        a.appendChild(t);
+        var sub=document.createElement('span');
+        sub.className='r-s';
+        var ex=excerptOf(s,lower);
+        if(ex) sub.appendChild(ex);
+        else sub.textContent=s.text.slice(0,80)+(s.text.length>80?'…':'');
+        a.appendChild(sub);
+        li.appendChild(a);
+        railResults.appendChild(li);
+      });
+      if(rows.length>30){
+        var more=document.createElement('li');
+        more.className='rail-more';
+        more.textContent='只显示前 30 节';
+        railResults.appendChild(more);
+      }
+      return rows.length;
+    }
+    search.addEventListener('input',function(){
+      clearMarks();
+      var q=search.value.trim();
+      if(!q){
+        railResults.hidden=true;
+        railNone.hidden=true;
+        railList.hidden=false;
+        return;
+      }
+      var found=render(q)>0;
+      railResults.hidden=!found;
+      railNone.hidden=found;
+      railList.hidden=true;
+    });
+    railResults.addEventListener('click',function(e){
+      var a=e.target&&e.target.closest?e.target.closest('a'):null;
+      if(!a) return;
+      e.preventDefault();
+      var sec=sections[Number(a.getAttribute('data-i'))];
+      if(!sec) return;
+      clearMarks();
+      // close the drawer before scrolling: the jump target is computed from
+      // layout, and closing afterwards would shift the heading off screen
+      if(narrow.matches&&toggle) toggle.checked=false;
+      sec.el.scrollIntoView();
+      var q=search.value.trim(),cap=60,n=sec.el.nextElementSibling;
+      cap=markInto(sec.el,q,cap);
+      while(n&&cap>0&&n.tagName!=='H2'&&n.tagName!=='H3'&&n.tagName!=='H4'){
+        cap=markInto(n,q,cap);
+        n=n.nextElementSibling;
+      }
+    });
+    search.addEventListener('keydown',function(e){
+      if(e.key!=='Escape') return;
+      if(search.value){
+        search.value='';
+        search.dispatchEvent(new Event('input'));
+      }else{
+        search.blur();
+      }
+    });
+    document.addEventListener('keydown',function(e){
+      var combo=(e.key||'').toLowerCase()==='k'&&(e.metaKey||e.ctrlKey);
+      if(!combo&&e.key!=='/') return;
+      var a=document.activeElement;
+      if(a&&(a.tagName==='INPUT'||a.tagName==='TEXTAREA'||a.tagName==='SELECT'||a.isContentEditable)) return;
+      if(combo) e.preventDefault();
+      search.focus();
+      search.select();
+    });
+  }
+
   /* ---- phone figures: whole drawing first, tap for full size ---- */
   function bindFigures(){
     Array.prototype.forEach.call(document.querySelectorAll('figure.devfig'),function(fig){
