@@ -1169,10 +1169,12 @@ create-verification-skill  造一个能自己跑应用的验证技能</code></pr
     function excerptOf(s,q){
       var at=s.text.toLowerCase().indexOf(q);
       if(at<0) return null;
-      var from=Math.max(0,at-40),to=Math.min(s.text.length,at+q.length+40);
-      var pad=from>0?1:0;
-      var ex=(pad?'…':'')+s.text.slice(from,to)+(to<s.text.length?'…':'');
-      return fragmentOf(ex,at-from+pad,q.length);
+      // the hit leads the excerpt: rows clamp to two lines, so a centered
+      // window would clip the marked term out of view
+      var to=Math.min(s.text.length,at+q.length+44);
+      var pad=at>0?1:0;
+      var ex=(pad?'…':'')+s.text.slice(at,to)+(to<s.text.length?'…':'');
+      return fragmentOf(ex,pad,q.length);
     }
     function render(q){
       while(railResults.firstChild) railResults.removeChild(railResults.firstChild);
