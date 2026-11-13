@@ -925,9 +925,61 @@ create-verification-skill  造一个能自己跑应用的验证技能</code></pr
 <tr><td>决策轨迹</td><td>长任务里每个决定的记录：做了什么、为什么、证据、结果</td></tr>
 </table>
 
+<h2 id="flows">附录 D 目标到流程</h2>
+
+<p>技能不直接组合成流程。组合发生在两层：目标经描述路由到二十三本 playbook 之一，playbook 把技能按固定顺序钉死，原则穿插其中当约束。poteto-mode 是唯一的路由器，playbook 不能点名调用。</p>
+
+<pre><code>你的目标（一段描述）
+  → poteto-mode 按描述匹配 playbook（23 选 1）
+    → playbook 按固定顺序调用技能
+      → 原则穿插其中当约束，不占步骤</code></pre>
+
+<p>路由有两个容易漏的细节。PR 相关的话——「盯着这个 PR」「check on X」——路由到 Babysit 这本 playbook，而不是同名的 babysit 技能，playbook 接管后技能版就退到 poteto-mode 之外。没有现成 playbook 契合的大型任务，交给 figure-it-out 技能现编一本专属 playbook，它站在二十三本之上。项目也可以在 <code>.agents/playbooks/</code> 里扩展自带 playbook。</p>
+
+<h3>组合的固定句式</h3>
+
+<p>技能组合不是各拼各的。二十三本里反复出现同一批句式；认出它们，每本新 playbook 读起来都是旧本的变奏。</p>
+
+<table>
+<tr><th>句式</th><th>技能</th><th>出现在</th></tr>
+<tr><td>开局先理解</td><td><code>how</code> 查怎么跑，<code>why</code> 查历史</td><td>Bug fix、Feature、Refactoring、Perf issue、Hillclimb 全部以它起手</td></tr>
+<tr><td>设计分叉</td><td>跨函数边界用 <code>architect</code>；多个方案都行用 <code>arena</code>；拿不准做原型</td><td>Bug fix、Feature、Refactoring</td></tr>
+<tr><td>真界面验证</td><td>driver 驱动真实界面；「测试过了」不算</td><td>所有改代码的流程</td></tr>
+<tr><td>统一出口</td><td><code>deslop</code>、<code>no-comments</code>、<code>technical-writing</code>、<code>unslop</code></td><td>Opening a PR，每本把代码送进仓库的流程的最后一步</td></tr>
+<tr><td>长程留痕</td><td><code>show-me-your-work</code>，每轮一行决策日志</td><td>Hillclimb、Autonomous run、Autopilot-full、Autopilot-stack</td></tr>
+<tr><td>上下文保护</td><td>大工件派子代理解析，主线程只留结论</td><td>Runtime forensics、Trace forensics、Session pickup、清理</td></tr>
+<tr><td>并行隔离</td><td>每个写文件的子代理独立 worktree</td><td>Feature、Hillclimb、Visual parity</td></tr>
+</table>
+
+<h3>按目标查流程</h3>
+
+<p>编号是第 3 章的编号，点编号跳到对应那本；技能链末尾的 15 就是 Opening a PR，统一出口；技能名省略 /pstack: 前缀，全名单见附录 A。</p>
+
+<table>
+<tr><th>目标</th><th>进哪本</th><th>技能链</th><th>产物</th><th>人停在哪</th></tr>
+<tr><td>搞懂一段代码</td><td><a href="#pb-01">01</a></td><td>how → why → unslop</td><td>带引用的说明，不改代码</td><td>不停</td></tr>
+<tr><td>修一个坏掉的东西</td><td><a href="#pb-02">02</a></td><td>复现 → how + why → architect（跨边界才）→ 派实现 → 同面验证 → tdd 失败测试先行 → 15</td><td>修复、证据、PR</td><td>合并时</td></tr>
+<tr><td>让它变快</td><td><a href="#pb-03">03</a> 修一次；<a href="#pb-04">04</a> 持续提升</td><td>基线 → benchmark-checklist → how → 修 → 再测；04 加决策日志</td><td>前后数字</td><td>合并时</td></tr>
+<tr><td>活进程取证、已有抓包</td><td><a href="#pb-05">05</a>；<a href="#pb-06">06</a></td><td>抓信号 → 子代理归约 → 证明机制 → 映射到源码</td><td>只有诊断，不修</td><td>你决定修不修，回流 02、03</td></tr>
+<tr><td>造新东西</td><td><a href="#pb-09">09</a> 方案拿不准时 → <a href="#pb-07">07</a></td><td>09 一次性构建加截图对比，决策即产物；07 how → architect → 并行四问 → 派工或 arena → 验证 → 有争议再 interrogate → 15</td><td>决策、实现、PR</td><td>交互改动必须人看过截图和视频</td></tr>
+<tr><td>只改形状不改行为</td><td><a href="#pb-08">08</a></td><td>how 钉契约 → architect → 先减后加 → 等价证明 → 15</td><td>结构变化加等价证明</td><td>合并时</td></tr>
+<tr><td>一批 PR 上线</td><td><a href="#pb-13">13</a> → <a href="#pb-14">14</a>；批量走 <a href="#pb-18">18</a>、<a href="#pb-19">19</a></td><td>watcher 盯 CI；每个 PR 一个独立 verifier；swarm 验证</td><td>可合并状态到落地</td><td>合并权永远在人；13、18 停在 merge-ready</td></tr>
+<tr><td>放手让它跑</td><td><a href="#pb-16">16</a> 单目标；<a href="#pb-17">17</a> 多天项目；<a href="#pb-22">22</a> 先计划</td><td>退出判定条件 → 循环唤醒 → 每轮留痕</td><td>判定条件达成</td><td>只停三件事</td></tr>
+<tr><td>换会话接续</td><td><a href="#pb-20">20</a>；<a href="#pb-21">21</a></td><td>读 trail → 重建 git 状态 → 路由回对应 playbook</td><td>恢复点</td><td>—</td></tr>
+<tr><td>改工具本身</td><td><a href="#pb-11">11</a>；<a href="#pb-12">12</a>；<a href="#pb-23">23</a></td><td>写技能 → 校验 → 15；改了提示或技能，12 盲测</td><td>技能、评测结论、腾出的磁盘</td><td>不可逆删除前</td></tr>
+</table>
+
+<h3>三条组合规则</h3>
+
+<p><b>诊断与修分离。</b>01、05、06 三本只读流程只出诊断，修是另一本的事，因为证据责任和上下文预算都不同。「先取证、再由人决定修不修」是刻意留的决策点，不是没做完。</p>
+
+<p><b>出口唯一，验证唯一，记忆唯一。</b>所有送代码进仓库的流程从 15 号口出去，所有验证都走 driver 真界面，所有长流程的记忆都是 <code>show-me-your-work</code>。记住这三个唯一，二十三本其实是同一本的变奏。</p>
+
+<p><b>停人的地方只有三类。</b>翻遍二十三本，必停人的只有：合并权、不可逆动作、产品或偏好判断。其余全部自动化。第 6 章「自主，但有几件事必须停」说的就是这条的判断层。</p>
+
 <footer class="colophon">
   <p class="closing">pstack 学习手册</p>
-  <p class="muted">本手册依据本机安装的 pstack 0.9.129 写成，单文件发布，样式与插图全部内联。版本升级后，第 3、4 章的数量与技能名可能变化，其余章节的判断不随版本改变。</p>
+  <p class="muted">本手册依据本机安装的 pstack 0.9.129 写成，单文件发布，样式与插图全部内联。版本升级后，第 3、4 章与附录 D 的数量与技能名可能变化，其余章节的判断不随版本改变。</p>
 </footer>
 </main>
 </div>
