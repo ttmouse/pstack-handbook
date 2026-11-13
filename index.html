@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#f6f5f2" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0c0d0f" media="(prefers-color-scheme: dark)">
-<meta name="description" content="pstack 学习手册：拿到任务能判断该走哪条流程、核对技能选择、预判它会怎么做。">
+<meta name="description" content="pstack 学习手册：拿到任务能判断该走哪条流程、核对技能选择、预判它会怎么做。没装技能的 AI Agent 先照第 0 章的安装指引装。">
 <title>pstack 学习手册</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%2317563b'/%3E%3Ctext x='16' y='24' font-family='Georgia,serif' font-size='22' font-weight='600' fill='%23f6f5f2' text-anchor='middle'%3Ep%3C/text%3E%3C/svg%3E">
 <script>document.documentElement.className+=' js';</script>
@@ -287,6 +287,7 @@ figure.devfig figcaption{margin:12px 0 0;font-size:14px;line-height:1.7;color:va
     <li><a href="#cheat"><span class="n">A</span>命令速查</a></li>
     <li><a href="#files"><span class="n">B</span>文件地图</a></li>
     <li><a href="#glossary"><span class="n">C</span>术语表</a></li>
+    <li><a href="#flows"><span class="n">D</span>目标到流程</a></li>
   </ol>
 </nav>
 <main>
@@ -297,7 +298,7 @@ figure.devfig figcaption{margin:12px 0 0;font-size:14px;line-height:1.7;color:va
   <div class="cover-foot">
     <a class="go" href="#howto">开始读</a>
     <div class="stats">
-      <div class="stat"><b>21</b><span>章</span></div>
+      <div class="stat"><b>22</b><span>章</span></div>
       <div class="stat"><b>23</b><span>本 playbook</span></div>
       <div class="stat"><b>43</b><span>个技能</span></div>
       <div class="stat"><b>24</b><span>条原则</span></div>
@@ -309,6 +310,47 @@ figure.devfig figcaption{margin:12px 0 0;font-size:14px;line-height:1.7;color:va
 <p>这本手册只有一个目的：让你把 pstack 的体系学明白，能判断任务该走哪条流程、核对 AI 选的技能、预判它会怎么做。</p>
 
 <p>它不是命令大全。命令在附录 A，随查随用。正文讲的是「为什么这样设计」和「什么情况下选哪个」。</p>
+
+<h3>这台电脑没装 pstack？先装技能（给 AI Agent）</h3>
+
+<p>这本手册会被整页发给 AI Agent。如果你就是收到手册的 Agent，进正题前先办一件事：确认这台电脑装没装 pstack。装了，直接往下读；没装，按这节装完再读。命令核对自仓库 README（<code>michael-denyer/pstack-claude</code>），与本机已装的 0.9.129 一致；装法随版本演进，以仓库的 Install 一节为准。</p>
+
+<p>检测三条，任一条命中即已安装。前两条跑 shell，第三条最通用：在你的技能清单里找 poteto-mode，Claude Code 里形如 <code>/pstack:poteto-mode</code>，Codex 里形如 <code>$pstack:poteto-mode</code>，各种装法最后都会把它亮出来。</p>
+
+<pre><code>ls ~/.claude/plugins/cache/pstack-claude/pstack/   # Claude Code 插件装法
+ls ~/.agents/skills/poteto-mode                    # 技能目录装法</code></pre>
+
+<p>安装按 runtime 分三档。前三行有包管理，各一到两条命令：</p>
+
+<div class="tw"><table>
+<tr><th>Runtime</th><th>命令</th></tr>
+<tr><td data-label="Runtime">Claude Code（2.1.292+）</td><td data-label="命令"><code>/plugin marketplace add michael-denyer/pstack-claude</code>，再 <code>/plugin install pstack@pstack-claude</code></td></tr>
+<tr><td data-label="Runtime">Codex</td><td data-label="命令"><code>codex plugin marketplace add michael-denyer/pstack-claude</code>，再 <code>codex plugin add pstack@pstack-claude</code></td></tr>
+<tr><td data-label="Runtime">Pi</td><td data-label="命令"><code>pi install git:github.com/michael-denyer/pstack-claude</code></td></tr>
+<tr><td data-label="Runtime">Copilot、Muse、OMP、Kimi、Grok、MiniMax、OpenCode、Antigravity</td><td data-label="命令">各有一到几条命令：先 clone 仓库，再照 README 的 Install 一节对应小节执行</td></tr>
+</table></div>
+
+<p>其余 runtime（Gemini CLI、Prime Agent、skills-only 的 Codex 等，凡是从 <code>~/.agents/skills/</code> 读技能的）用兜底装法：clone 仓库，把技能逐个链接进目录。</p>
+
+<pre><code>git clone https://github.com/michael-denyer/pstack-claude
+cd pstack-claude
+mkdir -p ~/.agents/skills
+for s in plugins/pstack/skills/*/; do
+  target=~/.agents/skills/"$(basename "$s")"
+  test -e "$target" || test -L "$target" || ln -s "$(pwd)/$s" "$target"
+done</code></pre>
+
+<div class="note warn"><b>兜底装法没有自动路由。</b>插件与包管理装法会随会话启动注入 poteto-mode 的强制段，技能目录装法不会。装完在 runtime 的指令文件里加一条常驻指令，要求接任务先过 poteto-mode，否则技能在清单里躺着也不会被路由到。</div>
+
+<p>装完的验收，三步：</p>
+
+<ol>
+  <li>新开一个会话。路由指令随会话启动注入，老会话不生效。</li>
+  <li>技能清单里能点出 poteto-mode。Claude Code 可再敲 <code>/plugin</code> 看 pstack 是否已装、什么版本。</li>
+  <li>派一个真实小任务，看它是否进入 poteto-mode、把步骤抄进待办清单。抄不出清单，等于没装好。</li>
+</ol>
+
+<div class="note"><b>装上只是下排。</b>技能装齐只解决「流程有没有」，不解决「今天该干什么」。这句出自第 16 章：外循环那半，没有任何插件替你装。</div>
 
 <h3>怎么读</h3>
 
@@ -1676,9 +1718,61 @@ create-verification-skill  造一个能自己跑应用的验证技能</code></pr
 <tr><td data-label="词">决策轨迹</td><td data-label="意思">长任务里每个决定的记录：做了什么、为什么、证据、结果</td></tr>
 </table></div>
 
+<h2 id="flows"><span class="num">附录</span><span class="ttl">D 目标到流程</span></h2>
+
+<p>技能不直接组合成流程。组合发生在两层：目标经描述路由到二十三本 playbook 之一，playbook 把技能按固定顺序钉死，原则穿插其中当约束。poteto-mode 是唯一的路由器，playbook 不能点名调用。</p>
+
+<pre><code>你的目标（一段描述）
+  → poteto-mode 按描述匹配 playbook（23 选 1）
+    → playbook 按固定顺序调用技能
+      → 原则穿插其中当约束，不占步骤</code></pre>
+
+<p>路由有两个容易漏的细节。PR 相关的话——「盯着这个 PR」「check on X」——路由到 Babysit 这本 playbook，而不是同名的 babysit 技能，playbook 接管后技能版就退到 poteto-mode 之外。没有现成 playbook 契合的大型任务，交给 figure-it-out 技能现编一本专属 playbook，它站在二十三本之上。项目也可以在 <code>.agents/playbooks/</code> 里扩展自带 playbook。</p>
+
+<h3>组合的固定句式</h3>
+
+<p>技能组合不是各拼各的。二十三本里反复出现同一批句式；认出它们，每本新 playbook 读起来都是旧本的变奏。</p>
+
+<div class="tw"><table>
+<tr><th>句式</th><th>技能</th><th>出现在</th></tr>
+<tr><td data-label="句式">开局先理解</td><td data-label="技能"><code>how</code> 查怎么跑，<code>why</code> 查历史</td><td data-label="出现在">Bug fix、Feature、Refactoring、Perf issue、Hillclimb 全部以它起手</td></tr>
+<tr><td data-label="句式">设计分叉</td><td data-label="技能">跨函数边界用 <code>architect</code>；多个方案都行用 <code>arena</code>；拿不准做原型</td><td data-label="出现在">Bug fix、Feature、Refactoring</td></tr>
+<tr><td data-label="句式">真界面验证</td><td data-label="技能">driver 驱动真实界面；「测试过了」不算</td><td data-label="出现在">所有改代码的流程</td></tr>
+<tr><td data-label="句式">统一出口</td><td data-label="技能"><code>deslop</code>、<code>no-comments</code>、<code>technical-writing</code>、<code>unslop</code></td><td data-label="出现在">Opening a PR，每本把代码送进仓库的流程的最后一步</td></tr>
+<tr><td data-label="句式">长程留痕</td><td data-label="技能"><code>show-me-your-work</code>，每轮一行决策日志</td><td data-label="出现在">Hillclimb、Autonomous run、Autopilot-full、Autopilot-stack</td></tr>
+<tr><td data-label="句式">上下文保护</td><td data-label="技能">大工件派子代理解析，主线程只留结论</td><td data-label="出现在">Runtime forensics、Trace forensics、Session pickup、清理</td></tr>
+<tr><td data-label="句式">并行隔离</td><td data-label="技能">每个写文件的子代理独立 worktree</td><td data-label="出现在">Feature、Hillclimb、Visual parity</td></tr>
+</table></div>
+
+<h3>按目标查流程</h3>
+
+<p>编号是第 3 章的编号，点编号跳到对应那本；技能链末尾的 15 就是 Opening a PR，统一出口；技能名省略 /pstack: 前缀，全名单见附录 A。</p>
+
+<div class="tw"><table>
+<tr><th>目标</th><th>进哪本</th><th>技能链</th><th>产物</th><th>人停在哪</th></tr>
+<tr><td data-label="目标">搞懂一段代码</td><td data-label="进哪本"><a href="#pb-01">01</a></td><td data-label="技能链">how → why → unslop</td><td data-label="产物">带引用的说明，不改代码</td><td data-label="人停在哪">不停</td></tr>
+<tr><td data-label="目标">修一个坏掉的东西</td><td data-label="进哪本"><a href="#pb-02">02</a></td><td data-label="技能链">复现 → how + why → architect（跨边界才）→ 派实现 → 同面验证 → tdd 失败测试先行 → 15</td><td data-label="产物">修复、证据、PR</td><td data-label="人停在哪">合并时</td></tr>
+<tr><td data-label="目标">让它变快</td><td data-label="进哪本"><a href="#pb-03">03</a> 修一次；<a href="#pb-04">04</a> 持续提升</td><td data-label="技能链">基线 → benchmark-checklist → how → 修 → 再测；04 加决策日志</td><td data-label="产物">前后数字</td><td data-label="人停在哪">合并时</td></tr>
+<tr><td data-label="目标">活进程取证、已有抓包</td><td data-label="进哪本"><a href="#pb-05">05</a>；<a href="#pb-06">06</a></td><td data-label="技能链">抓信号 → 子代理归约 → 证明机制 → 映射到源码</td><td data-label="产物">只有诊断，不修</td><td data-label="人停在哪">你决定修不修，回流 02、03</td></tr>
+<tr><td data-label="目标">造新东西</td><td data-label="进哪本"><a href="#pb-09">09</a> 方案拿不准时 → <a href="#pb-07">07</a></td><td data-label="技能链">09 一次性构建加截图对比，决策即产物；07 how → architect → 并行四问 → 派工或 arena → 验证 → 有争议再 interrogate → 15</td><td data-label="产物">决策、实现、PR</td><td data-label="人停在哪">交互改动必须人看过截图和视频</td></tr>
+<tr><td data-label="目标">只改形状不改行为</td><td data-label="进哪本"><a href="#pb-08">08</a></td><td data-label="技能链">how 钉契约 → architect → 先减后加 → 等价证明 → 15</td><td data-label="产物">结构变化加等价证明</td><td data-label="人停在哪">合并时</td></tr>
+<tr><td data-label="目标">一批 PR 上线</td><td data-label="进哪本"><a href="#pb-13">13</a> → <a href="#pb-14">14</a>；批量走 <a href="#pb-18">18</a>、<a href="#pb-19">19</a></td><td data-label="技能链">watcher 盯 CI；每个 PR 一个独立 verifier；swarm 验证</td><td data-label="产物">可合并状态到落地</td><td data-label="人停在哪">合并权永远在人；13、18 停在 merge-ready</td></tr>
+<tr><td data-label="目标">放手让它跑</td><td data-label="进哪本"><a href="#pb-16">16</a> 单目标；<a href="#pb-17">17</a> 多天项目；<a href="#pb-22">22</a> 先计划</td><td data-label="技能链">退出判定条件 → 循环唤醒 → 每轮留痕</td><td data-label="产物">判定条件达成</td><td data-label="人停在哪">只停三件事</td></tr>
+<tr><td data-label="目标">换会话接续</td><td data-label="进哪本"><a href="#pb-20">20</a>；<a href="#pb-21">21</a></td><td data-label="技能链">读 trail → 重建 git 状态 → 路由回对应 playbook</td><td data-label="产物">恢复点</td><td data-label="人停在哪">—</td></tr>
+<tr><td data-label="目标">改工具本身</td><td data-label="进哪本"><a href="#pb-11">11</a>；<a href="#pb-12">12</a>；<a href="#pb-23">23</a></td><td data-label="技能链">写技能 → 校验 → 15；改了提示或技能，12 盲测</td><td data-label="产物">技能、评测结论、腾出的磁盘</td><td data-label="人停在哪">不可逆删除前</td></tr>
+</table></div>
+
+<h3>三条组合规则</h3>
+
+<p><b>诊断与修分离。</b>01、05、06 三本只读流程只出诊断，修是另一本的事，因为证据责任和上下文预算都不同。「先取证、再由人决定修不修」是刻意留的决策点，不是没做完。</p>
+
+<p><b>出口唯一，验证唯一，记忆唯一。</b>所有送代码进仓库的流程从 15 号口出去，所有验证都走 driver 真界面，所有长流程的记忆都是 <code>show-me-your-work</code>。记住这三个唯一，二十三本其实是同一本的变奏。</p>
+
+<p><b>停人的地方只有三类。</b>翻遍二十三本，必停人的只有：合并权、不可逆动作、产品或偏好判断。其余全部自动化。第 6 章「自主，但有几件事必须停」说的就是这条的判断层。</p>
+
 <footer class="colophon">
   <p class="closing">pstack 学习手册</p>
-  <p class="muted">本手册依据本机安装的 pstack 0.9.129 写成，单文件发布，样式与插图全部内联。版本升级后，第 3、4 章的数量与技能名可能变化，其余章节的判断不随版本改变。</p>
+  <p class="muted">本手册依据本机安装的 pstack 0.9.129 写成，单文件发布，样式与插图全部内联。版本升级后，第 3、4 章与附录 D 的数量与技能名可能变化，其余章节的判断不随版本改变。</p>
 </footer>
 </main>
 </div>
