@@ -353,7 +353,7 @@ ls ~/.agents/skills/poteto-mode                    # 技能目录装法</code></
 
 <table>
 <tr><th>Runtime</th><th>命令</th></tr>
-<tr><td>Claude Code（2.1.292+）</td><td><code>/plugin marketplace add michael-denyer/pstack-claude</code>，再 <code>/plugin install pstack@pstack-claude</code></td></tr>
+<tr><td>Claude Code（2.1.292+，更老先升级）</td><td><code>/plugin marketplace add michael-denyer/pstack-claude</code>，再 <code>/plugin install pstack@pstack-claude</code></td></tr>
 <tr><td>Codex</td><td><code>codex plugin marketplace add michael-denyer/pstack-claude</code>，再 <code>codex plugin add pstack@pstack-claude</code></td></tr>
 <tr><td>Pi</td><td><code>pi install git:github.com/michael-denyer/pstack-claude</code></td></tr>
 <tr><td>Copilot、Muse、OMP、Kimi、Grok、MiniMax、OpenCode、Antigravity</td><td>各有一到几条命令：先 clone 仓库，再照 README 的 Install 一节对应小节执行</td></tr>
@@ -394,7 +394,7 @@ done</code></pre>
 
 <h3>学完的验收标准</h3>
 
-<p>手册开头说的「原作者的七八成」，拆成下面五条可检验的能力。全部做到算达到，做不到的条目回对应章节补。</p>
+<p>第 0 章开头说的「把体系学明白」，拆成下面五条可检验的能力。全部做到算达到，做不到的条目回对应章节补。</p>
 
 <table>
 <tr><th>能力</th><th>检验方式</th><th>对应章节</th></tr>
@@ -546,7 +546,7 @@ description: Find what a change could break somewhere else before it ships...
 
 <p>插件装了一个 <code>SessionStart</code> hook，在启动、恢复、清空、压缩上下文时注入 poteto-mode 的强制段。其中一条是：改动涉及两个以上文件时，建议进入 poteto-mode。</p>
 
-<p>这就是为什么你只是随口让它改点东西，它却开始走流程。不想要这个行为，在模型表里写 <code>session hook: off</code>，重启会话生效。</p>
+<p>这就是为什么你只是随口让它改点东西，它却开始走流程。不想要这个行为，在下一节讲的模型表里写 <code>session hook: off</code>，重启会话生效。</p>
 
 <h3>模型表</h3>
 
