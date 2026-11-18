@@ -289,6 +289,19 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 .rail-list .n:empty{visibility:hidden}
 .rail-list a .t{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .rail-results .r-t{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+/* 解读批注层：宽屏浮在右侧空白，窄屏退化为正文内的框 */
+.readnote{margin:22px 0;padding:16px 20px 6px;background:var(--raise);
+  border-left:3px solid var(--accent2);font-size:15px;line-height:1.8}
+.readnote .ntag{font-weight:600;font-size:13px;letter-spacing:.08em;
+  color:var(--accent2);margin-bottom:6px}
+.readnote p{margin:8px 0;font-size:15px}
+.readnote ul,.readnote ol{margin:8px 0;padding-left:1.1em;font-size:15px}
+.readnote li{margin:5px 0}
+@media (min-width:1280px){
+  .readnote{float:right;clear:right;width:300px;margin:4px 0 16px 28px}
+  main > h2{clear:both}
+  main > figure.devfig,main > .tw{clear:both}
+}
 </style>
 </head>
 <body>
@@ -305,7 +318,7 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
     <p class="rail-none" hidden>没有匹配</p>
   </div>
   <ol class="rail-list">
-    <li class="rail-group">总管 · 1</li><li><a href="#poteto-mode" title="poteto-mode"><span class="n"></span><span class="t">poteto-mode</span></a></li><li class="rail-group">playbook（流程清单） · 23</li><li><a href="#pb-01" title="investigation"><span class="n">01</span><span class="t">investigation</span></a></li><li><a href="#pb-02" title="bug-fix"><span class="n">02</span><span class="t">bug-fix</span></a></li><li><a href="#pb-03" title="perf-issue"><span class="n">03</span><span class="t">perf-issue</span></a></li><li><a href="#pb-04" title="hillclimb"><span class="n">04</span><span class="t">hillclimb</span></a></li><li><a href="#pb-05" title="runtime-forensics"><span class="n">05</span><span class="t">runtime-forensics</span></a></li><li><a href="#pb-06" title="trace-forensics"><span class="n">06</span><span class="t">trace-forensics</span></a></li><li><a href="#pb-07" title="feature"><span class="n">07</span><span class="t">feature</span></a></li><li><a href="#pb-08" title="refactoring"><span class="n">08</span><span class="t">refactoring</span></a></li><li><a href="#pb-09" title="prototype"><span class="n">09</span><span class="t">prototype</span></a></li><li><a href="#pb-10" title="visual-parity"><span class="n">10</span><span class="t">visual-parity</span></a></li><li><a href="#pb-11" title="authoring-a-skill"><span class="n">11</span><span class="t">authoring-a-skill</span></a></li><li><a href="#pb-12" title="eval"><span class="n">12</span><span class="t">eval</span></a></li><li><a href="#pb-13" title="babysit"><span class="n">13</span><span class="t">babysit</span></a></li><li><a href="#pb-14" title="shipping"><span class="n">14</span><span class="t">shipping</span></a></li><li><a href="#pb-15" title="opening-a-pr"><span class="n">15</span><span class="t">opening-a-pr</span></a></li><li><a href="#pb-16" title="autonomous-run"><span class="n">16</span><span class="t">autonomous-run</span></a></li><li><a href="#pb-17" title="orchestrate"><span class="n">17</span><span class="t">orchestrate</span></a></li><li><a href="#pb-18" title="autopilot-full"><span class="n">18</span><span class="t">autopilot-full</span></a></li><li><a href="#pb-19" title="autopilot-stack"><span class="n">19</span><span class="t">autopilot-stack</span></a></li><li><a href="#pb-20" title="session-pickup"><span class="n">20</span><span class="t">session-pickup</span></a></li><li><a href="#pb-21" title="pause-safely"><span class="n">21</span><span class="t">pause-safely</span></a></li><li><a href="#pb-22" title="multi-phase-plan"><span class="n">22</span><span class="t">multi-phase-plan</span></a></li><li><a href="#pb-23" title="worktree-cleanup"><span class="n">23</span><span class="t">worktree-cleanup</span></a></li><li class="rail-group">技能 · 42</li><li><a href="#sk-architect" title="architect"><span class="n"></span><span class="t">architect</span></a></li><li><a href="#sk-arena" title="arena"><span class="n"></span><span class="t">arena</span></a></li><li><a href="#sk-automate-me" title="automate-me"><span class="n"></span><span class="t">automate-me</span></a></li><li><a href="#sk-babysit" title="babysit"><span class="n"></span><span class="t">babysit</span></a></li><li><a href="#sk-benchmark-checklist" title="benchmark-checklist"><span class="n"></span><span class="t">benchmark-checklist</span></a></li><li><a href="#sk-blast-radius" title="blast-radius"><span class="n"></span><span class="t">blast-radius</span></a></li><li><a href="#sk-bro" title="bro"><span class="n"></span><span class="t">bro</span></a></li><li><a href="#sk-correct" title="correct"><span class="n"></span><span class="t">correct</span></a></li><li><a href="#sk-create-formal-verification-skill" title="create-formal-verification-skill"><span class="n"></span><span class="t">create-formal-verification-skill</span></a></li><li><a href="#sk-create-verification-skill" title="create-verification-skill"><span class="n"></span><span class="t">create-verification-skill</span></a></li><li><a href="#sk-deslop" title="deslop"><span class="n"></span><span class="t">deslop</span></a></li><li><a href="#sk-figure-it-out" title="figure-it-out"><span class="n"></span><span class="t">figure-it-out</span></a></li><li><a href="#sk-fix-ci" title="fix-ci"><span class="n"></span><span class="t">fix-ci</span></a></li><li><a href="#sk-fix-merge-conflicts" title="fix-merge-conflicts"><span class="n"></span><span class="t">fix-merge-conflicts</span></a></li><li><a href="#sk-get-pr-comments" title="get-pr-comments"><span class="n"></span><span class="t">get-pr-comments</span></a></li><li><a href="#sk-how" title="how"><span class="n"></span><span class="t">how</span></a></li><li><a href="#sk-in-your-own-words" title="in-your-own-words"><span class="n"></span><span class="t">in-your-own-words</span></a></li><li><a href="#sk-interrogate" title="interrogate"><span class="n"></span><span class="t">interrogate</span></a></li><li><a href="#sk-ketchup" title="ketchup"><span class="n"></span><span class="t">ketchup</span></a></li><li><a href="#sk-ketchup-video" title="ketchup-video"><span class="n"></span><span class="t">ketchup-video</span></a></li><li><a href="#sk-maintain-formal-verification-skill" title="maintain-formal-verification-skill"><span class="n"></span><span class="t">maintain-formal-verification-skill</span></a></li><li><a href="#sk-maintain-verification-skill" title="maintain-verification-skill"><span class="n"></span><span class="t">maintain-verification-skill</span></a></li><li><a href="#sk-make-pr-easy-to-review" title="make-pr-easy-to-review"><span class="n"></span><span class="t">make-pr-easy-to-review</span></a></li><li><a href="#sk-no-comments" title="no-comments"><span class="n"></span><span class="t">no-comments</span></a></li><li><a href="#sk-poteto-help" title="poteto-help"><span class="n"></span><span class="t">poteto-help</span></a></li><li><a href="#sk-recall" title="recall"><span class="n"></span><span class="t">recall</span></a></li><li><a href="#sk-reflect" title="reflect"><span class="n"></span><span class="t">reflect</span></a></li><li><a href="#sk-setup-pstack" title="setup-pstack"><span class="n"></span><span class="t">setup-pstack</span></a></li><li><a href="#sk-sharpen" title="sharpen"><span class="n"></span><span class="t">sharpen</span></a></li><li><a href="#sk-show-me-your-work" title="show-me-your-work"><span class="n"></span><span class="t">show-me-your-work</span></a></li><li><a href="#sk-statechart" title="statechart"><span class="n"></span><span class="t">statechart</span></a></li><li><a href="#sk-swarm" title="swarm"><span class="n"></span><span class="t">swarm</span></a></li><li><a href="#sk-tdd" title="tdd"><span class="n"></span><span class="t">tdd</span></a></li><li><a href="#sk-teach" title="teach"><span class="n"></span><span class="t">teach</span></a></li><li><a href="#sk-technical-writing" title="technical-writing"><span class="n"></span><span class="t">technical-writing</span></a></li><li><a href="#sk-thermo-nuclear-code-quality-review" title="thermo-nuclear-code-quality-review"><span class="n"></span><span class="t">thermo-nuclear-code-quality-review</span></a></li><li><a href="#sk-thermo-nuclear-review" title="thermo-nuclear-review"><span class="n"></span><span class="t">thermo-nuclear-review</span></a></li><li><a href="#sk-thermos" title="thermos"><span class="n"></span><span class="t">thermos</span></a></li><li><a href="#sk-typescript-best-practices" title="typescript-best-practices"><span class="n"></span><span class="t">typescript-best-practices</span></a></li><li><a href="#sk-unslop" title="unslop"><span class="n"></span><span class="t">unslop</span></a></li><li><a href="#sk-what-did-i-get-done" title="what-did-i-get-done"><span class="n"></span><span class="t">what-did-i-get-done</span></a></li><li><a href="#sk-why" title="why"><span class="n"></span><span class="t">why</span></a></li><li class="rail-group">原则 · 24</li><li><a href="#principle-attack-the-premise" title="principle-attack-the-premise"><span class="n"></span><span class="t">principle-attack-the-premise</span></a></li><li><a href="#principle-boundary-discipline" title="principle-boundary-discipline"><span class="n"></span><span class="t">principle-boundary-discipline</span></a></li><li><a href="#principle-build-the-lever" title="principle-build-the-lever"><span class="n"></span><span class="t">principle-build-the-lever</span></a></li><li><a href="#principle-encode-lessons-in-structure" title="principle-encode-lessons-in-structure"><span class="n"></span><span class="t">principle-encode-lessons-in-structure</span></a></li><li><a href="#principle-exhaust-the-design-space" title="principle-exhaust-the-design-space"><span class="n"></span><span class="t">principle-exhaust-the-design-space</span></a></li><li><a href="#principle-experience-first" title="principle-experience-first"><span class="n"></span><span class="t">principle-experience-first</span></a></li><li><a href="#principle-explain-the-number" title="principle-explain-the-number"><span class="n"></span><span class="t">principle-explain-the-number</span></a></li><li><a href="#principle-fix-root-causes" title="principle-fix-root-causes"><span class="n"></span><span class="t">principle-fix-root-causes</span></a></li><li><a href="#principle-foundational-thinking" title="principle-foundational-thinking"><span class="n"></span><span class="t">principle-foundational-thinking</span></a></li><li><a href="#principle-guard-the-context-window" title="principle-guard-the-context-window"><span class="n"></span><span class="t">principle-guard-the-context-window</span></a></li><li><a href="#principle-laziness-protocol" title="principle-laziness-protocol"><span class="n"></span><span class="t">principle-laziness-protocol</span></a></li><li><a href="#principle-make-operations-idempotent" title="principle-make-operations-idempotent"><span class="n"></span><span class="t">principle-make-operations-idempotent</span></a></li><li><a href="#principle-migrate-callers-then-delete-legacy-apis" title="principle-migrate-callers-then-delete-legacy-apis"><span class="n"></span><span class="t">principle-migrate-callers-then-delete-legacy-apis</span></a></li><li><a href="#principle-minimize-reader-load" title="principle-minimize-reader-load"><span class="n"></span><span class="t">principle-minimize-reader-load</span></a></li><li><a href="#principle-model-the-domain" title="principle-model-the-domain"><span class="n"></span><span class="t">principle-model-the-domain</span></a></li><li><a href="#principle-never-block-on-the-human" title="principle-never-block-on-the-human"><span class="n"></span><span class="t">principle-never-block-on-the-human</span></a></li><li><a href="#principle-outcome-oriented-execution" title="principle-outcome-oriented-execution"><span class="n"></span><span class="t">principle-outcome-oriented-execution</span></a></li><li><a href="#principle-prove-it-works" title="principle-prove-it-works"><span class="n"></span><span class="t">principle-prove-it-works</span></a></li><li><a href="#principle-redesign-from-first-principles" title="principle-redesign-from-first-principles"><span class="n"></span><span class="t">principle-redesign-from-first-principles</span></a></li><li><a href="#principle-separate-before-serializing-shared-state" title="principle-separate-before-serializing-shared-state"><span class="n"></span><span class="t">principle-separate-before-serializing-shared-state</span></a></li><li><a href="#principle-sequence-verifiable-units" title="principle-sequence-verifiable-units"><span class="n"></span><span class="t">principle-sequence-verifiable-units</span></a></li><li><a href="#principle-subtract-before-you-add" title="principle-subtract-before-you-add"><span class="n"></span><span class="t">principle-subtract-before-you-add</span></a></li><li><a href="#principle-test-behavior-not-implementation" title="principle-test-behavior-not-implementation"><span class="n"></span><span class="t">principle-test-behavior-not-implementation</span></a></li><li><a href="#principle-type-system-discipline" title="principle-type-system-discipline"><span class="n"></span><span class="t">principle-type-system-discipline</span></a></li>
+    <li class="rail-group">总管 · 1</li><li><a href="#poteto-mode" title="poteto-mode"><span class="n"></span><span class="t">poteto-mode</span></a></li><li class="rail-group">playbook（流程清单） · 23</li><li><a href="#pb-01" title="investigation · 调查"><span class="n">01</span><span class="t">investigation · 调查</span></a></li><li><a href="#pb-02" title="bug-fix · 修缺陷"><span class="n">02</span><span class="t">bug-fix · 修缺陷</span></a></li><li><a href="#pb-03" title="perf-issue · 性能问题"><span class="n">03</span><span class="t">perf-issue · 性能问题</span></a></li><li><a href="#pb-04" title="hillclimb · 爬坡"><span class="n">04</span><span class="t">hillclimb · 爬坡</span></a></li><li><a href="#pb-05" title="runtime-forensics · 运行时取证"><span class="n">05</span><span class="t">runtime-forensics · 运行时取证</span></a></li><li><a href="#pb-06" title="trace-forensics · 轨迹取证"><span class="n">06</span><span class="t">trace-forensics · 轨迹取证</span></a></li><li><a href="#pb-07" title="feature · 新功能"><span class="n">07</span><span class="t">feature · 新功能</span></a></li><li><a href="#pb-08" title="refactoring · 重构"><span class="n">08</span><span class="t">refactoring · 重构</span></a></li><li><a href="#pb-09" title="prototype · 原型"><span class="n">09</span><span class="t">prototype · 原型</span></a></li><li><a href="#pb-10" title="visual-parity · 像素对齐"><span class="n">10</span><span class="t">visual-parity · 像素对齐</span></a></li><li><a href="#pb-11" title="authoring-a-skill · 写技能"><span class="n">11</span><span class="t">authoring-a-skill · 写技能</span></a></li><li><a href="#pb-12" title="eval · 盲测"><span class="n">12</span><span class="t">eval · 盲测</span></a></li><li><a href="#pb-13" title="babysit · 看 PR"><span class="n">13</span><span class="t">babysit · 看 PR</span></a></li><li><a href="#pb-14" title="shipping · 上线"><span class="n">14</span><span class="t">shipping · 上线</span></a></li><li><a href="#pb-15" title="opening-a-pr · 开 PR"><span class="n">15</span><span class="t">opening-a-pr · 开 PR</span></a></li><li><a href="#pb-16" title="autonomous-run · 自主运行"><span class="n">16</span><span class="t">autonomous-run · 自主运行</span></a></li><li><a href="#pb-17" title="orchestrate · 编排"><span class="n">17</span><span class="t">orchestrate · 编排</span></a></li><li><a href="#pb-18" title="autopilot-full · 全自动队列"><span class="n">18</span><span class="t">autopilot-full · 全自动队列</span></a></li><li><a href="#pb-19" title="autopilot-stack · 堆叠队列"><span class="n">19</span><span class="t">autopilot-stack · 堆叠队列</span></a></li><li><a href="#pb-20" title="session-pickup · 接手"><span class="n">20</span><span class="t">session-pickup · 接手</span></a></li><li><a href="#pb-21" title="pause-safely · 安全暂停"><span class="n">21</span><span class="t">pause-safely · 安全暂停</span></a></li><li><a href="#pb-22" title="multi-phase-plan · 多阶段计划"><span class="n">22</span><span class="t">multi-phase-plan · 多阶段计划</span></a></li><li><a href="#pb-23" title="worktree-cleanup · 清理"><span class="n">23</span><span class="t">worktree-cleanup · 清理</span></a></li><li class="rail-group">技能 · 42</li><li><a href="#sk-architect" title="architect"><span class="n"></span><span class="t">architect</span></a></li><li><a href="#sk-arena" title="arena"><span class="n"></span><span class="t">arena</span></a></li><li><a href="#sk-automate-me" title="automate-me"><span class="n"></span><span class="t">automate-me</span></a></li><li><a href="#sk-babysit" title="babysit"><span class="n"></span><span class="t">babysit</span></a></li><li><a href="#sk-benchmark-checklist" title="benchmark-checklist"><span class="n"></span><span class="t">benchmark-checklist</span></a></li><li><a href="#sk-blast-radius" title="blast-radius"><span class="n"></span><span class="t">blast-radius</span></a></li><li><a href="#sk-bro" title="bro"><span class="n"></span><span class="t">bro</span></a></li><li><a href="#sk-correct" title="correct"><span class="n"></span><span class="t">correct</span></a></li><li><a href="#sk-create-formal-verification-skill" title="create-formal-verification-skill"><span class="n"></span><span class="t">create-formal-verification-skill</span></a></li><li><a href="#sk-create-verification-skill" title="create-verification-skill"><span class="n"></span><span class="t">create-verification-skill</span></a></li><li><a href="#sk-deslop" title="deslop"><span class="n"></span><span class="t">deslop</span></a></li><li><a href="#sk-figure-it-out" title="figure-it-out"><span class="n"></span><span class="t">figure-it-out</span></a></li><li><a href="#sk-fix-ci" title="fix-ci"><span class="n"></span><span class="t">fix-ci</span></a></li><li><a href="#sk-fix-merge-conflicts" title="fix-merge-conflicts"><span class="n"></span><span class="t">fix-merge-conflicts</span></a></li><li><a href="#sk-get-pr-comments" title="get-pr-comments"><span class="n"></span><span class="t">get-pr-comments</span></a></li><li><a href="#sk-how" title="how"><span class="n"></span><span class="t">how</span></a></li><li><a href="#sk-in-your-own-words" title="in-your-own-words"><span class="n"></span><span class="t">in-your-own-words</span></a></li><li><a href="#sk-interrogate" title="interrogate"><span class="n"></span><span class="t">interrogate</span></a></li><li><a href="#sk-ketchup" title="ketchup"><span class="n"></span><span class="t">ketchup</span></a></li><li><a href="#sk-ketchup-video" title="ketchup-video"><span class="n"></span><span class="t">ketchup-video</span></a></li><li><a href="#sk-maintain-formal-verification-skill" title="maintain-formal-verification-skill"><span class="n"></span><span class="t">maintain-formal-verification-skill</span></a></li><li><a href="#sk-maintain-verification-skill" title="maintain-verification-skill"><span class="n"></span><span class="t">maintain-verification-skill</span></a></li><li><a href="#sk-make-pr-easy-to-review" title="make-pr-easy-to-review"><span class="n"></span><span class="t">make-pr-easy-to-review</span></a></li><li><a href="#sk-no-comments" title="no-comments"><span class="n"></span><span class="t">no-comments</span></a></li><li><a href="#sk-poteto-help" title="poteto-help"><span class="n"></span><span class="t">poteto-help</span></a></li><li><a href="#sk-recall" title="recall"><span class="n"></span><span class="t">recall</span></a></li><li><a href="#sk-reflect" title="reflect"><span class="n"></span><span class="t">reflect</span></a></li><li><a href="#sk-setup-pstack" title="setup-pstack"><span class="n"></span><span class="t">setup-pstack</span></a></li><li><a href="#sk-sharpen" title="sharpen"><span class="n"></span><span class="t">sharpen</span></a></li><li><a href="#sk-show-me-your-work" title="show-me-your-work"><span class="n"></span><span class="t">show-me-your-work</span></a></li><li><a href="#sk-statechart" title="statechart"><span class="n"></span><span class="t">statechart</span></a></li><li><a href="#sk-swarm" title="swarm"><span class="n"></span><span class="t">swarm</span></a></li><li><a href="#sk-tdd" title="tdd"><span class="n"></span><span class="t">tdd</span></a></li><li><a href="#sk-teach" title="teach"><span class="n"></span><span class="t">teach</span></a></li><li><a href="#sk-technical-writing" title="technical-writing"><span class="n"></span><span class="t">technical-writing</span></a></li><li><a href="#sk-thermo-nuclear-code-quality-review" title="thermo-nuclear-code-quality-review"><span class="n"></span><span class="t">thermo-nuclear-code-quality-review</span></a></li><li><a href="#sk-thermo-nuclear-review" title="thermo-nuclear-review"><span class="n"></span><span class="t">thermo-nuclear-review</span></a></li><li><a href="#sk-thermos" title="thermos"><span class="n"></span><span class="t">thermos</span></a></li><li><a href="#sk-typescript-best-practices" title="typescript-best-practices"><span class="n"></span><span class="t">typescript-best-practices</span></a></li><li><a href="#sk-unslop" title="unslop"><span class="n"></span><span class="t">unslop</span></a></li><li><a href="#sk-what-did-i-get-done" title="what-did-i-get-done"><span class="n"></span><span class="t">what-did-i-get-done</span></a></li><li><a href="#sk-why" title="why"><span class="n"></span><span class="t">why</span></a></li><li class="rail-group">原则 · 24</li><li><a href="#principle-attack-the-premise" title="principle-attack-the-premise"><span class="n"></span><span class="t">principle-attack-the-premise</span></a></li><li><a href="#principle-boundary-discipline" title="principle-boundary-discipline"><span class="n"></span><span class="t">principle-boundary-discipline</span></a></li><li><a href="#principle-build-the-lever" title="principle-build-the-lever"><span class="n"></span><span class="t">principle-build-the-lever</span></a></li><li><a href="#principle-encode-lessons-in-structure" title="principle-encode-lessons-in-structure"><span class="n"></span><span class="t">principle-encode-lessons-in-structure</span></a></li><li><a href="#principle-exhaust-the-design-space" title="principle-exhaust-the-design-space"><span class="n"></span><span class="t">principle-exhaust-the-design-space</span></a></li><li><a href="#principle-experience-first" title="principle-experience-first"><span class="n"></span><span class="t">principle-experience-first</span></a></li><li><a href="#principle-explain-the-number" title="principle-explain-the-number"><span class="n"></span><span class="t">principle-explain-the-number</span></a></li><li><a href="#principle-fix-root-causes" title="principle-fix-root-causes"><span class="n"></span><span class="t">principle-fix-root-causes</span></a></li><li><a href="#principle-foundational-thinking" title="principle-foundational-thinking"><span class="n"></span><span class="t">principle-foundational-thinking</span></a></li><li><a href="#principle-guard-the-context-window" title="principle-guard-the-context-window"><span class="n"></span><span class="t">principle-guard-the-context-window</span></a></li><li><a href="#principle-laziness-protocol" title="principle-laziness-protocol"><span class="n"></span><span class="t">principle-laziness-protocol</span></a></li><li><a href="#principle-make-operations-idempotent" title="principle-make-operations-idempotent"><span class="n"></span><span class="t">principle-make-operations-idempotent</span></a></li><li><a href="#principle-migrate-callers-then-delete-legacy-apis" title="principle-migrate-callers-then-delete-legacy-apis"><span class="n"></span><span class="t">principle-migrate-callers-then-delete-legacy-apis</span></a></li><li><a href="#principle-minimize-reader-load" title="principle-minimize-reader-load"><span class="n"></span><span class="t">principle-minimize-reader-load</span></a></li><li><a href="#principle-model-the-domain" title="principle-model-the-domain"><span class="n"></span><span class="t">principle-model-the-domain</span></a></li><li><a href="#principle-never-block-on-the-human" title="principle-never-block-on-the-human"><span class="n"></span><span class="t">principle-never-block-on-the-human</span></a></li><li><a href="#principle-outcome-oriented-execution" title="principle-outcome-oriented-execution"><span class="n"></span><span class="t">principle-outcome-oriented-execution</span></a></li><li><a href="#principle-prove-it-works" title="principle-prove-it-works"><span class="n"></span><span class="t">principle-prove-it-works</span></a></li><li><a href="#principle-redesign-from-first-principles" title="principle-redesign-from-first-principles"><span class="n"></span><span class="t">principle-redesign-from-first-principles</span></a></li><li><a href="#principle-separate-before-serializing-shared-state" title="principle-separate-before-serializing-shared-state"><span class="n"></span><span class="t">principle-separate-before-serializing-shared-state</span></a></li><li><a href="#principle-sequence-verifiable-units" title="principle-sequence-verifiable-units"><span class="n"></span><span class="t">principle-sequence-verifiable-units</span></a></li><li><a href="#principle-subtract-before-you-add" title="principle-subtract-before-you-add"><span class="n"></span><span class="t">principle-subtract-before-you-add</span></a></li><li><a href="#principle-test-behavior-not-implementation" title="principle-test-behavior-not-implementation"><span class="n"></span><span class="t">principle-test-behavior-not-implementation</span></a></li><li><a href="#principle-type-system-discipline" title="principle-type-system-discipline"><span class="n"></span><span class="t">principle-type-system-discipline</span></a></li>
   </ol>
 </nav>
 <main>
@@ -326,8 +339,100 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 
 <h2 id="readme"><span class="num">0</span><span class="ttl">翻译说明</span></h2>
 <p>来源：本机 <code>~/.claude/plugins/cache/pstack-claude/pstack/0.9.129/skills/</code>，逐文件全译，不摘要、不省略。术语约定：skill 译「技能」，principle 译「原则」，playbook、技能名、斜杠命令、文件路径、frontmatter、description、driver、verifier、watcher 保留英文，因为它们是你要原样敲进终端或核对文件时用到的字面量。每份文档开头的蓝框是它 frontmatter 里的 description 译文——那行字是路由的唯一依据，值得逐条读。翻译日期 2026-11-18，上游技能文本会随版本演进，数字以本机版本为准。</p>
+<h2 id="jargon"><span class="num">0.5</span><span class="ttl">黑话速查</span></h2>
+<p>这些词在原文里反复出现，先认一遍，后面每份文档都会顺很多。</p>
+<table>
+<thead>
+<tr>
+<th>黑话</th>
+<th>人话</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>skill / 技能</td>
+<td>一份说明书（SKILL.md），用斜杠命令调用，如 <code>/pstack:how</code></td>
+</tr>
+<tr>
+<td>playbook</td>
+<td>一类任务的步骤清单，不能直接调用，由总管按任务挑选</td>
+</tr>
+<tr>
+<td>poteto-mode</td>
+<td>总管。看你的任务，挑清单、派活、把关</td>
+</tr>
+<tr>
+<td>how / why</td>
+<td>问「现在怎么跑」/ 问「当初为什么这么写」</td>
+</tr>
+<tr>
+<td>driver</td>
+<td>替 AI 操作真实界面的工具：点按钮、填表、截图</td>
+</tr>
+<tr>
+<td>repro / 复现</td>
+<td>让缺陷稳定出现的那套操作，修任何 bug 前的第一步</td>
+</tr>
+<tr>
+<td>吞吐检查点</td>
+<td>派活前的四问：哪些串行、哪些并行、共享状态怎么拆、最小拆分是什么</td>
+</tr>
+<tr>
+<td>Non-negotiables / 非协商项</td>
+<td>硬规矩，任何情况下不许绕过</td>
+</tr>
+<tr>
+<td>subagent / 子代理</td>
+<td>主会话派出去干活的分身，干完只把结论带回来</td>
+</tr>
+<tr>
+<td>worktree / 工作树</td>
+<td>git 的并行工作副本，给每个并行代理一份，防止互相覆盖</td>
+</tr>
+<tr>
+<td>PR</td>
+<td>改动请求（pull request），代码合入主线的载体</td>
+</tr>
+<tr>
+<td>CI</td>
+<td>提交后自动跑构建和测试的流水线</td>
+</tr>
+<tr>
+<td>merge-ready</td>
+<td>PR 达到「可以合并」的状态；点不点合并在人</td>
+</tr>
+<tr>
+<td>面板 panel</td>
+<td>同一任务起多个模型并行干，列表越长花钱越多</td>
+</tr>
+<tr>
+<td>盲测</td>
+<td>候选者不知道在被测、评委不知道答案来自哪一版的对比实验</td>
+</tr>
+<tr>
+<td>宿主 runtime</td>
+<td>跑 AI 的软件：Claude Code、Codex、Pi 等</td>
+</tr>
+<tr>
+<td>instrumentation</td>
+<td>埋点和日志，用来看运行时真实发生了什么</td>
+</tr>
+</tbody>
+</table>
 <h2 id="poteto-mode"><span class="ttl">poteto-mode</span></h2>
 <div class="note"><b>description（路由依据，译文）。</b>poteto 的代理风格：简洁而详尽的回复、审慎使用子代理、去除 AI 腔的行文、简单的代码、经过验证的工作。用于 poteto、/poteto-mode，或要求以这种风格工作的请求。</div>
+<aside class="readnote"><div class="ntag">解读</div><p>这份文件是整套体系的<strong>总管本体</strong>：你敲 <code>/pstack:poteto-mode</code> 或宿主自动路由时，AI 完整读的就是它。所有行为——挑哪本清单、什么时候停、怎么派活、怎么汇报——都由它规定。读懂它，等于读懂整套体系怎么运转。</p>
+<p><strong>按块读，不用从头顺到尾：</strong></p>
+<ul>
+<li><strong>不可妥协项（Non-negotiables）</strong>：硬规矩。最重要的一条是「修任何缺陷前必须亲自复现」，还有永远不自己合并、大改动派子代理前先跑 blast-radius。这些是任何清单都绕不开的底线。</li>
+<li><strong>Principles（原则）</strong>：24 条原则的索引。AI 拿当前步骤撞每条的适用条件，撞中才读全文——所以你看不到全文，只看到「何时适用」。</li>
+<li><strong>Autonomy（自主性）</strong>：什么时候直接做、什么时候必须停下来问人（强推共享分支、部署、删数据、给客户发消息）。</li>
+<li><strong>Subagents（子代理）</strong>：派活的规矩——怎么给范围、怎么选推理档位、怎么防止并行互相覆盖。花钱最多的部分就在这节。</li>
+<li><strong>写回复</strong>：汇报的固定格式，包括跳过了哪些步骤、用了哪些原则。这是你验收它工作的模板。</li>
+<li><strong>Playbooks（流程清单）</strong>：23 本清单的触发条件列表。路由的依据就在这节——你说的话和哪条的描述对上，就走哪本。</li>
+<li><strong>Models / Reasoning effort</strong>：哪个角色用哪个模型、用什么推理强度。改成本就改这里（配合 setup-pstack）。</li>
+</ul>
+<p><strong>读法建议</strong>：先读「不可妥协项」和「写回复」（这两块决定你怎么用它、怎么验它），再读「Playbooks」理解路由，最后按需查 Subagents 和 Models。它比任何一本清单都长，因为它是唯一一份每次任务都要全文读的文件——这也是第 15 章说它「固定开销 3600 词」的出处。</p></aside>
 <h1>Poteto 模式</h1>
 <p>内置技能位于本文件旁的 <code>../&lt;name&gt;/SKILL.md</code>，所以每次 <code>poteto-agent</code> 提示词里都要带上本文件的绝对路径。</p>
 <h2>平台适配</h2>
@@ -466,8 +571,17 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 <li>strongest judgment: <code>fable</code></li>
 </ul>
 <h2>Reasoning effort（推理强度）</h2>
-<p>覆盖表中的角色值可以在模型后面带一个推理强度，如 <code>opus @xhigh</code>。Claude Code 上的级别：<code>low</code>、<code>medium</code>、<code>high</code>、<code>xhigh</code>、<code>max</code>。哪些可用取决于模型。不带 <code>@</code> 的值取配置表的 <code>default effort</code> 行（一个级别或 <code>session</code>）；配置表没有该行时取 <code>session</code>。在 Claude Code 上，<code>session</code> 不设置 effort。在其他宿主上，<code>session</code> 按平台映射执行。读模型之前先剥掉后缀：<code>inherit-parent</code> 或 <code>auto</code> 在任何级别都仍然省略 <code>model</code>，带模型名则作为 <code>model</code> 传入。级别作为派发的 effort 字段传入，<code>subagent_type</code> 保持原本要用的那个。Claude Code 的 <code>Agent</code> 调用上是 <code>effort</code>，Codex 的 <code>spawn_agent</code> 上是 <code>reasoning_effort</code>。在 Muse 上是 Workflow 子任务的 <code>effort</code>；<code>subagent_spawn</code> 派发保持会话的 effort。</p><h2 id="pb-01"><span class="num">01</span><span class="ttl">investigation</span></h2>
+<p>覆盖表中的角色值可以在模型后面带一个推理强度，如 <code>opus @xhigh</code>。Claude Code 上的级别：<code>low</code>、<code>medium</code>、<code>high</code>、<code>xhigh</code>、<code>max</code>。哪些可用取决于模型。不带 <code>@</code> 的值取配置表的 <code>default effort</code> 行（一个级别或 <code>session</code>）；配置表没有该行时取 <code>session</code>。在 Claude Code 上，<code>session</code> 不设置 effort。在其他宿主上，<code>session</code> 按平台映射执行。读模型之前先剥掉后缀：<code>inherit-parent</code> 或 <code>auto</code> 在任何级别都仍然省略 <code>model</code>，带模型名则作为 <code>model</code> 传入。级别作为派发的 effort 字段传入，<code>subagent_type</code> 保持原本要用的那个。Claude Code 的 <code>Agent</code> 调用上是 <code>effort</code>，Codex 的 <code>spawn_agent</code> 上是 <code>reasoning_effort</code>。在 Muse 上是 Workflow 子任务的 <code>effort</code>；<code>subagent_spawn</code> 派发保持会话的 effort。</p><h2 id="pb-01"><span class="num">01</span><span class="ttl">investigation · 调查</span></h2>
 
+<aside class="readnote"><div class="ntag">解读</div><p>这本是「弄懂，不是改」。它是六本流程清单里唯一只读的一本：产出是一份解释，代码一行不动。</p>
+<p>拆解里面的黑话：</p>
+<ul>
+<li><strong>how skill</strong>：问「这段代码现在怎么跑」，AI 会派探索者去读代码，给你带文件行号的答案。</li>
+<li><strong>why skill</strong>：问「当初为什么这么写」，会去翻 git 历史、评审记录、工单找动机。</li>
+<li><strong>吞吐检查点：n/a</strong>：其他清单在派活给子代理前要答四个问题；这本不下游派活，所以填 n/a（不适用）。</li>
+<li><strong>带引用的解释</strong>：每个结论都要指到具体文件和行号，你可以逐条去查——这是它区别于「随口一答」的地方。</li>
+</ul>
+<p>什么时候用它：你听到一个说法想核实（「我们确定吗？」），或者动手改代码前想先弄懂一块子系统。别用它顺手改东西——想改，重新描述任务，让总管路由到修缺陷或做功能。</p></aside>
 <h3>Investigation</h3>
 <p><strong>你拥有答案。计划、路由、写作。</strong></p>
 <p>调查类请求是只读的。它们产出带引用的解释或一份建议，不是代码改动。</p>
@@ -478,8 +592,17 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 <li>对回复应用 <strong>unslop</strong> skill。</li>
 </ol>
 <p>没有 PR，没有 babysit，除非调查先于一次代码改动，否则不用 <code>architect</code>。如果是，交还给用户并重新路由到 Bug fix 或 Feature。</p>
-<p><strong>回复：</strong> 调查输出。对"我们确定吗？"型的问题，附上你真实的判断和理由。前提错了就顶回去（见 Autonomy）。</p><h2 id="pb-02"><span class="num">02</span><span class="ttl">bug-fix</span></h2>
+<p><strong>回复：</strong> 调查输出。对"我们确定吗？"型的问题，附上你真实的判断和理由。前提错了就顶回去（见 Autonomy）。</p><h2 id="pb-02"><span class="num">02</span><span class="ttl">bug-fix · 修缺陷</span></h2>
 
+<aside class="readnote"><div class="ntag">解读</div><p>修 bug 的六步清单，也是全套体系最有代表性的一本。核心纪律一句话：<strong>先让它复现，再动手修</strong>。</p>
+<p>为什么顺序不能换：没复现就修，你不知道修没修好；复现在前，最后「回到同一界面再点一遍」才有判据。第 5 步要求失败的复现先进 git 历史、修复在后，是为了让后人能从历史里看到「这个 bug 曾经存在」的证据。</p>
+<p>黑话：</p>
+<ul>
+<li><strong>driver</strong>：一份替 AI 操作真实界面的说明书/工具（点按钮、填表、截图），第 7 章的「验证技能」就是它。</li>
+<li><strong>repro</strong>：复现——让 bug 稳定出现的那套操作。</li>
+<li><strong>instrumentation</strong>：埋点和日志，用来看程序运行时到底发生了什么。</li>
+<li><strong>「不猜」</strong>：程序状态看不清就加日志去看，不要凭经验假设原因。</li>
+</ul></aside>
 <h3>Bug fix</h3>
 <p><strong>你拥有这个任务。计划、review、验证。</strong> 把调查和修复委托给子代理，你保持在主位。按 Subagents 一节为每个子代理挑选与任务匹配的推理档位。</p>
 <p>保持科学态度。每一行被发布的代码都能追溯到运行时证据。"可能有帮助"的双保险是一个假设，不是修复。它不会被发布。当证据推翻一个假设时，回滚它引出的改动。证据能支撑的最小改动才发布，多一行都不行。</p>
@@ -492,8 +615,10 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
    这是 <strong>sequence-verifiable-units</strong> 原则 skill 的典型范式：失败的测试在先，修复叠在上面。</li>
 <li>运行 <strong>Opening a PR</strong>。</li>
 </ol>
-<p><strong>回复：</strong> 什么坏了、根因、修复、你怎么验证的。引用决定性的失败与通过输出，裁剪到只剩断言和计数。</p><h2 id="pb-03"><span class="num">03</span><span class="ttl">perf-issue</span></h2>
+<p><strong>回复：</strong> 什么坏了、根因、修复、你怎么验证的。引用决定性的失败与通过输出，裁剪到只剩断言和计数。</p><h2 id="pb-03"><span class="num">03</span><span class="ttl">perf-issue · 性能问题</span></h2>
 
+<aside class="readnote"><div class="ntag">解读</div><p>性能问题里「一次修好」的那种。和第 4 本 hillclimb 的分界：有明确的慢、修完就完，用这本；要长期持续提升同一个指标，用 hillclimb。</p>
+<p>它的铁律是<strong>每个修复绑一个测量</strong>：先跑基线拿到数字，改完再跑同一个测量，前后数字就是产物。没有数字的「感觉变快了」不算完成。这对应第 9 章说的「别用在你只有模糊感觉的时候」——先有指标，才有资格走这本清单。</p></aside>
 <h3>性能问题</h3>
 <p><strong>你拥有测量这件事。规划、审查、验证数字。</strong> 把每个修复绑到一个测量上，不要用读源码代替测量。</p>
 <ol>
@@ -515,8 +640,10 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 5. 在 PR 里引用测量。
 6. 执行 <strong>Opening a PR</strong>。</p>
 <p>要的是针对某个指标的持续改进而不是一次性修复时，用 Hillclimb playbook（流程清单）（<code>playbooks/hillclimb.md</code>）。</p>
-<p><strong>汇报：</strong> 基线数字、修复后数字、差值、产物路径。</p><h2 id="pb-04"><span class="num">04</span><span class="ttl">hillclimb</span></h2>
+<p><strong>汇报：</strong> 基线数字、修复后数字、差值、产物路径。</p><h2 id="pb-04"><span class="num">04</span><span class="ttl">hillclimb · 爬坡</span></h2>
 
+<aside class="readnote"><div class="ntag">解读</div><p>一个指标要长期爬坡（比如转化率、启动速度），不是一锤子买卖。每轮的节奏固定：提出一个假设 → 前后测量 → 有效就提交一个 commit 并写决策日志 → 下一轮。</p>
+<p>「决策日志」是留给未来的记录：当时试了什么、数字是多少、为什么接受或放弃。爬坡跑几十轮之后，靠它避免重复试同一个想法。和 perf-issue 的区别就是一次性修复和长期工程的区别。</p></aside>
 <h3>Hillclimb</h3>
 <p><strong>你拥有指标和实验的完整性。监督并 review。委托尝试。</strong> 用于针对一个目标，对单个可度量事物做持续的迭代改进。一次性的修复走 Bug fix 或 Perf issue。这是循环。</p>
 <p>核心纪律：一次改动，一次测量，保留或回滚。绝不堆叠未测试的改动，绝不靠看代码就宣称赢了（<strong>prove-it-works</strong> 原则 skill）。</p>
@@ -535,8 +662,10 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 <li>谓词满足时停止，或当剩余的想法都是边缘性的、不值得其成本时停止。不要放宽谓词来够到它，也不要在还有廉价未试假设时退出。卡住了就上报，不要空转。</li>
 <li>把被接受的提交按落地顺序堆叠起来，运行 <strong>Opening a PR</strong>。</li>
 </ol>
-<p><strong>回复：</strong> 指标与目标、从基线到最终值及百分比 delta、跑了几轮迭代（保留对回滚）、每个被接受的修复占一行、<code>decision.tsv</code> 路径，以及如果继续推进你最想试的下一个想法。</p><h2 id="pb-05"><span class="num">05</span><span class="ttl">runtime-forensics</span></h2>
+<p><strong>回复：</strong> 指标与目标、从基线到最终值及百分比 delta、跑了几轮迭代（保留对回滚）、每个被接受的修复占一行、<code>decision.tsv</code> 路径，以及如果继续推进你最想试的下一个想法。</p><h2 id="pb-05"><span class="num">05</span><span class="ttl">runtime-forensics · 运行时取证</span></h2>
 
+<aside class="readnote"><div class="ntag">解读</div><p>程序还活着，但行为不对：内存泄漏、空转、偶发卡死。这本的做法是<strong>活体观测</strong>——直接看正在运行的进程（采样、看句柄、看线程），而不是读代码猜。</p>
+<p>关键约束：它只出诊断，不修。因为取证阶段你还没确定根因，急着改会把现场破坏掉。修是诊断出来之后重新路由到 02 修缺陷的事。</p></aside>
 <h3>运行时取证</h3>
 <p><strong>你拥有的是诊断。对活着的进程做插桩，不要从源码空想。</strong> 交付物是一份带引用的诊断，不是修复。</p>
 <ol>
@@ -546,8 +675,10 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 <li>把发现映射回源码：文件、符号、分配或调度的那一行。</li>
 <li>吞吐量检查点保持一行：<code>throughput checkpoint: n/a, read-only forensics</code>。</li>
 </ol>
-<p><strong>汇报：</strong> 捕获的信号、还原出的发现、你如何证明机制、源码位置、产物路径。除非被要求，不做修复。原因已知后交回 Bug fix 或 Perf。</p><h2 id="pb-06"><span class="num">06</span><span class="ttl">trace-forensics</span></h2>
+<p><strong>汇报：</strong> 捕获的信号、还原出的发现、你如何证明机制、源码位置、产物路径。除非被要求，不做修复。原因已知后交回 Bug fix 或 Perf。</p><h2 id="pb-06"><span class="num">06</span><span class="ttl">trace-forensics · 轨迹取证</span></h2>
 
+<aside class="readnote"><div class="ntag">解读</div><p>和 05 同一门手艺，区别在材料：这本拿的是<strong>别人已经抓下来的现场</strong>——一份 profile、trace、spindump 或堆快照。进程可能已经不在了，你只能从记录里读。</p>
+<p>产物同样是诊断不是修复。这条和 05 分开成两本，是因为「现场还在」和「只剩记录」能用到的工具和能下的结论完全不同。</p></aside>
 <h3>Trace 取证</h3>
 <p><strong>你拥有的是从产物出发的诊断。</strong></p>
 <p>与对活进程插桩的 <strong>Runtime forensics</strong> 不同。这里捕获已经存在。产物是一份固定数据集，读它，不要重跑。工具保持通用：cpuprofile 和 <code>.json.gz</code> 用 DevTools 或 trace 解析器，spindump 用文本编辑器，heapsnapshot 用你的堆工具。</p>
@@ -559,8 +690,18 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 <li>有配对捕获时，diff 前后产物来确认。否则把这个发现标记为该产物支持的最强假设，不是已确认的原因。</li>
 <li>交回一份带引用的诊断，除非被要求不做修复。原因已知后路由到 Bug fix 或 Perf issue。吞吐量检查点保持一行：<code>throughput checkpoint: n/a, read-only forensics</code>。</li>
 </ol>
-<p><strong>汇报：</strong> 产物及其格式、还原出的发现、源码位置、产物路径、以及配对捕获是否确认了它。</p><h2 id="pb-07"><span class="num">07</span><span class="ttl">feature</span></h2>
+<p><strong>汇报：</strong> 产物及其格式、还原出的发现、源码位置、产物路径、以及配对捕获是否确认了它。</p><h2 id="pb-07"><span class="num">07</span><span class="ttl">feature · 新功能</span></h2>
 
+<aside class="readnote"><div class="ntag">解读</div><p>做新功能的八步，是全套里最重的一本。前四步都在写代码之前——这是刻意设计的：功能做错的成本远高于多花十分钟定好数据结构。</p>
+<p>逐个拆黑话：</p>
+<ul>
+<li><strong>先定数据形状</strong>：先想清楚核心类型和数据结构，再写逻辑（对应 foundational-thinking 原则）。</li>
+<li><strong>architect</strong>：先定类型、函数签名、模块边界的技能，会派多个模型各出一版再合成。</li>
+<li><strong>检查点四问</strong>：派活前的闸口——哪些步骤必须串行？哪些能并行？哪些共享状态要先拆？最小安全拆分是什么？</li>
+<li><strong>arena</strong>：实现没有唯一答案时，让几个候选各做一版，选最好的当底稿、嫁接其他版本的亮点。</li>
+<li><strong>worktree（工作树）</strong>：给每个写文件的子代理一份独立的代码副本，避免互相覆盖。</li>
+</ul>
+<p>第 7 步的 interrogate 是改动重要时才触发的对抗审查；小改动可以整步跳过。</p></aside>
 <h3>Feature</h3>
 <p><strong>你拥有设计。计划、review、验证。</strong> 委托实现。保持在主位。</p>
 <ol>
@@ -579,8 +720,10 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 <li>运行 <strong>Opening a PR</strong>。</li>
 </ol>
 <p>代码耦合的工作（一个 feature、一次 migration）交给一个 owner，检查点内联。那个 owner 在阻塞阶段之后于内部扇出。父级层的扇出用于产出互相独立工件的切片（审计、跨子系统调查、竞争性实验）。在阶段边界重写检查点。派一个新的 owner，而不是串联中断。</p>
-<p><strong>回复：</strong> 你构建了什么、你选了什么以及为什么、吞吐检查点、仍开放的决策。设计备选方案用表格。</p><h2 id="pb-08"><span class="num">08</span><span class="ttl">refactoring</span></h2>
+<p><strong>回复：</strong> 你构建了什么、你选了什么以及为什么、吞吐检查点、仍开放的决策。设计备选方案用表格。</p><h2 id="pb-08"><span class="num">08</span><span class="ttl">refactoring · 重构</span></h2>
 
+<aside class="readnote"><div class="ntag">解读</div><p>重构：行为一个字不变，只改代码的形状（结构、命名、拆分）。它的保证是<strong>每一步都有等价检查点</strong>——改完这一步，测试和运行结果和改之前完全一致才继续。</p>
+<p>危险点只有一个：顺手加功能。行为和形状同时改，出了问题分不清是哪边引起的，等价检查也失效了。所以它的「别用」写在最前面：你控制不住想改行为时，别进这本。</p></aside>
 <h3>重构</h3>
 <p>通过 <a href="javascript:void(0)" style="text-decoration:none;color:inherit">poteto-mode 的 Non-negotiables</a> 解析 driver 技能。</p>
 <p><strong>你拥有的是契约。结构在变，行为不变。</strong> 与增加行为的 Feature、修正行为的 Bug fix 都不同。</p>
@@ -595,8 +738,10 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 <li>确认这次改动值得保留。成功度量是降低读者负担（<strong>principle-minimize-reader-load</strong>）。如果 diff 没有在某处降低读者负担，回退它。</li>
 <li>rebase 成小的有序提交。一条减法提交，然后是重塑，然后是任何后续清理。用 <strong>sequence-verifiable-units</strong> 原则技能整形，让每个保持行为的切片在下一切片之前保持绿色。执行 <strong>Opening a PR</strong>。</li>
 </ol>
-<p><strong>汇报：</strong> 变了的结构、你把它对照的钉子、等价性证明、读者负担的变化、交付了什么回退了什么。没有新行为。</p><h2 id="pb-09"><span class="num">09</span><span class="ttl">prototype</span></h2>
+<p><strong>汇报：</strong> 变了的结构、你把它对照的钉子、等价性证明、读者负担的变化、交付了什么回退了什么。没有新行为。</p><h2 id="pb-09"><span class="num">09</span><span class="ttl">prototype · 原型</span></h2>
 
+<aside class="readnote"><div class="ntag">解读</div><p>原型：一个决定凭推理和讨论定不下来，就做个一次性的东西让结果说话。产物是<strong>决定</strong>，代码用完就扔——这条要记住，别舍不得删。</p>
+<p>什么情况用它：两种布局争不下、一个方案「不知道跑不跑得动」、两个交互想比较手感。什么情况别用：你已经知道要什么，只是缺实现——那直接走 07 做功能。这对应心法第二条「用原型代替长计划」。</p></aside>
 <h3>原型</h3>
 <p><strong>你拥有的是设计决策，不是代码。原型是一次性的工具。真正的构建走 Feature。</strong></p>
 <p>这是唯一一个 Laziness Protocol 的「最小改动」和验证门槛被倒置的 playbook（流程清单）。速度优先于打磨，代码质量不重要，不做规划。严格性体现在便宜地选中正确的设计上。提出用户没要求的变化方案，把一个做法整个扔掉换另一个试。</p>
@@ -608,8 +753,10 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 <li>在匹配的面上验证。视觉决策用 driver 技能对每个变体截图并驱动交互。行为或时机决策通过记录时间、打印输出或观察渲染来观察你要裁决的那个东西。这里观察就是测试，不是断言。</li>
 <li>呈现各方案、权衡和推荐。产出是决策加一次性产物，不是可上线的代码。把选定的方向交给 <strong>Feature</strong>（或 <code>architect</code> 定形态）做真正的构建。</li>
 </ol>
-<p><strong>汇报：</strong> 探索过的变体、证据（视觉决策给截图，行为决策给观察到的输出或时间）、权衡、你的推荐、以及草稿路径。明说原型是一次性的。</p><h2 id="pb-10"><span class="num">10</span><span class="ttl">visual-parity</span></h2>
+<p><strong>汇报：</strong> 探索过的变体、证据（视觉决策给截图，行为决策给观察到的输出或时间）、权衡、你的推荐、以及草稿路径。明说原型是一次性的。</p><h2 id="pb-10"><span class="num">10</span><span class="ttl">visual-parity · 像素对齐</span></h2>
 
+<aside class="readnote"><div class="ntag">解读</div><p>两套实现要长得一模一样（比如迁移样式系统、换框架不改外观）。它的特点是<strong>基线是规格，不能动</strong>：现有版本长什么样就是标准，新实现往它对齐，而不是反过来互相将就。</p>
+<p>产物是图像 diff（像素级对比图）证据。「看起来差不多」不算过，要能指出差异为零或差异清单。</p></aside>
 <h3>视觉对齐</h3>
 <p><strong>你拥有的是像素级完全等价。基线就是规格，你不碰它。</strong> 等价性靠图像 diff 验证，不靠肉眼。</p>
 <ol>
@@ -619,8 +766,10 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 <li>通过 driver 技能在匹配面上用图像 diff 对照基线验证每个组件。非零 diff 就是失败。查清像素差。每个组件跑 <code>/loop</code> 直到 diff 为零。</li>
 <li>按组件或按安全批次执行 <strong>Opening a PR</strong>。</li>
 </ol>
-<p><strong>汇报：</strong> 已迁移的组件、每个组件的 diff 结果、基线工具的位置、还剩什么。</p><h2 id="pb-11"><span class="num">11</span><span class="ttl">authoring-a-skill</span></h2>
+<p><strong>汇报：</strong> 已迁移的组件、每个组件的 diff 结果、基线工具的位置、还剩什么。</p><h2 id="pb-11"><span class="num">11</span><span class="ttl">authoring-a-skill · 写技能</span></h2>
 
+<aside class="readnote"><div class="ntag">解读</div><p>写「技能」本身的规矩——技能就是 SKILL.md 文件，pstack 的一切都靠它们承载。这本清单管的是：description 怎么写才会被正确触发、正文用什么结构、怎么自证有效。</p>
+<p>最值得带走的一条：<strong>description 是技能的唯一路由依据</strong>。它写得含糊，这个技能就永远不会被选中，正文写得再好也没用。第 2 章和附录 D 讲的「描述即触发」说的就是这件事。</p></aside>
 <h3>编写或修改一个 skill（技能）</h3>
 <p><strong>你拥有这个 skill 的声音。</strong></p>
 <ol>
@@ -630,8 +779,16 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 <li>运行 <strong>Opening a PR</strong>。</li>
 </ol>
 <p>拿不准时，删。只保留能改变决策的文字。让它做那件事，跳过原因。只有当规则没有解释就会令人困惑时才解释。语气与篇幅匹配。按 <strong>encode-lessons-in-structure</strong> 原则 skill 指向结构性来源（类型、README、配置）。通过路径委托给其他 skill。不要复述。一个你反复遇到却没被沉淀的工作流 → 提议一个新 skill。</p>
-<p><strong>回复：</strong> skill 摘要、关键设计决策、验证备注。</p><h2 id="pb-12"><span class="num">12</span><span class="ttl">eval</span></h2>
+<p><strong>回复：</strong> skill 摘要、关键设计决策、验证备注。</p><h2 id="pb-12"><span class="num">12</span><span class="ttl">eval · 盲测</span></h2>
 
+<aside class="readnote"><div class="ntag">解读</div><p>盲测：验证你改了一句技能描述（或提示词）之后，AI 的<strong>行为</strong>是不是真的变了，而不是你觉得变了。</p>
+<p>三条硬规矩，破一条结果就作废：</p>
+<ul>
+<li>给候选者的任务里不能出现 eval、test、judge 这类评测词，要用自然的用户请求；</li>
+<li>不能只交方案不交结果；</li>
+<li>评委模型不知道答案来自哪一版。</li>
+</ul>
+<p>这本是「改技能」的配套设施：11 号写技能，12 号验证改动，配合使用。</p></aside>
 <h3>Eval</h3>
 <p><strong>你拥有实验设计。计划、盲测、运行、综合。</strong></p>
 <p><strong>盲测的非协商项：</strong></p>
@@ -654,8 +811,10 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 <li><strong>从转录而非自述验证思维链。</strong> 在 Claude Code 的 per-project transcripts 目录 <code>${CLAUDE_CONFIG_DIR:-$HOME/.claude}/projects/&lt;encoded-cwd&gt;/</code> 下读每个候选者的本地转录，<code>node &lt;plugin&gt;/skills/reflect/scripts/claude-project-dir.mjs</code> 会打印这个路径。不要在 <code>${CLAUDE_CONFIG_DIR:-$HOME/.claude}/projects/</code> 上做 glob。那会越过工作区边界、读到无关项目的私人聊天。看每个候选者实际打开了哪些文件。从它真正读过的文件加上代码的形状来评定思维链遵循度，绝不信候选者自己的主张。</li>
 <li><strong>亲自通读每一个候选者的输出</strong>，从头到尾。与评委的裁决对照。分歧意味着某个模型有偏差或评分标准有歧义。综合结论。</li>
 </ol>
-<p><strong>回复：</strong> 被测变体、评分标准、每个候选者的笔记、评委裁决、你的综合结论，以及是否晋升该变体的建议。</p><h2 id="pb-13"><span class="num">13</span><span class="ttl">babysit</span></h2>
+<p><strong>回复：</strong> 被测变体、评分标准、每个候选者的笔记、评委裁决、你的综合结论，以及是否晋升该变体的建议。</p><h2 id="pb-13"><span class="num">13</span><span class="ttl">babysit · 看 PR</span></h2>
 
+<aside class="readnote"><div class="ntag">解读</div><p>看 PR：一个改动请求开着，把它推到「可合并」状态——CI 绿了、冲突解了、评审意见处理了。到 merge-ready 就停，<strong>永远不自己点合并</strong>，合并权永远在人。</p>
+<p>这是刻意留的权限闸：执行者自己判定「可以合了」的那一刻，独立验证就失效了。你只需要说「合并」，它才走 14 号上线流程。</p></aside>
 <h3>Babysit</h3>
 <p><strong>你拥有合并前沿。声明一个模式，一次只清一个 PR，在需要人类裁决的地方停下。</strong> 对于这类请求，本 playbook（流程清单）取代捆绑的 <strong>babysit</strong> skill，所以即便它的 description 与同样的措辞匹配，也不要路由过去。<code>/babysit</code> 在 poteto-mode 之外仍是独立入口。要求 land 或 ship 的请求走 <code>playbooks/shipping.md</code>，它从本 playbook 结束的地方开始。</p>
 <p>Babysitting 在用户要求时开始，通常是在一个阶段或整条堆叠已经构建完成之后，而不是 PR 开出来的那一刻。先把堆叠做完，在这里把它弄绿，再通过 Shipping 落地。</p>
@@ -673,8 +832,10 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 7. <strong>在任何重跑之前先给 CI 分类。</strong> 抖动或基础设施问题只挣得一次全新构建，绝不是单个 job 的重试。重试只有一次。一模一样的第二次失败说明它从来不是抖动，所以重新分类并去读子任务的日志，而不是盲试。diff 从未触及的代码出现失败意味着基底过时，先用 <code>git merge-base --is-ancestor</code> 确认再假设是抖动。把过时基底上报为需要 rebase，而不是烧掉重试次数。只有 diff 自己代码里的失败才配得到一次提交。
 8. <strong>Bugbot 永远被怀疑地分诊。</strong> 按 <code>../references/bugbot-triage.md</code> 对照代码核实每一条主张。真实发现用红字优先的证明在拥有那段代码的最低 PR 里修，绝不在堆叠顶端修，除非拥有 PR 已合并。那种情况下，用第 4 步许可的后续 PR。按第 2 步，上层修复等待第 5 步的下一波由前沿驱动的 push。在回复之前先 push 那一波，让回复能引用到提交。在 Origin 上，用 <code>origin pr thread reply &lt;thread-id&gt; &lt;pr&gt; --body-file &lt;reply-file&gt;</code> 回复。在 GitHub 上，调用 <code>gh api --method POST "repos/&lt;owner&gt;/&lt;repo&gt;/pulls/&lt;pr&gt;/comments/&lt;comment-id&gt;/replies" --input &lt;payload.json&gt;</code>，把回复正文作为数据放进 JSON 文件。绝不把评论或回复内容插值进 shell 命令。噪音就在 thread 上用具体的反证驳回。在 GitHub 上，用 watcher 的 Bugbot pass 计数。在 Origin 上，从 <code>origin pr thread list</code> 和 review 历史推导 pass 计数。从第三次 pass 起，倾向于驳回已有记录的模式，但任何触及 security、auth、billing、data 或 migrations 的发现仍然上报，而不是自己驳回。绝不为了安抚一个机器人而搅动代码。
 9. <strong>在人类的界线上停下。</strong> owner 的批准是一次等待，不是一个待修复的阻塞。babysitting 永远不授权合并。只有显式的 merge、land、ship、或"准备好就合并"的请求才授权。把那个请求路由给 Shipping。把需要升级的事项亮出来，继续做其余的事。在 GitHub 报告 <code>READY</code>、queued 模式的一次 <code>WAITING</code>/<code>merge-queue</code> 停止、或 <code>COMPLETE</code> 之后，或在 Origin 报告前沿 merge-ready 之后，把这一轮的分诊决策整体清扫一遍。把任何对团队有用的驳回模式作为候选条目提供给共享评分标准（<code>../references/bugbot-triage.md</code>）及其自己的 PR。绝不让它只留在私人记忆里。</p>
-<p><code>drive</code> 在 merge-ready 处结束。落地整条堆叠是 <code>playbooks/shipping.md</code>。</p><h2 id="pb-14"><span class="num">14</span><span class="ttl">shipping</span></h2>
+<p><code>drive</code> 在 merge-ready 处结束。落地整条堆叠是 <code>playbooks/shipping.md</code>。</p><h2 id="pb-14"><span class="num">14</span><span class="ttl">shipping · 上线</span></h2>
 
+<aside class="readnote"><div class="ntag">解读</div><p>上线一串 PR。它的核心警告是：<strong>绿不等于安全</strong>——测试通过只说明写了测试的地方没问题。</p>
+<p>它的做法：每个 PR 由一个没写过这段代码的代理独立验证，只有从根部开始连续通过的那一段才落地；中间断了的，后面的全部扣住。这保证了任何进入主线的改动，都有一双「新鲜的眼睛」看过。</p></aside>
 <h3>交付</h3>
 <p>通过 <a href="javascript:void(0)" style="text-decoration:none;color:inherit">poteto-mode 的 Non-negotiables</a> 解析 driver 技能。</p>
 <p><strong>你拥有的是落地。独立验证每个 PR，只从根部落下已验证的运行段，然后撒手不管这个栈。</strong> 落地需要用户的落地权限，且每次落地确认之后才开始下一次。</p>
@@ -687,8 +848,10 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 </ol>
 <p>watcher 负责 GitHub 阻塞分类。保留 <code>BLOCKER</code> 原因并按 <code>playbooks/babysit.md</code> 路由：冲突和 <code>behind-base</code> 交给拓扑 owner，线程和 CI 交给 PR owner，人工审批闸门转为等待。不要对未变化的阻塞重新布防。<code>WAITING</code>（包括 <code>merge-queue</code>）不是终态。待处理检查既不是失败也不是完成。诊断 <code>TIMEOUT</code> 和 <code>status-query</code> 阻塞，因为未知状态绝不允许合并。
 6. <strong>在天花板处停。</strong> 扩展这段运行需要新的裁决，所以那是重新走一遍第 1 步。</p>
-<p><strong>汇报：</strong> 已验证的运行段及其天花板、每个 PR 的裁决及其产生者、布防或取消了什么、回读了什么、落了什么以及你如何确认、任何未解决的状态或服务限制、以及下一个空缺需要什么。</p><h2 id="pb-15"><span class="num">15</span><span class="ttl">opening-a-pr</span></h2>
+<p><strong>汇报：</strong> 已验证的运行段及其天花板、每个 PR 的裁决及其产生者、布防或取消了什么、回读了什么、落了什么以及你如何确认、任何未解决的状态或服务限制、以及下一个空缺需要什么。</p><h2 id="pb-15"><span class="num">15</span><span class="ttl">opening-a-pr · 开 PR</span></h2>
 
+<aside class="readnote"><div class="ntag">解读</div><p>开 PR 是所有改代码流程的统一出口（附录 D 叫它「出口唯一」）。它管三件事：PR 描述写什么（做了什么、为什么这样选、怎么验证的）、自测说明怎么给评审人、风险和回滚方案怎么写。</p>
+<p>每本清单的最后一步都是它，所以这个文件很短——它只管「怎么交出去」，不管「怎么做出来」。</p></aside>
 <h3>Opening a PR</h3>
 <p>在每个其他 playbook（流程清单）的末尾被调用。</p>
 <p><strong>工作树。</strong> 从 main 切出的 git 工作树里工作。子代理继承它。同一个分支上的多次 <code>Agent</code> 调用各自获得自己的工作树，或者在两次调用之间执行 <code>git fetch &amp;&amp; git reset --hard origin/&lt;branch&gt;</code>。分支上有无关工作的脏状态：先 patch 掉，开新工作树，再应用回去。纠缠不清的工作树：从 main 重置，最小化地重做。在你从工作树里 commit、merge 或 deploy 之前，列出活跃代理，停掉每一个持有它的——包括那些你从未启动的孙代理。委托者的子代理不继承它的简报，所以一条只读指令到不了它们那里。确认每一次 stop，然后运行 <code>git status</code>，读一遍你即将发布的代码树。</p>
@@ -710,8 +873,10 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 <p><strong>规模与堆叠。</strong> 五个窄的 PR 优于一个大 PR。堆叠是一条 base 分支链。根 PR 以 trunk 为目标。每个子分支 rebase 到其父分支的精确 tip，其 PR 以父分支为目标。父级合并后，按 <code>playbooks/shipping.md</code> 第 4 步把它的子级挪到 trunk 上。没有内置 PR 工具时，按解析出的 forge，用 <code>origin pr create --status open --base &lt;parent-branch&gt;</code> 或 <code>gh pr create --base &lt;parent-branch&gt;</code> 创建子 PR，用 <code>origin pr edit &lt;pr&gt; --base &lt;parent-branch&gt;</code> 或 <code>gh pr edit &lt;pr&gt; --base &lt;parent-branch&gt;</code> 重定向。只有独立工作才直接从 trunk 切分支。做大量堆叠工作之前先 rebase 到 trunk 上。</p>
 <p><strong>就绪状态。</strong> 每个 PR 都以 ready 状态打开，绝不开成 draft。内置 PR 工具可能默认 draft，所以通过它发起的每次创建都设 <code>draft: false</code>。用 Origin 时传 <code>--status open</code>。用 <code>gh</code> 时不传 <code>--draft</code>。如果一个 PR 仍被开成了 draft，通过 PR 工具标记 ready，或按解析出的 forge 运行 <code>origin pr ready &lt;number&gt;</code> 或 <code>gh pr ready &lt;number&gt;</code>。在引用 PR 状态之前先运行 <code>origin pr view &lt;number&gt;</code> 或 <code>gh pr view &lt;number&gt;</code>。</p>
 <p><strong>Babysit。</strong> 开 PR 不等于开始 babysit。贴出 URL，继续构建。先把阶段或整条堆叠做完。只有当整条堆叠已存在、用户又开口要求时，才单独跑一轮 babysit。每个新 PR 各配一个 babysit 会让构建停摆，还把检查次数花在后续波次会重启的提交上。反馈偏离了意图时顶回去。</p>
-<p>开 PR 的子代理跑 <code>/deslop</code> 和 <code>/no-comments</code>，贴出 URL。它返回父级，不做 babysitting——除非它是 Autopilot-full 或 Autopilot-stack 的 owner。那个 owner 的简报派下了 babysit 循环，那正是 <code>playbooks/babysit.md</code> 在等的那个请求。owner 在自己的 code-ready 上报之后启动循环，上报 merge-ready，并豁免于本文件和 <code>playbooks/babysit.md</code> 中"整条堆叠建完才 babysit"的规则。</p><h2 id="pb-16"><span class="num">16</span><span class="ttl">autonomous-run</span></h2>
+<p>开 PR 的子代理跑 <code>/deslop</code> 和 <code>/no-comments</code>，贴出 URL。它返回父级，不做 babysitting——除非它是 Autopilot-full 或 Autopilot-stack 的 owner。那个 owner 的简报派下了 babysit 循环，那正是 <code>playbooks/babysit.md</code> 在等的那个请求。owner 在自己的 code-ready 上报之后启动循环，上报 merge-ready，并豁免于本文件和 <code>playbooks/babysit.md</code> 中"整条堆叠建完才 babysit"的规则。</p><h2 id="pb-16"><span class="num">16</span><span class="ttl">autonomous-run · 自主运行</span></h2>
 
+<aside class="readnote"><div class="ntag">解读</div><p>自主运行：「一直跑到 X 为止」。它只有一个前提：<strong>X 必须是能判定的条件</strong>——能写成一行可比较的语句（测试全绿、文件生成、指标达到）。</p>
+<p>没有可判定的条件就别用这本。它不会自己停，会空转烧钱跑一整夜。配合 show-me-your-work 技能留决策日志，早上回来能审计它夜里每个决定。</p></aside>
 <h3>Autonomous run（自主运行）</h3>
 <p><strong>你拥有退出条件。定义完成，然后一路推进到位，中途不停。</strong></p>
 <ol>
@@ -723,8 +888,10 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 <li>每轮迭代都通过 <strong>show-me-your-work</strong> skill 做检查点：一行记录改了什么、谓词有没有前移。</li>
 <li>谓词满足时停止。平台期不是停止，继续推进并换一个打法去突破。真正的死胡同要上报而不是空转，绝不放宽谓词来宣布胜利。</li>
 </ol>
-<p><strong>回复：</strong> 退出条件、跑了几轮迭代、哪些落地了、哪些被丢弃了、谓词的最终状态。</p><h2 id="pb-17"><span class="num">17</span><span class="ttl">orchestrate</span></h2>
+<p><strong>回复：</strong> 退出条件、跑了几轮迭代、哪些落地了、哪些被丢弃了、谓词的最终状态。</p><h2 id="pb-17"><span class="num">17</span><span class="ttl">orchestrate · 编排</span></h2>
 
+<aside class="readnote"><div class="ntag">解读</div><p>编排：比 16 高一个量级——多天、多个 PR、几十个子代理的项目，交给一个专门的协调会话统一管。它和 Autonomous run 的区别是<strong>规模和形态</strong>，不是自主程度。</p>
+<p>配套机制：队列（autopilot-full/stack 是它的批次执行形式）、检查点（21 号安全暂停）、决策日志。普通人日常用不到它，用到大项目时它管的是「几十条线不打架」。</p></aside>
 <h3>Orchestrate</h3>
 <p>通过 <a href="javascript:void(0)" style="text-decoration:none;color:inherit">poteto-mode 的 Non-negotiables</a> 解析 driver 技能。</p>
 <p><strong>你运行的是程序，不是代码。决定哪份工作交给哪个代理去完成，然后检查每个代理产出了什么。</strong> 适用于交给一个协调者会话的常驻项目：跨多天、多个堆叠 PR、几十到几百个子代理、极少的人类轮次。单个任务驱动到谓词条件为止，那是 Autonomous run。一次雄心勃勃、需要定制工作流的运行，是 figure-it-out。一个代理在会话预算内就能完成的工作，不是程序。</p>
@@ -747,8 +914,10 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 <li><strong>停止或替换一个停滞或打转的 worker。</strong> 用它的 push 和 PR 活动来评判，而不是它的状态文本。按原因重试：上下文或内存超限后缩小范围，连接断开后用同一份 kickoff，工具报错后换一个模型。重试两次之后，丢弃该单元并围绕它重新规划。当一个已停止的 worker 迟到返回时，对照 PR 的当前状态检查它的结果，把任何独有的发现交给一个新 worker。</li>
 <li><strong>只向用户请求真正的决策或真正的阻塞</strong>，比如不可逆的操作、实验无法裁决的产品或偏好判断，或一次重新规划之后依然存在的死路。rebase 机制、重试、CI 抖动、评审分诊和「我该继续吗」永远不要送到用户那里。</li>
 </ul>
-<p><strong>汇报：</strong> 针对目标落了什么、每个 PR 的实时状态与裁决及其链接、丢弃了什么以及为什么、以及等用户决策的事项。</p><h2 id="pb-18"><span class="num">18</span><span class="ttl">autopilot-full</span></h2>
+<p><strong>汇报：</strong> 针对目标落了什么、每个 PR 的实时状态与裁决及其链接、丢弃了什么以及为什么、以及等用户决策的事项。</p><h2 id="pb-18"><span class="num">18</span><span class="ttl">autopilot-full · 全自动队列</span></h2>
 
+<aside class="readnote"><div class="ntag">解读</div><p>全自动队列：一批<strong>互不依赖</strong>的 PR，每个配一个负责人代理推到可合并，人最后只批量点合并。</p>
+<p>它的适用前提写在第一个词里——互不依赖。PR 之间有依赖的（一个基于另一个）用 19 号 stack。和 13 号 babysit 的关系：babysit 盯一个，autopilot-full 盯一批。</p></aside>
 <h3>Autopilot-full</h3>
 <p>通过 <a href="javascript:void(0)" style="text-decoration:none;color:inherit">poteto-mode 的 Non-negotiables</a> 解析 driver skill。</p>
 <p><strong>你拥有裁决权，绝不拥有 PR。每个 PR 由唯一一个 owner 从构建一路带到 merge-ready，且在你的 swarm——它从未写过这些代码——证明将要落地的代码、并且操作者点了合并之前，什么都不会合并。</strong></p>
@@ -769,16 +938,20 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 6. <strong>运行根节点这一层。</strong> 任何放宽闸门的东西——比如提高预算或加一条 allowlist——都需要一个 verifier 的证明，然后再加上你新签署的会签（countersign），因为 owner 正是那个想要绿色的人。在授权覆盖审批的情况下，那次会签就是审批本身，owner 对它的记录指向你的会签，供某条 lane 去核查。被禁用或软失败的检查一定会被移出来，因为它不再守护任何用例。绝不给予或绕过 forge 强制要求的审批，因为没有会签能覆盖它。</p>
 <p>得到操作者的 go 后，把每小时的审计 tick 武装成一个动态模式下的真实 <code>/loop</code>，它自己调度唤醒而不是阻塞在 sleep 上，并保持到没有任何被委托的工作为止，因为长运行会漂移、代理会无声地卡死。每个 tick 都从已安装插件下的磁盘重读本 playbook，以及 store 里 <code>notes.md</code> 中的目标，并修复漂移——例如一个未上报的 head 或一个未登记的代理——方式是让它的 owner 把它记录下来，因为漂移是记录的缺口，不是停摆。它探测每一个代理，直到叶子 lane，并按副作用来判断每一个，因为状态文本和摘要能藏住一个卡死的孩子。一个代理在出错、无法启动轮次、或超过它的 stuck-after 时长仍无新动静时即为卡死，因此一个在第一个 tick 时既没 push 也没写轨迹行的 owner 也是卡死。在等你或操作者的那一个不算卡死，所以去回答它。立刻替换卡死的代理，不等它的 stop 落地。某个 tick 为操作者改变了什么，就以 <strong>ketchup</strong> skill 收尾向他们汇报；什么都没变的 tick 保持安静。
 7. <strong>操作者叫停时立即收兵。</strong> 一道 hold 以零写入指令的形式到达每个 owner。每个人报告自己当前的状态，并保持各自的简报，直到操作者释放它们。</p>
-<p><strong>回复：</strong> 按 <strong>ketchup</strong> skill 向操作者汇报，覆盖每个 PR 的状态和裁决、哪些已 merge-ready 等待操作者点击、会签及其理由、仍开着的操作者闸门、以及被搁置的 follow-up，附上每个 PR 和轨迹的链接。</p><h2 id="pb-19"><span class="num">19</span><span class="ttl">autopilot-stack</span></h2>
+<p><strong>回复：</strong> 按 <strong>ketchup</strong> skill 向操作者汇报，覆盖每个 PR 的状态和裁决、哪些已 merge-ready 等待操作者点击、会签及其理由、仍开着的操作者闸门、以及被搁置的 follow-up，附上每个 PR 和轨迹的链接。</p><h2 id="pb-19"><span class="num">19</span><span class="ttl">autopilot-stack · 堆叠队列</span></h2>
 
+<aside class="readnote"><div class="ntag">解读</div><p>堆叠队列：和 18 一样的批处理，但 PR 之间<strong>有依赖</strong>（比如「先重构、再迁移、再删旧代码」三条链）。它按依赖顺序逐层推进，最后把整叠交给人一次性审阅落地。</p>
+<p>风险提示藏在玩法里：堆叠越深，底下返工的代价越大，所以底层 PR 要尽早推到可合并。</p></aside>
 <h3>Autopilot-stack</h3>
 <p>运行 Autopilot-full playbook（流程清单），但不合并。</p>
 <ol>
 <li><strong>以第 5 步的位置替换为：停在 verified。</strong> 当每个 PR 在其当前 head 上已验证且全绿时停下，然后把 PR 们交给操作者。交接之后，任何人不得在未经操作者 go 的情况下 push。每个 loop tick 的提示词都点名这个文件，所以每个 tick 都能看到禁止合并的规则。</li>
 <li><strong>只有当一个 PR 构建在另一个 PR 之上时才堆叠它。</strong> 这是对第 3 步的唯一例外。让这个 PR 基于另一个 PR 的分支而非 trunk，按 <code>playbooks/opening-a-pr.md</code> 的 <strong>Size and stacks</strong>。以第 2 步的 rebase 到 trunk 替换为：每个 PR rebase 到其父 PR 的分支，堆叠的根 PR rebase 到 trunk。下层 PR 出现新 head 时，重新堆叠位于其上的 PR，而 restack 后 <code>git patch-id</code> 不变的 PR 保留其裁决。在任何 restack 之前，遵循 <a href="javascript:void(0)" style="text-decoration:none;color:inherit">Merge and restack safety</a>：捕获受影响的链及其远端 head，取消该链的 auto-merge 请求和队列成员资格，核实取消成功，然后用 <code>--force-with-lease=refs/heads/&lt;branch&gt;:&lt;captured-remote-head&gt;</code> push。记录每个裁决的 head SHA、base SHA、base 分支和 patch-id，并把裁决可能不再适用于新基底的 PR 送回验证。</li>
 </ol>
-<p><strong>回复：</strong> 列出每个 PR 及其裁决，以此替换"哪些已 merge-ready 等待操作者点击"。</p><h2 id="pb-20"><span class="num">20</span><span class="ttl">session-pickup</span></h2>
+<p><strong>回复：</strong> 列出每个 PR 及其裁决，以此替换"哪些已 merge-ready 等待操作者点击"。</p><h2 id="pb-20"><span class="num">20</span><span class="ttl">session-pickup · 接手</span></h2>
 
+<aside class="readnote"><div class="ntag">解读</div><p>接手：接别人的分支、或接自己前几天中断的会话。核心动作是<strong>先读已有记录，不重做</strong>——工作树里没提交的改动、上次的检查点、决策日志，都先读再动。</p>
+<p>这条清单解决的是「上下文断了」：人不记得、AI 会话也没了，靠落盘的记录把状态重建起来，而不是从头再写一遍。</p></aside>
 <h3>会话接管</h3>
 <p><strong>你拥有的是恢复点。读前人的轨迹，不要重做它。</strong></p>
 <ol>
@@ -788,8 +961,10 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 <li>把剩余工作路由到匹配的 playbook（流程清单）并选定裁决：继续执行、交付一份已完成的推荐、批准或推翻先前结论，或对一次失败的运行做事后分析。接管 playbook 到此为止。被路由到的 playbook 负责其余部分。</li>
 <li>在真实产物上对照最初目标验证继承来的断言（<strong>principle-prove-it-works</strong> 技能）。先前的一次通过自报不是证明。</li>
 </ol>
-<p><strong>汇报：</strong> 前一个代理停在哪里、你继承了什么又重做了什么（理想情况是什么都没重做）、恢复点、以及结果。</p><h2 id="pb-21"><span class="num">21</span><span class="ttl">pause-safely</span></h2>
+<p><strong>汇报：</strong> 前一个代理停在哪里、你继承了什么又重做了什么（理想情况是什么都没重做）、恢复点、以及结果。</p><h2 id="pb-21"><span class="num">21</span><span class="ttl">pause-safely · 安全暂停</span></h2>
 
+<aside class="readnote"><div class="ntag">解读</div><p>安全暂停：要断线、要重启、上下文快满之前，产出一个「冷启动能接上」的检查点——当前进度、下一步、关键决定、怎么恢复。</p>
+<p>它是 20 号接手的另一半：20 号是「来了怎么接」，这本是「走之前留什么」。长任务养成随手留检查点的习惯，任何中断都不再是灾难。</p></aside>
 <h3>安全暂停</h3>
 <p><strong>你拥有一次干净的停止。留下一个冷启动代理能从中恢复的检查点。</strong> 这只在用户明说时触发。用户说「继续」「我去睡了，你继续」或「别停」时，不要暂停。</p>
 <ol>
@@ -799,8 +974,10 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 <li>在上下文之外写恢复笔记。记录意图、你在做什么、进度和已验证的内容、当前状态、下一步、关键文件和坑。使用 <a href="javascript:void(0)" style="text-decoration:none;color:inherit">Resume storage</a> 中的规范检查点目录，它定义了所有运行时共享的写入者/读取者定位器。它必须能在预期的中断中幸存。如果已有 show-me-your-work 轨迹，指向它而不是复制它。</li>
 <li>保留用户明确要求在恢复后使用的产物，比如问题、验收清单或一份流程。已有现成产物就复用它；否则把所要求的材料保存在恢复笔记旁边并链接。被要求时保留原文措辞、完整性和顺序。通过 <code>resume.mjs</code> 发布检查点，它会在原子更新项目指针之前验证链接和文件。然后只用项目目录读取它，并在宣布检查点就绪之前核对所要求的内容。要求了十个问题，就意味着十个问题都能只靠笔记到达。这不要求归档每一段题外话，也不要求暂停一个正在进行的任务。</li>
 </ol>
-<p><strong>汇报：</strong> 你在循环的哪个位置、什么在磁盘上而什么还在你脑子里（给路径，不贴 diff）、你做了哪些提交、树是否干净、以及恢复后的第一个动作。这是一次暂停，不是最终报告。</p><h2 id="pb-22"><span class="num">22</span><span class="ttl">multi-phase-plan</span></h2>
+<p><strong>汇报：</strong> 你在循环的哪个位置、什么在磁盘上而什么还在你脑子里（给路径，不贴 diff）、你做了哪些提交、树是否干净、以及恢复后的第一个动作。这是一次暂停，不是最终报告。</p><h2 id="pb-22"><span class="num">22</span><span class="ttl">multi-phase-plan · 多阶段计划</span></h2>
 
+<aside class="readnote"><div class="ntag">解读</div><p>多阶段计划：跨阶段或跨 PR 的大工作，先出计划、<strong>不实施</strong>。产物是一份按阶段切好、每段有验收判据的计划书。</p>
+<p>它和被作者批评的「长计划」不矛盾：作者反对的是对抽象计划的空转评审，支持的是像这样的分段计划——每段都以「实际运行验证过」为完成标准，做完一段验一段。</p></aside>
 <h3>多阶段或多 PR 计划</h3>
 <p>通过 <a href="javascript:void(0)" style="text-decoration:none;color:inherit">poteto-mode 的 Non-negotiables</a> 解析 driver skill。</p>
 <p><strong>你拥有计划，不拥有代码。计划是一张 checklist，owner 逐框执行、操作者从证据审计。</strong> 计划就是交付物。不要实现。</p>
@@ -952,8 +1129,10 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 
 &lt;编辑之前要读的文档。哪些 PR 会得到 `skills/how/SKILL.md` 和 `skills/interrogate/SKILL.md`。按 `skills/show-me-your-work/SKILL.md` 的轨迹。&gt;
 </code></pre>
-<p><strong>回复：</strong> 计划路径、各 PR id 及其依赖与 review-gated 集合、原型证明了什么、什么仍未被证明，以及检查脚本的输出。</p><h2 id="pb-23"><span class="num">23</span><span class="ttl">worktree-cleanup</span></h2>
+<p><strong>回复：</strong> 计划路径、各 PR id 及其依赖与 review-gated 集合、原型证明了什么、什么仍未被证明，以及检查脚本的输出。</p><h2 id="pb-23"><span class="num">23</span><span class="ttl">worktree-cleanup · 清理</span></h2>
 
+<aside class="readnote"><div class="ntag">解读</div><p>清理：删工作树、删过期模拟器、腾磁盘。它的纪律是<strong>先审计再删</strong>——只删已合并或明确放弃的，拿不准的列出来等人决定。</p>
+<p>它是全套里唯一的大规模删除动作，所以卡在「不可逆动作必须停」的闸上：清单本身会主动停下来问你，而不是替你做主。</p></aside>
 <h3>工作树与模拟器清理</h3>
 <ol>
 <li>快照并审计。记录 <code>df -h /</code>，然后在已安装插件下运行 <code>skills/poteto-mode/scripts/worktree-audit.mjs</code>（principle-build-the-lever）。它从 <code>git worktree list</code> 读路径，绝不手敲，因为手敲的 <code>myrepo-worktrees/x</code> 会漏掉住在 <code>.worktrees/myrepo/x</code> 的那一个（principle-encode-lessons-in-structure）。它按大小、年龄、合并状态、未提交工作、PR 状态和最近碰过它的聊天对每个工作树分类，然后建议一个桶。transcript 扫描很慢，所以放到后台跑。</li>
@@ -966,6 +1145,15 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 <p>这是唯一一个删除用户状态且没有代码评审兜底的 playbook（流程清单），所以上面的闸门就是评审。</p>
 <p><strong>汇报：</strong> 前后各一次 <code>df -h /</code> 及回收的空间、被修剪的工作树、以及每一条被扣下的工作树的一行理由（被哪个聊天使用，或有未提交的工作）。</p><h2 id="sk-architect"><span class="ttl">architect</span></h2>
 <div class="note"><b>description（路由依据，译文）。</b>写代码之前先勾画类型、签名和模块结构，然后留在循环里让实现填充。用于 /architect、「architect this」、「design this」，或任何直接跳进代码会锁死错误形状的非平凡工作。</div>
+<aside class="readnote"><div class="ntag">解读</div><p>这本是「先画骨架再填肉」。写代码前先把类型、函数签名、模块边界勾成一份草图（函数体先写 not implemented），人确认形状后再往里填实现。</p>
+<p>黑话拆解：</p>
+<ul>
+<li><strong>夯实（Ground）</strong>：动手设计前先用 how/why 技能把周边系统的真实情况摸清，点名一个文件不算数。</li>
+<li><strong>Sketch 用 arena</strong>：草图不是拍脑袋，是派多个模型各画一版、再综合，强制至少两个结构不同的候选。</li>
+<li><strong>Agree 检查点</strong>：默认不停下来等签字，除非你说「stop and show me」。</li>
+<li><strong>推倒信号是模式不是单例</strong>：同形状 workaround 反复出现、类型要开逃生舱口，才说明架构错了；几个边界情况不够判死刑。</li>
+</ul>
+<p>什么时候用它：非平凡的新功能或重构，直接跳进代码会锁死错误形状时。别用它改一行小 bug——那套五阶段流程是杀鸡的牛刀。</p></aside>
 <h1>Architect</h1>
 <p>在 Codex 上，遵循本技能之前先读<a href="javascript:void(0)" style="text-decoration:none;color:inherit">平台映射</a>，包括其按技能的说明。</p>
 <p>在 GitHub Copilot 上，遵循本技能之前先读<a href="javascript:void(0)" style="text-decoration:none;color:inherit">平台映射</a>，包括其按技能的说明。</p>
@@ -1029,6 +1217,16 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 <h2>Reasoning effort</h2>
 <p>覆盖表中的角色值可以在模型后面带推理等级，如 <code>opus @xhigh</code>。Claude Code 上的等级：<code>low</code>、<code>medium</code>、<code>high</code>、<code>xhigh</code>、<code>max</code>。哪些可用取决于模型。不带 <code>@</code> 的值取表的 <code>default effort</code> 行——一个等级或 <code>session</code>；表里没有该行时取 <code>session</code>。在 Claude Code 上，<code>session</code> 不设置等级。其他运行时，<code>session</code> 按平台映射处理。读模型之前先去掉后缀：<code>inherit-parent</code> 或 <code>auto</code> 在任何层级都不传 <code>model</code>，模型名则作为 <code>model</code> 传入。把等级作为派遣的 effort 字段传入，<code>subagent_type</code> 保持原样。即 Claude Code 的 <code>Agent</code> 调用上是 <code>effort</code>，Codex 的 <code>spawn_agent</code> 上是 <code>reasoning_effort</code>。在 Muse 上，它是 Workflow 子任务的 <code>effort</code>；<code>subagent_spawn</code> 派遣保持会话的等级。</p><h2 id="sk-arena"><span class="ttl">arena</span></h2>
 <div class="note"><b>description（路由依据，译文）。</b>对同一任务生成 N 个并行候选，选一个底座，把败者最强的部分嫁接进去。用于 /arena、「arena this」「扔进竞技场」，或当对非平凡产物只试一次就会锁死错误形状时。</div>
+<aside class="readnote"><div class="ntag">解读</div><p>这本是「同一道题让几个模型各写一版，取最好的底座再把别人家的好东西嫁接进来」。它防的是「只试一次就锁死错误形状」。</p>
+<p>黑话拆解：</p>
+<ul>
+<li><strong>Frame</strong>：所有候选拿同一份提示词，提示词就是契约；先写好 3-6 条评分标准（rubric）。</li>
+<li><strong>Fan out</strong>：一条消息里并行派 N 个子代理，各写各的输出目录。</li>
+<li><strong>Cross-judge</strong>：派一个只读评审模型打分，且必须来自父模型以外的家族，避免同门偏袒。</li>
+<li><strong>Graft</strong>：底座选出后，把每个败者最值得移植的一两处手工并进去，不是机械粘贴。</li>
+<li><strong>收敛即共识</strong>：候选长一个样说明答案就是那个，直接发布，不用嫁接。</li>
+</ul>
+<p>什么时候用它：设计或非平凡产物的方向不止一个、赌错代价高时。别用它干生成密集的杂活——四六个模型跑一遍只为一段文案，纯属烧钱。</p></aside>
 <h1>Arena</h1>
 <p>在 Codex 上，先读<a href="javascript:void(0)" style="text-decoration:none;color:inherit">平台映射</a>（包括其中的逐技能说明），再执行本技能。</p>
 <p>在 GitHub Copilot 上，先读<a href="javascript:void(0)" style="text-decoration:none;color:inherit">平台映射</a>（包括其中的逐技能说明），再执行本技能。</p>
@@ -1067,6 +1265,14 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 <h2>Reasoning effort（推理强度）</h2>
 <p>覆盖表里的角色值可以在模型后面带推理强度，比如 <code>opus @xhigh</code>。Claude Code 上的等级：<code>low</code>、<code>medium</code>、<code>high</code>、<code>xhigh</code>、<code>max</code>。哪些可用取决于模型。不带 <code>@</code> 的值取表的 <code>default effort</code> 行——一个等级或 <code>session</code>；表没有该行时取 <code>session</code>。在 Claude Code 上，<code>session</code> 不设置强度。其他宿主上，<code>session</code> 按平台映射走。读模型前先剥掉后缀：<code>inherit-parent</code> 或 <code>auto</code> 在每个等级上仍然省略 <code>model</code>，模型名照常作为 <code>model</code> 传入。等级作为派发的 effort 字段传入，<code>subagent_type</code> 照常用你本来要用的。即 Claude Code 的 <code>Agent</code> 调用上是 <code>effort</code>，Codex 的 <code>spawn_agent</code> 上是 <code>reasoning_effort</code>。在 Muse 上是 Workflow 子代理上的 <code>effort</code>；<code>subagent_spawn</code> 派发保持会话的强度。</p><h2 id="sk-automate-me"><span class="ttl">automate-me</span></h2>
 <div class="note"><b>description（路由依据，译文）。</b>用于「automate me」「创建/更新/刷新我的 -mode 技能」「把我的偏好或工作方式变成一个技能」，或想让代理遵循用户的做法时。通过 plugin-dev:skill-development + unslop 起草或修订一个个人 -mode 技能，可选地从最近的会话记录拉取新鲜证据。</div>
+<aside class="readnote"><div class="ntag">解读</div><p>这本是「把你的工作习惯变成一个 AI 会遵守的技能」。产物是一份以你命名的 <code>-mode</code> 技能（比如 jay-mode），让以后每个代理都按你的风格干活。</p>
+<p>黑话拆解：</p>
+<ul>
+<li><strong>挖掘历史</strong>：并行派子代理读你最近几周的会话记录，找反复出现的偏好——响应长度、委派习惯、验证标准。至少两个切片都看到的模式才算数，孤立的一次纠正不算。</li>
+<li><strong>直接问你</strong>：挖掘会漏掉没说过的意图，用结构化选择题补问，不让你从零打字。</li>
+<li><strong>更新优先</strong>：已有同名 mode 技能时默认就地修订，只挖上次编辑之后的新历史。</li>
+</ul>
+<p>什么时候用它：你发现自己反复纠正代理同样的毛病、想让这套偏好固化下来。别用它写任务专属技能或窄流程（比如 commit message 规范）——那是普通技能，用 skill-development 就够，不需要挖历史。</p></aside>
 <h1>Automate me</h1>
 <p>在 Codex 上，先读<a href="javascript:void(0)" style="text-decoration:none;color:inherit">平台映射</a>（包括其中的逐技能说明），再执行本技能。</p>
 <p>在 GitHub Copilot 上，先读<a href="javascript:void(0)" style="text-decoration:none;color:inherit">平台映射</a>（包括其中的逐技能说明），再执行本技能。</p>
@@ -1148,6 +1354,15 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 <li>用户要记录一个窄工作流（比如「我怎么写 commit message」）。那是普通技能，不是 mode 技能。</li>
 </ul><h2 id="sk-babysit"><span class="ttl">babysit</span></h2>
 <div class="note"><b>description（路由依据，译文）。</b>看护一个已打开的 PR——修复失败的 CI，处理简单的审查评论，把它推进到可合并状态。Cursor 内置 /babysit 的 Claude Code 对应物。在打开 PR 之后、用户希望代理不用反复提示就把它带到合并时使用。</div>
+<aside class="readnote"><div class="ntag">解读</div><p>这本是「PR 保姆」。PR 已经开了，它盯着：CI 红了修 CI，审查评论能机械处理的直接改，循环推进到可合并，不用你反复催。</p>
+<p>黑话拆解：</p>
+<ul>
+<li><strong>分诊优先级</strong>：合并冲突 → 失败检查 → 审查评论 → 机器人评论，逐层处理。</li>
+<li><strong>评论取舍</strong>：重命名、补 guard clause 这类只有机械答案的直接做；涉及判断取舍的看不懂就别猜，留着回复你的想法。</li>
+<li><strong>退出条件</strong>：三轮「修→推→复查」还不绿就停手交还；下一步需要设计决策就暂停问你。</li>
+<li><strong>硬规则</strong>：不在别人可能拉过的分支上改历史，不为让测试过而改断言期望值，不跳 hooks，不把失败检查标成非必需。</li>
+</ul>
+<p>什么时候用它：PR 开了之后你想让代理自己盯到合并。别在 poteto-mode 运行里用它——那种场景由 Babysit playbook 接管，这本只是独立入口。</p></aside>
 <h1>Babysit a PR</h1>
 <p>在 Codex 上，先读<a href="javascript:void(0)" style="text-decoration:none;color:inherit">平台映射</a>（包括其中的每技能注记），再执行本技能。</p>
 <p>在 GitHub Copilot 上，先读<a href="javascript:void(0)" style="text-decoration:none;color:inherit">平台映射</a>（包括其中的每技能注记），再执行本技能。</p>
@@ -1212,6 +1427,15 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 <h2>Provenance</h2>
 <p>这是 Cursor <code>/babysit</code> 的 Claude Code 对应物，不是移植——Cursor 的实现是闭源的。本技能独立撰写，有自己的行文和结构；工作流参考了 Cursor 公开的 <code>/babysit</code> 行为。与其他 PR 工具的重叠只有它运行的 <code>gh</code> CLI 命令，那是功能调用而非抄来的文字。</p><h2 id="sk-benchmark-checklist"><span class="ttl">benchmark-checklist</span></h2>
 <div class="note"><b>description（路由依据，译文）。</b>在报告一个性能测量或据此行动之前，审查它（瓶颈、调优、上限、错误、可重复性、相关性，以及工作到底发生了没有）。在你跑基准测试，或报告你测得的提速或回退时使用。</div>
+<aside class="readnote"><div class="ntag">解读</div><p>这本是「性能数字的测谎仪」。你要报告一个提速或回退结论时，它用七个问题把测量本身审一遍——每个问题都要用一次真实运行的证据回答，不许对着代码猜。</p>
+<p>黑话拆解：</p>
+<ul>
+<li><strong>瓶颈问题</strong>：「为什么不是快一倍？」说不出瓶颈就别断言改动没用。</li>
+<li><strong>调参问题</strong>：两侧都得按生产方式跑；一侧用默认配置，你比较的是配置不是实现。</li>
+<li><strong>上限问题</strong>：做算术，移除占 10% 耗时的部分最多快 11%，超上限的结果测的是缓存或 bug。</li>
+<li><strong>问题 7</strong>：确认工作真的发生在计时区域内——没人 await 的 promise 会给从未发生的劳动出数字。</li>
+</ul>
+<p>什么时候用它：PR 前后对比、选型、报告任何性能主张之前。要快速量级估计的话只查错误和工作计数两条、并注明是一次运行；但选项之间的选型永远不算量级估计。</p></aside>
 <h1>基准测试清单</h1>
 <p>当你产出一个性能数字时用它：PR 的前后对比、一个回退主张、一个 hillclimb 宿主、或一个库或配置的选型。每个问题都用一次运行的证据回答，不是对代码的猜测。</p>
 <p>对用户要的快速量级估计，跑一次就够。仍然检查问题 4 和 7，并说明这是一次运行。其余的跳过，除非那次运行看起来不对。选项之间的选型从来不是量级估计。</p>
@@ -1244,6 +1468,14 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 <li>在 <strong>Hillclimb</strong> playbook 的宿主被冻结之前审查它。冻结后宿主会打印错误和工作计数，于是每次保留或回退都免费检查问题 4 和 7。</li>
 </ul><h2 id="sk-blast-radius"><span class="ttl">blast-radius</span></h2>
 <div class="note"><b>description（路由依据，译文）。</b>在改动上线前找出它可能破坏的其他地方，超出 diff 之外，并通过运行真实代码来证明整体安全所依赖的那一个事实，而不是写成文字。用于「X 的 blast radius」「这会破坏什么」、审查一个你还不信任的小 diff，或一份对现有代码做出断言（「把 X 设为 public」「X 已经处理了 Y」）并准备按该断言设计的简报。</div>
+<aside class="readnote"><div class="ntag">解读</div><p>这本是「这次改动会在别处炸掉什么」。上线前查 diff 之外的连带破坏，它是 how（代码做什么）和 why（为什么这么写）的第三块拼图。</p>
+<p>黑话拆解：</p>
+<ul>
+<li><strong>grep 给不了的部分</strong>：列调用方不值钱，真正的工作是追符号搜索漏掉的——API 返回的 JSON、数据库列、feature flag、下游三跳的代码。</li>
+<li><strong>那一个安全事实</strong>：看似危险的改动往往因为某一个事实而安全。找到它，用运行真实代码来证明，而不是交一份听起来合理的报告——报告无论真假读起来都令人信服。</li>
+<li><strong>五级确定性</strong>：从「你说的」到「你在运行中的应用里复现了它」，每条结论尽量往上推，证明不了就写 unproven。</li>
+</ul>
+<p>什么时候用它：审查你不信任的小 diff，或者简报里断言「X 已经处理了 Y」准备照着设计时——先验证断言再设计。别用它做常规代码理解，那是 how/why 的活。</p></aside>
 <h1>Blast radius</h1>
 <p>在改动上线前，找出它会破坏的其他地方。用于「X 的 blast radius」「这会破坏什么」，或审查一个你还不信任的小 diff。当简报对现有代码做出断言（「把端点 X 设为 public」）时，在设计之前就跑它，而不只是上线前：断言只是假设，调用方普查才是决定设计的依据。</p>
 <p><code>how</code> 和 <code>why</code> 的同伴技能。<code>how</code> 告诉你代码做什么。<code>why</code> 告诉你它为什么长这样。Blast radius 告诉你它会在别处破坏什么。</p>
@@ -1280,8 +1512,21 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 <p>通过 <code>unslop</code> 写出来，引用真实代码，在它走向任何公开场合之前剥掉一切私密信息。</p>
 <p><strong>回复：</strong> 上面的报告，那一个安全事实要么已证明、要么标记为 unproven。</p><h2 id="sk-bro"><span class="ttl">bro</span></h2>
 <div class="note"><b>description（路由依据，译文）。</b>用平实的人类语言复述上一条消息，不用行话。用于 /bro 或被要求说人话时。</div>
+<aside class="readnote"><div class="ntag">解读</div><p>这本是「说人话」。全文就一句指令：把你上一条消息用平实的人类语言复述一遍，扔掉所有行话，说得更简单、更简洁，像一个人对另一个人说话。</p>
+<p>没有黑话可拆——它本身就是黑话的解毒剂。</p>
+<p>什么时候用它：AI 刚才那段回答你读不懂、被术语和缩写淹没了，直接 /bro 让它重来一遍。也适合把技术结论转述给非技术同事之前先用它压一遍。</p>
+<p>什么时候别用：它是复述不是重做——不会补充新信息或重新调查。如果原文本身就答错了，bro 一遍还是错的，那是 why 或 how 的活。全文只有六行，是全套清单里最短的一本。</p></aside>
 <p>复述你的上一条消息。停止使用行话，连贯地说。说得更简单、更简洁，像一个人对另一个人说话。</p><h2 id="sk-correct"><span class="ttl">correct</span></h2>
 <div class="note"><b>description（路由依据，译文）。</b>找出代理在这个仓库里反复犯的错误，并把每一种都变得不可能。先试架构，再试类型，再试一个报错信息里写明修法的 lint，再试测试，文档放最后。证明每道检查在真实的过往错误上会失败。操作者每次纠正你都重复执行。用于 /correct。</div>
+<aside class="readnote"><div class="ntag">解读</div><p>这本是「同样的错别再犯第二次」。操作者（你）不断纠正代理犯同样的错误，它反过来改仓库本身，让下一个代理想犯都犯不了。</p>
+<p>黑话拆解：</p>
+<ul>
+<li><strong>错误类别</strong>：先翻提交、回滚、审查评论，把错误归类；一类错出现两次才成立。</li>
+<li><strong>层级顺序</strong>：架构 &gt; 类型 &gt; 报错信息写明修法的 lint &gt; 测试 &gt; 文档。文档垫底，因为代理跳过它时什么都不会失败。</li>
+<li><strong>证明检查会失败</strong>：每道新检查必须在真实的过往错误上跑出一次失败，否则它证明不了任何东西。</li>
+<li><strong>规则表</strong>：代理指令文件里维护「规则 ↔ 强制机制」对照表；规则在表里却没人强制，就算重犯，当场升级到最高层级。</li>
+</ul>
+<p>什么时候用它：同一类错误第二次被纠正时。别用它处理只犯一次的偶发失误——那构不成类别。</p></aside>
 <h1>Correct</h1>
 <p>操作者在不断纠正这个仓库里的代理犯同样的错误。改变仓库，让下一个代理犯不了。</p>
 <p>假设每个贡献者都是一个只看它打开过的文件的代理，抄最近的示例，走能编译的最短路径。把仓库设计成：从一个文件内部看是对的改动，对整个仓库也是对的。</p>
@@ -1300,6 +1545,14 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 <p>最后，在代理指令文件里维护一张表，把每条规则与强制它的机制配对。操作者纠正你时，修掉错误并补上规则。如果规则已经在那里却没有任何东西强制它，那是一次重犯，所以在同一个改动里把它修到最高层级。错误不再可能发生时，删掉那条规则。</p>
 <p><strong>回复：</strong> 每一类错误及其证据、你选的层级、以及为什么更高的层级行不通。</p><h2 id="sk-create-formal-verification-skill"><span class="ttl">create-formal-verification-skill</span></h2>
 <div class="note"><b>description（路由依据，译文）。</b>生成一个项目本地技能，对 bug 代价最高、测试最难到达的代码做形式化验证，任意语言，用最合适的验证工具。用于 /create-formal-verification-skill、「对这个竞争做 model-check」「证明这个不变量」，或当并发、重试、状态机、解析器、unsafe 代码需要比测试更多的东西时。</div>
+<aside class="readnote"><div class="ntag">解读</div><p>这本是「给代码装数学级保证，并留下可持续重跑的技能」。测试只覆盖有人想到的用例，形式化验证覆盖既定范围内的全部用例——每一步顺序、每种输入。</p>
+<p>黑话拆解：</p>
+<ul>
+<li><strong>让问题选工具</strong>：「坏顺序能否发生」用模型检查器（TLA+ 默认）；「每种输入都对吗」用跑在代码上的验证器；语言没有验证器就明说，别拿手工模型凑数。</li>
+<li><strong>能够失败</strong>：一个从未见过失败的检查证明不了任何东西——要演示它在破坏变体上真的报错。</li>
+<li><strong>命名纪律</strong>：生成的技能按区域命名，绝不叫 verify 或 verify- 前缀，那名字属于姊妹技能 create-verification-skill 的 driver。</li>
+</ul>
+<p>什么时候用它：并发、重试、状态机、解析器、unsafe 代码这些测试很难到达的地方。别用它验证普通业务逻辑——那套成本对 CRUD 是杀鸡用牛刀。</p></aside>
 <h1>创建一个形式化验证技能</h1>
 <p>在 Codex 上，先读<a href="javascript:void(0)" style="text-decoration:none;color:inherit">平台映射</a>（包括其中的逐技能说明），再执行本技能。</p>
 <p>在 GitHub Copilot 上，先读<a href="javascript:void(0)" style="text-decoration:none;color:inherit">平台映射</a>（包括其中的逐技能说明），再执行本技能。</p>
@@ -1329,6 +1582,15 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 <h2>交接</h2>
 <p>告诉用户你验证了什么、用了哪个工具以及为什么、界是什么、检查发现了什么（用平实的话）、怎么跑、它不覆盖什么。只有找到一个很近的目标时才建议第二个目标。把 <code>/maintain-formal-verification-skill</code> 指给用户，用于在没有被重新检查的改动之后把验证拉回正轨。</p><h2 id="sk-create-verification-skill"><span class="ttl">create-verification-skill</span></h2>
 <div class="note"><b>description（路由依据，译文）。</b>生成一个项目本地的验证技能，像用户一样驱动你的应用——任意语言、框架或平台。用于 /create-verification-skill、「给这个仓库做一个控制技能」「给这个仓库做一个 driver 技能」，或当项目没有任何脚本能证明 UI/CLI/服务行为时。</div>
+<aside class="readnote"><div class="ntag">解读</div><p>这本是「给仓库造一个能像用户一样开车的司机技能」。它为你的项目生成 <code>.claude/skills/verify/</code>：启动应用、像用户那样操作功能、采集证据、清理现场——让以后任何代理都能用脚本证明「这功能真的能用」。</p>
+<p>黑话拆解：</p>
+<ul>
+<li><strong>访谈仓库不访谈人</strong>：表面（UI/CLI/API）、怎么启动、怎么程序化驱动、采什么证据、能否双实例，答案全从代码里找。</li>
+<li><strong>Doctor 体检</strong>：驱动前先做只读检查，确认这个实例值得驱动。</li>
+<li><strong>功能地图</strong>：features/ 目录按用户视角记录每个功能怎么到达、怎么驱动、什么终态算过——绝不为让旅程通过而削弱旅程。</li>
+<li><strong>交付前先跑一遍</strong>：没执行过的生成技能是草稿不是交付物。</li>
+</ul>
+<p>什么时候用它：项目没有任何脚本能证明 UI/CLI/服务行为时。和形式化验证那本的区别：这本覆盖「应用整体行为」，那本覆盖「最难测的核心性质」。</p></aside>
 <h1>创建一个验证技能</h1>
 <p>在 Codex 上，先读<a href="javascript:void(0)" style="text-decoration:none;color:inherit">平台映射</a>（包括其中的逐技能说明），再执行本技能。</p>
 <p>在 GitHub Copilot 上，先读<a href="javascript:void(0)" style="text-decoration:none;color:inherit">平台映射</a>（包括其中的逐技能说明），再执行本技能。</p>
@@ -1362,6 +1624,13 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 <h2>5. 提供维护闭环</h2>
 <p>把 <code>/maintain-verification-skill</code> 指给用户，用于在应用变化时让地图保持诚实。只在对方问的时候才建议节奏。</p><h2 id="sk-deslop"><span class="ttl">deslop</span></h2>
 <div class="note"><b>description（路由依据，译文）。</b>移除 AI 生成的代码 slop，清理代码风格</div>
+<aside class="readnote"><div class="ntag">解读</div><p>这本是「AI 味清洗机」。检查本分支相对 main 的 diff，把 AI 生成代码特有的 slop 清掉：多余又不合本地风格的注释、对可信路径反常的防御性 try/catch、只为绕类型问题的 any cast、该提前返回却深嵌套的代码，以及其他与周边代码不一致的模式。</p>
+<p>黑话拆解：</p>
+<ul>
+<li><strong>slop</strong>：AI 写代码的典型坏味道——话痨注释、过度防御、无意义抽象，功能上没错但读起来一眼机器味。</li>
+<li><strong>护栏很严</strong>：行为必须不变（除非修明确 bug）、只做最小聚焦的编辑、总结 1-3 句——它是个清洁工，不是重构工。</li>
+</ul>
+<p>什么时候用它：分支合并前觉得代码「AI 味太重」，或想让新代码融入仓库既有风格时。别用它做大范围重写或行为变更——那是重构技能的活；也别拿它清 AI 写的文字 slop，那是 unslop 的地盘。</p></aside>
 <h1>移除 AI 代码 slop</h1>
 <p>检查相对 main 的 diff，移除本分支引入的 AI 生成 slop。</p>
 <h2>关注点</h2>
@@ -1379,6 +1648,14 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 <li>最终总结保持简短（1-3 句）。</li>
 </ul><h2 id="sk-figure-it-out"><span class="ttl">figure-it-out</span></h2>
 <div class="note"><b>description（路由依据，译文）。</b>当没有更窄的 playbook（流程清单）适用时，设计一个可审计的 playbook（流程清单）：大型迁移、雄心勃勃的多部分改动、或需要人离开一段时间后回来审查的工作。把严格性按任务缩放，运行假设循环，记录决策。用于 /figure-it-out 或 &#x27;figure it out&#x27;。</div>
+<aside class="readnote"><div class="ntag">解读</div><p>这本是「没有现成流程清单时，自己现场设计一份」。任务大到不属于任何专门清单（大型迁移、多部分改造）时，先交付的不是代码，而是那份可审计的工作流本身。</p>
+<p>拆解里面的黑话：</p>
+<ul>
+<li><strong>Frame（框架）</strong>：动手前先写清楚「怎么算完成」（可证伪的谓词）、范围多大、严格性等级。单向门和高爆炸半径的活要多给严格性。</li>
+<li><strong>假设循环</strong>：每个工作单元当成一次实验——陈述假设、最小改动、在真实产物上验证，不通过就回滚。</li>
+<li><strong>审计轨迹</strong>：每落地一步记一行决策日志，配合 show-me-your-work，让审查者以后能在 PR 里看到你为什么这么干。</li>
+</ul>
+<p>什么时候用它：任务没现成清单、要跑数小时、人还得离开一阵子。什么时候别用：任务已有更窄的清单（修 CI、解冲突等），或者一次 arena 就能定的设计——硬上这套是过度工程。</p></aside>
 <h1>Figure it out</h1>
 <p>任务不匹配任何 playbook（流程清单）时，就设计一个。写任何代码之前，交付物是工作流本身：一个阶段序列，把严格性按任务缩放，运行科学方法，并留下人离开后可以审计的决策轨迹。</p>
 <h2>开始</h2>
@@ -1413,6 +1690,9 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 <p>在真实产品上对照 Phase A 的谓词检查整体，而不只是宿主（harness）。把反复出现的纠正编码成一道门、一条 lint 规则、一个检查或一个脚本（<strong>encode-lessons-in-structure</strong> 原则技能）。</p>
 <p><strong>回复：</strong> 你设计的 playbook（流程清单）、严格性等级及理由、决策轨迹路径、对照谓词验证了什么、还有什么 open。</p><h2 id="sk-fix-ci"><span class="ttl">fix-ci</span></h2>
 <div class="note"><b>description（路由依据，译文）。</b>找出失败的 PR 检查，检查日志或外部检查链接，应用聚焦的修复</div>
+<aside class="readnote"><div class="ntag">解读</div><p>这本是「把红了的 PR 检查一条条修到全绿」的最小循环。它只管 CI：解析失败的检查、读日志或外部检查链接、找第一个可行动的错误、打一个最小补丁、推送、再看一遍，如此往复。</p>
+<p>它的纪律全在护栏里：一次只修一个失败（避免把两个修复搅在一起说不清谁治好了谁）；优先最小低风险改动，不为顺手做大重构；以 <code>gh pr checks</code> 为 PR 整体 CI 状态的唯一事实来源，不凭记忆判断。</p>
+<p>什么时候用它：分支推上去 CI 红了，想要一条快速迭代到绿的路径，不想自己在网页上点来点去看日志。什么时候别用：失败根源是要重构才能解决的结构性问题，或者压根不是 CI 而是合并冲突（那归 fix-merge-conflicts）——这本清单假设代码本身能编译，只是某个检查没过。</p></aside>
 <h1>Fix CI</h1>
 <h2>触发</h2>
 <p>分支或 PR 的 CI 失败，需要一条快速迭代到全绿的路径。</p>
@@ -1436,6 +1716,9 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 <li>当前 CI 状态和下一步动作</li>
 </ul><h2 id="sk-fix-merge-conflicts"><span class="ttl">fix-merge-conflicts</span></h2>
 <div class="note"><b>description（路由依据，译文）。</b>以非交互方式解决合并冲突，验证构建和测试，完成冲突解决</div>
+<aside class="readnote"><div class="ntag">解读</div><p>这本是「分支撞了、解完冲突要能编译」的可靠路径。流程是：从 git status 和冲突标记找出所有冲突文件，逐个做最小、正确性优先的解决；能安全保留两侧就保留，不行就选能编译且公开行为不变的变体；lockfile 交给包管理器重新生成而不是手改；最后跑编译、lint、测试确认，再暂存并汇报关键决策。</p>
+<p>护栏里有几条值得记住的「不做什么」：不留任何冲突标记、解冲突期间不顺手重构、不推送不打 tag（先在本地确认干净，发布是下一步的事）。</p>
+<p>什么时候用它：rebase 或 merge 之后满屏冲突标记，想要一条到可构建状态的路径。什么时候别用：冲突是 CI 失败（归 fix-ci），或者两个分支语义冲突大到需要人来拍板设计取向——这本只保证「能编译、行为不变」，不替你做产品决策。</p></aside>
 <h1>Fix merge conflicts</h1>
 <h2>触发</h2>
 <p>分支有未解决的合并冲突，需要一条可靠的路径达到可构建状态。</p>
@@ -1462,6 +1745,9 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 <li>构建/测试结果</li>
 </ul><h2 id="sk-get-pr-comments"><span class="ttl">get-pr-comments</span></h2>
 <div class="note"><b>description（路由依据，译文）。</b>拉取并总结当前活跃 pull request 的审查评论</div>
+<aside class="readnote"><div class="ntag">解读</div><p>这本是「把 PR 上的审查意见榨成一份可执行的待办」。流程很短：解析当前分支对应的活跃 PR，拉取审查评论和讨论评论，按严重性和可操作性分组，最后返回一份按优先级排序的行动清单，外加仍需澄清的开放问题。</p>
+<p>它解决的真实问题是：审查意见散落在评论串里，有重复、有闲聊、有真问题，人肉读一遍很费神。这本把它压缩成「先修什么、哪些不用管」。</p>
+<p>什么时候用它：PR 收到一堆 review comments，想快速知道哪些必须改、哪些可以回一句带过。什么时候别用：你想要它替你改代码——它只汇总不修复，改要另派任务；也不要拿它对抗性审查自己的代码，那是 interrogate 的活。它是六本流程清单里最轻的一本，产出就是那份清单。</p></aside>
 <h1>Get PR comments</h1>
 <h2>触发</h2>
 <p>需要对当前活跃 pull request 的反馈做一份简明、可执行的总结。</p>
@@ -1479,6 +1765,10 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 <li>仍需澄清的开放问题</li>
 </ul><h2 id="sk-how"><span class="ttl">how</span></h2>
 <div class="note"><b>description（路由依据，译文）。</b>用于「X 是怎么工作的」、改动前的代码走读，以及位置/归属/分层问题（「这个应该放哪」「哪个包拥有这个」「这是不是正确的层」）。解释子系统架构、运行时流程、上手心智模型。动机问题用 why。</div>
+<aside class="readnote"><div class="ntag">解读</div><p>这本是「X 是怎么工作的」专用解读器。它探索代码库，产出一份资深工程师上手子系统水准的架构解释：总览、关键概念、运行机制、东西放在哪、坑在哪。代码一行不动，纯只读。</p>
+<p>它和相邻技能的分工很清楚：how 问「现在怎么跑」；why 问「当初为什么这么写」（翻 git 历史、评审记录、工单）；teach 问「教我学会它」。位置/归属/分层类问题（「这个该放哪」「这是不是正确的层」）也归 how。</p>
+<p>内部是两级流程：简单问题（单模块、窄问题）派一个解释者一次搞定；复杂问题（跨文件、跨服务）先派两到四个探索者各切一个角度，再派一个解释者综合。所有结论都要站得住，不必信任何一方的自我报告。</p>
+<p>什么时候用它：改代码前想先建立心智模型，或核实一个关于架构的说法。什么时候别用：想知道动机，改用 why。</p></aside>
 <h1>How</h1>
 <p>在 Codex 上，先读<a href="javascript:void(0)" style="text-decoration:none;color:inherit">平台映射</a>（包括其中的每技能注记），再执行本技能。</p>
 <p>在 GitHub Copilot 上，先读<a href="javascript:void(0)" style="text-decoration:none;color:inherit">平台映射</a>（包括其中的每技能注记），再执行本技能。</p>
@@ -1510,8 +1800,19 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 <h2>Reasoning effort</h2>
 <p>覆盖表中的角色值可以在模型后面带上推理强度，如 <code>opus @xhigh</code>。Claude Code 上的档位：<code>low</code>、<code>medium</code>、<code>high</code>、<code>xhigh</code>、<code>max</code>。哪些档位可用取决于模型。不带 <code>@</code> 的值取该表的 <code>default effort</code> 行（一个档位或 <code>session</code>），表里没有该行时取 <code>session</code>。在 Claude Code 上，<code>session</code> 不设置强度。在其他运行时上，<code>session</code> 按平台映射处理。读取模型前先剥掉后缀：<code>inherit-parent</code> 或 <code>auto</code> 在每一层都不传 <code>model</code>，模型名则作为 <code>model</code> 传入。把档位作为派发的 effort 字段传入，<code>subagent_type</code> 保持原样。在 Claude Code 的 <code>Agent</code> 调用上是 <code>effort</code>，在 Codex 的 <code>spawn_agent</code> 上是 <code>reasoning_effort</code>。在 Muse 上是 Workflow 子任务的 <code>effort</code>；<code>subagent_spawn</code> 派发保持会话的强度。</p><h2 id="sk-in-your-own-words"><span class="ttl">in-your-own-words</span></h2>
 <div class="note"><b>description（路由依据，译文）。</b>用你自己的话复述你认为用户的目标是什么、他们在解决什么问题。用于 /in-your-own-words。</div>
+<aside class="readnote"><div class="ntag">解读</div><p>这本是全套清单里最短的一本，短到只有一句话：用你自己的话复述你认为用户的目标是什么、他们在解决什么问题。</p>
+<p>它解决的真实问题是「以为听懂了其实没有」。在派子代理、跑对手审查或设计工作流之前，先让执行者用自己的话把意图说一遍，说错了用户一眼就能纠正，成本几乎为零；不说，错误就会顺着整条流水线滚下去。interrogate 就明文依赖它来陈述范围和意图。</p>
+<p>什么时候用它：任何要开始一段较长工作之前，尤其是任务描述模糊、或你即将把工作委派下去的时候——一句复述就是最便宜的校准。什么时候别用：它不是聊天技巧，也别拿它当总结用；它只复述意图，不解释代码（那是 how）、不汇报进度（那是 ketchup）。如果复述之后发现根本不确定用户要什么，直接问，别猜。</p></aside>
 <p>用你自己的话复述你认为用户的目标是什么、他们在尝试解决什么问题。</p><h2 id="sk-interrogate"><span class="ttl">interrogate</span></h2>
 <div class="note"><b>description（路由依据，译文）。</b>用于 &#x27;interrogate&#x27;、&#x27;adversarial review&#x27;、&#x27;multi-model review&#x27;、&#x27;challenge this&#x27;、&#x27;stress test this code&#x27;、&#x27;find blind spots&#x27; 或 &#x27;tear this apart&#x27;。对手尝试破坏一个改动或设计，只有被运行证明的发现才能留下。</div>
+<aside class="readnote"><div class="ntag">解读</div><p>这本是「请一队对手来拆你的改动」。它把范围（或整个分支 diff）复制进多个工作树，每个对手模型一个，任务是破坏这个改动——但只有被运行证明的发现才能留下：一次失败的测试、一个复现脚本、一段展示错误行为的命令输出。风格、命名、结构、「未来可能有风险」这类没跑过的东西一律不算数。</p>
+<p>拆解里面的黑话：</p>
+<ul>
+<li><strong>arena 复用</strong>：它借用 arena 的扇出框架（Phase A/B/F），但不留一个「赢家」——每个对手找到的失败各不相同，验证通过的发现全部保留。</li>
+<li><strong>不修</strong>：它只报告发现，不动代码。修复是另派任务。</li>
+</ul>
+<p>和相邻技能的分工：thermo-nuclear 是按规则清单做质量审计，interrogate 是真跑代码找崩溃点；want「挑毛病」用后者，「查规范」用前者。</p>
+<p>什么时候用它：合并前想压力测试一个关键改动或设计，用户说 stress test、tear apart。什么时候别用：普通日常 diff——全模型扇出成本高，留给真正要紧的东西。</p></aside>
 <h1>Interrogate</h1>
 <p>在 Codex 上，先读<a href="javascript:void(0)" style="text-decoration:none;color:inherit">平台映射</a>（包括其中的每技能注记），再执行本技能。</p>
 <p>在 GitHub Copilot 上，先读<a href="javascript:void(0)" style="text-decoration:none;color:inherit">平台映射</a>（包括其中的每技能注记），再执行本技能。</p>
@@ -1542,6 +1843,15 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 <h2>Reasoning effort</h2>
 <p>覆盖表中的角色值可以在模型后面带上推理强度，如 <code>opus @xhigh</code>。Claude Code 上的档位：<code>low</code>、<code>medium</code>、<code>high</code>、<code>xhigh</code>、<code>max</code>。哪些档位可用取决于模型。不带 <code>@</code> 的值取该表的 <code>default effort</code> 行（一个档位或 <code>session</code>），表里没有该行时取 <code>session</code>。在 Claude Code 上，<code>session</code> 不设置强度。在其他运行时上，<code>session</code> 按平台映射处理。读取模型前先剥掉后缀：<code>inherit-parent</code> 或 <code>auto</code> 在每一层都不传 <code>model</code>，模型名则作为 <code>model</code> 传入。把档位作为派发的 effort 字段传入，<code>subagent_type</code> 保持原样。在 Claude Code 的 <code>Agent</code> 调用上是 <code>effort</code>，在 Codex 的 <code>spawn_agent</code> 上是 <code>reasoning_effort</code>。在 Muse 上是 Workflow 子任务的 <code>effort</code>；<code>subagent_spawn</code> 派发保持会话的强度。</p><h2 id="sk-ketchup"><span class="ttl">ketchup</span></h2>
 <div class="note"><b>description（路由依据，译文）。</b>用平实的话和小图形向用户汇报自其上一条消息以来本次会话发生了什么。列出每一项在等用户的事，以及仅凭回复就能做决定所需的信息。用于 /ketchup。</div>
+<aside class="readnote"><div class="ntag">解读</div><p>这本是「给离开了一会儿回来的用户补进度」。它汇报自用户上一条消息以来会话里发生了什么，核心不是「进展到哪」而是「什么变了」，并把每一件在等用户拍板的事列成清单，让用户只凭这条回复就能做决定。</p>
+<p>拆解里面的黑话：</p>
+<ul>
+<li><strong>/bro 语气</strong>：平实短句、没有行话。「测试通过了」而不是「CI 是绿的」，省略哈希、路径、构建号这类对用户没用的细节。</li>
+<li><strong>行动项</strong>：只有用户能做的事——批准、产品选择、不可逆操作。AI 自己还能干的活不算，绝不为凑数编造决定。</li>
+<li><strong>图形纪律</strong>：截图、Mermaid 图、图表算图形，Markdown 表格不算；每张图至多六个方框，绝不画状态清单，绝不编造没截过的屏幕。</li>
+</ul>
+<p>和相邻技能的分工：ketchup 汇报会话内变化，recall 翻历史会话，what-did-i-get-done 汇总一段时间的提交。</p>
+<p>什么时候用它：后台跑了一长串活之后说一声 /ketchup。什么时候别用：它本轮只读，不改任何东西。</p></aside>
 <h1>Ketchup</h1>
 <p>向用户汇报自其在 <code>/ketchup</code> 之前最后一条消息以来本次会话发生了什么，并帮助用户理解每项变化，而不只是进展到哪。然后把每一件在等用户拍板的事列出来，让用户仅凭你的回复就能拍板。通知和子代理结果不算用户的消息。假定用户记得自己最后一条消息，之后一概不记得。</p>
 <p>用 <a href="#sk-bro"><code>/bro</code></a> 的语气，不做它的任务：平实的话、短句、没有行话，像一个人向另一个人同步近况。说对用户而言什么变了，而不是你怎么做的。说「the tests pass」，不说「CI is green」。除非用户行动需要，否则省略哈希、文件路径、命令、构建号和测试数。每个 PR、分支或代理用用户认得的名字称呼，不要用你发明的标签。如果一个事实需要上下文才有意义，要么给上下文，要么别提。</p>
@@ -1562,6 +1872,14 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 <p>每张图形保持一眼能读懂的尺寸：至多六个方框，每框至多八个词。标签写成人们会说的平实词语，不要「Tests: pass」这样的标签。需要一句话才能成立的事实属于正文，或者哪里都不属于。</p>
 <p>当变化可见时内嵌截图和视频，而不是只给链接。如果某个可见变化没有截图，在它的总结行标注「No screenshot yet」，并在那里说明屏幕上变了什么。图形和图表从你掌握的事实画：连接关系用 Mermaid 图示，数字用从数据渲染的图表。绝不编造数字，绝不画或生成一张你没有截取过的屏幕。只链接真实存在的产物。</p><h2 id="sk-ketchup-video"><span class="ttl">ketchup-video</span></h2>
 <div class="note"><b>description（路由依据，译文）。</b>像 /ketchup 一样帮用户补上进度，但把发生的事情做成一部带字幕的幻灯片短视频，把等待中的通话以文字放在视频下方。用于 /ketchup-video。</div>
+<aside class="readnote"><div class="ntag">解读</div><p>这本是「把进度汇报做成一部带字幕的幻灯片短视频」。它完全继承 ketchup 的窗口（从用户上一条消息算起）和行动项结构，只是把「发生了什么」那部分从文字和截图换成一视频：无声横屏 mp4，每张幻灯片下方一条烧录的短字幕带。</p>
+<p>拆解里面的黑话：</p>
+<ul>
+<li><strong>幻灯片纪律</strong>：最多 10 张、每张只讲一个点、在同一张图上逐张变化而不是乱切；幻灯片绝不是列表或表格——那是 ketchup 里文字 bullet 干的活。</li>
+<li><strong>停留时长</strong>：每张幻灯片停留时间按「新增词数 ÷ 3」算秒数，并且要实测渲染文件里的帧来核对，不用静帧检测器（会把淡入淡出误判为静止）。</li>
+<li><strong>只读例外</strong>：ketchup 本轮只读，唯独这本允许在仓库外写并渲染视频。</li>
+</ul>
+<p>什么时候用它：变化是视觉的、用户更想「看」而不是「读」的时候。什么时候别用：一两句话就能说完的进度——渲染一部视频纯属浪费；渲染失败就退回纯文字的行动项。</p></aside>
 <h1>Ketchup video</h1>
 <p>遵循 <a href="#sk-ketchup"><code>/ketchup</code></a>，但把发生的事情用一部带字幕的幻灯片短视频呈现，替代它的摘要和视觉材料。它的窗口从用户在 <code>/ketchup-video</code> 之前写的最后一条消息开始，而不是从更早的某次 <code>/ketchup</code> 开始。在仓库之外编写并渲染视频，是对它只读规则的唯一例外。回复由 ketchup 的开头句、内嵌视频、一行说明还有哪些你自己能做的剩余工作、以及行动项组成。视频展示某个通话的选项时，按视频给这些选项起的名字逐个称呼。渲染失败，用一行说明，并只给出通话。</p>
 <h2>幻灯片</h2>
@@ -1575,6 +1893,15 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 <p>渲染一部无声的横屏视频，比如 mp4，幻灯片之间带转场动画。每一帧就是幻灯片本身，边到边，位于其字幕横带上方。帧由幻灯片生成，绝不用录屏，并把每条字幕烧录进对应幻灯片的帧里，让它在幻灯片整个停留期间都在屏幕上。停留是一张幻灯片完整在屏的时间，不计入进入或离开它的转场。每张幻灯片停留的时间要足够读完它新增的词，每三个词至少一秒。一张幻灯片新增它的字幕以及此前未出现过的每个词，包括它改动的标签。第一张幻灯片新增它的全部词。截图内部的词不计入。</p>
 <p>内嵌视频之前，检查渲染出的文件。按聊天窗口大小看每张幻灯片的一帧，确认字幕可读且不遮挡任何内容。通过把文件的帧与幻灯片对齐来测量每次停留时长，不要用静帧检测器——它会把淡入淡出的微弱首尾算作静止。用测得的停留时长核对每张幻灯片新增的词数。修掉在这个时间内读不完的幻灯片，重新渲染，再检查。</p><h2 id="sk-maintain-formal-verification-skill"><span class="ttl">maintain-formal-verification-skill</span></h2>
 <div class="note"><b>description（路由依据，译文）。</b>代码变更之后，把一个项目的形式化验证重新对齐到代码：找到触及被验证代码的提交，更新模型、harness 或属性以描述现在的代码，重跑，并说明每个失败是验证的漂移还是代码的 bug。用于 /maintain-formal-verification-skill、「is the model still true to the code」，或触及被验证代码却未重检的合并与重构之后。</div>
+<aside class="readnote"><div class="ntag">解读</div><p>这本是「形式化验证的年检」。代码变了而验证没跟着变时，最危险的情形是检查继续通过、但描述的已经是不再存在的代码——这种通过看起来像个证明，其实是空的。这本负责找到这种漂移并重新对齐。</p>
+<p>拆解里面的黑话：</p>
+<ul>
+<li><strong>四种结果</strong>：in sync（没变且通过）、updated（验证更新后通过）、bug（验证描述的是当前代码而代码违反属性）、blocked（跑不了）。一个检查可以同时是 updated 和 bug。</li>
+<li><strong>从代码更新，不从结果更新</strong>：改模型是为了让它重新描述代码，绝不为让检查通过而改；属性失败时先重放反例，区分「验证错了」还是「代码真有 bug」。</li>
+<li><strong>破坏测试</strong>：更新后通过的检查，要故意破坏新代码确认它还能抓住失败，防止检查丧失失败能力。</li>
+</ul>
+<p>和相邻技能的分工：它管模型检查器/证明器类的形式化验证；管「驱动应用 + 功能地图」的普通 verify 技能，是 maintain-verification-skill。</p>
+<p>什么时候用它：合并、重构绕过了验证技能之后，或问「模型还对得上代码吗」。</p></aside>
 <h1>维护一个形式化验证技能</h1>
 <p>在 Codex 上，遵循本技能之前先读<a href="javascript:void(0)" style="text-decoration:none;color:inherit">平台映射</a>，包括其按技能的说明。</p>
 <p>在 GitHub Copilot 上，遵循本技能之前先读<a href="javascript:void(0)" style="text-decoration:none;color:inherit">平台映射</a>，包括其按技能的说明。</p>
@@ -1635,6 +1962,16 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 <p>直说哪些失败是验证的漂移、哪些是代码的 bug。对一个更新前通过、更新后失败的检查，说明旧通过建立在过期的描述上。</p>
 <p>把验证更新放进一个独立的变更里，与任何产品修复分开。</p><h2 id="sk-maintain-verification-skill"><span class="ttl">maintain-verification-skill</span></h2>
 <div class="note"><b>description（路由依据，译文）。</b>让项目的验证技能和功能地图保持诚实的周期性巡检：每个功能一个并行的源码阅读子代理，一个活会话驱动每个功能，至多一个已证明修正的 PR。用于 /maintain-verification-skill 或「审计 verify 技能」。</div>
+<aside class="readnote"><div class="ntag">解读</div><p>这本是「verify 技能的体检」。项目的功能地图会随代码一变就开始腐烂，这本按功能逐个对账：地图说的行为源码里还在不在、驱动脚本还能不能把应用跑起来，并把证明过的修正发成一个 PR。</p>
+<p>拆解里面的黑话：</p>
+<ul>
+<li><strong>三种结果</strong>：clean（都覆盖了，没事不开 PR）、changed（发一个已证明修正的 PR）、blocked（说清楚什么挡住了）。</li>
+<li><strong>源码波次</strong>：每个功能文件派一个只读子代理，从源码解释功能并给一个活体验证配方，不驱动应用、不改文件。</li>
+<li><strong>活体巡检</strong>：源码看着干净也必须真跑应用。三条不变量：驱动前先 doctor、证据要在清理后核实存活、驱动启动的东西不得活得比这次驱动久。</li>
+<li><strong>triage（分诊）</strong>：地图说的行为没了，可能是文档漂移（修地图）也可能是产品回归（报告，绝不糊在文档里）。</li>
+</ul>
+<p>和相邻技能的分工：这本管「驱动应用 + 功能地图」类验证技能；模型检查器/证明器那类形式化验证归 maintain-formal-verification-skill。</p>
+<p>什么时候用它：周期性巡检，或用户说「审计 verify 技能」。</p></aside>
 <h1>维护一个验证技能</h1>
 <p>在 Codex 上，先读<a href="javascript:void(0)" style="text-decoration:none;color:inherit">平台映射</a>（包括其中的逐技能说明），再执行本技能。</p>
 <p>在 GitHub Copilot 上，先读<a href="javascript:void(0)" style="text-decoration:none;color:inherit">平台映射</a>（包括其中的逐技能说明），再执行本技能。</p>
@@ -1676,6 +2013,14 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 </ol>
 <p>把简明的运行笔记（覆盖的功能、到不了的前置条件、确认的漂移、结果）放在临时位置；不提交它们。</p><h2 id="sk-make-pr-easy-to-review"><span class="ttl">make-pr-easy-to-review</span></h2>
 <div class="note"><b>description（路由依据，译文）。</b>为审查准备 PR：清理嘈杂的历史、改进 PR 描述、添加审查者指引，但不改变代码行为。用于 &quot;make this easy to review&quot;、&quot;tidy this PR&quot;、&quot;clean up commits&quot; 或 &quot;annotate the diff&quot;。</div>
+<aside class="readnote"><div class="ntag">解读</div><p>这本是「给 PR 化妆，不动手术」：提交历史、描述、审查备注都收拾干净，但代码行为一个字节都不变。</p>
+<p>拆解里面的黑话：</p>
+<ul>
+<li><strong>历史清理</strong>：把嘈杂的 commit 重排分组（schema → 核心逻辑 → 接线 → UI → 测试），需要 force-push，所以必须先经你同意。</li>
+<li><strong>树校验</strong>：重写历史前先记下原 diff 的树哈希，重写后再比对——哈希不一致说明内容被弄丢了，绝不推送。</li>
+<li><strong>审查者指引</strong>：在 PR 描述里写 TL;DR、区分核心文件与生成文件、点名风险，让审查者五分钟看懂。</li>
+</ul>
+<p>什么时候用它：PR 已经写完但很难审（提交乱、描述过时、清理和逻辑混在一起）。什么时候别用：想改代码本身——那是另一个任务；PR 大到靠描述救不了时，它也只会建议拆分而不是抛光。</p></aside>
 <h1>Make PR Easy to Review</h1>
 <p>准备一个 PR，让审查者能快速理解意图、重要文件和风险。默认目标是在不改变行为的前提下提升可审查性。</p>
 <h2>工作流</h2>
@@ -1721,6 +2066,14 @@ git diff origin/&lt;headRefName&gt; --stat
 <li>PR 太大到靠备注无法变得可审查时，建议拆分，而不是围绕问题做抛光。</li>
 </ul><h2 id="sk-no-comments"><span class="ttl">no-comments</span></h2>
 <div class="note"><b>description（路由依据，译文）。</b>派出 comment-sicko 子代理，修复被接受的发现，并为声称的约束提供编码方案。</div>
+<aside class="readnote"><div class="ntag">解读</div><p>这本是「先删光注释，再逼着修真正的问题」：派一个恨注释成瘾的子代理把代码里的注释全杀掉，留下的每个「keep」都要拿出证据证明它挡的是我们改不了的东西。</p>
+<p>拆解里面的黑话：</p>
+<ul>
+<li><strong>comment-sicko</strong>：专职的注释清除者子代理，把注释分成 kill（删）、keep（留）、HOLD（涉及外部依赖、平台、厂商规则的，留但要核实）。</li>
+<li><strong>变通代码</strong>：注释里说的 workaround，kill 掉之后必须在范围内落地最小的根因修复，而不是贴回一个症状守卫。</li>
+<li><strong>编码约束</strong>：对「do not remove」这类约束注释，用类型、测试或 CI lint 把它强制执行，然后注释本身就可以删了。</li>
+</ul>
+<p>什么时候用它：接手一段注释密布的遗留代码，想清掉解释债。什么时候别用：注释是刚写的、有明确归属的设计说明——它的新鲜视角会把这类也有罪推定。</p></aside>
 <h1>No comments</h1>
 <p>在 Codex 上，先读<a href="javascript:void(0)" style="text-decoration:none;color:inherit">平台映射</a>（包括其中的每技能注记），再执行本技能。</p>
 <p>在 GitHub Copilot 上，先读<a href="javascript:void(0)" style="text-decoration:none;color:inherit">平台映射</a>（包括其中的每技能注记），再执行本技能。</p>
@@ -1749,6 +2102,14 @@ git diff origin/&lt;headRefName&gt; --stat
 <h2>Reasoning effort</h2>
 <p>覆盖表中的角色值可以在模型后面带上推理强度，如 <code>opus @xhigh</code>。Claude Code 上的档位：<code>low</code>、<code>medium</code>、<code>high</code>、<code>xhigh</code>、<code>max</code>。哪些档位可用取决于模型。不带 <code>@</code> 的值取该表的 <code>default effort</code> 行（一个档位或 <code>session</code>），表里没有该行时取 <code>session</code>。在 Claude Code 上，<code>session</code> 不设置强度。在其他运行时上，<code>session</code> 按平台映射处理。读取模型前先剥掉后缀：<code>inherit-parent</code> 或 <code>auto</code> 在每一层都不传 <code>model</code>，模型名则作为 <code>model</code> 传入。把档位作为派发的 effort 字段传入，<code>subagent_type</code> 保持原样。在 Claude Code 的 <code>Agent</code> 调用上是 <code>effort</code>，在 Codex 的 <code>spawn_agent</code> 上是 <code>reasoning_effort</code>。在 Muse 上是 Workflow 子任务的 <code>effort</code>；<code>subagent_spawn</code> 派发保持会话的强度。</p><h2 id="sk-poteto-help"><span class="ttl">poteto-help</span></h2>
 <div class="note"><b>description（路由依据，译文）。</b>引导用户完成 pstack 安装配置、/poteto-mode，以及为任务挑选合适的技能、playbook（流程清单）或原则。输入 /poteto-help 加一个问题。</div>
+<aside class="readnote"><div class="ntag">解读</div><p>这本是 pstack 的「问路台」：只回答问题和递提示词，自己不动手干活。</p>
+<p>拆解里面的黑话：</p>
+<ul>
+<li><strong>playbook（流程清单）</strong>：<code>/poteto-mode</code> 内部的步骤清单，没有斜杠命令，靠「babysit this pr」这类短语点名。</li>
+<li><strong>principle-*</strong>：单条规则的小技能，一般不直接调用，用名字引导（「apply prove it works」）。</li>
+<li><strong>help 不动手</strong>：它给你一条可以直接发的提示词加来源文件链接，因为一次 pstack 运行花真金白银的 token。</li>
+</ul>
+<p>什么时候用它：不知道该调哪个技能、安装出问题、跑坏了想找症状对应的修复，或者想知道 how/why/teach、arena/swarm、recall/ketchup 这些易混组合的分工。什么时候别用：要真干活——它会把你踢回 <code>/poteto-mode</code>。</p></aside>
 <h1>Poteto help</h1>
 <p>回答用户关于 pstack 的问题，递给他一条可以直接发送的提示词，并链接答案来源的文件。help 类问题不要动手做。用户问的是「怎么做」，而一次 pstack 运行要花真金白银的 token，所以把提示词留给他自己发。</p>
 <p>要求干活的消息（如「用 pstack 修这个 bug」）不是 help 问题。读 <a href="#poteto-mode"><code>poteto-mode</code></a>，在其之下干活。</p>
@@ -2011,6 +2372,14 @@ git diff origin/&lt;headRefName&gt; --stat
 <h2>回复</h2>
 <p>答案先行。至多给一个示例提示词，放在代码块里，<a href="javascript:void(0)" style="text-decoration:none;color:inherit"><code>references/recipes.md</code></a> 里有合适的就改造它，然后给出该文件的链接。用户没要整张地图就保持简短。</p><h2 id="sk-recall"><span class="ttl">recall</span></h2>
 <div class="note"><b>description（路由依据，译文）。</b>从你自己的聊天历史、活体状态、和共享记录（用户报障、已发布的修复、事故）重建你最近的工作上下文，然后交回一份紧凑的现状简报。用于「recall my work on X」「catch me up」「what have I been working on」「where did I leave off」、开始或恢复工作之前，以及在告诉用户某件事从未被记录之前。</div>
+<aside class="readnote"><div class="ntag">解读</div><p>这本是「开工前的记忆恢复」：把你自己近期聊天记录加上别人名下发生的报障、回退、线上事故一起挖一遍，浓缩成一页现状简报。</p>
+<p>拆解里面的黑话：</p>
+<ul>
+<li><strong>两份记录</strong>：你自己的聊天历史（做了什么、决定了什么）+ 共享记录（用户还在报什么、哪些修复发了又回退）。</li>
+<li><strong>共享记录</strong>：复用 why 技能的逐源调查 playbook，但问题从「为什么建成这样」换成「现状是什么」。</li>
+<li><strong>输出契约</strong>：胶囊（最多 5 条）→ 带状态标签的线程（<code>[open PR #N]</code>、<code>[reverted #N]</code>）→ 反复出现的问题 → 单个下一步。</li>
+</ul>
+<p>什么时候用它：说「catch me up」「我上次做到哪了」，或动工前想避开上一次失败的地方。什么时候别用：想恢复某一条具体聊天（那是 session-pickup），或只要这条聊天里的新进展（那是 ketchup）。</p></aside>
 <h1>Recall</h1>
 <p>在 GitHub Copilot 上，先读<a href="javascript:void(0)" style="text-decoration:none;color:inherit">平台映射</a>（包括其中的逐技能说明），再执行本技能。</p>
 <p>在 Muse 上，先读<a href="javascript:void(0)" style="text-decoration:none;color:inherit">平台映射</a>（包括其中的逐技能说明），再执行本技能。</p>
@@ -2039,6 +2408,14 @@ git diff origin/&lt;headRefName&gt; --stat
 <p>相邻的功能或工单不进简报，除非它阻塞这一个。胶囊和线程行超出一个屏幕时，先砍细节后砍线程。简报通过 <strong>unslop</strong> 技能写，聊天发现按 UUID 引用，共享记录发现按其来源引用（PR #、工单 ID、聊天永久链接、错误追踪 issue），公开输出前先消毒私人上下文。</p>
 <p><strong>回复：</strong> 简报本身，按上面的契约。</p><h2 id="sk-reflect"><span class="ttl">reflect</span></h2>
 <div class="note"><b>description（路由依据，译文）。</b>在活跃会话记录上生成三个并行评审子代理，提炼可沉淀的经验，并把每条路由到一个现有技能的具体修改上。用户说 reflect 时使用。</div>
+<aside class="readnote"><div class="ntag">解读</div><p>这本是「把这次对话的经验存进技能里」：跑完一轮任务后说 reflect，它会派三个评审子代理读会话记录，把教训路由成对现有技能的具体修改。</p>
+<p>拆解里面的黑话：</p>
+<ul>
+<li><strong>三个评审者</strong>：判断视角（这轮干得对不对）、工具视角（技能本身好不好用）、发散视角（有什么别的可能），并行读同一份转录。</li>
+<li><strong>Accepted / Rejected / Backlog</strong>：合成者整理的结论；能用 lint、脚本、CI 强制执行的不写成文字，直接挪进 Backlog。</li>
+<li><strong>不经批准不动手</strong>：改技能影响以后每个代理，所以 Accepted 修改必须等你明确批准，而且改的是复制到 <code>.claude/skills/</code> 的副本，绝不碰插件缓存。</li>
+</ul>
+<p>什么时候用它：一轮任务结束、发现代理反复犯同一个错或技能没触发。什么时候别用：对话琐碎、一次性的事不算经验；想拦住重复错误但答案不是改技能时，那是 correct 的活。</p></aside>
 <h1>Reflect</h1>
 <p>在 Codex 上，先读<a href="javascript:void(0)" style="text-decoration:none;color:inherit">平台映射</a>（包括其中的逐技能说明），再执行本技能。</p>
 <p>在 GitHub Copilot 上，先读<a href="javascript:void(0)" style="text-decoration:none;color:inherit">平台映射</a>（包括其中的逐技能说明），再执行本技能。</p>
@@ -2115,6 +2492,15 @@ git diff origin/&lt;headRefName&gt; --stat
 <h2>Reasoning effort（推理强度）</h2>
 <p>覆盖表里的角色值可以在模型后面带推理强度，比如 <code>opus @xhigh</code>。Claude Code 上的等级：<code>low</code>、<code>medium</code>、<code>high</code>、<code>xhigh</code>、<code>max</code>。哪些可用取决于模型。不带 <code>@</code> 的值取表的 <code>default effort</code> 行——一个等级或 <code>session</code>；表没有该行时取 <code>session</code>。在 Claude Code 上，<code>session</code> 不设置强度。其他宿主上，<code>session</code> 按平台映射走。读模型前先剥掉后缀：<code>inherit-parent</code> 或 <code>auto</code> 在每个等级上仍然省略 <code>model</code>，模型名照常作为 <code>model</code> 传入。等级作为派发的 effort 字段传入，<code>subagent_type</code> 照常用你本来要用的。即 Claude Code 的 <code>Agent</code> 调用上是 <code>effort</code>，Codex 的 <code>spawn_agent</code> 上是 <code>reasoning_effort</code>。在 Muse 上是 Workflow 子代理上的 <code>effort</code>；<code>subagent_spawn</code> 派发保持会话的强度。</p><h2 id="sk-setup-pstack"><span class="ttl">setup-pstack</span></h2>
 <div class="note"><b>description（路由依据，译文）。</b>配置 pstack 每个角色使用哪些模型。检测可用模型，写入当前宿主的覆盖表。用于 /setup-pstack、「配置 pstack 模型」、更改 pstack 的模型选择，或开关 SessionStart hook。</div>
+<aside class="readnote"><div class="ntag">解读</div><p>这本是「pstack 的配置面板」：检测你机器上实际可用的模型，逐角色填一张覆盖表，决定每种子代理跑什么模型、什么推理强度。</p>
+<p>拆解里面的黑话：</p>
+<ul>
+<li><strong>角色</strong>：pstack 派的每种子代理（审 bug 的、写文档的、评审面板的）各有一行默认模型，覆盖表整行覆盖它。</li>
+<li><strong>面板</strong>：arena runners、interrogate reviewers 这类值是列表的角色，一个条目一个子代理，列表长度就是并发数。</li>
+<li><strong>inherit-parent / auto</strong>：让该角色跟着主会话的模型跑，省钱时用。</li>
+<li><strong>session hook</strong>：控制要不要在每次会话启动时自动注入 poteto-mode；关了就得手动调。</li>
+</ul>
+<p>什么时候用它：装完 pstack 后第一次配置、想换便宜模型或调高强度、路由突然不生效时核对配置。什么时候别用：和模型无关的问题；每个角色想单独换模型时也直接改表就行，不必重跑。</p></aside>
 <h1>Setup pstack</h1>
 <p>在 Codex 上，先读<a href="javascript:void(0)" style="text-decoration:none;color:inherit">平台映射</a>（含其逐技能备注），再执行本技能。</p>
 <p>在 GitHub Copilot 上，先读<a href="javascript:void(0)" style="text-decoration:none;color:inherit">平台映射</a>（含其逐技能备注），再执行本技能。</p>
@@ -2299,6 +2685,9 @@ session hook: on
 <li>单角色默认值：<code>opus</code></li>
 </ul><h2 id="sk-sharpen"><span class="ttl">sharpen</span></h2>
 <div class="note"><b>description（路由依据，译文）。</b>把任务变得更深，而不是更大，然后重写提示词。用于 /sharpen。</div>
+<aside class="readnote"><div class="ntag">解读</div><p>这本是「磨提示词的」：把你的任务要求得更深，而不是更大，最后只还给你一段改写好的提示词，不代你干活。</p>
+<p>它固定问四个问题：顶尖专业人士在这里会做而你没要求的什么事；他们会从什么最原始的材料入手而不是被消化的二手货；他们用什么具体方法和工具；除了你俩之外还有什么能证明结果是对的。然后把答案精确地写回提示词，属于你自己做的选择保持开放。</p>
+<p>什么时候用它：任务描述是「研究一下 X」「帮我看看 Y」这种，怕代理跑得浅、只喂给你摘要级的东西时，先磨一遍再发。什么时候别用：任务已经足够具体，或者你其实想要的是代理直接开工——那就交给 <code>/poteto-mode</code>。</p></aside>
 <p>我要这个任务的更深版本，不是更大版本。重写之前，先做四件事：</p>
 <ol>
 <li>说出这个领域的顶尖专业人士在这里会做、而我没有要求的什么事。</li>
@@ -2309,6 +2698,15 @@ session hook: on
 <p>然后重写我的提示词，精确地要求上述内容。</p>
 <p>属于我做的选择保持开放，不要替我决定。</p><h2 id="sk-show-me-your-work"><span class="ttl">show-me-your-work</span></h2>
 <div class="note"><b>description（路由依据，译文）。</b>为长时间运行或无人值守的工作保留一条可审查的决策轨迹：一个 TSV 日志，每个决策一行（做了什么、为什么、证据、结果）。默认本地保存；当评审者需要轨迹来信任结果时才提交它。用于 /show-me-your-work、自主或多阶段运行、或人离开后回头审查的工作。</div>
+<aside class="readnote"><div class="ntag">解读</div><p>这本是「干活时留一条可审计的轨迹」：一份 TSV 决策日志，每个决策点一行——做了什么、为什么、证据指针、结果。</p>
+<p>拆解里面的黑话：</p>
+<ul>
+<li><strong>只追加</strong>：错误决定不删不改，用新的一行取代它，历史不可变。</li>
+<li><strong>start 行</strong>：每次新运行往已有日志追加时先写一行，声明自己接在哪之后，避免两次运行互相覆盖看不出。</li>
+<li><strong>对照转录审计</strong>：交活前拿日志对着会话记录逐行核实，编造的行也要用新行取代而不是删掉。</li>
+<li><strong>跨模型评审</strong>：换一个不同模型家族的子代理扫轨迹找风险，最后回复必须带「Attention」小节，<code>reviewed by</code> 模型名不可省。</li>
+</ul>
+<p>什么时候用它：长跑、无人值守、离开几天后回头审查的工作，评审者需要轨迹才敢信结果。什么时候别用：几分钟的小改动，记这些纯属开销。</p></aside>
 <h1>Show me your work</h1>
 <p>在 GitHub Copilot 上，先读<a href="javascript:void(0)" style="text-decoration:none;color:inherit">平台映射</a>（包括其中的逐技能说明），再执行本技能。</p>
 <p>在 Muse 上，先读<a href="javascript:void(0)" style="text-decoration:none;color:inherit">平台映射</a>（包括其中的逐技能说明），再执行本技能。</p>
@@ -2367,6 +2765,14 @@ session hook: on
 <h2>组合本技能</h2>
 <p>其他技能把它们的审计轨迹路由到这里，而不是各自发明一套。按名字引用它，把格式交给它管。不要复述那些列。</p><h2 id="sk-statechart"><span class="ttl">statechart</span></h2>
 <div class="note"><b>description（路由依据，译文）。</b>检查一个描述系统状态迁移的 TLA+ 模型——比如产品流程、协议或服务——并把它画成 Mermaid 状态图。报告给出通往每个违反规则的状态的最短路径。用于 /statechart，或把一个 bug 呈现为穿越状态的路径。</div>
+<aside class="readnote"><div class="ntag">解读</div><p>这本是「把系统状态画成一张能看出 bug 的图」：写一个 TLA+ 模型，让 TLC 模型检查器穷举所有状态迁移，再渲染成 Mermaid 状态图，标出通往每个违规状态的最短路径。</p>
+<p>拆解里面的黑话：</p>
+<ul>
+<li><strong>INVARIANT</strong>：你认可的规则（「付了钱必须收到货」），写成模型检查器能逐状态验证的断言。</li>
+<li><strong>breaks / mayBreak</strong>：图上被标记的违规状态；部分组合违规时打后者。</li>
+<li><strong>view 模块</strong>：你亲手写的那层翻译，把模型变量变成读者语言（「Paying」而不是 <code>v.pc[1]</code>），图限 20 条箭头以内。</li>
+</ul>
+<p>什么时候用它：给 PM 或设计师证明一个流程、协议或服务在哪条路径上会违反规则，或把一个 bug 呈现为穿越状态的路径。什么时候别用：模型太大会跑不完或超预算；模型画的若是代码，bug 复现不了时要先怀疑模型写错了。</p></aside>
 <h1>Statechart</h1>
 <p>图展示系统如何在状态之间迁移，用的是读图者的语言。那个人——读者——决定行为是否正确。</p>
 <h2>运行</h2>
@@ -2424,6 +2830,14 @@ session hook: on
 <p>把每张图和它的 Mermaid 文本交给必须做判断的人。每个 bug 加一行：规则名、该规则对应的读者语言句子，以及按报告编号的路径。说明模型省略了什么。给出能重新生成这些文件的命令，用新的 <code>--out</code> 目录。</p>
 <p>当模型描述的是代码时，把每条 bug 路径对着真实代码逐步重放，作为测试或现场复现，每个动作对应一步。如果某个 bug 没有发生，先认为模型是错的，直到你证明它不是。</p><h2 id="sk-swarm"><span class="ttl">swarm</span></h2>
 <div class="note"><b>description（路由依据，译文）。</b>扇出 N 个并行 worker，收干它们，返回一份报告。用于 /swarm、&#x27;swarm this&#x27;，或并行覆盖、竞速、gauntlet 和探索。</div>
+<aside class="readnote"><div class="ntag">解读</div><p>这本是「派一队工人，收割一份报告」：扇出 N 个并行子代理，每个干一小片或互相竞速，最后合并成一份会话内报告。</p>
+<p>拆解里面的黑话：</p>
+<ul>
+<li><strong>切片 vs 竞速</strong>：把任务分成不重叠的片各干一块，或者同一份简报派 N 个工人比谁先干好（first pass / rank all / best-of 三种选法要事先声明）。</li>
+<li><strong>worktree 隔离</strong>：每个会写输出的工人分到自己可写的目录或工作树，避免互相覆盖。</li>
+<li><strong>gap</strong>：某工人没按简报要求记录验证的 SHA 和方法，结果作废重派；重派还不行就记为缺口，缺口不算通过。</li>
+</ul>
+<p>什么时候用它：横切检查要并行覆盖（全仓库找泄漏、多模块补测试）、想让几个模型竞速同一个任务。什么时候别用：想把多个候选最好的部分嫁接合并成一个产物——那是 arena；swarm 只收报告不改代码。</p></aside>
 <h1>Swarm</h1>
 <p>在 Codex 上，先读<a href="javascript:void(0)" style="text-decoration:none;color:inherit">平台映射</a>（包括其中的每技能注记），再执行本技能。</p>
 <p>在 GitHub Copilot 上，先读<a href="javascript:void(0)" style="text-decoration:none;color:inherit">平台映射</a>（包括其中的每技能注记），再执行本技能。</p>
@@ -2461,6 +2875,9 @@ session hook: on
 <h2>Reasoning effort</h2>
 <p>覆盖表中的角色值可以在模型后面带上推理强度，如 <code>opus @xhigh</code>。Claude Code 上的档位：<code>low</code>、<code>medium</code>、<code>high</code>、<code>xhigh</code>、<code>max</code>。哪些档位可用取决于模型。不带 <code>@</code> 的值取该表的 <code>default effort</code> 行（一个档位或 <code>session</code>），表里没有该行时取 <code>session</code>。在 Claude Code 上，<code>session</code> 不设置强度。在其他运行时上，<code>session</code> 按平台映射处理。读取模型前先剥掉后缀：<code>inherit-parent</code> 或 <code>auto</code> 在每一层都不传 <code>model</code>，模型名则作为 <code>model</code> 传入。把档位作为派发的 effort 字段传入，<code>subagent_type</code> 保持原样。在 Claude Code 的 <code>Agent</code> 调用上是 <code>effort</code>，在 Codex 的 <code>spawn_agent</code> 上是 <code>reasoning_effort</code>。在 Muse 上是 Workflow 子任务的 <code>effort</code>；<code>subagent_spawn</code> 派发保持会话的强度。</p><h2 id="sk-tdd"><span class="ttl">tdd</span></h2>
 <div class="note"><b>description（路由依据，译文）。</b>只在用户明确要求 TDD、失败测试或回归测试，或 bug 有明显且廉价的本地测试路径时使用。测试路径不清晰、昂贵、重集成或未被要求时跳过。</div>
+<aside class="readnote"><div class="ntag">解读</div><p>这本是「先让测试红，再让代码绿」的修 bug 流程：动手改生产代码之前，先把坏掉的行为变成一个会失败的回归测试。</p>
+<p>它对「红」很挑剔：测试必须因预期原因失败——只有「实际输出和预期不匹配」那种红才证明测试量到了这个 bug；报异常或空结果的红不算。对造不出好测试的情况它也很干脆：需要大范围宿主搭建、脆弱 mock、生产环境才能复现的，宁可不做新测试，改用最接近的可执行验证，因为坏测试比没测试更糟。</p>
+<p>什么时候用它：bug 有清晰廉价的本地测试路径，或用户点名要 TDD、回归测试。什么时候别用：测试路径不清晰或昂贵、纯重构没有行为变化，或流程上为了「写个测试」而写。</p></aside>
 <h1>TDD Bug Fix</h1>
 <p>修复一个有清晰、廉价测试路径的 bug 时，在改动生产代码之前，把坏掉的行为变成可执行的。目标是拿到一个聚焦的回归测试：修复前失败，修复后通过。</p>
 <p>测试不现实时不要硬造。如果可用的测试需要大范围的宿主（harness）搭建、脆弱的 mock、缓慢的端到端基础设施、只存在于生产环境的状态、模糊的复现步骤、或大量无关的 fixture 改动，就不要加新测试，改用最接近的有用验证。</p>
@@ -2492,6 +2909,14 @@ session hook: on
 <li>无法演示失败在先的证据时，说明原因，并描述改用的最接近的回归检查。</li>
 </ul><h2 id="sk-teach"><span class="ttl">teach</span></h2>
 <div class="note"><b>description（路由依据，译文）。</b>平实地讲解一个工作主体，让人真正理解它。运行 `how` 和 `why` 技能，把它们发现的东西编织成一份清晰的解释。用于「teach me this」「help me really understand X」「explain this change or subsystem to me」。</div>
+<aside class="readnote"><div class="ntag">解读</div><p>这本是「给你上课的」：建在 how 和 why 之上，先把两个都跑了挖出事实，再编织成一份按你节奏推进的平实讲解，不改任何代码。</p>
+<p>拆解里面的黑话：</p>
+<ul>
+<li><strong>how / why 的分工</strong>：how 解释代码现在怎么工作，why 解释当初为什么这么建；teach 两个都调，只留 why 的置信度限定语不许改写。</li>
+<li><strong>递进图</strong>：讲一个三步流程画三张图，每张重画上一张只加一个部件，让你看着系统组装起来；一次画全的大图是参考图不是教学。</li>
+<li><strong>反表演</strong>：禁止「关键洞察」「这是棘手的部分」这类框架标签和测验，直接说内容。</li>
+</ul>
+<p>什么时候用它：「teach me this」「帮我真正搞懂这个子系统」，要的是理解。什么时候别用：只问一个事实（how 或 why 单独跑就够），或者想改代码。</p></aside>
 <h1>Teach</h1>
 <p>在 Codex 上，先读<a href="javascript:void(0)" style="text-decoration:none;color:inherit">平台映射</a>（包括其中的逐技能说明），再执行本技能。</p>
 <p>在 GitHub Copilot 上，先读<a href="javascript:void(0)" style="text-decoration:none;color:inherit">平台映射</a>（包括其中的逐技能说明），再执行本技能。</p>
@@ -2509,6 +2934,14 @@ session hook: on
 <p>每条回复都通过 <strong>unslop</strong> 技能写，用平实的口语英语，像你给同事讲解那样。紧凑但不简省。砍掉填充和虚词，留下让人明白的那部分。说具体的机制，不说隐喻、框架、或预告。这是目标密度：「Virtualization runs in two parts, one for rendering and one for loading from disk. When an item scrolls out past the buffer, both its DOM node and its in-memory data are evicted.」正常句首大写，不是全小写。不用破折号。句号优先于逗号。每句话一两个逗号以内。从句堆叠时拆成独立的句子。每个概念只给一个名字并保持。避免镜像句（「没有 A 的 B，或没有 B 的 A」）和整齐的收尾句（「其余顺势推出」「一切自然成立」）。这些步骤里的话是给你的指令，不是要打印的标签。不要把结构回声成标题或套话。</p>
 <p><strong>回复：</strong> 解释本身，绝不是一份关于你做了什么、交付了什么的报告。先说要点，然后是对它是什么、怎么工作、为什么的平实讲解，以及值得用 <code>how</code> 或 <code>why</code> 追下去的线索。</p><h2 id="sk-technical-writing"><span class="ttl">technical-writing</span></h2>
 <div class="note"><b>description（路由依据，译文）。</b>分层技术写作标准：Diátaxis 结构、Google 开发者风格句子、STE 指令规则、Global English 句法。用于 /technical-writing，或撰写和评审文档、RFC、readme、PR 描述、commit message。</div>
+<aside class="readnote"><div class="ntag">解读</div><p>这本是「让疲惫的工程师第一遍读懂」的文档标准，四层叠用：Diátaxis 定文档模式，Google 开发者风格定句子，STE 规则定一句话只装一件事，Global English 消灭歧义读法。</p>
+<p>拆解里面的黑话：</p>
+<ul>
+<li><strong>Diátaxis 四象限</strong>：教程（做中学）、how-to（查着用的步骤）、reference（干燥的事实）、explanation（讲缘由，唯一允许观点的层），一份文档只选一个模式。</li>
+<li><strong>STE</strong>：一句一条指令、操作步骤必用命令式、每个概念只用一个名字。</li>
+<li><strong>Global English</strong>：only/not 紧贴被修饰词、拆长名词串、不用斜杠和分号，专为非母语读者消歧。</li>
+</ul>
+<p>什么时候用它：写或审 README、RFC、PR 描述、commit message。什么时候别用：产品 UI 文案走产品的文案规范；它管结构和句子，AI 腔模式目录归 unslop 管，各修各的。</p></aside>
 <h1>技术写作</h1>
 <p>让疲惫的工程师第一遍就能读懂。四层全部应用。</p>
 <p>三条规则凌驾于各层之上：</p>
@@ -2600,6 +3033,14 @@ session hook: on
 <p>译文：<code>budget.mjs</code> 从 <code>budget.json</code> 读取已提交的预算，统计导入 proto 的文件数。超过预算时 CI 失败。<code>budget.mjs --write</code> 只用于下调预算。</p>
 </blockquote><h2 id="sk-thermo-nuclear-code-quality-review"><span class="ttl">thermo-nuclear-code-quality-review</span></h2>
 <div class="note"><b>description（路由依据，译文）。</b>对抽象质量、巨型文件和面条式条件增长执行极其严格的可维护性审查。用于热核级代码质量审查（thermo-nuclear code quality review）、thermonuclear review、深度代码质量审计，或格外苛刻的可维护性审查。</div>
+<aside class="readnote"><div class="ntag">解读</div><p>这本是「热核级代码质量审查」：专审可维护性——抽象、巨型文件、面条式条件增长——而不是找 bug。</p>
+<p>拆解里面的黑话：</p>
+<ul>
+<li><strong>代码柔道（code judo）</strong>：借既有架构的力，一次重组让整段分支、辅助层完全消失的行为不变式重构。这本技能最核心的要求就是对它保持雄心，不止步于「这里可以更干净」。</li>
+<li><strong>1k 行规则</strong>：PR 把文件推过一千行是推定阻塞项，除非有很强的结构性理由。</li>
+<li><strong>与 thermo-nuclear-review 的分工</strong>：那本管正确性和安全（bug、破坏、泄漏），这本管结构和健康；两边同时要就跑 thermos 把它们并行打包。</li>
+</ul>
+<p>什么时候用它：合并前想知道一个分支有没有把代码库弄乱、有没有错失大幅简化的机会。什么时候别用：找运行时缺陷或安全漏洞——那是另一本的辖区。</p></aside>
 <h1>热核级代码质量审查</h1>
 <p>当审查需要格外严格、聚焦实现质量、可维护性、抽象质量和代码库健康度时，使用本技能。</p>
 <p>最重要的是，本技能应推动审查者对代码结构保持<strong>雄心</strong>。不要只找出局部清理机会。主动寻找「代码柔道（code judo）」手法：在保持行为不变的前提下，让实现显著更简单、更小、更直接、更优雅的重构。</p>
@@ -2803,6 +3244,15 @@ session hook: on
 </ul>
 <p>如果这些条件不满足，留下明确、可执行的反馈，推动更干净的分解。</p><h2 id="sk-thermo-nuclear-review"><span class="ttl">thermo-nuclear-review</span></h2>
 <div class="note"><b>description（路由依据，译文）。</b>对一个分支的改动做全面的安全与正确性审计。用于 thermo nuclear、thermonuclear 或深度审查请求，或聚焦 bug、破坏性改动、安全问题、devex 回归和 feature-gate 泄漏的分支/PR diff 审计。</div>
+<aside class="readnote"><div class="ntag">解读</div><p>这本是「热核级分支审计」：只看当前分支的 diff，极其彻底地找 bug、破坏现有功能的改动、安全漏洞、开发者体验回归和 feature gate 泄漏。</p>
+<p>拆解里面的黑话：</p>
+<ul>
+<li><strong>devex 破坏</strong>：改 secrets 读取方式、环境变量、端口、新增必需脚本——这类让同事本地跑不起来的改动，最容易漏所以单独立规。</li>
+<li><strong>feature 泄漏</strong>：本应被 flag 关住的功能露了出去，往往很微妙，要求逐行盯。</li>
+<li><strong>有意的破坏</strong>：分支本来就要删东西时不算发现，但怀疑作者低估后果或改动可疑时仍要报。</li>
+<li><strong>反误报纪律</strong>：把没研究完就开口的猜测列为硬禁——优先级虚高的报告会让开发者不再信你。</li>
+</ul>
+<p>什么时候用它：合并前对一个分支做最后一轮安全与正确性大扫除。什么时候别用：审可维护性和抽象质量——那是 thermo-nuclear-code-quality-review；两边都要就跑 thermos。</p></aside>
 <h1>Thermo Nuclear Review</h1>
 <p>用本技能对当前检出的分支做全面的安全与正确性审计。</p>
 <h2>Prompt</h2>
@@ -2838,6 +3288,14 @@ session hook: on
 <li>要 EXTREMELY 彻底、严谨、细心、有雄心、专注。任何东西都不许漏过。</li>
 </ul><h2 id="sk-thermos"><span class="ttl">thermos</span></h2>
 <div class="note"><b>description（路由依据，译文）。</b>并行启动两个 thermo-nuclear 审查子代理，然后综合它们的发现。用于 thermos、double thermo review，或合并 bug/安全与代码质量的分支审计。</div>
+<aside class="readnote"><div class="ntag">解读</div><p>这本是「两瓶热核一起开」：并行跑两个 thermo 审查子代理——一个管 bug、安全、破坏性改动，一个管可维护性和结构——然后把两份发现综合成一份报告。</p>
+<p>拆解里面的黑话：</p>
+<ul>
+<li><strong>thermo-nuclear-review</strong>：正确性侧，找 bug、安全漏洞、devex 回归、feature 泄漏。</li>
+<li><strong>thermo-nuclear-code-quality-review</strong>：质量侧，找面条式增长、巨型文件、错失的简化。</li>
+<li><strong>综合规则</strong>：两个审查者都撞见的发现权重更高（重叠往往说明问题真实），分歧用自己的判断裁决，去重后只呈现最强信号。</li>
+</ul>
+<p>什么时候用它：合并前想一口气把安全和代码质量都审了，或者叫它 double thermo review。什么时候别用：只要一侧的结论时单独跑对应那本更便宜；想让人格化的多模型对抗评审 diff 则是 interrogate 的活。</p></aside>
 <h1>Thermos</h1>
 <p>在 Codex 上，先读<a href="javascript:void(0)" style="text-decoration:none;color:inherit">平台映射</a>（包括其中的每技能注记），再执行本技能。</p>
 <p>在 GitHub Copilot 上，先读<a href="javascript:void(0)" style="text-decoration:none;color:inherit">平台映射</a>（包括其中的每技能注记），再执行本技能。</p>
@@ -2864,6 +3322,15 @@ session hook: on
 <h2>Reasoning effort</h2>
 <p>覆盖表中的角色值可以在模型后面带上推理强度，如 <code>opus @xhigh</code>。Claude Code 上的档位：<code>low</code>、<code>medium</code>、<code>high</code>、<code>xhigh</code>、<code>max</code>。哪些档位可用取决于模型。不带 <code>@</code> 的值取该表的 <code>default effort</code> 行（一个档位或 <code>session</code>），表里没有该行时取 <code>session</code>。在 Claude Code 上，<code>session</code> 不设置强度。在其他运行时上，<code>session</code> 按平台映射处理。读取模型前先剥掉后缀：<code>inherit-parent</code> 或 <code>auto</code> 在每一层都不传 <code>model</code>，模型名则作为 <code>model</code> 传入。把档位作为派发的 effort 字段传入，<code>subagent_type</code> 保持原样。在 Claude Code 的 <code>Agent</code> 调用上是 <code>effort</code>，在 Codex 的 <code>spawn_agent</code> 上是 <code>reasoning_effort</code>。在 Muse 上是 Workflow 子任务的 <code>effort</code>；<code>subagent_spawn</code> 派发保持会话的强度。</p><h2 id="sk-typescript-best-practices"><span class="ttl">typescript-best-practices</span></h2>
 <div class="note"><b>description（路由依据，译文）。</b>TypeScript 最佳实践。读取或编辑任何 .ts 或 .tsx 文件时使用。</div>
+<aside class="readnote"><div class="ntag">解读</div><p>这本是 TypeScript 的类型纪律速查表，处理任何 <code>.ts</code> / <code>.tsx</code> 文件时自动生效，核心思想是「把非法状态建造成无法表示」。</p>
+<p>拆解里面的黑话：</p>
+<ul>
+<li><strong>判别式 union</strong>：用 <code>kind</code> 字面量字段建模变体，替代可选字段拼凑的对象。</li>
+<li><strong>branded types</strong>：给 ID 这类基本类型打品牌标记，编译期就防止两种 ID 混用，品牌必须来自验证型 type guard 而不是 <code>as</code>。</li>
+<li><strong>narrowing 层级</strong>：判别式 switch 优于 <code>in</code> 优于 <code>typeof</code> 优于 type guard，<code>as</code> 是最后手段——每个 <code>as</code> 都是一次排队的运行时崩溃。</li>
+<li><strong>穷尽检查</strong>：switch 的 default 臂写 <code>const _exhaustive: never = x</code>，新增变体时编译器直接报错。</li>
+</ul>
+<p>什么时候用它：读写 TS 代码、评审类型设计、纠结一个值该不该用 <code>any</code>。什么时候别用：它是规则表不是教程，想学原理去读 type-system-discipline 原则技能。</p></aside>
 <h1>TypeScript best practices</h1>
 <p>在 Muse 上，先读<a href="javascript:void(0)" style="text-decoration:none;color:inherit">平台映射</a>（包括其中的每技能注记），再执行本技能。</p>
 <p>先应用 <strong>type-system-discipline</strong> 原则技能。</p>
@@ -2943,6 +3410,14 @@ session hook: on
 </table></div>
 <p>示例见 <code>references/patterns.md</code>。</p><h2 id="sk-unslop"><span class="ttl">unslop</span></h2>
 <div class="note"><b>description（路由依据，译文）。</b>去除任何文字中的 AI 痕迹。</div>
+<aside class="readnote"><div class="ntag">解读</div><p>这本是「AI 腔清除器」：一份带稳定编号的模式目录，扫一遍文字把 AI 写作的痕迹逐条修掉，含义不变。</p>
+<p>拆解里面的黑话：</p>
+<ul>
+<li><strong>稳定 id</strong>：规则编号是契约，其他技能按编号引用（比如 technical-writing 会把新词提案挂到 abstract-metaphor 规则上），删规则会留空号。</li>
+<li><strong>模式类别</strong>：内容（空洞的 -ing 短语、模糊归因）、语言（delve、landscape 这类 AI 词汇、三段式）、风格（禁破折号、Title Case、装饰 emoji）、废话（填充短语、过度对冲）、行话（substrate、ratchet 这类抽象比喻名词）。</li>
+<li><strong>测试一条</strong>：这句话换个项目文档里也成立，就等于什么都没说，删。</li>
+</ul>
+<p>什么时候用它：任何要交给人看的文字——文档、PR 描述、回复、讲解稿。什么时候别用：它管 prose 不管代码，也不管文档结构和句子规范（那是 technical-writing 的四层标准）。</p></aside>
 <h1>Unslop</h1>
 <p>编辑文字，去掉 AI 模式。扫描下面的模式，然后重写。保持含义不变，并匹配预期的语气。</p>
 <h2>要检测和修复的模式</h2>
@@ -2997,6 +3472,9 @@ session hook: on
 <li><strong>过度压缩。</strong> 省略冠词、无动词残句、符号腔，以及迫使读者解码而不是阅读的缩写。"Parser rejects bad date → exit 2, no write" 改成 "The parser rejects a bad date, exits with code 2, and writes nothing."。写出带冠词和动词的完整句子，把箭头和缩写展开。</li>
 </ol><h2 id="sk-what-did-i-get-done"><span class="ttl">what-did-i-get-done</span></h2>
 <div class="note"><b>description（路由依据，译文）。</b>把用户指定时间段内由当前用户提交的 commit 总结成一份简明的进展更新</div>
+<aside class="readnote"><div class="ntag">解读</div><p>这本是「这阵子我干了啥」的生成器：按你给的时间段，把当前 git 用户名下的 commit 压成一份能直接贴进状态更新的简短总结。</p>
+<p>它有几条很硬的纪律：只统计本人邮箱的提交，排除 merge commit 和未提交改动；忽略格式化、import 排序、改名这类纯外观改动；只从功能上描述改了什么，不推断动机；最后必须写明实际用的日期范围，免得「上周」糊成一笔。</p>
+<p>什么时候用它：写周报、站会更新、跟老板汇报进展，想要高信号的两三句话加几条要点。什么时候别用：想看的是决策脉络、未结线程、回退史——那需要挖聊天和工单，是 recall 的辖区；这里只看已落地的 commit。</p></aside>
 <h1>What did I get done</h1>
 <h2>触发</h2>
 <p>需要对某个具体时间段（例如：昨天、最近 3 天、最近一周）完成的工作做一份简短、高信号的总结。</p>
@@ -3022,6 +3500,14 @@ session hook: on
 <li>可选的 2-5 条要点，只写重大改动</li>
 </ul><h2 id="sk-why"><span class="ttl">why</span></h2>
 <div class="note"><b>description（路由依据，译文）。</b>用于「X 为什么这样运作」「我们为什么选了 Y」、设计缘由、回退、复盘或需要数据支撑的阈值。发现可用的 MCP 并对每个证据类别（源码控制、工单系统、长文档、实时聊天、基础设施可观测性、错误追踪、产品分析仓库）并行查询，然后返回带引用的决策与权衡解读。运行时行为用 how。</div>
+<aside class="readnote"><div class="ntag">解读</div><p>这本是「考古追问」：问「当初为什么这么写」，它先在 git 里打好锚点（blame、PR 号、工单 ID），再对七个证据类别并行派调查者——源码历史、工单、长文档、团队聊天、基础设施监控、错误追踪、产品分析——最后综合成一份带引用和置信度的解读。</p>
+<p>拆解里面的黑话：</p>
+<ul>
+<li><strong>代码锚点</strong>：发给每个调查者的种子上下文（路径行号、符号、提交、PR 编号），保证所有人查的是同一处。</li>
+<li><strong>覆盖地图</strong>：每个类别的结果都要报——空结果是发现，没装对应 MCP 是缺口，两者都要写明，不许悄悄跳过。</li>
+<li><strong>信心措辞</strong>：发现和推断分开存放，呈现时不许改写限定语。</li>
+</ul>
+<p>什么时候用它：想改代码前先弄清动机、复盘一个奇怪的设计。什么时候别用：问的是代码现在怎么跑——那是 how；要把 how 和 why 讲给别人听懂，交给 teach。</p></aside>
 <h1>Why</h1>
 <p>在 Codex 上，遵循本技能之前先读<a href="javascript:void(0)" style="text-decoration:none;color:inherit">平台映射</a>，包括其按技能的说明。</p>
 <p>在 GitHub Copilot 上，遵循本技能之前先读<a href="javascript:void(0)" style="text-decoration:none;color:inherit">平台映射</a>，包括其按技能的说明。</p>
@@ -3104,6 +3590,9 @@ session hook: on
 <h2>Reasoning effort</h2>
 <p>覆盖表中的角色值可以在模型后面带推理等级，如 <code>opus @xhigh</code>。Claude Code 上的等级：<code>low</code>、<code>medium</code>、<code>high</code>、<code>xhigh</code>、<code>max</code>。哪些可用取决于模型。不带 <code>@</code> 的值取表的 <code>default effort</code> 行——一个等级或 <code>session</code>；表里没有该行时取 <code>session</code>。在 Claude Code 上，<code>session</code> 不设置等级。其他运行时，<code>session</code> 按平台映射处理。读模型之前先去掉后缀：<code>inherit-parent</code> 或 <code>auto</code> 在任何层级都不传 <code>model</code>，模型名则作为 <code>model</code> 传入。把等级作为派遣的 effort 字段传入，<code>subagent_type</code> 保持原样。即 Claude Code 的 <code>Agent</code> 调用上是 <code>effort</code>，Codex 的 <code>spawn_agent</code> 上是 <code>reasoning_effort</code>。在 Muse 上，它是 Workflow 子任务的 <code>effort</code>；<code>subagent_spawn</code> 派遣保持会话的等级。</p><h2 id="principle-attack-the-premise"><span class="ttl">principle-attack-the-premise</span></h2>
 <div class="note"><b>description（路由依据，译文）。</b>适用于两个或更多共享同一前提的修复在同一个闸门上失败时。先写下这个前提并直接检验它，再写下一个依赖它的修复。</div>
+<aside class="readnote"><div class="ntag">解读</div><p>这条原则说：同一个前提上的修复连着失败两次，该怀疑的是前提，不是第三个修复方案。</p>
+<p>它拦的是「在错误的地基上反复打补丁」：比如登录超时，你先改了超时时间，又加了重试，都在同一个闸门上失败——因为真正的假设「服务是健康的」本身就是错的，第三个补丁只会继续白费。</p>
+<p>适用信号：两个以上修复共享同一个假设却都失败；你准备做第三次尝试之前，先把那句所有修复都依赖的前提写下来，设计一个如果前提为假结果就会不同的观察去检验它。</p></aside>
 <h1>Attack the Premise</h1>
 <p>当两个或更多共享同一前提的修复在同一个闸门上失败时，怀疑的是前提，而不是那些修复。</p>
 <p><strong>为什么：</strong> 每个失败的修复都是对它所依赖信念的反证。在同一个前提上做第三次修复，是把精力花在证据已经说明原因不在的地方。</p>
@@ -3115,6 +3604,9 @@ session hook: on
 <p><strong>停止条件：</strong> 在前提被写下并检验之前，不要开始下一个修复。</p>
 <p>本原则不同于 <a href="#principle-redesign-from-first-principles">Redesign from First Principles</a>，后者围绕新需求重建一个设计。本原则质疑的是当前设计所依赖的某个事实。</p><h2 id="principle-boundary-discipline"><span class="ttl">principle-boundary-discipline</span></h2>
 <div class="note"><b>description（路由依据，译文）。</b>适用于给系统接线加校验、错误处理或框架适配层时。把校验集中在系统边界（CLI、配置、网络、外部 API）；信任内部类型，把业务逻辑留在纯函数里。</div>
+<aside class="readnote"><div class="ntag">解读</div><p>这条原则说：校验和错误处理只放在系统入口（CLI、配置、网络、外部 API），内部代码无条件信任，业务逻辑写成不依赖框架的纯函数。</p>
+<p>它拦的是「校验撒得满地都是」：同一个配置在边界解析时查了一次 nil，调用链三层深处又查一次，每层都觉得自己在防御，实际是噪音加虚假安全感，而且逻辑焊死在框架上没法单独测试。</p>
+<p>适用信号：给接线层写代码时；发现自己在调用链深处做重复的 nil 检查；一段业务逻辑和框架类型缠在一起。自问两句——这份数据正在跨边界吗？能不能抽成外壳直接调的纯函数？</p></aside>
 <h1>Boundary Discipline</h1>
 <p>把校验、类型收窄和错误处理放在系统边界。无条件信任内部代码。业务逻辑放在纯函数里。外壳要薄、要机械。</p>
 <p><strong>为什么：</strong> 散落各处的校验噪音大、重复，还给出虚假的安全感。把逻辑从框架接线里拿出来，才能脱离框架测试它。</p>
@@ -3137,6 +3629,9 @@ session hook: on
 - 「这份数据现在正在跨越系统边界吗？」如果不是，校验就是冗余的。
 - 「它能不能成为外壳直接调用的一个纯函数？」如果能，就抽出来。</p><h2 id="principle-build-the-lever"><span class="ttl">principle-build-the-lever</span></h2>
 <div class="note"><b>description（路由依据，译文）。</b>适用于任何非琐碎的工作，不只是批量工作：编辑、迁移、分析、检查。构建能完成它或证明它的工具（codemod、脚本、生成器，或你的子代理都遵循的技能），而不是手工去做。工具就是审查者可以重跑的产物。</div>
+<aside class="readnote"><div class="ntag">解读</div><p>这条原则说：只要工作不是一眼能看清的琐事，就先造一个能完成或证明它的工具（codemod、脚本、生成器、子代理技能），而不是手工干——工具是审查者可以重跑的产物。</p>
+<p>它拦的是「手工修改没法复核」：你手工改了 40 个文件，审查者想验证只能全部重做；一个确定性脚本把「信我」变成「跑这个」。哪怕是一次性的活也适用，门槛是琐事与否，不是是否重复。</p>
+<p>适用信号：任务涉及批量编辑、迁移、比较、验证；你发现自己要对别人说「相信我改对了」。注意检验标准：diff 里没有脚本或技能文件，就等于没用上这条原则。</p></aside>
 <h1>Build the Lever</h1>
 <p>当工作不是琐事时，构建能完成它的工具，而不是手工去做。</p>
 <p>codemod、生成器或脚本每次都以同样的方式完成工作，并且重跑免费。工具是审查者可以阅读并重跑以检查工作的一项产物。手工做的修改只能靠重做来重新验证。一个确定性脚本把「信我」变成「跑这个」。</p>
@@ -3153,13 +3648,22 @@ session hook: on
 <p>门槛是琐事与否，不是是否重复。只要杠杆正是让工作可被检查的东西，一次性的工作也值得配杠杆。按 <a href="#principle-laziness-protocol">Laziness Protocol</a>，构建能完成或证明这份工作的最小脚本，绝不构建框架。</p>
 <p>本原则不同于 <a href="#principle-encode-lessons-in-structure">Encode Lessons in Structure</a>，后者把反复出现的指令变成持久的护栏。本原则关注的是眼前工作的吞吐量和可审查性。要把验证本身脚本化，见 <a href="#principle-prove-it-works">Prove It Works</a>。</p><h2 id="principle-encode-lessons-in-structure"><span class="ttl">principle-encode-lessons-in-structure</span></h2>
 <div class="note"><b>description（路由依据，译文）。</b>适用于当你发现自己第二次写下同一条指令，或注意到某个反复出现的纠正时。把规则编码成 lint、元数据标志、运行时检查或脚本，而不是更多文字。</div>
+<aside class="readnote"><div class="ntag">解读</div><p>这条原则说：同一条指令第二次写出来、或同一个纠正反复出现时，把它做成 lint、元数据标志、运行时检查或脚本，而不是再加一段文字。</p>
+<p>它拦的是「用文字执行规则」：你在文档里写了三遍「不要提交 dist 目录」，第四遍还是有人（或某个 AI）提交了。规则写成结构，违规在机器层面就不可能发生；写不完的文字只是症状。</p>
+<p>适用信号：你发现自己正在第二次写下同一条指令；某个纠正已经在多个任务里反复出现。例外是确实需要判断力、没法编码的教训——那就把指令写得更醒目，并补一个失败模式的示例。</p></aside>
 <h1>Encode Lessons in Structure</h1>
 <p>如果这条教训需要判断力、无法被编码，就把指令写得更醒目，并补一个该失败模式的示例。</p>
 <p><strong>推论：</strong> 如果修复是结构性的，就只使用结构性修复。指令只是症状。</p><h2 id="principle-exhaust-the-design-space"><span class="ttl">principle-exhaust-the-design-space</span></h2>
 <div class="note"><b>description（路由依据，译文）。</b>适用于面对代码库里没有先例的全新 UI 交互或架构决策时。构建 2-3 个互相竞争的原型，并排比较后再做决定。</div>
+<aside class="readnote"><div class="ntag">解读</div><p>这条原则说：面对代码库里没有先例的全新交互或架构决策，不要拍脑袋选一个方案，先做 2-3 个互相竞争的原型并排比较再定。</p>
+<p>它拦的是「第一个想法就是终稿」：一个没人做过的拖拽交互，直接实现进生产代码，手感不对才发现方向错了，回头成本巨大。手感型决策在一次性 HTML 里试错比在生产代码里便宜得多。</p>
+<p>适用信号：决策没有先例可抄、体验取决于手感而非逻辑（全新 UI 交互、关键架构选型）。一旦发现自己在「就按第一个方案做」和「再想想」之间犹豫，就是该建原型的时候。</p></aside>
 <h1>Exhaust the Design Space</h1>
 <p>它也适用于那些用户体验取决于手感而非逻辑的产品设计决策。</p><h2 id="principle-experience-first"><span class="ttl">principle-experience-first</span></h2>
 <div class="note"><b>description（路由依据，译文）。</b>适用于产品、UX 或功能范围的取舍出现时。选择用户愉悦而不是实现便利；少发打磨好的功能，而不是多发粗糙的。</div>
+<aside class="readnote"><div class="ntag">解读</div><p>这条原则说：实现便利和用户愉悦冲突时，选愉悦；少发货、发好的——三个打磨过的功能胜过十个粗糙的。</p>
+<p>它拦的是「为省事牺牲体验」：赶工期直接用框架默认样式、塞十个半成品功能凑数、错误状态不设计。用户是任何消费这份工作的人——库的调用方、下一位维护这段代码的工程师也算，权衡时同样从他们的视角出发。</p>
+<p>适用信号：产品、UX 或功能范围出现取舍时；你想说「先这样上线后面前面再改」时。注意它和 foundational-thinking 的分工：那条管工作的顺序，这条管工作的目标。</p></aside>
 <h1>Experience First</h1>
 <p>当实现便利与用户愉悦冲突时，选愉悦。</p>
 <ul>
@@ -3172,6 +3676,9 @@ session hook: on
 <p>用户是任何消费这份工作的人。对 UI 来说是终端用户；对库或内部 API 来说是 import 它的同事；接下来维护这段代码的工程师也是用户。同样权衡他们的体验，并从他们的视角解释影响。</p>
 <p>基础要服务于体验。Foundational thinking 管的是工作的<strong>顺序</strong>。本原则管的是<strong>目标</strong>。</p><h2 id="principle-explain-the-number"><span class="ttl">principle-explain-the-number</span></h2>
 <div class="note"><b>description（路由依据，译文）。</b>适用于测量之前，以及在信任、报告或依据一个测量出的数字行动之前：提速、回退、吞吐量、延迟或评测结果。找出限制它的东西，并排除它测量的其实不是你以为的那份工作的可能。</div>
+<aside class="readnote"><div class="ntag">解读</div><p>这条原则说：任何测量出的数字（提速、延迟、评测分），在信任和报告之前要能解释它——说出限制它的资源，排除它测的不是你以为的那份工作的可能。</p>
+<p>它拦的是「数字崇拜」：benchmark 显示快了 3 倍，你据此上了线，实际是压测工具本身成了瓶颈、或缓存把工作跳过了。说不出「为什么不是翻倍」的人，根本不知道自己测的是什么。</p>
+<p>适用信号：跑测试之前（先写下哪个结果会改变决策和噪声底线），以及拿到数字之后。常见嫌疑清单：错误、被缓存跳过的工作、从未运行到的代码、留在默认配置的一边、噪声。</p></aside>
 <h1>Explain the Number</h1>
 <ul>
 <li><strong>在跑之前先写下决策。</strong> 说出哪个结果会改变决策，以及噪声底线。当运行间波动大于效应时停止。</li>
@@ -3183,6 +3690,9 @@ session hook: on
 <p>在这些情况下你就是跳过了这一步：运行开始时没有写下会改变决策的结果；数字背后的证据没有运行次数、没有波动幅度、没有指名的限制因素；或者省下的时间比被改动环节原本耗时还多。</p>
 <p>本原则不同于 <a href="#principle-prove-it-works">Prove It Works</a>，后者检查一个输出是不是真的。</p><h2 id="principle-fix-root-causes"><span class="ttl">principle-fix-root-causes</span></h2>
 <div class="note"><b>description（路由依据，译文）。</b>适用于调试。把每个症状追回系统第一次出错的地方，在那里修复。只有当守卫处理的状态是合法状态时，它才算修复。</div>
+<aside class="readnote"><div class="ntag">解读</div><p>这条原则说：调试时把症状追回系统第一次出错的地方，在那里修；一个守卫只有在它处理的状态是合法状态时才算修复。</p>
+<p>它拦的是「治症状」：日志报空指针，你在使用处加了个 nil 检查，bug 被藏起来继续换地方浮现，代码里从此多一个没人点名的 workaround。需要一段长注释来自圆其说的补丁，错的是代码不是注释。</p>
+<p>适用信号：任何调试场景。逐层问「为什么」直到答案是代码里的一个错误决策；同时问出错的状态是不是合法状态——不该存在的状态，要去修产生它的东西。只在重启后失败的，先怀疑持久化状态。</p></aside>
 <h1>Fix Root Causes</h1>
 <p>调试时，修故障本身，而不是它浮现的地方。症状是错误状态变得可见的位置。根因是系统第一次做了不该做的事、或没能处理一个该处理的状态的位置。</p>
 <p><strong>为什么：</strong> 治症状会把证据藏起来，让故障自由地换地方浮现。每治一次症状，系统就更难推理一分，因为代码里从此带着一个没人点名的 bug 的 workaround。</p>
@@ -3196,6 +3706,9 @@ session hook: on
 - 如果一个 workaround 需要一段长注释来自圆其说，错的是代码。修代码，不是修注释。
 - 如果那个决定性事实是深挖才找到的，提出一个便宜、常开的信号，让它第一眼就能看出来。</p><h2 id="principle-foundational-thinking"><span class="ttl">principle-foundational-thinking</span></h2>
 <div class="note"><b>description（路由依据，译文）。</b>适用于写逻辑之前：选择核心类型和数据结构、给脚手架与功能排序、追问并发参与者共享了什么。先把数据结构弄对，下游代码就会变得显而易见。</div>
+<aside class="readnote"><div class="ntag">解读</div><p>这条原则说：写逻辑之前先把地基做对——数据结构优先，脚手架优先（CI、测试基建这些后面每个阶段都受益的先搭），共享状态的并发问题先问清楚。</p>
+<p>它拦的是「地基错了返工一切」：核心类型没定就开写，每个访问路径都在将就；并发写共享状态没隔离，上线后竞态间歇性爆发。数据形状对了，下游代码会变得显而易见。</p>
+<p>适用信号：动手写逻辑之前。判断标准是选择余地——「之后的每个阶段都因它受益吗」；并发推论是「另一个参与者并发改它会发生什么」，答案不是「什么都不会」就先隔离。</p></aside>
 <h1>Foundational Thinking</h1>
 <p><strong>结构性决策</strong>保护选择余地（option value）。<strong>代码级决策</strong>保护简洁。</p>
 <p><strong>数据结构优先。</strong> 在写逻辑之前把数据形状弄对。尽早定义核心类型，走查每一个访问路径，选择与主导路径匹配的结构。</p>
@@ -3205,17 +3718,26 @@ session hook: on
 <p>每个增量要么落地一个连贯的抽象，要么加深一个已有的抽象。不要把新能力以特例协调的形式摊给各个调用方。</p>
 <p>减法先于脚手架。先删死代码，再打地基。</p><h2 id="principle-guard-the-context-window"><span class="ttl">principle-guard-the-context-window</span></h2>
 <div class="note"><b>description（路由依据，译文）。</b>适用于上下文正在被填满时：大输出、长文件、重复读取、扇出规划。把大批量路由给子代理；在主线程里保留摘要，而不是原始载荷。</div>
+<aside class="readnote"><div class="ntag">解读</div><p>这条原则说：上下文快满时主动管理——大输出和长文件别往主线程里塞，把大批量路由给子代理，主线程里留摘要而不是原始载荷。</p>
+<p>它拦的是「上下文溢出拖垮推理」：一个 agent 一次性读完几千行日志，上下文被压到触发压缩，关键细节变成伪影丢掉，后面的推理质量全线下降，任务停在半路。</p>
+<p>适用信号：要读大文件、大输出时；重复读取同一批内容时；准备扇出多个子代理做规划时。原文很短，核心就一句：为每个阶段定尺寸、给范围封顶，机制的成本也要计入预算。</p></aside>
 <h1>Guard the Context Window</h1>
 <p><strong>为什么：</strong> 上下文溢出会降低推理质量、产生压缩伪影，并让进展停摆。</p>
 <p><strong>模式：</strong>
 - <strong>为阶段定尺寸并给范围封顶。</strong> 限制每个阶段的文件数，设置回合预算，把机制的成本计入。</p><h2 id="principle-laziness-protocol"><span class="ttl">principle-laziness-protocol</span></h2>
 <div class="note"><b>description（路由依据，译文）。</b>适用于重构、评估 diff 大小，或忍不住想加抽象、分层或信号串接时。偏向删除，偏向能解决问题的最小改动。</div>
+<aside class="readnote"><div class="ntag">解读</div><p>这条原则说：做能解决问题的最小改动——同一个决策只写一个地方（收进唯一事实来源，传结果标志），diff 越短越好，少写的行胜过「优雅」的样板。</p>
+<p>它拦的是「过度工程」：一个能用三行修掉的 bug，被加上新抽象层、配置项、信号串接；同一个开关逻辑在四处重复，改一处漏三处。事后清理型方案也属于违反——它把原因留在原地，还给每次运行加工作量。</p>
+<p>适用信号：重构时；评估 diff 大小时；你发现自己想加抽象、分层或事件机制来「顺手做得更好」的时候。先问：解决这个问题最少要动什么？</p></aside>
 <h1>Laziness Protocol</h1>
 <ul>
 <li><strong>合并决策。</strong> 不要在几个地方重复同一个选择。把它收进唯一的事实来源，把结果作为一个简单标志传递。</li>
 <li><strong>最小化 diff。</strong> 做能解决问题的最小改动。更少的行胜过「优雅」的样板。</li>
 </ul><h2 id="principle-make-operations-idempotent"><span class="ttl">principle-make-operations-idempotent</span></h2>
 <div class="note"><b>description（路由依据，译文）。</b>适用于设计命令、生命周期步骤或处理循环时，它们运行在崩溃、重启和重试常态存在的环境里。无论之前部分运行到哪，都收敛到同一个终态。</div>
+<aside class="readnote"><div class="ntag">解读</div><p>这条原则说：设计命令、生命周期步骤和处理循环时，让它们跑多少次、上次停在哪都收敛到同一个正确终态——每步从当前实际状态推导，只应用与目标的差异。</p>
+<p>它拦的是「重试变灾难」：部署脚本上次中途崩了，留下一个半成品状态，下次重跑要么报错要么把事情做两遍（重复扣款、重复写入），每次重启都变成一次手工调试。</p>
+<p>适用信号：环境里崩溃、重启、重试是常态（命令行工具、任务队列、CI）。三个检验：连跑两次会怎样？上次在每个可能的点崩溃过会怎样？重跑收敛到同一终态吗？任何答案带「取决于留下的状态」，就补一个对账步骤；写一半的记录用「临时文件再 rename」处理。</p></aside>
 <h1>Make Operations Idempotent</h1>
 <p>把操作设计成无论运行多少次、上一次运行停在哪里，都收敛到正确的状态。每个修改状态的操作都应能回答：「如果这个跑两次会怎样？如果上一次运行中途崩溃了会怎样？」</p>
 <p><strong>为什么：</strong> 命令、生命周期操作和处理循环运行在崩溃、重启和重试是常态的地方。如果残留的部分状态会改变下一次运行的结果，那每一次重启都变成一次调试。</p>
@@ -3227,6 +3749,9 @@ session hook: on
 3. 重新执行会收敛到同一个终态吗？</p>
 <p>只要有一个答案是「取决于留下了什么状态」，这个操作就需要一个对账（reconciliation）步骤。</p><h2 id="principle-migrate-callers-then-delete-legacy-apis"><span class="ttl">principle-migrate-callers-then-delete-legacy-apis</span></h2>
 <div class="note"><b>description（路由依据，译文）。</b>适用于在旧调用方仍然存在时引入新的内部 API。在同一波里迁移调用方并删除旧 API，而不是保留兼容层。</div>
+<aside class="readnote"><div class="ntag">解读</div><p>这条原则说：引入新的内部 API 时，在同一波改动里把所有调用方迁过去并删掉旧 API，不留兼容层——前提是没有外部用户依赖向后兼容。</p>
+<p>它拦的是「新旧 API 并存成永久债」：为了「平滑过渡」留着旧接口，结果半年后两套 API 都有人用，谁也不敢删，每个新调用方都要做一次选择题。</p>
+<p>适用信号：内部重构引入新 API、且项目能吸收协调一致的破坏性变更时。顺手把测试更新为断言新契约，删掉那些只保护重构前实现细节的测试——它们不是安全网，是绊脚石。</p></aside>
 <h1>Migrate Callers Then Delete Legacy APIs</h1>
 <ul>
 <li>把测试更新为断言新契约，删除那些只保护重构前实现细节的测试</li>
@@ -3236,6 +3761,9 @@ session hook: on
 - 项目能吸收协调一致的破坏性变更
 - 新 API 是某次简化或重构行动的一部分</p><h2 id="principle-minimize-reader-load"><span class="ttl">principle-minimize-reader-load</span></h2>
 <div class="note"><b>description（路由依据，译文）。</b>适用于审查或塑造难以追踪的代码时。数一数从问题到答案之间隔了几层，读者脑子里还要装多少隐藏状态；折叠只有一个调用方的包装层，缩小可变状态的作用域。</div>
+<aside class="readnote"><div class="ntag">解读</div><p>这条原则说：可维护性就是读者理解代码要花的心力，盯住两个轴——从问题到答案隔了几层间接、读者脑子里要装多少隐藏状态；只被调用一次的包装层内联掉，可变状态的作用域尽量缩小。</p>
+<p>它拦的是「为了架构整洁加层」：六层适配器里每层都是纯透传，查「这个字段从哪来」要跳五个文件；或者一个扁平文件塞 50 个全局变量。LOC 和圈复杂度都是代理指标，读者负担才是真的。</p>
+<p>适用信号：审查或书写难以追踪的代码时。检验标准：新读者能不能在 30 秒内答出「X 从哪来」和「什么能改变 X」；加层或加状态前先问它在别处省下的负担是否至少和增加的一样多。</p></aside>
 <h1>Minimize Reader Load</h1>
 <p>可维护性是读者理解代码必须做的工作。追踪两个轴：<strong>要追踪的层数</strong>（问题和答案之间的间接层）和<strong>要持有的状态</strong>（读者必须在脑子里保持的隐藏或可变的上下文）。LOC、圈复杂度和「整洁架构」都是代理指标。读者负担才是真正要紧的东西。这两个轴相互独立。一个有 50 个全局变量的扁平文件，可以和 6 层适配器栈一样难以推理。两个都要盯住。这是 <a href="#principle-guard-the-context-window">Guard the Context Window</a> 的人类版本。对读者来说工作记忆同样是有限的。</p>
 <ul>
@@ -3248,6 +3776,9 @@ session hook: on
 </ul>
 <p><strong>检验标准：</strong> 一个新读者能不能在 30 秒内回答「X 从哪来？」和「什么能改变 X？」。如果不能，砍层或砍状态。</p><h2 id="principle-model-the-domain"><span class="ttl">principle-model-the-domain</span></h2>
 <div class="note"><b>description（路由依据，译文）。</b>适用于写有状态的逻辑，或代码大量分支、或跨文件重复同一形状假设时。</div>
+<aside class="readnote"><div class="ntag">解读</div><p>这条原则说：把领域规则编码进数据结构（状态机、判别联合、查找表、reducer），而不是散落在 if/else 和布尔标志里——好的结构让非法状态根本无法表示，分支自然消失。</p>
+<p>它拦的是「布尔标志地狱」：<code>isLoading</code>、<code>hasError</code>、<code>isSubmitted</code> 三个标志组合出八个状态，其中三个是非法的，全靠散落各处的检查兜着；新功能来了再往 if 链上接一支。写代码时就选定结构很便宜，之后再补就像一次永远排不上队的重构。</p>
+<p>适用信号：有状态的逻辑、大量分支、同一形状假设跨文件重复；第二个必须和第一个同步的布尔值出现了；模块按「加载/校验/转换/保存」这类阶段命名、在各步骤重复同样的领域规则。反面的提醒也成立：形状已经清晰就别强加抽象。</p></aside>
 <h1>Model the Domain</h1>
 <p>把真实领域编码进一个数据结构，而不是把它散落在条件语句里。一个与领域匹配的结构能让非法状态不可表示，并删掉分支。在写代码时选定它很便宜；之后再找回它就看起来像一次重构，于是被推迟。</p>
 <p>优先考虑：</p>
@@ -3264,6 +3795,9 @@ session hook: on
 <p>不要强加抽象。如果当前的形状已经清晰、局部化、而且不太可能增长，宁可平淡的代码。对一个增加了间接层却没有减少分支、重复规则、非法状态或生命周期风险的抽象，保持怀疑。</p>
 <p>跳过这一步的信号是：一个新功能让已有的 if/else 链又长了一支，或者出现第二个必须与第一个保持同步的布尔值。时间性分解是另一个信号：以阶段命名的模块在各个步骤里重复同样的领域规则。</p><h2 id="principle-never-block-on-the-human"><span class="ttl">principle-never-block-on-the-human</span></h2>
 <div class="note"><b>description（路由依据，译文）。</b>适用于在可逆的工作上忍不住想问「我该不该做 X？」时。</div>
+<aside class="readnote"><div class="ntag">解读</div><p>这条原则说：可逆的工作不要停下来问「我该不该做」——做出合理决定直接推进，把结果拿出来给人事后纠偏；只有不可逆动作（force-push、删生产数据、对外发消息）才需要确认。</p>
+<p>它拦的是「假性阻塞」：agent 写到一半停下来问「要不要把这个函数拆开」，一等几小时，而这件事改错了也只是再改一次的事。错误决定的代价通常远低于阻塞。</p>
+<p>适用信号：你（或 agent）在可逆工作上犹豫要不要征求同意时。记住分工：产品方向来自人类，执行不该阻塞；先推进再展示，发现问题记录下来下一轮修。</p></aside>
 <h1>Never Block on the Human</h1>
 <p>人类是异步监督的。代理必须保持不被阻塞。做出合理的决定，继续推进，让人类事后纠偏。代码改动是可逆、可审查的，所以一个错误决定通常比阻塞代价更低。</p>
 <ul>
@@ -3274,6 +3808,9 @@ session hook: on
 <li>产品方向来自人类。执行不应该阻塞。</li>
 </ul><h2 id="principle-outcome-oriented-execution"><span class="ttl">principle-outcome-oriented-execution</span></h2>
 <div class="note"><b>description（路由依据，译文）。</b>适用于有明确阶段边界的有计划重写和迁移。收敛到目标架构；不要用一次性的兼容代码维持平滑的中间状态。</div>
+<aside class="readnote"><div class="ntag">解读</div><p>这条原则说：有计划的重写和迁移要瞄准可验证的终态去收敛，中间阶段允许有计划地「破」，不要为每一步的平滑稳定造一堆一次性兼容代码。</p>
+<p>它拦的是「过渡态变永久态」：迁移分五期，每期都为兼容旧结构写临时胶水，第五期结束没人记得胶水是临时的，它们成了长期债务。有范围、可逆的中间破坏，比永远修不完的兼容层便宜。</p>
+<p>适用信号：多阶段重写、大规模迁移，且有明确的阶段边界。护栏要同时用上：宣布哪里允许暂时破坏，正在改动的区域保留高信号检查，计划完成时跑完整的静态和运行时验证。</p></aside>
 <h1>Outcome-Oriented Execution</h1>
 <p>以预期的、可验证的终态为优化目标，而不是维持平滑的中间状态。</p>
 <p><strong>为什么：</strong> 让每个中间步骤都完全稳定，往往会造出变成长期债务的临时兼容代码。收敛到目标架构，在明确的验证边界上证明正确性。</p>
@@ -3286,6 +3823,9 @@ session hook: on
 - 迁移期间在正在改动的区域保留高信号的检查
 - 计划完成时要求完整的静态和运行时验证</p><h2 id="principle-prove-it-works"><span class="ttl">principle-prove-it-works</span></h2>
 <div class="note"><b>description（路由依据，译文）。</b>适用于完成一个任务之后、宣布完成之前。对着真实产物验证（运行这个功能、读取真实值、检查 diff），而不是代理指标、自我报告或「能编译」。</div>
+<aside class="readnote"><div class="ntag">解读</div><p>这条原则说：宣布完成之前，对着真实产物直接验证——运行功能、读真实值、看退出码和 diff；文件时间戳、子代理的自我报告、「能编译」都算数不算证明。</p>
+<p>它拦的是「间接验证翻车」：子代理报告「测试全部通过」，实际它跑的是缓存结果；进程活没活靠派生状态推断，实际早就崩了。甚至要验证过程本身——一个正确结果可能建立在没读过原始记录的复原之上。</p>
+<p>适用信号：每个任务收尾时。报告「已合并/已发送/已启动」前先读真实状态；检查失败时先怀疑观察方法。最强的证明是审查者可重跑的确定性脚本，红色只有在失败内容正是你预测的分歧时才说明仪器是好的。</p></aside>
 <h1>Prove It Works</h1>
 <p>通过直接检查真实的东西来验证每个任务输出。不要从代理指标、自我报告或「能编译」推断。</p>
 <p><strong>为什么：</strong> 未经验证的工作正确性未知。间接验证（文件 mtime、输出是否新鲜、子代理的自我报告、缓存的截图）感觉比直接观察便宜。基于错误推断行动的代价，远高于检查源头。</p>
@@ -3300,6 +3840,9 @@ session hook: on
 <p>最强的证明是一个能重跑同样比较的确定性脚本，而不是一次性的肉眼检查。写出脚本、运行它、把输出保存为审查者可以重跑的产物，而不是让他们信你的话。</p>
 <p>把这个产物对人类保持可见。只有当工作足够大或足够复杂、需要事后可审计的轨迹时才提交它，比如大型移植或迁移（<strong>show-me-your-work</strong> 技能）。</p><h2 id="principle-redesign-from-first-principles"><span class="ttl">principle-redesign-from-first-principles</span></h2>
 <div class="note"><b>description（路由依据，译文）。</b>适用于把一个新需求整合进现有设计时。</div>
+<aside class="readnote"><div class="ntag">解读</div><p>这条原则说：往现有设计里整合新需求时，别把它拴在旧结构上——先问「如果带着这个需求从零开始写，我们会建什么」，按答案重新设计，再增量交付。</p>
+<p>它拦的是「需求被旧设计扭曲」：往三层的架构里硬塞一个本该影响核心类型的新需求，最后长出一个别扭的特例分支，所有调用方跟着将就。重新设计保住的是选择余地。</p>
+<p>适用信号：新需求和现有设计的假设冲突时。做法是先读所有受影响文件理解当前设计，想清楚整个重设计，然后把改动传播到每一处引用——类型、文档、示例、理由章节，一个不漏。</p></aside>
 <h1>Redesign From First Principles</h1>
 <p>整合一个改动时，不要把它拴在现有设计上。重新设计，就当这个需求从一开始就是基础假设。</p>
 <ul>
@@ -3310,6 +3853,9 @@ session hook: on
 </ul>
 <p>这是把改动整合进现有设计时保住选择余地（option value）的方法。</p><h2 id="principle-separate-before-serializing-shared-state"><span class="ttl">principle-separate-before-serializing-shared-state</span></h2>
 <div class="note"><b>description（路由依据，译文）。</b>适用于并发参与者可能写同一个文件、分支、键或状态对象时。先消除共享；只有当单一共享写者是一个真实不变量时，才做结构上的串行化。</div>
+<aside class="readnote"><div class="ntag">解读</div><p>这条原则说：并发参与者可能共享可变状态时，先问他们是否真的需要同一个对象——不需要就各自拥有自己的文件、键、分支；确实需要共享，才用锁文件、顺序阶段这类结构手段强制串行化。指令和约定不是并发控制。</p>
+<p>它拦的是「一把锁包治百病」：两个 worker 往同一个 <code>state.json</code> 里各写一个字段，加注释说「请勿并发调用」就算解决——竞态是间歇性的，难复现、调试昂贵。其实拆成两个状态文件就消除了共享。</p>
+<p>适用信号：设计多 worker、多阶段并行流程，或发现双方读写同一个文件、推送同一个分支时。把「我们需要一把锁」当作设计坏味道来检查，而不是默认答案。</p></aside>
 <h1>Separate Before Serializing Shared State</h1>
 <p>当并发参与者可能共享可变状态时，先问他们是否需要同一个可变对象。如果不需要，消除共享。当共享是真实的，就在结构上强制串行化：锁文件、顺序阶段、独占所有权。指令和约定不是并发控制。</p>
 <p><strong>为什么：</strong> 对共享状态的并发写入会产生间歇性、难复现、调试昂贵的竞态条件。</p>
@@ -3318,6 +3864,9 @@ session hook: on
 2. <strong>默认做法：消除共享的写目标。</strong> 问：这些参与者需要同一个规范对象，还是在发布各自独立的事实？给每个参与者自己拥有的文件、键、分支或状态目录，只在读取/汇报的边界合并。两个 worker 把各自的 <code>lastX</code> 字段写进同一个 <code>state.json</code> 仍然是共享修改。<code>indexer-state.json</code> 加 <code>metrics-state.json</code> 就不是。
 3. <strong>只有当单一共享写目标是一个真实不变量时，才在结构上串行化访问</strong>（锁文件、顺序阶段、单写者参与者，或原子的 compare-and-swap）。把「我们需要一把锁」当作要检查的设计坏味道，而不是默认答案。</p><h2 id="principle-sequence-verifiable-units"><span class="ttl">principle-sequence-verifiable-units</span></h2>
 <div class="note"><b>description（路由依据，译文）。</b>适用于多步骤工作（扫荡、迁移、成批的相似编辑），也适用于你如何堆叠提交和 PR。把工作拆成小的单元，每个单元都以一个可验证的状态收尾，逐个检查后再前进，并让交付顺序自己向审查者证明自己。</div>
+<aside class="readnote"><div class="ntag">解读</div><p>这条原则说：多步骤工作（扫荡、迁移、成批相似编辑）拆成小单元，每个单元以可验证的状态收尾，当前单元没变绿不前进；提交和 PR 也按审查者能重放的顺序堆叠。</p>
+<p>它拦的是「破坏被埋进批次」：一口气改了 30 个文件才发现错了，坏改动已经和好改动搅在一起，而且你一直是在坏地基上盖楼。在引发它的那个单元就被抓住的破坏，定位起来便宜得多。</p>
+<p>适用信号：批量编辑、迁移、堆叠提交时。标准交付形状是先放失败的测试、再放修复；每个提交单独能落地，整个序列读起来是一段论证。有杠杆（脚本）替你编辑时逐单元检查几乎免费，也照样跑。</p></aside>
 <h1>Sequence work into verifiable units</h1>
 <p>把工作排成一串小单元，每个单元都以一个你能检查的状态收尾，当前单元没变绿就不前进。</p>
 <p><strong>为什么：</strong> 在引发它的那个单元就被抓住的破坏，定位起来很便宜。在一批之后才被抓住的破坏已经被埋起来了，而你已经在一个坏掉的基础之上继续建造了。把这些单元按顺序排成审查者可以重放的交付，就把「信我」变成了「看它先红后绿」。</p>
@@ -3325,6 +3874,9 @@ session hook: on
 <p><strong>交付。</strong> 按能证明工作的顺序堆叠提交和 PR。标准形状是：先放失败的测试，再在上面放修复。其他的故事顺序也是一种先减法后重塑、先采基线后施处理、先脚手架后功能。每个提交自己就能落地，整个序列读起来是一段论证。</p>
 <p>这是 <strong>prove-it-works</strong> 原则技能的排序配套——后者保证每次检查是真的，<strong>build-the-lever</strong> 原则技能保证逐单元检查便宜。</p><h2 id="principle-subtract-before-you-add"><span class="ttl">principle-subtract-before-you-add</span></h2>
 <div class="note"><b>description（路由依据，译文）。</b>适用于给新增、重构或重写排序时。先删除死代码、冗余的校验器和 stub 引用，然后在更简单的基座上构建。</div>
+<aside class="readnote"><div class="ntag">解读</div><p>这条原则说：演进系统时先删后建——先移除死代码、冗余校验器和 stub 引用，把基座变简单了再往上构建；不为臆测的边界情况加规格之外的东西。</p>
+<p>它拦的是「复杂性只增不减」：重写一个模块时把旧路径全留着「以防万一」，新功能盖在没人敢删的旧代码上；留了一个空 stub 引用当占位，三个月后没人记得它是占位。目标是留下一个比你发现时更简单、暴露面不更大的设计。</p>
+<p>适用信号：给新增、重构或重写排序时；写解析器或守卫之前问一句「规格真的要求它吗」；一个引用没有任何新内容时，删掉它而不是留 stub。</p></aside>
 <h1>Subtract Before You Add</h1>
 <p>演进一个系统时，先移除复杂性，再构建。默认做减法。</p>
 <p>把简化当成持续的投资。留下一个比你发现时稍微更简单、能力更强的设计，而暴露面保持不变或更小。</p>
@@ -3337,6 +3889,9 @@ session hook: on
 <li>当一个引用没有任何新内容时，删掉它，而不是留下 stub</li>
 </ul><h2 id="principle-test-behavior-not-implementation"><span class="ttl">principle-test-behavior-not-implementation</span></h2>
 <div class="note"><b>description（路由依据，译文）。</b>适用于你写下、修改或保留一个测试时。断言代码的用户能观察到的东西，让测试在行为破坏时失败，在只有内部实现变化时保持通过。</div>
+<aside class="readnote"><div class="ntag">解读</div><p>这条原则说：测试断言的是代码的用户能观察到的东西（返回值、错误、可读回的状态、对外部系统的影响），不是内部实现——用两个假想改动审判每个测试：破坏行为时它必须失败，只改内部实现时它必须仍然通过。</p>
+<p>它拦的是「假测试」：断言比契约更松、期望值由被测代码自己算出来、复述一个从没被读过的 prompt 字符串——行为坏了测试照样绿；反过来，断言内部调用顺序的测试会在每次重构时逼你重写，却抓不到任何 bug。</p>
+<p>适用信号：写、改或保留任何测试时。写法上通过用户的接口用具体输入驱动代码，期望值从需求推导而非从运行代码推导。注意边界：mock 服务收到的载荷是行为，精确错误措辞是实现——契约说了算。</p></aside>
 <h1>Test Behavior, Not Implementation</h1>
 <p>一个测试是对「代码为它的用户做什么」的断言：调用方、终端用户，或另一个服务。行为是这些用户能通过他们使用的接口观察到的东西。包括返回值、错误、他们能读回的状态，以及对代码之外系统的影响，比如发出一个请求、写入一行、发送一条消息。实现是他们观察不到的东西：私有辅助函数、内部调用顺序、中间数据，以及哪个内部协作者干了这件事。</p>
 <p>用两个假想的改动来审判每个测试：</p>
@@ -3348,6 +3903,9 @@ session hook: on
 <p>决定一切的是契约，不是断言的形状。当「空购物车绝不扣款」是承诺时，断言支付客户端没被调用就是行为。配上一个确实扣款的用例，让测试证明它看得见调用。被 mock 的外部服务收到的载荷是行为，因为那个服务观察得到它。对内部辅助函数的调用是实现，因为没有用户看得见它。当没有记录匹配时，空列表就是精确答案；当测试只需要随便一个结果时，它就是空洞的检查。精确的错误消息钉死了没有调用方会读的措辞。调用方据以分支的错误类型才是契约。</p>
 <p>一个测试可以钉住一个不变量而不是一次调用，比如一个必须同时存在于两张表里的键，或一个编译期类型检查。不变量就是行为。常量钉住当值是对用户的承诺时也算行为，比如一个文档化的默认值——那就把这个承诺说出来。</p><h2 id="principle-type-system-discipline"><span class="ttl">principle-type-system-discipline</span></h2>
 <div class="note"><b>description（路由依据，译文）。</b>适用于设计类型、审查函数签名，或在任何静态类型语言里写代码时。让非法状态不可表示，给语义原语加品牌类型，在边界解析外部数据，穷尽变体，从权威 schema 派生。</div>
+<aside class="readnote"><div class="ntag">解读</div><p>这条原则说：让编译器帮你拒绝错误——非法状态用类型定义到无法表示，语义原语加品牌类型（<code>UserId</code> 和 <code>OrderId</code> 都是字符串但不该能互换），外部数据过解析函数才给类型，有权威 schema 就从它派生而不是手写平行类型。</p>
+<p>它拦的是「原语类型混用」：函数签名是 <code>(string, string)</code>，调用时把 orderId 传进了 userId 参数，编译器毫无反应；schema 改了一个字段，手工维护的平行类型悄悄落后，运行时才炸。</p>
+<p>适用信号：在任何静态类型语言里设计类型、审查函数签名时。判据很简单：两个参数共享同一个原语类型但含义不同，就加品牌；每个数据入口（RPC、JSON、CLI 参数、配置、环境变量）放一个解析函数。</p></aside>
 <h1>Type System Discipline</h1>
 <p>让编译器拒绝不可能的状态、不匹配的原语和未处理的变体。优先用「把错误和特殊情况定义到不存在」的方式，而不是增殖处理分支。TypeScript 语法见 <code>typescript-best-practices</code> 技能。</p>
 <ul>

@@ -31,6 +31,31 @@ PLAYBOOK_NUMBERS = {
     "pause-safely": 21, "multi-phase-plan": 22, "worktree-cleanup": 23,
 }
 
+NOTES = ROOT / "zh" / "notes"
+
+
+def load_note(slug):
+    """A reader's annotation for one document, written in zh/notes/<slug>.md."""
+    p = NOTES / f"{slug}.md"
+    if not p.exists():
+        return ""
+    body = markdown.markdown(p.read_text(), extensions=["tables", "fenced_code"])
+    return f'<aside class="readnote"><div class="ntag">解读</div>{body}</aside>'
+
+
+# Chinese names from the handbook's chapter 3, pinned to the same files
+PLAYBOOK_ZH = {
+    "investigation": "调查", "bug-fix": "修缺陷", "perf-issue": "性能问题",
+    "hillclimb": "爬坡", "runtime-forensics": "运行时取证",
+    "trace-forensics": "轨迹取证", "feature": "新功能", "refactoring": "重构",
+    "prototype": "原型", "visual-parity": "像素对齐", "authoring-a-skill": "写技能",
+    "eval": "盲测", "babysit": "看 PR", "shipping": "上线",
+    "opening-a-pr": "开 PR", "autonomous-run": "自主运行", "orchestrate": "编排",
+    "autopilot-full": "全自动队列", "autopilot-stack": "堆叠队列",
+    "session-pickup": "接手", "pause-safely": "安全暂停",
+    "multi-phase-plan": "多阶段计划", "worktree-cleanup": "清理",
+}
+
 GROUPS = [
     ("总管", lambda p: p.name == "SKILL.md" and p.parent.name == "poteto-mode"),
     ("playbook（流程清单）", lambda p: p.parent.name == "playbooks"),
@@ -121,7 +146,11 @@ def collect_docs():
                 num = PLAYBOOK_NUMBERS.get(stem)
                 if num is None:
                     sys.exit(f"playbook {stem} has no pinned number — add it to PLAYBOOK_NUMBERS")
-                docs.append((group, f"{num:02d}", f"pb-{num:02d}", stem, p))
+                zh = PLAYBOOK_ZH.get(stem)
+                if zh is None:
+                    sys.exit(f"playbook {stem} has no Chinese name — add it to PLAYBOOK_ZH")
+                title = f"{stem} · {zh}"
+                docs.append((group, f"{num:02d}", f"pb-{num:02d}", title, p))
             elif group == "总管":
                 docs.append((group, "", "poteto-mode", "poteto-mode", p))
             elif group == "技能":
@@ -148,6 +177,19 @@ def build():
 .rail-list .n:empty{visibility:hidden}
 .rail-list a .t{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .rail-results .r-t{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+/* 解读批注层：宽屏浮在右侧空白，窄屏退化为正文内的框 */
+.readnote{margin:22px 0;padding:16px 20px 6px;background:var(--raise);
+  border-left:3px solid var(--accent2);font-size:15px;line-height:1.8}
+.readnote .ntag{font-weight:600;font-size:13px;letter-spacing:.08em;
+  color:var(--accent2);margin-bottom:6px}
+.readnote p{margin:8px 0;font-size:15px}
+.readnote ul,.readnote ol{margin:8px 0;padding-left:1.1em;font-size:15px}
+.readnote li{margin:5px 0}
+@media (min-width:1280px){
+  .readnote{float:right;clear:right;width:300px;margin:4px 0 16px 28px}
+  main > h2{clear:both}
+  main > figure.devfig,main > .tw{clear:both}
+}
 </style>"""
     boot = re.search(r'<script>document\.documentElement[^<]*</script>', page).group(0)
     script = re.search(r"<script>\n\(function\(\)\{.*?</script>", page, re.S).group(0)
@@ -175,6 +217,7 @@ def build():
                           f'{n_span}<span class="t">{html_mod.escape(title)}</span></a></li>')
         fm, frag = md_to_fragment(path.read_text(), where=title)
         frag = rewrite_links(frag, str(path.parent.relative_to(SRC)), slugmap)
+        note = load_note(slug)
         desc = front_value(fm, "description")
         desc_block = ""
         if desc:
@@ -183,7 +226,14 @@ def build():
         num_span = f'<span class="num">{num}</span>' if num else ""
         sections.append(
             f'<h2 id="{slug}">{num_span}<span class="ttl">{html_mod.escape(title)}</span></h2>\n'
-            f"{desc_block}\n{frag}")
+            f"{desc_block}\n{note}\n{frag}")
+
+    jargon = ""
+    jargon_md = NOTES / "_jargon.md"
+    if jargon_md.exists():
+        body = markdown.markdown(jargon_md.read_text(), extensions=["tables", "fenced_code"])
+        jargon = (f'<h2 id="jargon"><span class="num">0.5</span>'
+                  f'<span class="ttl">黑话速查</span></h2>\n{body}')
 
     total = len(docs)
     missing = [d for d in docs if not d[4].read_text().strip()]
@@ -237,6 +287,7 @@ def build():
 
 <h2 id="readme"><span class="num">0</span><span class="ttl">翻译说明</span></h2>
 <p>来源：本机 <code>~/.claude/plugins/cache/pstack-claude/pstack/0.9.129/skills/</code>，逐文件全译，不摘要、不省略。术语约定：skill 译「技能」，principle 译「原则」，playbook、技能名、斜杠命令、文件路径、frontmatter、description、driver、verifier、watcher 保留英文，因为它们是你要原样敲进终端或核对文件时用到的字面量。每份文档开头的蓝框是它 frontmatter 里的 description 译文——那行字是路由的唯一依据，值得逐条读。翻译日期 2026-11-18，上游技能文本会随版本演进，数字以本机版本为准。</p>
+{jargon}
 {"".join(sections)}
 </main>
 </div>
