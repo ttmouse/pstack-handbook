@@ -1,0 +1,12 @@
+### 工作树与模拟器清理
+
+1. 快照并审计。记录 `df -h /`，然后在已安装插件下运行 `skills/poteto-mode/scripts/worktree-audit.mjs`（principle-build-the-lever）。它从 `git worktree list` 读路径，绝不手敲，因为手敲的 `myrepo-worktrees/x` 会漏掉住在 `.worktrees/myrepo/x` 的那一个（principle-encode-lessons-in-structure）。它按大小、年龄、合并状态、未提交工作、PR 状态和最近碰过它的聊天对每个工作树分类，然后建议一个桶。transcript 扫描很慢，所以放到后台跑。
+2. 桶是建议，不是许可。被固定和活跃的聊天才是真正的产物（principle-prove-it-works）。从用户或你自己的会话列表拿到那个集合，并交叉核对每个候选。这个工具有一次把用户固定的一个工作树标成了 `safe`，所以固定集合说了算。
+3. 删除之前先验证使用情况。对每一行 `verify-recent-chat`，或任何你存疑的东西，扇出子代理去读 transcript 并报告该聊天是否被固定或仍在进行、以及它碰了哪些工作树（principle-guard-the-context-window，transcript 是大宗数据）。一个被固定的聊天会通过后台子代理把 arena 和复现树生成到相邻的工作树里，即使它们的名字从未出现在会话列表上，它们也在被使用。按 Subagents 一节，为这份工作选子代理的推理等级。
+4. 对不可逆的损失先暂停。`wip:N` 是 N 个有未提交改动的已跟踪路径，`untracked:N` 是 N 个 git 从未见过的文件。两者兼有的工作树会同时打印，如 `wip:1,untracked:5`。`ignored:N` 是 N 个 git 忽略的、位于审计 `DISPOSABLE` 清单所列构建与缓存目录之外的路径，比如 `.env` 或 `.claude/settings.local.json`，它们可能别处不存在。用 `git -C <path> status --porcelain --ignored=matching` 列出它们。`reflog:N` 是 N 个没有任何分支、标签或远程可达、只靠该工作树的 HEAD 及其 reflog 保全的提交，比如在 detached HEAD 上做的提交。它们都在 `git -C <path> reflog` 打印的条目之中。用 `git branch <name> <sha>` 保住任何一个。干净的工作树可以从它的分支恢复。任何一种未提交的工作在目录没了之后就没了，所以用审计当初统计的那条命令列出它，`git -C <path> status --porcelain --untracked-files=all --ignore-submodules=none`，用 `git -C <path> diff HEAD --ignore-submodules=none --submodule=log` 展示 diff，并先拿到一个决定。每一行状态都是悬而未决的工作，diff 为空绝不代表没有工作。diff 不含任何未跟踪文件，普通的 `git diff` 可能不含子模块。一行 `wip` 提到子模块时，代表其中被改动或新增的文件，或在那里做的提交。在子模块里跑同样的 status 命令来列出那些文件。`hold-locked` 表示另一个工具或代理锁住了这棵树，原因在 LOCKED 列里。`git worktree remove` 会拒绝被锁的树，所以不要用 `rm -rf` 绕过它。按 Autonomy 规则，干净、已合并、未被使用的直接执行。`wip`、`untracked`、`ignored`、`reflog`、被锁和被使用的都暂停。
+5. 修剪已确认的集合。对每个路径执行 `git worktree remove --force <path>`。如果目录因被忽略的构建产物而幸存，就 `rm -rf` 它，然后 `git worktree prune`。分支引用会留下来，所以工作树分支上的提交得以保全。工作树的 HEAD reflog 会随之消失，所以只有那个 reflog 可达的提交就丢了。在子模块里做的提交和工作树存在一起，随之消失。用 `df -h /` 确认并重新列出。
+6. 模拟器和其他可回收项。模拟器通常是仅次于前者的最大收益。`xcrun simctl --set testing delete all`（XCTestDevices 克隆）、`xcrun simctl delete unavailable`、以及 `xcrun simctl runtime list` 后对旧运行时执行 `runtime delete <id>`。按需再做更多：Xcode 的 `DerivedData` 和 `iOS DeviceSupport`、编辑器的 application-support 缓存、`${CLAUDE_CONFIG_DIR:-$HOME/.claude}/shell-snapshots/` 和旧的 `${CLAUDE_CONFIG_DIR:-$HOME/.claude}/projects/` transcript（保留 **recall** 技能和 Session pickup 要读的近期那些）、包缓存（pnpm、uv、brew、yarn）。只清用户没有说要保留的缓存。
+
+这是唯一一个删除用户状态且没有代码评审兜底的 playbook（流程清单），所以上面的闸门就是评审。
+
+**汇报：** 前后各一次 `df -h /` 及回收的空间、被修剪的工作树、以及每一条被扣下的工作树的一行理由（被哪个聊天使用，或有未提交的工作）。
