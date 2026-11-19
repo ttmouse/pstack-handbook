@@ -246,7 +246,8 @@ def build():
 /* 解读批注层：宽屏浮在右侧空白，窄屏退化为正文内的框 */
 .readnote{margin:22px 0;padding:16px 20px 6px;background:var(--raise);
   border-left:3px solid var(--accent2);font-size:15px;line-height:1.8}
-.flowfig{margin:26px 0;clear:both}
+.flowfig{margin:26px 0}
+@media (min-width:1280px){.flowfig{overflow:hidden}}
 .flowfig svg{width:100%;height:auto;display:block}
 .flowfig figcaption{font-size:13.5px;margin-top:8px}
 .readnote .ntag{font-weight:600;font-size:13px;letter-spacing:.08em;
