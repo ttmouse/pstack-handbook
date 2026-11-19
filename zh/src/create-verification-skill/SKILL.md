@@ -1,51 +1,51 @@
 ---
 name: create-verification-skill
-description: "生成一个项目本地的验证技能，像用户一样驱动你的应用——任意语言、框架或平台。用于 /create-verification-skill、「给这个仓库做一个控制技能」「给这个仓库做一个 driver 技能」，或当项目没有任何脚本能证明 UI/CLI/服务行为时。"
+description: "生成一个项目本地的验证技能，用用户的方式驱动你的应用——任意语言、框架、平台。用于 /create-verification-skill、\"make a control skill for this repo\"、\"make a driver skill for this repo\"，或项目没有脚本能证明 UI/CLI/服务行为时。"
 ---
 
-# 创建一个验证技能
+# Create a verification skill
 
-在 Codex 上，先读[平台映射](../poteto-mode/references/codex-tools.md)（包括其中的逐技能说明），再执行本技能。
+在 Codex 上，遵循本技能前先读[平台映射](../poteto-mode/references/codex-tools.md)，包括其中按技能给出的说明。
 
-在 GitHub Copilot 上，先读[平台映射](../poteto-mode/references/copilot-tools.md)（包括其中的逐技能说明），再执行本技能。
+在 GitHub Copilot 上，遵循本技能前先读[平台映射](../poteto-mode/references/copilot-tools.md)，包括其中按技能给出的说明。
 
-在 Muse 上，先读[平台映射](../poteto-mode/references/muse-tools.md)（包括其中的逐技能说明），再执行本技能。
+在 Muse 上，遵循本技能前先读[平台映射](../poteto-mode/references/muse-tools.md)，包括其中按技能给出的说明。
 
-在 Antigravity 上，先读[平台映射](../poteto-mode/references/agy-tools.md)（包括其中的逐技能说明），再执行本技能。
+在 Antigravity 上，遵循本技能前先读[平台映射](../poteto-mode/references/agy-tools.md)，包括其中按技能给出的说明。
 
-每一个正经项目都需要一种脚本化的方式来驱动真实应用并证明行为：启动它，像用户那样使用某个功能，并采集证据。本技能把它生成为一个针对该仓库定制的项目本地技能（`.claude/skills/verify/`）。命名为 `verify`。在仓库根目录，这个同名的项目技能会取代 Claude Code 内置的 `/verify`（后者只有用户能调用），于是每一条提到 driver 技能的 playbook（流程清单）都能调用项目里的这个（[Claude Code 2.1.200 或更高](https://code.claude.com/docs/en/skills#run-and-verify-your-app)）。在 monorepo 里，写到被改动的那个 package 目录下。你写的内容是给下一个代理读的，不是给人读的：它会被一个从未见过这个应用的代理在任务中途冷读。
+每个认真的项目都需要一种脚本化方式来驱动真实应用并证明行为：启动它、像用户一样操作一个功能、采集证据。本技能把它生成为一个项目本地技能（`.claude/skills/verify/`），为该仓库量身定制。命名为 `verify`。在仓库根目录，这个名字的项目技能会顶替 Claude Code 内置的 `/verify`——后者只有用户能调用——于是所有提到驱动技能的 playbook 都能调用项目这份（[Claude Code 2.1.200 或更高](https://code.claude.com/docs/en/skills#run-and-verify-your-app)）。在 monorepo 里，写到被改动的那个 package 目录。生成器的输出是写给下一个代理的，不是写给人的：它会在任务中途被冷启动阅读，而那个代理从没见过这个应用。
 
-## 1. 访谈仓库，而不是用户
+## 1. Interview the repo, not the user
 
-这些问题的答案从代码库里找，只有观察不到的才问用户：
+以下从代码库里回答，只有观察不到的才问用户：
 
-- **表面（Surface）：** 用户实际接触的是什么？Web UI、CLI/TUI、桌面应用、API、移动应用、还是库？一个仓库可以有多个；选主要的一个，记下其余的。
-- **运行（Run）：** 应用本地怎么启动？优先用仓库自己文档里的开发命令（package scripts、Makefile、README quickstart）。记录端口、环境变量、种子数据、鉴权。
-- **驱动（Drive）：** 代理能怎么程序化地与它交互？先找现成的宿主——Playwright/Cypress 用例、expect 脚本、PTY 辅助脚本、可 curl 的端点、调试端口。然后才选通用方案：Web 和 Electron 用 browser/CDP，CLI/TUI 用 tmux/PTY 宿主，服务用纯 HTTP。
-- **观察（Observe）：** 能采集什么证据？截图、终端转录、响应体、日志、退出码、数据库状态。
-- **隔离（Isolate）：** 两个实例能否并排运行（端口、数据目录、profile）？如果不能，在生成的技能里写明：拒绝双驱动一个共享实例，好过弄坏用户的会话。
+- **Surface：** 用户实际接触的是什么？Web UI、CLI/TUI、桌面应用、API、移动应用、库？一个仓库可以有多个；挑主要的，其余记下来。
+- **Run：** 应用本地怎么启动？优先用仓库自己文档里的 dev 命令（package scripts、Makefile、README quickstart）。记下端口、环境变量、种子数据、认证。
+- **Drive：** 代理怎么以编程方式与它交互？先找现成的测试设施——Playwright/Cypress 用例、expect 脚本、PTY 辅助、可直接 curl 的端点、调试端口。找不到再选通用配方：web 和 Electron 用浏览器/CDP，CLI/TUI 用 tmux/PTY 测试设施，服务用纯 HTTP。
+- **Observe：** 能采集什么证据？截图、终端转写、响应体、日志、退出码、数据库状态。
+- **Isolate：** 两个实例能否并行跑（端口、数据目录、profile）？不能的话在生成的技能里写明：拒绝双重驱动共享实例，好过弄坏用户的会话。
 
-如果 checkout 原样无法构建或启动，先生成前先修好它（或精确地报告它）；对着一个坏掉的底座写技能，教出来的步骤也是错的。当一个无关的缺失资产挡住启动（一个 API 从不服务的静态目录、一个示例配置），生成的技能可以创建它，明确标为验证脚手架，并在清理时移除。
+如果 checkout 现状编译不过或起不来，先生成之前修好它（或精确报告）；对着一个坏掉的基线写技能，只会教出错误的步骤。当一个无关的缺失资源阻塞启动（API 从不服务的静态目录、一个示例配置），生成的技能可以创建它，明确标记为验证脚手架，并在清理时移除。
 
-## 2. 生成技能
+## 2. Generate the skill
 
-写 `.claude/skills/verify/SKILL.md`，带 YAML frontmatter（`name: verify` 和一个 `description`，说明这个应用、表面、什么时候用得上它——没有 frontmatter 技能永远不会注册，加了 `disable-model-invocation` 模型就不能调用它），以及下面这些小节，每一节都落在访谈实际发现的东西上（不留占位符）：
+写 `.claude/skills/verify/SKILL.md`，带 YAML frontmatter（`name: verify`，`description` 点明应用、surface 和使用时机——没有 frontmatter 技能永远不会注册，加了 `disable-model-invocation` 模型就无法调用它），加上以下章节，每节都落在访谈的实际发现上（不留占位符）：
 
-- **Launch（启动）：** 为验证启动应用的准确命令，以及怎么判断它就绪了（一行日志、一个提示符）。Launch 必须能从空数据目录到达可用状态，包括迁移和种子数据。就绪意味着可用，而不只是有进程应答。数据库健康检查可以通过，而它的初始化脚本还在跑。包含 teardown（拆除）。对短命的 CLI 或 TUI，没有需要保活的服务器：launch 意味着构建一次二进制（或装依赖），然后每次驱动在独立的 PTY 或 tmux 会话里启动。
-- **Doctor（体检）：** 一个只读检查，回答「这个实例值不值得驱动？」——进程在跑、版本/构建正确、端口归我们、鉴权有效。只要有什么看起来不对，代理就先跑这个。
-- **Drive（驱动）：** 宿主方案，用这个仓库的真实选择器/命令，不是示例。优先稳定的把手（ARIA 标签、data 属性、提示串、路由路径），而不是坐标和 tab 顺序。
-- **Evidence（证据）：** 一份证明要采集什么、放在哪。写明证明标准：走真实的用户路径，不是内部 setter 或仅供测试的端点；同时采集动作和产生的状态，不只是最终画面；核对副作用（写下的文件、插入的行、发出的消息），连同可见的东西一起；只在生产边界本来就隔离了外部系统的地方用 mock。当安全路径是 dry-run 或测试模式时，靠观察（文件、网络、git refs）验证它实际跳过了什么，而不是信它的名字：有些 dry-run 仍然碰网络或打开浏览器。
-- **Cleanup（清理）：** 怎么拆除这次运行创建的实例。绝不按进程名杀；杀你启动的东西。Cleanup 移除实例和临时状态，绝不移除证据：证明产物要在 teardown 之后活下来，放在技能指定的位置。
-- **Helpers（辅助脚本）：** 技能附带的任何脚本必须可执行，其调用方式在技能正文里展示。读者得反向工程才能用的辅助脚本不是辅助脚本。
+- **Launch：** 为验证启动应用的精确命令，以及怎么判断就绪（一行日志、一个提示符）。启动必须能从空数据目录到达可用状态，包括迁移和种子数据。就绪 = 可用，不只是"进程有响应"——数据库健康检查通过时，它的初始化脚本可能还在跑。包含清理（teardown）。短命的 CLI 或 TUI 没有需要保活的服务：启动意味着构建二进制（或装依赖）一次，然后每次驱动都在自己隔离的 PTY 或 tmux 会话里进行。
+- **Doctor：** 一条只读检查，回答"这个实例值得驱动吗？"——进程在跑、版本/构建正确、端口是我们的、认证有效。任何时候看起来不对劲，代理都先跑它。
+- **Drive：** 测试设施配方，用这个仓库真实的选择器/命令，不是示例。优先稳定的句柄（ARIA 标签、data 属性、提示符字符串、路由路径），而不是坐标和 tab 顺序。
+- **Evidence：** 证明要采集什么、放到哪里。写明证明标准：走真实的用户路径，不是内部 setter 或测试专用端点；同时采集动作和产生的状态，不只是最终画面；可见结果之外还要核实副作用（写入的文件、插入的行、发出的消息）；只在生产边界本就隔离了外部系统的地方才用 mock。安全路径是 dry-run 或测试模式时，靠观察（文件、网络、git refs）核实它到底跳过了什么，而不是信它的名字：有些 dry-run 仍然碰网络或开浏览器。
+- **Cleanup：** 怎么拆除这次运行创建的实例。绝不按进程名杀；只杀你启动的。清理移除实例和临时状态，绝不移除证据：证明产物要在拆除后存活，放在技能里指定的位置。
+- **Helpers：** 技能附带的任何脚本都要可执行，且调用方式写在技能正文里。读者需要逆向工程才能用的辅助脚本不是辅助脚本。
 
-## 3. 播种功能地图
+## 3. Seed the feature map
 
-创建 `.claude/skills/verify/features/README.md`，外加每个你能识别的用户可见功能一个文件（起步瞄准 top 3-5，从路由、命令、菜单或文档来）。形状照 [`references/feature-map-example/`](references/feature-map-example/) 来：一个 README 索引，每个功能一个文件。每个文件从用户的视角回答：这个功能是什么、怎么到达它、怎么用宿主驱动它、什么可观察的终态证明它工作。四个 H2 标题是 `Sub-features`、`How to get to it (user POV)`、`Driving it with <harness>` 和 `Gotchas`。如果种子数据缺某条旅程需要的前置条件，这条旅程报告失败，原因写进那个功能的 `Gotchas`。绝不为让旅程通过而削弱旅程。功能地图是仓库持续维护的验证正本；当地图上还列着别的入口时，只驱动一个顺手入口的证明是不完整的。
+创建 `.claude/skills/verify/features/README.md`，加上每个你能识别的用户可见功能一个文件（起步瞄准前 3-5 个，从路由、命令、菜单或文档来）。形状遵循 [`references/feature-map-example/`](references/feature-map-example/)：一个 README 索引，每个功能一个文件。每个文件从用户视角回答：这个功能是什么、怎么到达它、怎么用测试设施驱动它、什么可观察的终态证明它能用。四个 H2 是 `Sub-features`、`How to get to it (user POV)`、`Driving it with <harness>`、`Gotchas`。如果种子数据缺某个旅程需要的前置条件，该旅程就报告失败，原因写进那个功能的 `Gotchas`。绝不为了让它通过而削弱旅程。功能地图是仓库持续维护的验证来源；只驱动一个顺手入口的证明，当地图上还列着其他入口时，就是不完整的。
 
-## 4. 交付前先证明生成的技能
+## 4. Prove the generated skill before handing it over
 
-按它自己的指令端到端跑一遍：launch、doctor、驱动一个已映射的功能（一个就够；地图存在就是为了让后续运行覆盖其余的）、采集证据、清理。清理之后，确认证据还在指定位置——把证明吃掉的清理，这一步就失败。修好失败的东西，每次失败的迭代之后也要跑生成的 cleanup，这样坏掉的尝试不会留下进程和端口。从未执行过的生成技能是草稿，不是交付物。如果你是在真实目标的替身里证明的（用容器代替新虚拟机、用本地栈代替远端栈），把替身做了而真实目标不会做的每一个设置步骤列出来。这些步骤保持未验证状态，直到在真实目标上的一次运行覆盖它们。
+把它的说明端到端跑一遍：launch、doctor、驱动 ONE 个地图上的功能（一个就够；地图存在的意义就是让后续运行覆盖其余）、采集证据、清理。清理之后确认证据还在指定位置——吃掉证明的清理算失败。修掉失败的部分，每次失败的迭代之后也要跑生成的清理，让坏掉的尝试不留下进程和端口。从没执行过的生成技能是草稿，不是交付物。如果你是在替身（容器代替新装 VM、本地栈代替远程栈）上完成的证明，列出替身做了而真实目标不会做的每个搭建步骤。这些步骤在真实目标上跑到之前都算未验证。
 
-## 5. 提供维护闭环
+## 5. Offer the maintenance loop
 
-把 `/maintain-verification-skill` 指给用户，用于在应用变化时让地图保持诚实。只在对方问的时候才建议节奏。
+应用变化后要保持地图不失真，指引用户去 `/maintain-verification-skill`。只在对方问起时才建议节奏。

@@ -26,7 +26,9 @@ PLAYBOOK_NUMBERS = {
     "runtime-forensics": 5, "trace-forensics": 6, "feature": 7,
     "refactoring": 8, "prototype": 9, "visual-parity": 10,
     "authoring-a-skill": 11, "eval": 12, "babysit": 13, "shipping": 14,
-    "opening-a-pr": 15, "autonomous-run": 16, "orchestrate": 17,
+    "opening-a-pr": 15, "autonomous-run": 16,
+    # orchestrate was removed upstream in 0.9.140; its number 17 stays unused so
+    # anchors keep matching the published handbook
     "autopilot-full": 18, "autopilot-stack": 19, "session-pickup": 20,
     "pause-safely": 21, "multi-phase-plan": 22, "worktree-cleanup": 23,
 }
@@ -57,7 +59,7 @@ PLAYBOOK_ZH = {
 }
 
 GROUPS = [
-    ("总管", lambda p: p.name == "SKILL.md" and p.parent.name == "poteto-mode"),
+    ("总管", lambda p: p.parent.name == "poteto-mode" and p.name in ("SKILL.md", "worker.md")),
     ("playbook（流程清单）", lambda p: p.parent.name == "playbooks"),
     ("技能", lambda p: p.name == "SKILL.md" and not p.parent.name.startswith("principle-")
         and p.parent.name != "poteto-mode"),
@@ -152,14 +154,19 @@ def collect_docs():
                 title = f"{stem} · {zh}"
                 docs.append((group, f"{num:02d}", f"pb-{num:02d}", title, p))
             elif group == "总管":
-                docs.append((group, "", "poteto-mode", "poteto-mode", p))
+                if p.name == "worker.md":
+                    docs.append((group, "", "worker", "worker · 派工规则", p))
+                else:
+                    docs.append((group, "", "poteto-mode", "poteto-mode", p))
             elif group == "技能":
                 docs.append((group, "", "sk-" + p.parent.name, p.parent.name, p))
             else:
                 docs.append((group, "", p.parent.name, p.parent.name, p))
-    # playbooks in pinned-number order, groups kept in collection order
+    # playbooks in pinned-number order, groups kept in collection order;
+    # worker.md sorts right after poteto-mode's SKILL.md
     group_order = {g: i for i, (g, _) in enumerate(GROUPS)}
-    docs.sort(key=lambda d: (group_order[d[0]], int(d[1]) if d[1] else 0))
+    docs.sort(key=lambda d: (group_order[d[0]], int(d[1]) if d[1] else 0,
+                             0 if d[2] == "poteto-mode" else 1))
     return docs
 
 
@@ -228,6 +235,13 @@ def build():
             f'<h2 id="{slug}">{num_span}<span class="ttl">{html_mod.escape(title)}</span></h2>\n'
             f"{desc_block}\n{note}\n{frag}")
 
+    vdiff = ""
+    vdiff_md = NOTES / "_version-diff.md"
+    if vdiff_md.exists():
+        body = markdown.markdown(vdiff_md.read_text(), extensions=["tables", "fenced_code"])
+        vdiff = (f'<h2 id="version-diff"><span class="num">0.4</span>'
+                 f'<span class="ttl">版本差异（0.9.129 → 0.9.142）</span></h2>\n{body}')
+
     jargon = ""
     jargon_md = NOTES / "_jargon.md"
     if jargon_md.exists():
@@ -247,7 +261,7 @@ def build():
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#f6f5f2" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0c0d0f" media="(prefers-color-scheme: dark)">
-<meta name="description" content="pstack 0.9.129 全部 playbook、技能与原则的纯中文全译，逐句对应用于学习。">
+<meta name="description" content="pstack 0.9.142 全部 playbook、技能与原则的纯中文全译，逐句对应用于学习。">
 <title>pstack 原文全译</title>
 {boot}
 {style}
@@ -273,7 +287,7 @@ def build():
 
 <header class="cover">
   <h1><span class="ln">pstack</span><span class="ln">原文全译</span></h1>
-  <p class="lede">本机安装的 pstack 0.9.129 里全部 playbook、技能与原则的纯中文全译，逐句对应原文，供逐条学习。技能名、命令、路径、代码保留英文。</p>
+  <p class="lede">本机安装的 pstack 0.9.142 里全部 playbook、技能与原则的纯中文全译，逐句对应原文，供逐条学习。技能名、命令、路径、代码保留英文。</p>
   <div class="cover-foot">
     <a class="go" href="#readme">从翻译说明开始</a>
     <div class="stats">
@@ -286,7 +300,8 @@ def build():
 </header>
 
 <h2 id="readme"><span class="num">0</span><span class="ttl">翻译说明</span></h2>
-<p>来源：本机 <code>~/.claude/plugins/cache/pstack-claude/pstack/0.9.129/skills/</code>，逐文件全译，不摘要、不省略。术语约定：skill 译「技能」，principle 译「原则」，playbook、技能名、斜杠命令、文件路径、frontmatter、description、driver、verifier、watcher 保留英文，因为它们是你要原样敲进终端或核对文件时用到的字面量。每份文档开头的蓝框是它 frontmatter 里的 description 译文——那行字是路由的唯一依据，值得逐条读。翻译日期 2026-11-18，上游技能文本会随版本演进，数字以本机版本为准。</p>
+<p>来源：上游 <a href="https://github.com/michael-denyer/pstack-claude">michael-denyer/pstack-claude</a> v0.9.142 的 <code>plugins/pstack/skills/</code>，逐文件全译，不摘要、不省略。术语约定：skill 译「技能」，principle 译「原则」，playbook、技能名、斜杠命令、文件路径、frontmatter、description、driver、verifier、watcher 保留英文，因为它们是你要原样敲进终端或核对文件时用到的字面量。每份文档开头的蓝框是它 frontmatter 里的 description 译文——那行字是路由的唯一依据，值得逐条读。翻译日期 2026-11-19，上游技能文本会随版本演进，以对应 tag 为准。</p>
+{vdiff}
 {jargon}
 {"".join(sections)}
 </main>

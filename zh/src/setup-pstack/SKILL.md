@@ -1,69 +1,59 @@
 ---
 name: setup-pstack
-description: 配置 pstack 每个角色使用哪些模型。检测可用模型，写入当前宿主的覆盖表。用于 /setup-pstack、「配置 pstack 模型」、更改 pstack 的模型选择，或开关 SessionStart hook。
+description: 配置 pstack 每个角色使用哪个模型。检测可用模型并写入当前运行时的覆盖表。用于 /setup-pstack、「配置 pstack 模型」、修改 pstack 的模型选择，或开关 SessionStart hook。
 ---
 
 # Setup pstack
 
-在 Codex 上，先读[平台映射](../poteto-mode/references/codex-tools.md)（含其逐技能备注），再执行本技能。
+在 Codex 上，先阅读[平台映射](../poteto-mode/references/codex-tools.md)（包括其中的各技能说明），再执行本技能。
 
-在 GitHub Copilot 上，先读[平台映射](../poteto-mode/references/copilot-tools.md)（含其逐技能备注），再执行本技能。
+在 GitHub Copilot 上，先阅读[平台映射](../poteto-mode/references/copilot-tools.md)（包括其中的各技能说明），再执行本技能。
 
-在 Muse 上，先读[平台映射](../poteto-mode/references/muse-tools.md)（含其逐技能备注），再执行本技能。
+在 Muse 上，先阅读[平台映射](../poteto-mode/references/muse-tools.md)（包括其中的各技能说明），再执行本技能。
 
-在 Antigravity 上，先读[平台映射](../poteto-mode/references/agy-tools.md)（含其逐技能备注），再执行本技能。
+在 Antigravity 上，先阅读[平台映射](../poteto-mode/references/agy-tools.md)（包括其中的各技能说明），再执行本技能。
 
-在 Grok Build 上，先读[平台映射](../poteto-mode/references/grok.md)，并跳过第 4 步、第 3 步的 effort 提问和第 5 步的 effort 校验；配置表里省略 effort 和 `session hook` 行及后缀。Grok 不暴露 effort 控制，`session hook` 行也不控制 Grok 的路由提示。
+写入当前运行时的按角色模型覆盖表。每个 pstack 技能都在正文里写明默认模型；覆盖表把这些默认值适配到你实际可用的模型。
 
-在 GitHub Copilot 上，按 [Copilot 安装步骤](copilot.md) 替代第 1、3、4、7 步和第 6 步的标题。
+在任何非 Claude Code 的运行时上，先读[其他运行时](references/runtimes.md)。它的表格给出覆盖表路径、加载方式和列出模型的方法，你那个运行时的章节说明哪些步骤不同。本文件其余部分描述 Claude Code。
 
-在 OMP 上，按 [OMP 安装](../poteto-mode/references/omp-tools.md#model-names) 执行，替代第 1 至 8 步。OMP 使用原生模型角色和 agent 覆盖；其全局 pstack 配置表只控制 session hook。询问主会话路由对所有 OMP profile 是开还是关。在 `~/.omp/pstack-models.md` 里，把所有 `session hook:` 行替换为一行精确的 `session hook: on` 或 `session hook: off`，保留其他行和现有编码。确认是全局作用域，然后重启会话以清除先前上下文。
-
-在 Kimi Code CLI 上，跳过第 4 步、第 3 步的 effort 提问和第 5 步的 effort 校验；配置表里省略 effort 和 `session hook` 行及后缀。第 8 步里，说明路由由插件的启用状态控制，而不是汇报 hook 设置。见 [Kimi 模型名](../poteto-mode/references/kimi-tools.md#model-names)。
-
-在其他宿主上，读下方的[其他宿主](#other-runtimes)了解配置表位置和加载方式；步骤相同。
-
-写入当前宿主的逐角色模型覆盖表，路径见[其他宿主](#other-runtimes)。每个 pstack 技能都在行内写明默认模型；覆盖表把这些默认适配到你实际可用的模型。
-
-Claude Code 没有 Cursor `.mdc` 那种自动应用的「规则」机制。Claude Code 配置目录在设置了 `$CLAUDE_CONFIG_DIR` 时取该变量，否则取 `~/.claude`。本技能称它为 `<config>`。引入是显式的：用户在 `<config>/CLAUDE.md`（或其项目 `CLAUDE.md`）里加一行，例如：
+在 Claude Code 上，配置目录是 `$CLAUDE_CONFIG_DIR`（设置时）或 `~/.claude`（否则）。本技能称它 `<config>`，用户覆盖表是 `<config>/pstack-models.md`。项目覆盖表是仓库根目录的 `.claude/pstack-models.md`（`git rev-parse --show-toplevel`；不在仓库内时为 Claude Code 启动所在目录），随仓库提交，并在该项目中取代用户覆盖表。session hook 只要发现它就会读取。模型各行的生效依赖第 6 步在其标题下写入的那一行，所以手写的项目表也需要这行。Claude Code 没有 Cursor `.mdc` 那样自动应用「规则」的机制，所以引入是显式的：用户在 `<config>/CLAUDE.md` 加一行，例如：
 
 ```text
 @<config>/pstack-models.md
 ```
 
-`<config>` 写成解析后的路径，这样该文件会作为上下文加载进每个会话。
+其中 `<config>` 写成解析后的路径，这样文件会作为每次会话的上下文加载。项目覆盖表则由仓库根目录 `CLAUDE.md` 里的 `@.claude/pstack-models.md` 加载。
 
-Codex 主目录在设置了 `$CODEX_HOME` 时取该变量，否则取 `~/.codex`。本技能称它为 `<codex-home>`。
-
-## Steps（步骤）
+## 步骤
 
 ### 1. 检测可用模型
 
-枚举本次会话 `Agent` 工具的 `model` 参数接受哪些模型名。这是可靠的来源。在 Claude Code 上它们是下方 [Models](#models) 列出的家族名，每个跑该家族的当前模型，完整模型 ID 会被拒绝。默认面板也列在那里。面板按跨家族多样性挑选。让用户确认或粘贴他们希望可用的其他 slug。绝不写入一个你没有确认可用的真实 slug。别名 `inherit-parent` 和 `auto` 永远有效，即使它们不是检测到的 slug。两者都表示该角色跑在父会话的模型上，`Agent` 调用以省略 `model` 来表达。
+枚举本会话中 `Agent` 工具的 `model` 参数接受的模型名。这是可靠来源。在 Claude Code 上它们是下面 [Models](#models) 列出的家族名，每个运行该家族的当前模型，完整的模型 ID 会被拒绝。默认面板也在那里列出。面板按跨家族多样性挑选。用户想额外提供任何 slug，请其确认或粘贴。绝不写入一个你没有确认过可用的真实 slug。别名 `inherit-parent` 和 `auto` 始终有效，即使不是检测到的 slug。两者都表示该角色运行在父会话的模型上，`Agent` 调用通过省略 `model` 来表达。
 
-### 2. 加载当前状态
+### 2. 装载当前状态
 
-默认的角色到模型映射就是下方「写入覆盖表」步骤展示的规则形状。如果当前宿主的配置表已存在，读它，把它的值当作当前选择。否则从这些默认开始。一行若其角色不在该形状里，如 `how critics`，来自已退役的角色。删掉它。较旧的表可能写 `claude-` 开头的完整模型 ID，`Agent` 工具会拒绝。逐个替换为家族名，即 `claude-` 后面的那个词。
+在 Claude Code 上，先问要配置用户覆盖表（对所有项目生效），还是项目覆盖表（只对本仓库、任何机器生效）。后续步骤都用选定的表。
+
+默认的角色到模型映射是下面「写入覆盖表」步骤里展示的形状。当前运行时的表已存在时，读它，把其中的值当作当前选择；否则从默认值开始。角色不在这个形状里的行，比如 `how critics`、`architect runners`、`reflect tooling` 或 `why investigators`，来自已退役的角色，删掉。较旧的表可能写着 `claude-` 开头的完整模型 ID，`Agent` 工具不接受；每个都替换成它的家族名，即 `claude-` 后面那个词。
 
 ### 3. 映射并确认
 
-展示每个角色及其当前模型，把任何不在检测集合里的真实 slug 标为待选择。同时列出第 2 步删除或改写的每一行。问是照单接受还是改特定角色，选项为检测到的模型加 `inherit-parent` 和 `auto`。优先用 `AskUserQuestion`，而非自由文本。面板类角色（arena runners、architect runners、interrogate reviewers）的值是一个列表，每个条目跑一个子代理，别名条目也算，所以列表长度就是数量。`arena cross-judge pool` 也是列表，但 Arena 只跑一个评审者。它只尝试家族不同于父模型的值，按列表顺序，所以按偏好排序。`inherit-parent` 或 `auto` 的值绝不评审。`swarm workers` 是每个 worker 的默认模型，除非竞速或对比按臂指定了别的模型。
+展示每个角色及其当前模型，把任何不在检测集合中的真实 slug 标记为需要选择。同时列出第 2 步删除或改写的每一行。问是照单全收还是改某些角色，选项是检测到的模型加 `inherit-parent` 和 `auto`。优先用 `AskUserQuestion` 而不是自由输入。面板角色（arena runners、interrogate reviewers）的值是一个列表，每个条目各跑一个子代理，别名条目也计入，所以列表长度决定数量。`arena cross-judge pool` 也是列表，但 Arena 只跑一个 judge，只尝试与父会话不同家族的值，按列表顺序，所以按偏好排序。`inherit-parent` 或 `auto` 的值不做 judge。`swarm workers` 是每个 worker 的默认模型，除非竞速或对比给每个 arm 指定了别的模型。
 
-然后问默认推理强度，即 `default effort` 行。它是 `session`（保持父会话的强度），或 [Models](#models) 里的一个级别。从那里列出的默认开始。每个不带后缀的角色值都按它运行。然后问是否有角色要在别的级别运行。在 Claude Code 上角色值可以在 slug 后带一个，如 `<slug> @xhigh`；面板条目各自带，如 `<slug> @xhigh, <slug> @max`。每个级别作为派发的 effort 传入，所以这个选择无需改动会话即生效。默认强度就不带后缀。
-
-在 Codex 上，说明 `session` 需要当前线程的 active-turn 元数据，部分宿主不暴露。平台映射的 helper 会读它；不可用时，派发前必须显式选择强度。对这类宿主提供一个固定默认级别，而不是承诺自动继承。
+然后问默认推理力度，即 `default effort` 行。可以是 `session`（沿用父会话的力度），或 [Models](#models) 里的某个档位。从那里列的默认值起步。所有不带后缀的角色值都按它运行。再问是否有角色要以别的档位运行。角色值可以在 slug 后带一个档位，如 `<slug> @xhigh`；面板条目各带各的，如 `<slug> @xhigh, <slug> @max`。每个档位作为派发的 effort 传入，所以选择不必改动会话就能生效。默认力度不加后缀。
 
 ### 4. 选择 session hook 是否路由任务
 
-在 Claude Code 和 Codex 上，插件的 `SessionStart` hook 在启动、resume、clear 和 compact 时注入 poteto-mode 强制项。Codex 要求用户先经 `/hooks` 信任插件 hook 才会运行。在 Pi 上，pstack 扩展在每次 agent 启动时把同一强制项加进系统提示词。在 Muse 上，用户用 `muse plugins approve pstack` 批准插件的 hook 后，原生插件的 `SessionStart` hook 注入该强制项。在 OpenCode 2 上，原生插件把该强制项加进根会话的模型请求。询问是否保留该 hook。默认是开。答案就是当前宿主配置表里的 `session hook` 行：`on` 或 `off`。没有配置表或没有该行时，hook 注入。该行在没有 pstack 路由 hook 的其他宿主上是惰性的。
+在 Claude Code 上，插件的 `SessionStart` hook 在启动、恢复、清除和压缩时注入 poteto-mode 强制要求。问是否保留 hook，默认是开。答案就是当前运行时表里的 `session hook` 行：`on` 或 `off`。没有表或没有该行时，hook 注入。该行在没有 pstack 路由 hook 的其他运行时上不起作用。
 
 ### 5. 校验
 
-写入的每个真实 slug 必须在检测集合里。`inherit-parent` 和 `auto` 永远通过。校验 slug 时去掉所有 `@<level>` 后缀，级别对照 [Models](#models) 的 effort 级别。`default effort` 的值是这些级别之一或 `session`。在 Codex 上，级别改为你的 Codex 模型接受的 `reasoning_effort` 值。选中的真实 slug 或级别不可用时，停下来重新问。
+写入的每个真实 slug 必须在检测集合里。`inherit-parent` 和 `auto` 始终通过。校验 slug 时剥掉 `@<level>` 后缀，档位对照 [Models](#models) 的力度档位。`default effort` 的值是这些档位之一或 `session`。选定的真实 slug 或档位不可用时，停下来重新问。
 
 ### 6. 写入覆盖表
 
-按下面的形状写当前宿主的配置表。整个文件覆盖写入，保证重跑幂等。
+按下方的形状写当前运行时的表。整个文件覆盖写入，保证重跑幂等。项目表还要在标题下多加一行，让同时装载两张表的会话知道哪张算数：`This project's sheet. In this repository it replaces the user's pstack-models.md; ignore that sheet's lines.`
 
 ```markdown
 # pstack model configuration
@@ -76,16 +66,9 @@ perf-issue: opus
 hillclimb: opus
 judgment and prose: opus
 strongest judgment: fable
-how explorer: opus
-how explainer: opus
-why investigators: opus
-why synthesizer: opus
-reflect tooling: opus
-reflect judgment, divergent, synthesizer: opus
 arena runners: opus, fable, sonnet, haiku
 arena cross-judge pool: opus, fable, sonnet, haiku
 swarm workers: opus
-architect runners: opus, fable, sonnet, haiku
 interrogate reviewers: opus, fable, sonnet, haiku
 thermos reviewers: opus
 no-comments reviewer: opus
@@ -96,50 +79,26 @@ session hook: on
 
 ### 7. 接入
 
-在 Claude Code 上，若 `<config>/CLAUDE.md` 尚未 include `<config>/pstack-models.md`，追加一行 `@` 指向配置表解析后的路径，如 `@~/.claude/pstack-models.md`，让模型行在每个会话加载。用户偏好项目级时，把 include 加进项目的 `CLAUDE.md`。
-
-在 Codex 上，把模型行和 `default effort` 行粘贴进 `<codex-home>/AGENTS.md`；Codex 没有 `@` include。不要把 `session hook` 行粘进去：插件 hook 直接从 `<codex-home>/pstack-models.md` 读它。
-
-在 Muse 上，无需 include 行：插件 hook 直接读配置表并在会话开始注入其角色行。它在用户批准插件 hook 之后才运行，所以 hook 还没跑过时要提 `muse plugins approve pstack`。
+在 Claude Code 上，若 `<config>/CLAUDE.md` 尚未包含 `<config>/pstack-models.md`，追加一行 `@` 指向表的解析路径，如 `@~/.claude/pstack-models.md`，让模型各行在每次会话都加载。项目表则改在仓库根目录的 `CLAUDE.md` 追加 `@.claude/pstack-models.md`（如果没有），并提醒用户提交这两个文件。
 
 ### 8. 确认
 
-告诉用户覆盖写到了哪里、模型行如何加载、插件 hook 是否开启。重跑本技能会更新覆盖表。
+告诉用户覆盖写到了哪里、模型各行如何加载、插件 hook 是否开启。重跑本技能会更新覆盖表。
 
-### 9. 提议一个验证技能（可选）
+### 9. 提议验证技能（可选）
 
-检查项目是否已有驱动真实应用取证的途径（项目级 `verify` 或 `verify-*` 技能，或既有 harness）。没有则提议一次：「要不要一个项目级验证技能，让代理像用户一样驱动应用并证明变更有效？我可以用 /create-verification-skill 生成一个。」同意则调用 [`/create-verification-skill`](../create-verification-skill/SKILL.md)。拒绝则不再推销，继续。
+检查项目是否有驱动真实应用拿证据的方法（项目 `verify` 或 `verify-*` 技能，或已有的 harness）。没有就提议一次：「想不想要一个项目本地的验证技能，让 agent 能像用户一样驱动应用、证明改动有效？我可以用 /create-verification-skill 生成一个。」同意就调用 [`/create-verification-skill`](../create-verification-skill/SKILL.md)。拒绝就继续，不纠缠。
 
-### 10. 提议一个形式化验证技能（可选）
+### 10. 提议形式化验证技能（可选）
 
-检查项目是否已有形式化验证技能（跑模型检查器、证明或其他 verifier 的项目技能）。没有则提议一次：「要不要一个形式化验证技能，让代理能证明你代码的关键性质在范围内每一种情况下都成立，而不只是测试覆盖到的那些？我可以用 /create-formal-verification-skill 生成一个。」同意则调用 [`/create-formal-verification-skill`](../create-formal-verification-skill/SKILL.md)。拒绝则不再推销，继续。
+检查项目是否已有形式化验证技能（对着代码运行模型检查器、证明器或其他 verifier 的项目技能）。没有就提议一次：「想不想要一个形式化验证技能，让 agent 能证明你代码的某个关键性质在范围内的每种情况下都成立，而不只是测试触达的那些情况？我可以用 /create-formal-verification-skill 生成一个。」同意就调用 [`/create-formal-verification-skill`](../create-formal-verification-skill/SKILL.md)。拒绝就继续，不纠缠。
 
-## 其他宿主
+## Models
 
-角色行处处相同。不同的是配置表路径、宿主如何加载它、以及你如何列出模型。用宿主自己的工具检测模型，绝不写入一个你没见过被列出的 slug。子代理调用没有模型参数的宿主也照样得到配置表，作为用户选择的记录，并在它能应用之处应用。`session hook` 行适用于 Claude Code、Codex、GitHub Copilot、Muse、MiniMax Code、Antigravity、OMP 和 OpenCode 2 插件，以及 pstack Pi 扩展。
+由 `plugins/pstack/models.json` 盖章生成（在彼处编辑，重跑 `tools/generate.mjs`）。
 
-| 宿主 | 配置表 | 加载 | 列出模型 | 状态 |
-| --- | --- | --- | --- | --- |
-| Claude Code | `<config>/pstack-models.md` | `<config>/CLAUDE.md` 里的 `@<config>/pstack-models.md` | `Agent` 工具的 model 参数 | 实测验证 |
-| Codex | `<codex-home>/pstack-models.md` | 模型行：粘贴进 `<codex-home>/AGENTS.md`；hook 设置：由插件读取 | 你配置的 Codex 模型，见 [codex-tools.md](../poteto-mode/references/codex-tools.md#model-names) | hook 契约已测试；发现已验证 |
-| Pi | Pi agent 目录里的 `pstack-models.md`，即 `$PI_CODING_AGENT_DIR` 或 `~/.pi/agent` | 由 pstack Pi 扩展读取，模型行和 hook 设置都读；无 include 行 | `pi --list-models`，见 [pi-tools.md](../poteto-mode/references/pi-tools.md#model-names) 及其 `setup-pstack` 备注 | 扩展契约离线已测试；实测结果见仓库的 `docs/pi-equivalence.md` |
-| GitHub Copilot（CLI 与应用） | `${COPILOT_HOME:-~/.copilot}/pstack-models.md` | 插件 hook 检查它并在会话开始注入角色行；仅装技能的安装用 `view` 读它 | `task` 工具的 `model` 枚举，见 [copilot-tools.md](../poteto-mode/references/copilot-tools.md#model-names) | hook 契约已测试；CLI 安装已冒烟测试 |
-| Muse | `${XDG_CONFIG_HOME:-~/.config}/muse/pstack-models.md` | 插件 hook 读它并在会话开始注入角色行（hook 获批后）；无 include 行 | 模型目录（`muse model-profile show <model>` 列出每一个），见 [muse-tools.md](../poteto-mode/references/muse-tools.md#model-names) | hook 契约已测试；插件安装已验证 |
-| MiniMax Code | `~/.minimax/pstack-models.md`，即使 `MINIMAX_DATA_DIR` 移动了 MiniMax 的数据目录也如此，因为 MiniMax Code 对 hook 和它的 `bash` 工具隐瞒该变量 | 模型行：角色模型技能之前由 agent 读取，或粘贴进 MiniMax Code 数据目录的 `AGENTS.md`；hook 设置：由插件读取 | `mcode provider list` 或 `model` 斜杠命令，见 [minimax-tools.md](../poteto-mode/references/minimax-tools.md#model-names) | hook 契约已测试；插件加载在 0.7.4 上冒烟测试通过；无实测会话 |
-| Kimi Code CLI | `<KIMI_CODE_HOME>/pstack-models.md`，未设置则为 `~/.kimi-code/pstack-models.md` | 角色模型技能之前由 agent 读取；无 hook 设置 | 配置了子代理模型池时的 `Agent` 工具 model 参数，见 [kimi-tools.md](../poteto-mode/references/kimi-tools.md#model-names) | 安装与合成 provider 的上下文投递在 macOS Kimi 2.4.1 上核查过；模型合规未测试 |
-| Antigravity (`agy`) | `~/.gemini/config/pstack-models.md` | 模型行：角色模型技能之前由 agent 读取，或粘贴进 `~/.gemini/config/AGENTS.md`；hook 设置：由插件的 `SessionStart` hook 读取 | `invoke_subagent` 的 `Model` 枚举（`inherit`、`flash_lite`、`flash`、`pro`），见 [agy-tools.md](../poteto-mode/references/agy-tools.md#model-names) | 在 macOS 上用 `agy` 1.5.0 测试：插件安装、hook 开关、完整技能读取和一次实测子代理回复；Windows 未测试 |
-| OMP | `~/.omp/pstack-models.md`（跨 profile 全局；仅 hook） | 由 OMP 插件读取用于路由 | `omp models --kind chat`；模型角色使用 OMP 配置，见 [omp-tools.md](../poteto-mode/references/omp-tools.md#model-names) | 在 OMP 18.16.0 上用合成 provider 核查了安装、技能访问和路由开关；模型合规未测试 |
-| Grok Build | `${GROK_HOME:-~/.grok}/pstack-models.md` | 角色模型技能之前由 agent 读取；`session hook` 行不控制 Grok 路由提示 | 会话模型选择器；见 [grok.md](../poteto-mode/references/grok.md#model-names) | 合成 provider 的插件与技能加载已测试 |
-| OpenCode 2 | `${XDG_CONFIG_HOME:-~/.config}/opencode/pstack-models.md` | 把路径加进 `opencode.jsonc` 的 `instructions` 数组；插件直接读 hook 设置 | 会话里的 `models` 命令；见 [opencode-tools.md](../poteto-mode/references/opencode-tools.md#model-names) | 在 2.2.5 上用回环 provider 测试了原生技能激活与路由 |
-| Gemini CLI | `~/.gemini/pstack-models.md` | `~/.gemini/GEMINI.md` 里的 `@~/.gemini/pstack-models.md` | 会话里的 `model` 斜杠命令 | 来自已发布文档，无实测会话 |
-| Prime Agent | 无文档化的配置表路径；模型由 Prime 的配置决定 | | | 无实测会话 |
-
-## Models（模型）
-
-从 `plugins/pstack/models.json` 盖章生成（在那里改，重跑 `tools/generate.mjs`）。
-
-- 可用 Claude 模型：`opus`、`fable`、`sonnet`、`haiku`
-- 默认面板：`opus`、`fable`、`sonnet`、`haiku`
-- 推理强度级别：`low`、`medium`、`high`、`xhigh`、`max`
-- 默认推理强度：`session`
-- 单角色默认值：`opus`
+- 可用 Claude 模型: `opus`, `fable`, `sonnet`, `haiku`
+- 默认面板: `opus`, `fable`, `sonnet`, `haiku`
+- 推理力度档位: `low`, `medium`, `high`, `xhigh`, `max`
+- 默认推理力度: `session`
+- 单角色默认: `opus`
