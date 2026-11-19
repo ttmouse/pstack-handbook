@@ -35,6 +35,65 @@ PLAYBOOK_NUMBERS = {
 
 NOTES = ROOT / "zh" / "notes"
 
+# Full-width inline figures injected after a doc's note. SVG only: the page must
+# stay a single self-contained file, and CSS variables keep it theme-agnostic.
+FIGS = {
+    "poteto-mode": """
+<figure class="flowfig">
+<svg viewBox="0 0 760 580" role="img" aria-label="土豆模式工作流程图">
+  <style>
+    .fb{fill:var(--raise);stroke:currentColor;stroke-opacity:.3;stroke-width:1.2;rx:10}
+    .fa{fill:var(--raise);stroke:var(--accent2);stroke-width:1.6}
+    .ft{fill:currentColor;text-anchor:middle;font-size:15px;font-weight:600}
+    .fs{fill:currentColor;text-anchor:middle;font-size:12.5px;opacity:.68;font-weight:400}
+    .fl{fill:currentColor;text-anchor:middle;font-size:12.5px;opacity:.55;font-weight:400}
+    .ln{stroke:currentColor;stroke-opacity:.45;stroke-width:1.4;fill:none;marker-end:url(#arr)}
+  </style>
+  <defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M0,0 L10,5 L0,10 z" fill="currentColor" fill-opacity=".5"/></marker></defs>
+  <rect class="fb" x="280" y="16" width="200" height="44" rx="10"/>
+  <text class="ft" x="380" y="43">你的消息</text>
+  <path class="ln" d="M380,60 L380,88"/>
+  <rect class="fa" x="240" y="90" width="280" height="52" rx="12"/>
+  <text class="ft" x="380" y="112">这是一个「任务」吗？</text>
+  <text class="fs" x="380" y="131">（要一套流程才能完成的事）</text>
+  <path class="ln" d="M240,116 L190,116 L190,166"/>
+  <text class="fl" x="140" y="106">不是 · 小动作</text>
+  <path class="ln" d="M520,116 L570,116 L570,166"/>
+  <text class="fl" x="622" y="106">是任务 · 走流程</text>
+  <rect class="fb" x="40" y="168" width="300" height="52" rx="10"/>
+  <text class="ft" x="190" y="190">13 行触发清单</text>
+  <text class="fs" x="190" y="209">主管的职业习惯，不经路由</text>
+  <rect class="fb" x="420" y="168" width="300" height="52" rx="10"/>
+  <text class="ft" x="570" y="190">Playbooks 路由（22 本清单）</text>
+  <text class="fs" x="570" y="209">掏出对应那本流程手册</text>
+  <path class="ln" d="M190,220 L190,246"/>
+  <path class="ln" d="M570,220 L570,246"/>
+  <rect class="fb" x="40" y="248" width="300" height="52" rx="10"/>
+  <text class="ft" x="190" y="270">直接做动作</text>
+  <text class="fs" x="190" y="289">unslop、architect、验证……几秒完成</text>
+  <rect class="fb" x="420" y="248" width="300" height="52" rx="10"/>
+  <text class="ft" x="570" y="270">把步骤抄进任务列表</text>
+  <text class="fs" x="570" y="289">逐步执行；跳过的步骤写明理由</text>
+  <path class="ln" d="M190,300 L190,326 L374,326"/>
+  <path class="ln" d="M570,300 L570,326 L386,326"/>
+  <rect class="fa" x="100" y="328" width="560" height="52" rx="12"/>
+  <text class="ft" x="380" y="350">执行全程：需要权衡时翻 24 条原则</text>
+  <text class="fs" x="380" y="369">撞到适用条件才读全文，回复里说明哪条原则改变了哪个选择</text>
+  <path class="ln" d="M380,380 L380,406"/>
+  <rect class="fb" x="100" y="408" width="560" height="52" rx="10"/>
+  <text class="ft" x="380" y="430">碰到红线：强推共享分支、部署、删数据、联系客户</text>
+  <text class="fs" x="380" y="449">→ 停下来问人，不擅自做（Autonomy 一节）</text>
+  <path class="ln" d="M380,460 L380,486"/>
+  <rect class="fa" x="100" y="488" width="560" height="52" rx="12"/>
+  <text class="ft" x="380" y="510">写回复（固定格式）</text>
+  <text class="fs" x="380" y="529">做了什么、跳过了什么、用了哪些原则——这是你验收它的模板</text>
+</svg>
+<figcaption class="muted">土豆模式的一次工作流程：13 行触发清单管「小动作」（左），Playbooks 路由管「任务」（右），原则和红线在两条路上都生效。对应原文的「不可妥协项」「Principles」「Autonomy」「写回复」「Playbooks」各节。</figcaption>
+</figure>
+""",
+}
+
 
 def load_note(slug):
     """A reader's annotation for one document, written in zh/notes/<slug>.md."""
@@ -187,6 +246,9 @@ def build():
 /* 解读批注层：宽屏浮在右侧空白，窄屏退化为正文内的框 */
 .readnote{margin:22px 0;padding:16px 20px 6px;background:var(--raise);
   border-left:3px solid var(--accent2);font-size:15px;line-height:1.8}
+.flowfig{margin:26px 0;clear:both}
+.flowfig svg{width:100%;height:auto;display:block}
+.flowfig figcaption{font-size:13.5px;margin-top:8px}
 .readnote .ntag{font-weight:600;font-size:13px;letter-spacing:.08em;
   color:var(--accent2);margin-bottom:6px}
 .readnote p{margin:8px 0;font-size:15px}
@@ -231,9 +293,10 @@ def build():
             desc_block = (f'<div class="note"><b>description（路由依据，译文）。</b>'
                           f'{html_mod.escape(desc)}</div>')
         num_span = f'<span class="num">{num}</span>' if num else ""
+        fig = FIGS.get(slug, "")
         sections.append(
             f'<h2 id="{slug}">{num_span}<span class="ttl">{html_mod.escape(title)}</span></h2>\n'
-            f"{desc_block}\n{note}\n{frag}")
+            f"{desc_block}\n{note}\n{fig}\n{frag}")
 
     vdiff = ""
     vdiff_md = NOTES / "_version-diff.md"

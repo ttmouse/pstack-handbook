@@ -292,6 +292,9 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 /* 解读批注层：宽屏浮在右侧空白，窄屏退化为正文内的框 */
 .readnote{margin:22px 0;padding:16px 20px 6px;background:var(--raise);
   border-left:3px solid var(--accent2);font-size:15px;line-height:1.8}
+.flowfig{margin:26px 0;clear:both}
+.flowfig svg{width:100%;height:auto;display:block}
+.flowfig figcaption{font-size:13.5px;margin-top:8px}
 .readnote .ntag{font-weight:600;font-size:13px;letter-spacing:.08em;
   color:var(--accent2);margin-bottom:6px}
 .readnote p{margin:8px 0;font-size:15px}
@@ -449,6 +452,60 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 </ul>
 <p><strong>其余各节一句话：</strong>平台适配讲各运行时怎么换工具名，不换平台可跳过；自主性划了必须停下来问人的红线（强推、部署、删数据、联系客户）；Subagents 是派活规矩（给范围、选推理档位、防互相覆盖），花钱最多；写回复是验收它工作的模板；Models / 推理档位管成本，改配置走 setup-pstack。worker.md 是派给每个子代理的随身规则卡，配合 Subagents 一节看。</p>
 <p><strong>读法建议</strong>：先读 13 行触发清单和「写回复」（决定你怎么用它、怎么验它），再读 Playbooks 理解路由，其余按需查。</p></aside>
+
+<figure class="flowfig">
+<svg viewBox="0 0 760 580" role="img" aria-label="土豆模式工作流程图">
+  <style>
+    .fb{fill:var(--raise);stroke:currentColor;stroke-opacity:.3;stroke-width:1.2;rx:10}
+    .fa{fill:var(--raise);stroke:var(--accent2);stroke-width:1.6}
+    .ft{fill:currentColor;text-anchor:middle;font-size:15px;font-weight:600}
+    .fs{fill:currentColor;text-anchor:middle;font-size:12.5px;opacity:.68;font-weight:400}
+    .fl{fill:currentColor;text-anchor:middle;font-size:12.5px;opacity:.55;font-weight:400}
+    .ln{stroke:currentColor;stroke-opacity:.45;stroke-width:1.4;fill:none;marker-end:url(#arr)}
+  </style>
+  <defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M0,0 L10,5 L0,10 z" fill="currentColor" fill-opacity=".5"/></marker></defs>
+  <rect class="fb" x="280" y="16" width="200" height="44" rx="10"/>
+  <text class="ft" x="380" y="43">你的消息</text>
+  <path class="ln" d="M380,60 L380,88"/>
+  <rect class="fa" x="240" y="90" width="280" height="52" rx="12"/>
+  <text class="ft" x="380" y="112">这是一个「任务」吗？</text>
+  <text class="fs" x="380" y="131">（要一套流程才能完成的事）</text>
+  <path class="ln" d="M240,116 L190,116 L190,166"/>
+  <text class="fl" x="140" y="106">不是 · 小动作</text>
+  <path class="ln" d="M520,116 L570,116 L570,166"/>
+  <text class="fl" x="622" y="106">是任务 · 走流程</text>
+  <rect class="fb" x="40" y="168" width="300" height="52" rx="10"/>
+  <text class="ft" x="190" y="190">13 行触发清单</text>
+  <text class="fs" x="190" y="209">主管的职业习惯，不经路由</text>
+  <rect class="fb" x="420" y="168" width="300" height="52" rx="10"/>
+  <text class="ft" x="570" y="190">Playbooks 路由（22 本清单）</text>
+  <text class="fs" x="570" y="209">掏出对应那本流程手册</text>
+  <path class="ln" d="M190,220 L190,246"/>
+  <path class="ln" d="M570,220 L570,246"/>
+  <rect class="fb" x="40" y="248" width="300" height="52" rx="10"/>
+  <text class="ft" x="190" y="270">直接做动作</text>
+  <text class="fs" x="190" y="289">unslop、architect、验证……几秒完成</text>
+  <rect class="fb" x="420" y="248" width="300" height="52" rx="10"/>
+  <text class="ft" x="570" y="270">把步骤抄进任务列表</text>
+  <text class="fs" x="570" y="289">逐步执行；跳过的步骤写明理由</text>
+  <path class="ln" d="M190,300 L190,326 L374,326"/>
+  <path class="ln" d="M570,300 L570,326 L386,326"/>
+  <rect class="fa" x="100" y="328" width="560" height="52" rx="12"/>
+  <text class="ft" x="380" y="350">执行全程：需要权衡时翻 24 条原则</text>
+  <text class="fs" x="380" y="369">撞到适用条件才读全文，回复里说明哪条原则改变了哪个选择</text>
+  <path class="ln" d="M380,380 L380,406"/>
+  <rect class="fb" x="100" y="408" width="560" height="52" rx="10"/>
+  <text class="ft" x="380" y="430">碰到红线：强推共享分支、部署、删数据、联系客户</text>
+  <text class="fs" x="380" y="449">→ 停下来问人，不擅自做（Autonomy 一节）</text>
+  <path class="ln" d="M380,460 L380,486"/>
+  <rect class="fa" x="100" y="488" width="560" height="52" rx="12"/>
+  <text class="ft" x="380" y="510">写回复（固定格式）</text>
+  <text class="fs" x="380" y="529">做了什么、跳过了什么、用了哪些原则——这是你验收它的模板</text>
+</svg>
+<figcaption class="muted">土豆模式的一次工作流程：13 行触发清单管「小动作」（左），Playbooks 路由管「任务」（右），原则和红线在两条路上都生效。对应原文的「不可妥协项」「Principles」「Autonomy」「写回复」「Playbooks」各节。</figcaption>
+</figure>
+
 <h1>Poteto mode</h1>
 <p>捆绑的技能位于本文件旁的 <code>../&lt;name&gt;/SKILL.md</code>，所以每次给 <code>poteto-agent</code> 的 prompt 里都要带上本文件的绝对路径。</p>
 <h2>平台适配</h2>
@@ -547,6 +604,7 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 <p>覆盖表里的角色值可以在模型后带一个推理档位，如 <code>opus @xhigh</code>。Claude Code 上的档位：<code>low</code>、<code>medium</code>、<code>high</code>、<code>xhigh</code>、<code>max</code>。哪些可用取决于模型。不带 <code>@</code> 的值取表的 <code>default effort</code> 行（一个档位或 <code>session</code>），表里没有该行时取 <code>session</code>。在 Claude Code 上，<code>session</code> 不设定档位。在其他运行时上，<code>session</code> 按平台映射执行。读模型前先剥掉后缀：<code>inherit-parent</code> 或 <code>auto</code> 在任何档位下都照样省略 <code>model</code>，模型名则作为 <code>model</code> 传入。把档位作为派发的 effort 字段传入，<code>subagent_type</code> 照旧。在 Claude Code 的 <code>Agent</code> 调用上是 <code>effort</code>，在 Codex 的 <code>spawn_agent</code> 上是 <code>reasoning_effort</code>。在 Muse 上是 Workflow 子任务的 <code>effort</code>；<code>subagent_spawn</code> 派发则保持会话档位。</p><h2 id="worker"><span class="ttl">worker · 派工规则</span></h2>
 
 <aside class="readnote"><div class="ntag">解读</div><p>这份文件不是给你看的技能，而是<strong>派给每个子代理的随身规则卡</strong>：总管每次派活，开工提示的第一行就是它的绝对路径，子代理开工前先读它。它把操作员的底线（怎么验证、怎么汇报、什么时候必须停）压缩到一页，保证总管不在场时子代理也不会跑偏。读总管正文里的 Subagents 一节时对照着看，就能理解派活的完整闭环。</p></aside>
+
 <p>你在为 operator 工作。operator 是这一整轮运行真正服务的人，不是给你写下开工简报的那个 agent。这些规则对每个任务都成立，即使你的开工简报没有重复它们。简报只有逐字明说时才能覆盖其中某一条。</p>
 <ul>
 <li>如果你再启动一个 agent，它开工简报的第一行写 <code>Read &lt;path&gt;/worker.md before anything else.</code>，<code>&lt;path&gt;</code> 是本文件所在目录的绝对路径。</li>
@@ -569,6 +627,7 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 <li><strong>带引用的解释</strong>：每个结论都要指到具体文件和行号，你可以逐条去查——这是它区别于「随口一答」的地方。</li>
 </ul>
 <p>什么时候用它：你听到一个说法想核实（「我们确定吗？」），或者动手改代码前想先弄懂一块子系统。别用它顺手改东西——想改，重新描述任务，让总管路由到修缺陷或做功能。</p></aside>
+
 <h3>Investigation</h3>
 <p><strong>答案归你。计划、路由、成文。</strong></p>
 <p>调查请求是只读的。产出是一份带引用的解释或建议，不是代码改动。</p>
@@ -590,6 +649,7 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 <li><strong>instrumentation</strong>：埋点和日志，用来看程序运行时到底发生了什么。</li>
 <li><strong>「不猜」</strong>：程序状态看不清就加日志去看，不要凭经验假设原因。</li>
 </ul></aside>
+
 <h3>Bug fix</h3>
 <p><strong>这个任务归你。计划、评审、验证。</strong> 调查和修复委托给子代理，主导权留在你手里。按 poteto-mode 的 Subagents 一节为每个子代理选合适的推理档位。</p>
 <p>要科学。每一行发布的代码都能溯源到运行时证据。「也许有用」的双保险只是一个假设，不是修复——它不能发布。当证据推翻某个假设时，把它引发的那部分改动回滚。证据能支撑的最小改动才发布，多一行都不行。</p>
@@ -618,6 +678,7 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 
 <aside class="readnote"><div class="ntag">解读</div><p>性能问题里「一次修好」的那种。和第 4 本 hillclimb 的分界：有明确的慢、修完就完，用这本；要长期持续提升同一个指标，用 hillclimb。</p>
 <p>它的铁律是<strong>每个修复绑一个测量</strong>：先跑基线拿到数字，改完再跑同一个测量，前后数字就是产物。没有数字的「感觉变快了」不算完成。这对应第 9 章说的「别用在你只有模糊感觉的时候」——先有指标，才有资格走这本清单。</p></aside>
+
 <h3>Perf issue</h3>
 <p><strong>测量故事归你。计划、评审、验证数字。</strong> 每个修复都要挂在一次测量上，不要拿读源码代替测量。</p>
 <ol>
@@ -643,6 +704,7 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 
 <aside class="readnote"><div class="ntag">解读</div><p>一个指标要长期爬坡（比如转化率、启动速度），不是一锤子买卖。每轮的节奏固定：提出一个假设 → 前后测量 → 有效就提交一个 commit 并写决策日志 → 下一轮。</p>
 <p>「决策日志」是留给未来的记录：当时试了什么、数字是多少、为什么接受或放弃。爬坡跑几十轮之后，靠它避免重复试同一个想法。和 perf-issue 的区别就是一次性修复和长期工程的区别。</p></aside>
+
 <h3>Hillclimb</h3>
 <p><strong>指标和实验的完整性归你。监督、评审。尝试委托出去。</strong> 用于对单一可度量事物做持续的迭代改进、逼近目标。一次性修复是 Bug fix 或 Perf issue；这里是循环。</p>
 <p>核心纪律：一次改动、一次测量、保留或回滚。绝不堆叠未验证的改动，也绝不靠读代码宣布胜利（<strong>prove-it-works</strong> 原则技能）。</p>
@@ -665,6 +727,7 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 
 <aside class="readnote"><div class="ntag">解读</div><p>程序还活着，但行为不对：内存泄漏、空转、偶发卡死。这本的做法是<strong>活体观测</strong>——直接看正在运行的进程（采样、看句柄、看线程），而不是读代码猜。</p>
 <p>关键约束：它只出诊断，不修。因为取证阶段你还没确定根因，急着改会把现场破坏掉。修是诊断出来之后重新路由到 02 修缺陷的事。</p></aside>
+
 <h3>Runtime forensics</h3>
 <p><strong>诊断归你。给活进程插桩，不要对着源码空想。</strong> 交付物是一份带引用的诊断，不是修复。</p>
 <ol>
@@ -678,6 +741,7 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 
 <aside class="readnote"><div class="ntag">解读</div><p>和 05 同一门手艺，区别在材料：这本拿的是<strong>别人已经抓下来的现场</strong>——一份 profile、trace、spindump 或堆快照。进程可能已经不在了，你只能从记录里读。</p>
 <p>产物同样是诊断不是修复。这条和 05 分开成两本，是因为「现场还在」和「只剩记录」能用到的工具和能下的结论完全不同。</p></aside>
+
 <h3>Trace forensics</h3>
 <p><strong>从产物出发的诊断归你。</strong></p>
 <p>与 <strong>Runtime forensics</strong> 相区别：那本给活进程插桩，而这里捕获已经存在。产物是一份固定的数据集——读它，不要重跑它。工具保持通用：cpuprofile 和 <code>.json.gz</code> 用 DevTools 或 trace 解析器，spindump 用文本编辑器，heapsnapshot 用你的堆分析工具。</p>
@@ -701,6 +765,7 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 <li><strong>worktree（工作树）</strong>：给每个写文件的子代理一份独立的代码副本，避免互相覆盖。</li>
 </ul>
 <p>第 7 步的 interrogate 是改动重要时才触发的对抗审查；小改动可以整步跳过。</p></aside>
+
 <h3>Feature</h3>
 <p><strong>设计归你。计划、评审、验证。</strong> 实现委托出去。主导权留在你手里。</p>
 <ol>
@@ -723,6 +788,7 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 
 <aside class="readnote"><div class="ntag">解读</div><p>重构：行为一个字不变，只改代码的形状（结构、命名、拆分）。它的保证是<strong>每一步都有等价检查点</strong>——改完这一步，测试和运行结果和改之前完全一致才继续。</p>
 <p>危险点只有一个：顺手加功能。行为和形状同时改，出了问题分不清是哪边引起的，等价检查也失效了。所以它的「别用」写在最前面：你控制不住想改行为时，别进这本。</p></aside>
+
 <h3>Refactoring</h3>
 <p>通过 <a href="javascript:void(0)" style="text-decoration:none;color:inherit">poteto-mode 的 Non-negotiables</a> 解析 driver skill。</p>
 <p><strong>契约归你。结构变，行为不变。</strong> 与添加行为的 Feature、纠正行为的 Bug fix 相区别。</p>
@@ -741,6 +807,7 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 
 <aside class="readnote"><div class="ntag">解读</div><p>原型：一个决定凭推理和讨论定不下来，就做个一次性的东西让结果说话。产物是<strong>决定</strong>，代码用完就扔——这条要记住，别舍不得删。</p>
 <p>什么情况用它：两种布局争不下、一个方案「不知道跑不跑得动」、两个交互想比较手感。什么情况别用：你已经知道要什么，只是缺实现——那直接走 07 做功能。这对应心法第二条「用原型代替长计划」。</p></aside>
+
 <h3>Prototype</h3>
 <p><strong>设计决策归你，代码不归你。原型是一个用完即弃的仪器。真正的构建交给 Feature。</strong></p>
 <p>这是唯一一本 Laziness Protocol 的「最小改动」和验证门槛被反转的 playbook。速度优先于精致，代码质量不重要，不规划。严谨之处在于用便宜的方式选对设计。主动提出用户没要求的变体，敢扔掉一个方案换下一个。</p>
@@ -756,6 +823,7 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 
 <aside class="readnote"><div class="ntag">解读</div><p>两套实现要长得一模一样（比如迁移样式系统、换框架不改外观）。它的特点是<strong>基线是规格，不能动</strong>：现有版本长什么样就是标准，新实现往它对齐，而不是反过来互相将就。</p>
 <p>产物是图像 diff（像素级对比图）证据。「看起来差不多」不算过，要能指出差异为零或差异清单。</p></aside>
+
 <h3>Visual parity</h3>
 <p><strong>像素级等价归你。基线就是规格，你不碰它。</strong> 等价性靠图像 diff 验证，不靠肉眼。</p>
 <ol>
@@ -769,6 +837,7 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 
 <aside class="readnote"><div class="ntag">解读</div><p>写「技能」本身的规矩——技能就是 SKILL.md 文件，pstack 的一切都靠它们承载。这本清单管的是：description 怎么写才会被正确触发、正文用什么结构、怎么自证有效。</p>
 <p>最值得带走的一条：<strong>description 是技能的唯一路由依据</strong>。它写得含糊，这个技能就永远不会被选中，正文写得再好也没用。第 2 章和附录 D 讲的「描述即触发」说的就是这件事。</p></aside>
+
 <h3>编写或修改一个 skill</h3>
 <p><strong>skill 的语气由你负责。</strong></p>
 <ol>
@@ -788,6 +857,7 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 <li>评委模型不知道答案来自哪一版。</li>
 </ul>
 <p>这本是「改技能」的配套设施：11 号写技能，12 号验证改动，配合使用。</p></aside>
+
 <h3>Eval</h3>
 <p><strong>实验设计归你。计划、盲测、运行、综合。</strong></p>
 <p><strong>盲测红线：</strong></p>
@@ -814,6 +884,7 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 
 <aside class="readnote"><div class="ntag">解读</div><p>看 PR：一个改动请求开着，把它推到「可合并」状态——CI 绿了、冲突解了、评审意见处理了。到 merge-ready 就停，<strong>永远不自己点合并</strong>，合并权永远在人。</p>
 <p>这是刻意留的权限闸：执行者自己判定「可以合了」的那一刻，独立验证就失效了。你只需要说「合并」，它才走 14 号上线流程。</p></aside>
+
 <h3>Babysit</h3>
 <p><strong>合并前沿由你负责。先声明模式，一次只清一个 PR，人到人该拍板的地方就停。</strong> 对于这类请求，本 playbook 取代内置的 <strong>babysit</strong> 技能，所以即使描述撞词也不要路由过去。</p>
 <ul>
@@ -827,6 +898,7 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 
 <aside class="readnote"><div class="ntag">解读</div><p>上线一串 PR。它的核心警告是：<strong>绿不等于安全</strong>——测试通过只说明写了测试的地方没问题。</p>
 <p>它的做法：每个 PR 由一个没写过这段代码的代理独立验证，只有从根部开始连续通过的那一段才落地；中间断了的，后面的全部扣住。这保证了任何进入主线的改动，都有一双「新鲜的眼睛」看过。</p></aside>
+
 <h3>Shipping</h3>
 <p>通过 <a href="javascript:void(0)" style="text-decoration:none;color:inherit">poteto-mode 的 Non-negotiables</a> 解析 driver skill。</p>
 <p><strong>落地归你。每个 PR 独立验证，只从根落地那条已验证的链，然后撒手不管 stack。</strong> 落地需要用户的落地权限，且每次落地在下一次开始前得到确认。</p>
@@ -843,6 +915,7 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 
 <aside class="readnote"><div class="ntag">解读</div><p>开 PR 是所有改代码流程的统一出口（附录 D 叫它「出口唯一」）。它管三件事：PR 描述写什么（做了什么、为什么这样选、怎么验证的）、自测说明怎么给评审人、风险和回滚方案怎么写。</p>
 <p>每本清单的最后一步都是它，所以这个文件很短——它只管「怎么交出去」，不管「怎么做出来」。</p></aside>
+
 <h3>Opening a PR</h3>
 <p>在其他每本 playbook 的结尾被调用。</p>
 <p>从 trunk 之外的一个 git 工作树出发，不把无关工作混进来。rebase 成少量可落地的提交。提交前对 diff 跑 <code>/deslop</code>。在任何从工作树发起的 commit、merge、deploy 之前，列出所有活着的 agent，停掉每一个持有这棵树的——包括不是你启动的孙辈。确认每个都已停止，然后跑 <code>git status</code>，读一遍即将发布的树。</p>
@@ -851,6 +924,7 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 
 <aside class="readnote"><div class="ntag">解读</div><p>自主运行：「一直跑到 X 为止」。它只有一个前提：<strong>X 必须是能判定的条件</strong>——能写成一行可比较的语句（测试全绿、文件生成、指标达到）。</p>
 <p>没有可判定的条件就别用这本。它不会自己停，会空转烧钱跑一整夜。配合 show-me-your-work 技能留决策日志，早上回来能审计它夜里每个决定。</p></aside>
+
 <h3>Autonomous run</h3>
 <p><strong>退出条件由你负责。先定义「完成」，然后一路推进到位、中途不停。</strong></p>
 <ol>
@@ -866,6 +940,7 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 
 <aside class="readnote"><div class="ntag">解读</div><p>全自动队列：一批<strong>互不依赖</strong>的 PR，每个配一个负责人代理推到可合并，人最后只批量点合并。</p>
 <p>它的适用前提写在第一个词里——互不依赖。PR 之间有依赖的（一个基于另一个）用 19 号 stack。和 13 号 babysit 的关系：babysit 盯一个，autopilot-full 盯一批。</p></aside>
+
 <h3>Autopilot-full</h3>
 <p>通过 <a href="javascript:void(0)" style="text-decoration:none;color:inherit">poteto-mode 的 Non-negotiables</a> 解析 driver skill。</p>
 <p><strong>裁决归你，PR 归操作者。每个 PR 由唯一一个 owner 从构建一路带到 merge-ready，而在你的 swarm——它从不写代码——证明即将落地的代码、且操作者亲手点了合并之前，任何东西都不合并。</strong></p>
@@ -890,6 +965,7 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 
 <aside class="readnote"><div class="ntag">解读</div><p>堆叠队列：和 18 一样的批处理，但 PR 之间<strong>有依赖</strong>（比如「先重构、再迁移、再删旧代码」三条链）。它按依赖顺序逐层推进，最后把整叠交给人一次性审阅落地。</p>
 <p>风险提示藏在玩法里：堆叠越深，底下返工的代价越大，所以底层 PR 要尽早推到可合并。</p></aside>
+
 <h3>Autopilot-stack</h3>
 <p>跑 Autopilot-full playbook，但不合并。</p>
 <ol>
@@ -900,6 +976,7 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 
 <aside class="readnote"><div class="ntag">解读</div><p>接手：接别人的分支、或接自己前几天中断的会话。核心动作是<strong>先读已有记录，不重做</strong>——工作树里没提交的改动、上次的检查点、决策日志，都先读再动。</p>
 <p>这条清单解决的是「上下文断了」：人不记得、AI 会话也没了，靠落盘的记录把状态重建起来，而不是从头再写一遍。</p></aside>
+
 <h3>Session pickup</h3>
 <p><strong>续接点归你。读前一条轨迹，不要重做它。</strong></p>
 <ol>
@@ -913,6 +990,7 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 
 <aside class="readnote"><div class="ntag">解读</div><p>安全暂停：要断线、要重启、上下文快满之前，产出一个「冷启动能接上」的检查点——当前进度、下一步、关键决定、怎么恢复。</p>
 <p>它是 20 号接手的另一半：20 号是「来了怎么接」，这本是「走之前留什么」。长任务养成随手留检查点的习惯，任何中断都不再是灾难。</p></aside>
+
 <h3>Pause safely</h3>
 <p><strong>干净的停止归你。留下一个冷启动代理可以接续的检查点。</strong> 只在明确要求时暂停。「继续跑」「我去睡了，别停」「别停下来」——这些都不暂停。</p>
 <ol>
@@ -926,6 +1004,7 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 
 <aside class="readnote"><div class="ntag">解读</div><p>多阶段计划：跨阶段或跨 PR 的大工作，先出计划、<strong>不实施</strong>。产物是一份按阶段切好、每段有验收判据的计划书。</p>
 <p>它和被作者批评的「长计划」不矛盾：作者反对的是对抽象计划的空转评审，支持的是像这样的分段计划——每段都以「实际运行验证过」为完成标准，做完一段验一段。</p></aside>
+
 <h3>Multi-phase or multi-PR plan</h3>
 <p>通过 <a href="javascript:void(0)" style="text-decoration:none;color:inherit">poteto-mode 的 Non-negotiables</a> 解析 driver skill。</p>
 <p><strong>计划归你，代码不归你。计划是一份 owner 逐框执行、操作者凭证据审计的 checklist。</strong> 计划就是交付物。不要实施。</p>
@@ -940,6 +1019,7 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 
 <aside class="readnote"><div class="ntag">解读</div><p>清理：删工作树、删过期模拟器、腾磁盘。它的纪律是<strong>先审计再删</strong>——只删已合并或明确放弃的，拿不准的列出来等人决定。</p>
 <p>它是全套里唯一的大规模删除动作，所以卡在「不可逆动作必须停」的闸上：清单本身会主动停下来问你，而不是替你做主。</p></aside>
+
 <h3>Worktree and simulator cleanup</h3>
 <ol>
 <li>快照并审计。记录 <code>df -h /</code>，然后跑已安装插件下的 <code>skills/poteto-mode/scripts/worktree-audit.mjs</code>（principle-build-the-lever）。它从 <code>git worktree list</code> 读路径，绝不手打——手打的 <code>myrepo-worktrees/x</code> 会漏掉一个住在 <code>.worktrees/myrepo/x</code> 的（principle-encode-lessons-in-structure）。它按大小、年龄、合并状态、未提交工作、PR 状态、以及最近一次触碰它的聊天来分类每个工作树，然后建议一个桶。transcript 扫描很慢，放后台跑。</li>
@@ -955,6 +1035,7 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 <aside class="readnote"><div class="ntag">解读</div><p>新版从五阶段流程缩成一页简报，核心动作就三个：先穷举这次改动触碰的每个系统；给同一份设计勾<strong>两种不同的形状</strong>（类型、签名、模块边界），选「每份状态只有一个所有者、调用方需要知道的东西最少」的那种；实现过程中对照草图检查偏离，被接受的变更回写草图并记录谁接受的，没被接受的保持可见——绝不为已写的代码反改草图。</p>
 <p>两条硬规矩藏在短文里：变通手段开始重复出现就重新设计，不要打补丁；设计规模大或有争议时不自己勾，改跑 arena 让多个模型竞争。</p>
 <p>什么时候用它：非平凡的新功能或重构。改一行小 bug 用不上它。</p></aside>
+
 <h1>Architect</h1>
 <p>在 Codex 上，遵循本技能前先读<a href="javascript:void(0)" style="text-decoration:none;color:inherit">平台映射</a>，包括其中按技能给出的说明。</p>
 <p>在 GitHub Copilot 上，遵循本技能前先读<a href="javascript:void(0)" style="text-decoration:none;color:inherit">平台映射</a>，包括其中按技能给出的说明。</p>
@@ -974,6 +1055,7 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 <li><strong>收敛即共识</strong>：候选长一个样说明答案就是那个，直接发布，不用嫁接。</li>
 </ul>
 <p>什么时候用它：设计或非平凡产物的方向不止一个、赌错代价高时。别用它干生成密集的杂活——四六个模型跑一遍只为一段文案，纯属烧钱。</p></aside>
+
 <h1>Arena</h1>
 <p>在 Codex 上，遵循本技能前先读<a href="javascript:void(0)" style="text-decoration:none;color:inherit">平台映射</a>，包括其中按技能给出的说明。</p>
 <p>在 GitHub Copilot 上，遵循本技能前先读<a href="javascript:void(0)" style="text-decoration:none;color:inherit">平台映射</a>，包括其中按技能给出的说明。</p>
@@ -1020,6 +1102,7 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 <li><strong>更新优先</strong>：已有同名 mode 技能时默认就地修订，只挖上次编辑之后的新历史。</li>
 </ul>
 <p>什么时候用它：你发现自己反复纠正代理同样的毛病、想让这套偏好固化下来。别用它写任务专属技能或窄流程（比如 commit message 规范）——那是普通技能，用 skill-development 就够，不需要挖历史。</p></aside>
+
 <h1>Automate me</h1>
 <p>在 Codex 上，遵循本技能前先读<a href="javascript:void(0)" style="text-decoration:none;color:inherit">平台映射</a>，包括其中按技能给出的说明。</p>
 <p>在 GitHub Copilot 上，遵循本技能前先读<a href="javascript:void(0)" style="text-decoration:none;color:inherit">平台映射</a>，包括其中按技能给出的说明。</p>
@@ -1108,6 +1191,7 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 <li><strong>硬规则</strong>：不在别人可能拉过的分支上改历史，不为让测试过而改断言期望值，不跳 hooks，不把失败检查标成非必需。</li>
 </ul>
 <p>什么时候用它：PR 开了之后你想让代理自己盯到合并。别在 poteto-mode 运行里用它——那种场景由 Babysit playbook 接管，这本只是独立入口。</p></aside>
+
 <h1>Babysit a PR</h1>
 <p>在 Codex 上，遵循本技能前先读<a href="javascript:void(0)" style="text-decoration:none;color:inherit">平台映射</a>，包括其中按技能给出的说明。</p>
 <p>在 GitHub Copilot 上，遵循本技能前先读<a href="javascript:void(0)" style="text-decoration:none;color:inherit">平台映射</a>，包括其中按技能给出的说明。</p>
@@ -1181,6 +1265,7 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 <li><strong>问题 7</strong>：确认工作真的发生在计时区域内——没人 await 的 promise 会给从未发生的劳动出数字。</li>
 </ul>
 <p>什么时候用它：PR 前后对比、选型、报告任何性能主张之前。要快速量级估计的话只查错误和工作计数两条、并注明是一次运行；但选项之间的选型永远不算量级估计。</p></aside>
+
 <h1>Benchmark checklist</h1>
 <p>只要你要产出一个性能数字——PR 的前后对比、一个性能回退的结论、一个 hillclimb 测试台，或一次库/配置选型——就用它。每个问题都用一次真实运行得到的证据回答，不是对代码的猜测。</p>
 <p>用户只要快速量级的场景，跑一次就够了。但问题 4 和 7 仍然要查，并说明只有一次运行。其余问题在该次运行看起来正常时可以跳过。在几个选项之间做选择永远不算快速量级。</p>
@@ -1221,6 +1306,7 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 <li><strong>五级确定性</strong>：从「你说的」到「你在运行中的应用里复现了它」，每条结论尽量往上推，证明不了就写 unproven。</li>
 </ul>
 <p>什么时候用它：审查你不信任的小 diff，或者简报里断言「X 已经处理了 Y」准备照着设计时——先验证断言再设计。别用它做常规代码理解，那是 how/why 的活。</p></aside>
+
 <h1>Blast radius</h1>
 <p>在改动上线之前，找出它会弄坏别处的什么。用于 "blast radius of X"、"what could this break"，或审查一个你还不信任的小 diff。当任务简报对既有代码下了断言（"把端点 X 公开"）时，在设计之前就要跑，而不是等到上线前：断言只是假设，调用方普查才是决定设计的那个东西。</p>
 <p>与 <code>how</code> 和 <code>why</code> 互补。<code>how</code> 告诉你代码做什么，<code>why</code> 告诉你它为什么长这样，blast radius 告诉你它会弄坏别处的什么。</p>
@@ -1261,6 +1347,7 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 <p>没有黑话可拆——它本身就是黑话的解毒剂。</p>
 <p>什么时候用它：AI 刚才那段回答你读不懂、被术语和缩写淹没了，直接 /bro 让它重来一遍。也适合把技术结论转述给非技术同事之前先用它压一遍。</p>
 <p>什么时候别用：它是复述不是重做——不会补充新信息或重新调查。如果原文本身就答错了，bro 一遍还是错的，那是 why 或 how 的活。全文只有六行，是全套清单里最短的一本。</p></aside>
+
 <p>把你上一条消息重述一遍。别再用行话，把话说通顺。说得更简单、更精炼，像一个人对另一个人说话。</p><h2 id="sk-correct"><span class="ttl">correct</span></h2>
 <div class="note"><b>description（路由依据，译文）。</b>找出代理在这个仓库里反复犯的错误，并让每一条都无法再犯。先试架构，再试类型，再试报错信息直接指出修法的 lint，再试测试，文档放最后。每条新检查都要在真实的历史错误上验证它确实会失败。每次操作者纠正你时都重复这套流程。用于 /correct。</div>
 <aside class="readnote"><div class="ntag">解读</div><p>这本是「同样的错别再犯第二次」。操作者（你）不断纠正代理犯同样的错误，它反过来改仓库本身，让下一个代理想犯都犯不了。</p>
@@ -1272,6 +1359,7 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 <li><strong>规则表</strong>：代理指令文件里维护「规则 ↔ 强制机制」对照表；规则在表里却没人强制，就算重犯，当场升级到最高层级。</li>
 </ul>
 <p>什么时候用它：同一类错误第二次被纠正时。别用它处理只犯一次的偶发失误——那构不成类别。</p></aside>
+
 <h1>Correct</h1>
 <p>操作者在这个仓库里一直在为同样的错误纠正代理。改造仓库，让下一个代理犯不了这些错。</p>
 <p>假设每个贡献者都是一个只看得见自己打开过的文件、照抄最近的示例、走能编译过的最短路径的代理。把仓库设计成：从单个文件看是对的改动，对整个仓库也是对的。</p>
@@ -1298,6 +1386,7 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 <li><strong>命名纪律</strong>：生成的技能按区域命名，绝不叫 verify 或 verify- 前缀，那名字属于姊妹技能 create-verification-skill 的 driver。</li>
 </ul>
 <p>什么时候用它：并发、重试、状态机、解析器、unsafe 代码这些测试很难到达的地方。别用它验证普通业务逻辑——那套成本对 CRUD 是杀鸡用牛刀。</p></aside>
+
 <h1>Create a formal verification skill</h1>
 <p>在 Codex 上，遵循本技能前先读<a href="javascript:void(0)" style="text-decoration:none;color:inherit">平台映射</a>，包括其中按技能给出的说明。</p>
 <p>在 GitHub Copilot 上，遵循本技能前先读<a href="javascript:void(0)" style="text-decoration:none;color:inherit">平台映射</a>，包括其中按技能给出的说明。</p>
@@ -1336,6 +1425,7 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 <li><strong>交付前先跑一遍</strong>：没执行过的生成技能是草稿不是交付物。</li>
 </ul>
 <p>什么时候用它：项目没有任何脚本能证明 UI/CLI/服务行为时。和形式化验证那本的区别：这本覆盖「应用整体行为」，那本覆盖「最难测的核心性质」。</p></aside>
+
 <h1>Create a verification skill</h1>
 <p>在 Codex 上，遵循本技能前先读<a href="javascript:void(0)" style="text-decoration:none;color:inherit">平台映射</a>，包括其中按技能给出的说明。</p>
 <p>在 GitHub Copilot 上，遵循本技能前先读<a href="javascript:void(0)" style="text-decoration:none;color:inherit">平台映射</a>，包括其中按技能给出的说明。</p>
@@ -1376,6 +1466,7 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 <li><strong>护栏很严</strong>：行为必须不变（除非修明确 bug）、只做最小聚焦的编辑、总结 1-3 句——它是个清洁工，不是重构工。</li>
 </ul>
 <p>什么时候用它：分支合并前觉得代码「AI 味太重」，或想让新代码融入仓库既有风格时。别用它做大范围重写或行为变更——那是重构技能的活；也别拿它清 AI 写的文字 slop，那是 unslop 的地盘。</p></aside>
+
 <h1>Remove AI code slop</h1>
 <p>对照分支的基底检查 diff，清除本分支引入的 AI 赘余。基底是 PR 的 base 分支，否则是本分支切出的那个分支，否则是仓库默认分支。未提交的改动也要纳入。</p>
 <h2>Focus Areas</h2>
@@ -1403,6 +1494,7 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 <li><strong>审计轨迹</strong>：每落地一步记一行决策日志，配合 show-me-your-work，让审查者以后能在 PR 里看到你为什么这么干。</li>
 </ul>
 <p>什么时候用它：任务没现成清单、要跑数小时、人还得离开一阵子。什么时候别用：任务已有更窄的清单（修 CI、解冲突等），或者一次 arena 就能定的设计——硬上这套是过度工程。</p></aside>
+
 <h1>Figure it out</h1>
 <p>任务对不上任何 playbook 时，自己设计一个。写任何代码之前的交付物就是工作流本身：一串按任务伸缩严格度的阶段，跑一遍科学方法，留下一份人类离开后回来还能审计的决策轨迹。</p>
 <h2>Start</h2>
@@ -1440,6 +1532,7 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 <aside class="readnote"><div class="ntag">解读</div><p>这本是「把红了的 PR 检查一条条修到全绿」的最小循环。它只管 CI：解析失败的检查、读日志或外部检查链接、找第一个可行动的错误、打一个最小补丁、推送、再看一遍，如此往复。</p>
 <p>它的纪律全在护栏里：一次只修一个失败（避免把两个修复搅在一起说不清谁治好了谁）；优先最小低风险改动，不为顺手做大重构；以 <code>gh pr checks</code> 为 PR 整体 CI 状态的唯一事实来源，不凭记忆判断。</p>
 <p>什么时候用它：分支推上去 CI 红了，想要一条快速迭代到绿的路径，不想自己在网页上点来点去看日志。什么时候别用：失败根源是要重构才能解决的结构性问题，或者压根不是 CI 而是合并冲突（那归 fix-merge-conflicts）——这本清单假设代码本身能编译，只是某个检查没过。</p></aside>
+
 <h1>Fix CI</h1>
 <h2>Trigger</h2>
 <p>分支或 PR 的 CI 在挂，需要一条快速迭代到全绿的路径。</p>
@@ -1466,6 +1559,7 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 <aside class="readnote"><div class="ntag">解读</div><p>这本是「分支撞了、解完冲突要能编译」的可靠路径。流程是：从 git status 和冲突标记找出所有冲突文件，逐个做最小、正确性优先的解决；能安全保留两侧就保留，不行就选能编译且公开行为不变的变体；lockfile 交给包管理器重新生成而不是手改；最后跑编译、lint、测试确认，再暂存并汇报关键决策。</p>
 <p>护栏里有几条值得记住的「不做什么」：不留任何冲突标记、解冲突期间不顺手重构、不推送不打 tag（先在本地确认干净，发布是下一步的事）。</p>
 <p>什么时候用它：rebase 或 merge 之后满屏冲突标记，想要一条到可构建状态的路径。什么时候别用：冲突是 CI 失败（归 fix-ci），或者两个分支语义冲突大到需要人来拍板设计取向——这本只保证「能编译、行为不变」，不替你做产品决策。</p></aside>
+
 <h1>Fix merge conflicts</h1>
 <h2>Trigger</h2>
 <p>分支有未解决的合并冲突，需要一条可靠路径回到可构建状态。</p>
@@ -1495,6 +1589,7 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 <aside class="readnote"><div class="ntag">解读</div><p>这本是「把 PR 上的审查意见榨成一份可执行的待办」。流程很短：解析当前分支对应的活跃 PR，拉取审查评论和讨论评论，按严重性和可操作性分组，最后返回一份按优先级排序的行动清单，外加仍需澄清的开放问题。</p>
 <p>它解决的真实问题是：审查意见散落在评论串里，有重复、有闲聊、有真问题，人肉读一遍很费神。这本把它压缩成「先修什么、哪些不用管」。</p>
 <p>什么时候用它：PR 收到一堆 review comments，想快速知道哪些必须改、哪些可以回一句带过。什么时候别用：你想要它替你改代码——它只汇总不修复，改要另派任务；也不要拿它对抗性审查自己的代码，那是 interrogate 的活。它是六本流程清单里最轻的一本，产出就是那份清单。</p></aside>
+
 <h1>Get PR comments</h1>
 <h2>Trigger</h2>
 <p>需要对当前 PR 的反馈做一份精炼、可执行的总结。</p>
@@ -1515,6 +1610,7 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 <aside class="readnote"><div class="ntag">解读</div><p>新版缩成一个短文件，流程只剩两步：派一个只读子代理，把问题连同一段固定的说明（「为资深工程师写架构讲解，让他读完就能上手」）交给它，探索和解释一次完成；然后把产出呈现给你，只做轻量修改不重写。</p>
 <p>它和相邻技能的分工：how 问「现在怎么跑」；why 问「当初为什么这么写」；teach 把两者讲给你听懂。范围不明确时它会先说出自己的理解再动手，你可以随时纠偏。</p>
 <p>什么时候用它：改代码前想建立心智模型，或核实一个关于架构的说法。什么时候别用：想知道动机——那是 why。</p></aside>
+
 <h1>How</h1>
 <p>在 Codex 上，先阅读<a href="javascript:void(0)" style="text-decoration:none;color:inherit">平台映射</a>（包括其中的各技能说明），再执行本技能。</p>
 <p>在 GitHub Copilot 上，先阅读<a href="javascript:void(0)" style="text-decoration:none;color:inherit">平台映射</a>（包括其中的各技能说明），再执行本技能。</p>
@@ -1533,6 +1629,7 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 <aside class="readnote"><div class="ntag">解读</div><p>这本是全套清单里最短的一本，短到只有一句话：用你自己的话复述你认为用户的目标是什么、他们在解决什么问题。</p>
 <p>它解决的真实问题是「以为听懂了其实没有」。在派子代理、跑对手审查或设计工作流之前，先让执行者用自己的话把意图说一遍，说错了用户一眼就能纠正，成本几乎为零；不说，错误就会顺着整条流水线滚下去。interrogate 就明文依赖它来陈述范围和意图。</p>
 <p>什么时候用它：任何要开始一段较长工作之前，尤其是任务描述模糊、或你即将把工作委派下去的时候——一句复述就是最便宜的校准。什么时候别用：它不是聊天技巧，也别拿它当总结用；它只复述意图，不解释代码（那是 how）、不汇报进度（那是 ketchup）。如果复述之后发现根本不确定用户要什么，直接问，别猜。</p></aside>
+
 <p>用自己的话复述你认为用户的目标是什么、他想解决什么问题。</p><h2 id="sk-interrogate"><span class="ttl">interrogate</span></h2>
 <div class="note"><b>description（路由依据，译文）。</b>用于「interrogate」「对抗性审查」「多模型评审」「challenge this」「压测这段代码」「找出盲点」「把这个拆解掉」。对抗方设法击穿一次变更或一个设计，只有被运行证实的问题才保留下来。</div>
 <aside class="readnote"><div class="ntag">解读</div><p>这本是「请一队对手来拆你的改动」。它把范围（或整个分支 diff）复制进多个工作树，每个对手模型一个，任务是破坏这个改动——但只有被运行证明的发现才能留下：一次失败的测试、一个复现脚本、一段展示错误行为的命令输出。风格、命名、结构、「未来可能有风险」这类没跑过的东西一律不算数。</p>
@@ -1543,6 +1640,7 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 </ul>
 <p>和相邻技能的分工：thermo-nuclear 是按规则清单做质量审计，interrogate 是真跑代码找崩溃点；want「挑毛病」用后者，「查规范」用前者。</p>
 <p>什么时候用它：合并前想压力测试一个关键改动或设计，用户说 stress test、tear apart。什么时候别用：普通日常 diff——全模型扇出成本高，留给真正要紧的东西。</p></aside>
+
 <h1>Interrogate</h1>
 <p>在 Codex 上，先阅读<a href="javascript:void(0)" style="text-decoration:none;color:inherit">平台映射</a>（包括其中的各技能说明），再执行本技能。</p>
 <p>在 GitHub Copilot 上，先阅读<a href="javascript:void(0)" style="text-decoration:none;color:inherit">平台映射</a>（包括其中的各技能说明），再执行本技能。</p>
@@ -1582,6 +1680,7 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 </ul>
 <p>和相邻技能的分工：ketchup 汇报会话内变化，recall 翻历史会话，what-did-i-get-done 汇总一段时间的提交。</p>
 <p>什么时候用它：后台跑了一长串活之后说一声 /ketchup。什么时候别用：它本轮只读，不改任何东西。</p></aside>
+
 <h1>Ketchup</h1>
 <p>帮用户补上自 <code>/ketchup</code> 之前他写的最后一条消息以来这次聊天里发生的变化，而且不只是汇报进度，要让他理解每处变化。然后把每一项等他拍板的决定列出来，让他只凭你的回复就能拍板。通知和子代理的结果不算他的消息。默认用户只记得自己的最后一条消息，之后的事一概不记得。</p>
 <p>语气用 <a href="#sk-bro"><code>/bro</code></a> 的腔调，但不是它的任务：大白话、短句子、不用术语，像一个人向另一个人补课。说对用户而言变了什么，而不是你怎么做到的。说「测试通过了」，不说「CI 绿了」。除非用户行动时真的需要，否则不要出现哈希、文件路径、命令、构建号和测试数量。每个 PR、分支或 agent 都用用户熟悉的名字称呼，不用你自己发明的代号。一个事实需要上下文才能理解，要么给出上下文，要么干脆不讲。</p>
@@ -1610,6 +1709,7 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 <li><strong>只读例外</strong>：ketchup 本轮只读，唯独这本允许在仓库外写并渲染视频。</li>
 </ul>
 <p>什么时候用它：变化是视觉的、用户更想「看」而不是「读」的时候。什么时候别用：一两句话就能说完的进度——渲染一部视频纯属浪费；渲染失败就退回纯文字的行动项。</p></aside>
+
 <h1>Ketchup video</h1>
 <p>遵循 <a href="#sk-ketchup"><code>/ketchup</code></a>，但不用它的摘要和配图，而是把发生的事做成一段带字幕的幻灯片短视频。它的窗口从用户在 <code>/ketchup-video</code> 之前写的最后一条消息开始，而不是从更早的某次 <code>/ketchup</code> 开始。视频的编写和渲染（在仓库之外进行）是 ketchup 只读规则的唯一例外。回复由这几部分组成：ketchup 的开头一句话、嵌入的视频、一行说明还有哪些你自己能接着做的活，以及待办事项。视频展示某个调用的选项时，每个选项都按视频里给它的名字来称呼。渲染失败就用一行说明情况，只给出那些调用。</p>
 <h2>幻灯片</h2>
@@ -1632,6 +1732,7 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 </ul>
 <p>和相邻技能的分工：它管模型检查器/证明器类的形式化验证；管「驱动应用 + 功能地图」的普通 verify 技能，是 maintain-verification-skill。</p>
 <p>什么时候用它：合并、重构绕过了验证技能之后，或问「模型还对得上代码吗」。</p></aside>
+
 <h1>Maintain a formal verification skill</h1>
 <p>在 Codex 上，先阅读<a href="javascript:void(0)" style="text-decoration:none;color:inherit">平台映射</a>（包括其中的各技能说明），再执行本技能。</p>
 <p>在 GitHub Copilot 上，先阅读<a href="javascript:void(0)" style="text-decoration:none;color:inherit">平台映射</a>（包括其中的各技能说明），再执行本技能。</p>
@@ -1702,6 +1803,7 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 </ul>
 <p>和相邻技能的分工：这本管「驱动应用 + 功能地图」类验证技能；模型检查器/证明器那类形式化验证归 maintain-formal-verification-skill。</p>
 <p>什么时候用它：周期性巡检，或用户说「审计 verify 技能」。</p></aside>
+
 <h1>Maintain a verification skill</h1>
 <p>在 Codex 上，先阅读<a href="javascript:void(0)" style="text-decoration:none;color:inherit">平台映射</a>（包括其中的各技能说明），再执行本技能。</p>
 <p>在 GitHub Copilot 上，先阅读<a href="javascript:void(0)" style="text-decoration:none;color:inherit">平台映射</a>（包括其中的各技能说明），再执行本技能。</p>
@@ -1751,6 +1853,7 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 <li><strong>审查者指引</strong>：在 PR 描述里写 TL;DR、区分核心文件与生成文件、点名风险，让审查者五分钟看懂。</li>
 </ul>
 <p>什么时候用它：PR 已经写完但很难审（提交乱、描述过时、清理和逻辑混在一起）。什么时候别用：想改代码本身——那是另一个任务；PR 大到靠描述救不了时，它也只会建议拆分而不是抛光。</p></aside>
+
 <h1>Make PR Easy to Review</h1>
 <p>把 PR 准备到审查者能快速理解意图、关键文件和风险的程度。默认目标是在不改变行为的前提下提升可审查性。</p>
 <h2>工作流</h2>
@@ -1804,6 +1907,7 @@ git diff origin/&lt;headRefName&gt; --stat
 <li><strong>编码约束</strong>：对「do not remove」这类约束注释，用类型、测试或 CI lint 把它强制执行，然后注释本身就可以删了。</li>
 </ul>
 <p>什么时候用它：接手一段注释密布的遗留代码，想清掉解释债。什么时候别用：注释是刚写的、有明确归属的设计说明——它的新鲜视角会把这类也有罪推定。</p></aside>
+
 <h1>No comments</h1>
 <p>在 Codex 上，先阅读<a href="javascript:void(0)" style="text-decoration:none;color:inherit">平台映射</a>（包括其中的各技能说明），再执行本技能。</p>
 <p>在 GitHub Copilot 上，先阅读<a href="javascript:void(0)" style="text-decoration:none;color:inherit">平台映射</a>（包括其中的各技能说明），再执行本技能。</p>
@@ -1840,6 +1944,7 @@ git diff origin/&lt;headRefName&gt; --stat
 <li><strong>help 不动手</strong>：它给你一条可以直接发的提示词加来源文件链接，因为一次 pstack 运行花真金白银的 token。</li>
 </ul>
 <p>什么时候用它：不知道该调哪个技能、安装出问题、跑坏了想找症状对应的修复，或者想知道 how/why/teach、arena/swarm、recall/ketchup 这些易混组合的分工。什么时候别用：要真干活——它会把你踢回 <code>/poteto-mode</code>。</p></aside>
+
 <h1>Poteto help</h1>
 <p>回答用户关于 pstack 的问题，递给他一条可以直接发送的提示词，并附上答案出处的文件链接。对求助类问题，不要动手做活。用户问的是「怎么做」，而一次 pstack 运行要花真金白银的 token，所以把提示词留给他自己发。</p>
 <p>要求干活的消息（比如「用 pstack 修这个 bug」）不是求助问题。读 <a href="#poteto-mode"><code>poteto-mode</code></a>，在它之下完成工作。</p>
@@ -2109,6 +2214,7 @@ git diff origin/&lt;headRefName&gt; --stat
 <li><strong>输出契约</strong>：胶囊（最多 5 条）→ 带状态标签的线程（<code>[open PR #N]</code>、<code>[reverted #N]</code>）→ 反复出现的问题 → 单个下一步。</li>
 </ul>
 <p>什么时候用它：说「catch me up」「我上次做到哪了」，或动工前想避开上一次失败的地方。什么时候别用：想恢复某一条具体聊天（那是 session-pickup），或只要这条聊天里的新进展（那是 ketchup）。</p></aside>
+
 <h1>Recall</h1>
 <p>在 Codex 上，先阅读<a href="javascript:void(0)" style="text-decoration:none;color:inherit">平台映射</a>（包括其中的各技能说明），再执行本技能。</p>
 <p>在 GitHub Copilot 上，先阅读<a href="javascript:void(0)" style="text-decoration:none;color:inherit">平台映射</a>（包括其中的各技能说明），再执行本技能。</p>
@@ -2141,6 +2247,7 @@ git diff origin/&lt;headRefName&gt; --stat
 <aside class="readnote"><div class="ntag">解读</div><p>新版缩成一个短文件，不再派三个评审子代理：它自己通读整份会话转写，把教训路由成对现有技能的具体修改。它专找四类东西——用户的纠正、代理只能自己摸索出来的怪癖、本可自查却问你要的上下文、从没在真实产物上跑过的检查。</p>
 <p>保留标准很严：六个月后仍然成立、会改变未来代理的做法、且能落到本次用过的某个技能上，三条同时满足才留。lint/脚本/CI 能强制的内容不写进正文，进 backlog。呈现 Accepted / Rejected / Backlog 之后<strong>等你批准才动手</strong>，改的也是复制出来的副本，绝不碰插件缓存。</p>
 <p>什么时候用它：一轮任务结束，想沉淀经验。什么时候别用：一次性琐事；想拦住重复错误但答案不是改技能——那是 correct 的活。</p></aside>
+
 <h1>Reflect</h1>
 <p>在 Codex 上，先阅读<a href="javascript:void(0)" style="text-decoration:none;color:inherit">平台映射</a>（包括其中的各技能说明），再执行本技能。</p>
 <p>在 GitHub Copilot 上，先阅读<a href="javascript:void(0)" style="text-decoration:none;color:inherit">平台映射</a>（包括其中的各技能说明），再执行本技能。</p>
@@ -2165,6 +2272,7 @@ git diff origin/&lt;headRefName&gt; --stat
 <li><strong>session hook</strong>：控制要不要在每次会话启动时自动注入 poteto-mode；关了就得手动调。</li>
 </ul>
 <p>什么时候用它：装完 pstack 后第一次配置、想换便宜模型或调高强度、路由突然不生效时核对配置。什么时候别用：和模型无关的问题；每个角色想单独换模型时也直接改表就行，不必重跑。</p></aside>
+
 <h1>Setup pstack</h1>
 <p>在 Codex 上，先阅读<a href="javascript:void(0)" style="text-decoration:none;color:inherit">平台映射</a>（包括其中的各技能说明），再执行本技能。</p>
 <p>在 GitHub Copilot 上，先阅读<a href="javascript:void(0)" style="text-decoration:none;color:inherit">平台映射</a>（包括其中的各技能说明），再执行本技能。</p>
@@ -2232,6 +2340,7 @@ session hook: on
 <aside class="readnote"><div class="ntag">解读</div><p>这本是「磨提示词的」：把你的任务要求得更深，而不是更大，最后只还给你一段改写好的提示词，不代你干活。</p>
 <p>它固定问四个问题：顶尖专业人士在这里会做而你没要求的什么事；他们会从什么最原始的材料入手而不是被消化的二手货；他们用什么具体方法和工具；除了你俩之外还有什么能证明结果是对的。然后把答案精确地写回提示词，属于你自己做的选择保持开放。</p>
 <p>什么时候用它：任务描述是「研究一下 X」「帮我看看 Y」这种，怕代理跑得浅、只喂给你摘要级的东西时，先磨一遍再发。什么时候别用：任务已经足够具体，或者你其实想要的是代理直接开工——那就交给 <code>/poteto-mode</code>。</p></aside>
+
 <p>我要这个任务的更深版本，不是更大版本。重写之前，先做四件事：</p>
 <ol>
 <li>说明这个领域的顶尖高手在这里会做什么，而我没有要求。</li>
@@ -2251,6 +2360,7 @@ session hook: on
 <li><strong>跨模型评审</strong>：换一个不同模型家族的子代理扫轨迹找风险，最后回复必须带「Attention」小节，<code>reviewed by</code> 模型名不可省。</li>
 </ul>
 <p>什么时候用它：长跑、无人值守、离开几天后回头审查的工作，评审者需要轨迹才敢信结果。什么时候别用：几分钟的小改动，记这些纯属开销。</p></aside>
+
 <h1>Show me your work</h1>
 <p>在 Codex 上，先阅读<a href="javascript:void(0)" style="text-decoration:none;color:inherit">平台映射</a>（包括其中的各技能说明），再执行本技能。</p>
 <p>在 GitHub Copilot 上，先阅读<a href="javascript:void(0)" style="text-decoration:none;color:inherit">平台映射</a>（包括其中的各技能说明），再执行本技能。</p>
@@ -2318,6 +2428,7 @@ session hook: on
 <li><strong>view 模块</strong>：你亲手写的那层翻译，把模型变量变成读者语言（「Paying」而不是 <code>v.pc[1]</code>），图限 20 条箭头以内。</li>
 </ul>
 <p>什么时候用它：给 PM 或设计师证明一个流程、协议或服务在哪条路径上会违反规则，或把一个 bug 呈现为穿越状态的路径。什么时候别用：模型太大会跑不完或超预算；模型画的若是代码，bug 复现不了时要先怀疑模型写错了。</p></aside>
+
 <h1>Statechart</h1>
 <p>图展示系统如何在状态之间迁移，用的是读图人的语言。那个人——读者——决定行为是否正确。</p>
 <h2>运行</h2>
@@ -2383,6 +2494,7 @@ session hook: on
 <li><strong>gap</strong>：某工人没按简报要求记录验证的 SHA 和方法，结果作废重派；重派还不行就记为缺口，缺口不算通过。</li>
 </ul>
 <p>什么时候用它：横切检查要并行覆盖（全仓库找泄漏、多模块补测试）、想让几个模型竞速同一个任务。什么时候别用：想把多个候选最好的部分嫁接合并成一个产物——那是 arena；swarm 只收报告不改代码。</p></aside>
+
 <h1>Swarm</h1>
 <p>在 Codex 上，先读<a href="javascript:void(0)" style="text-decoration:none;color:inherit">平台映射</a>，包括其中按 skill 的备注，再执行本技能。</p>
 <p>在 GitHub Copilot 上，先读<a href="javascript:void(0)" style="text-decoration:none;color:inherit">平台映射</a>，包括其中按 skill 的备注，再执行本技能。</p>
@@ -2423,6 +2535,7 @@ session hook: on
 <aside class="readnote"><div class="ntag">解读</div><p>这本是「先让测试红，再让代码绿」的修 bug 流程：动手改生产代码之前，先把坏掉的行为变成一个会失败的回归测试。</p>
 <p>它对「红」很挑剔：测试必须因预期原因失败——只有「实际输出和预期不匹配」那种红才证明测试量到了这个 bug；报异常或空结果的红不算。对造不出好测试的情况它也很干脆：需要大范围宿主搭建、脆弱 mock、生产环境才能复现的，宁可不做新测试，改用最接近的可执行验证，因为坏测试比没测试更糟。</p>
 <p>什么时候用它：bug 有清晰廉价的本地测试路径，或用户点名要 TDD、回归测试。什么时候别用：测试路径不清晰或昂贵、纯重构没有行为变化，或流程上为了「写个测试」而写。</p></aside>
+
 <h1>TDD Bug 修复</h1>
 <p>修一个有清晰、廉价测试路径的 bug 时，先让坏行为变成可执行的测试，再改生产代码。目标是写一个聚焦的回归测试：修复前失败，修复后通过。</p>
 <p>当测试不现实时不要硬写。如果可用的测试需要大范围 harness 搭建、脆弱的 mock、缓慢的端到端基础设施、只能在生产环境造出的状态、模糊的复现步骤，或者会牵动大量无关 fixture，就不新增测试，改用最接近的有效验证方式。</p>
@@ -2462,6 +2575,7 @@ session hook: on
 <li><strong>反表演</strong>：禁止「关键洞察」「这是棘手的部分」这类框架标签和测验，直接说内容。</li>
 </ul>
 <p>什么时候用它：「teach me this」「帮我真正搞懂这个子系统」，要的是理解。什么时候别用：只问一个事实（how 或 why 单独跑就够），或者想改代码。</p></aside>
+
 <h1>Teach</h1>
 <p>在 Codex 上，先读<a href="javascript:void(0)" style="text-decoration:none;color:inherit">平台映射</a>，包括其中按 skill 的备注，再执行本技能。</p>
 <p>在 GitHub Copilot 上，先读<a href="javascript:void(0)" style="text-decoration:none;color:inherit">平台映射</a>，包括其中按 skill 的备注，再执行本技能。</p>
@@ -2487,6 +2601,7 @@ session hook: on
 <li><strong>Global English</strong>：only/not 紧贴被修饰词、拆长名词串、不用斜杠和分号，专为非母语读者消歧。</li>
 </ul>
 <p>什么时候用它：写或审 README、RFC、PR 描述、commit message。什么时候别用：产品 UI 文案走产品的文案规范；它管结构和句子，AI 腔模式目录归 unslop 管，各修各的。</p></aside>
+
 <h1>Technical writing</h1>
 <p>让疲惫的工程师一遍读懂。</p>
 <ul>
@@ -2559,6 +2674,7 @@ session hook: on
 <li><strong>与 thermo-nuclear-review 的分工</strong>：那本管正确性和安全（bug、破坏、泄漏），这本管结构和健康；两边同时要就跑 thermos 把它们并行打包。</li>
 </ul>
 <p>什么时候用它：合并前想知道一个分支有没有把代码库弄乱、有没有错失大幅简化的机会。什么时候别用：找运行时缺陷或安全漏洞——那是另一本的辖区。</p></aside>
+
 <h1>Thermo-Nuclear Code Quality Review</h1>
 <p>本技能用于一次格外严格的评审，聚焦实现质量、可维护性、抽象质量和代码库健康度。</p>
 <p>最重要的是，本技能要推动评审者对代码结构保持<strong>雄心</strong>。不要只找出局部的清理机会。主动寻找"code judo"式操作：在保持行为不变的前提下，让实现戏剧性地更简单、更小、更直接、更优雅的重构方案。</p>
@@ -2771,6 +2887,7 @@ session hook: on
 <li><strong>反误报纪律</strong>：把没研究完就开口的猜测列为硬禁——优先级虚高的报告会让开发者不再信你。</li>
 </ul>
 <p>什么时候用它：合并前对一个分支做最后一轮安全与正确性大扫除。什么时候别用：审可维护性和抽象质量——那是 thermo-nuclear-code-quality-review；两边都要就跑 thermos。</p></aside>
+
 <h1>Thermo Nuclear Review</h1>
 <p>本技能用于对当前检出的分支做全面的安全与正确性审计。</p>
 <h2>提示词</h2>
@@ -2814,6 +2931,7 @@ session hook: on
 <li><strong>综合规则</strong>：两个审查者都撞见的发现权重更高（重叠往往说明问题真实），分歧用自己的判断裁决，去重后只呈现最强信号。</li>
 </ul>
 <p>什么时候用它：合并前想一口气把安全和代码质量都审了，或者叫它 double thermo review。什么时候别用：只要一侧的结论时单独跑对应那本更便宜；想让人格化的多模型对抗评审 diff 则是 interrogate 的活。</p></aside>
+
 <h1>Thermos</h1>
 <p>在 Codex 上，先读<a href="javascript:void(0)" style="text-decoration:none;color:inherit">平台映射</a>，包括其中按 skill 的备注，再执行本技能。</p>
 <p>在 GitHub Copilot 上，先读<a href="javascript:void(0)" style="text-decoration:none;color:inherit">平台映射</a>，包括其中按 skill 的备注，再执行本技能。</p>
@@ -2849,6 +2967,7 @@ session hook: on
 <li><strong>穷尽检查</strong>：switch 的 default 臂写 <code>const _exhaustive: never = x</code>，新增变体时编译器直接报错。</li>
 </ul>
 <p>什么时候用它：读写 TS 代码、评审类型设计、纠结一个值该不该用 <code>any</code>。什么时候别用：它是规则表不是教程，想学原理去读 type-system-discipline 原则技能。</p></aside>
+
 <h1>TypeScript 最佳实践</h1>
 <p>在 Muse 上，先读<a href="javascript:void(0)" style="text-decoration:none;color:inherit">平台映射</a>，包括其中按 skill 的备注，再执行本技能。</p>
 <p>先应用 <strong>type-system-discipline</strong> 原则技能。</p>
@@ -2936,6 +3055,7 @@ session hook: on
 <li><strong>测试一条</strong>：这句话换个项目文档里也成立，就等于什么都没说，删。</li>
 </ul>
 <p>什么时候用它：任何要交给人看的文字——文档、PR 描述、回复、讲解稿。什么时候别用：它管 prose 不管代码，也不管文档结构和句子规范（那是 technical-writing 的四层标准）。</p></aside>
+
 <h1>Unslop</h1>
 <p>编辑文本，去除 AI 模式。扫描下面的模式，然后重写。保留原意，匹配目标语气。</p>
 <p>规则编号是稳定的 id，其他技能会引用。已删除的规则留下空号，不补位。</p>
@@ -2973,6 +3093,7 @@ session hook: on
 <aside class="readnote"><div class="ntag">解读</div><p>这本是「这阵子我干了啥」的生成器：按你给的时间段，把当前 git 用户名下的 commit 压成一份能直接贴进状态更新的简短总结。</p>
 <p>它有几条很硬的纪律：只统计本人邮箱的提交，排除 merge commit 和未提交改动；忽略格式化、import 排序、改名这类纯外观改动；只从功能上描述改了什么，不推断动机；最后必须写明实际用的日期范围，免得「上周」糊成一笔。</p>
 <p>什么时候用它：写周报、站会更新、跟老板汇报进展，想要高信号的两三句话加几条要点。什么时候别用：想看的是决策脉络、未结线程、回退史——那需要挖聊天和工单，是 recall 的辖区；这里只看已落地的 commit。</p></aside>
+
 <h1>What did I get done</h1>
 <h2>触发</h2>
 <p>需要对特定时间范围（比如：昨天、过去三天、上周）内完成的工作做一份简短、高信号的摘要。</p>
@@ -3001,6 +3122,7 @@ session hook: on
 <aside class="readnote"><div class="ntag">解读</div><p>新版缩成一个短文件，核心纪律一句话：<strong>从记录回答，不从代码猜</strong>。读引入目标的那批 commit 和 PR 讨论，加上之后每次改动的记录；线索不够再找别的来源。引用作者原话，自己的推断必须标成推断，并明确说清记录没回答什么。</p>
 <p>它和相邻技能的分工：why 管「当初为什么这么写」；代码现在怎么跑是 how 的活；要讲给别人听懂交给 teach。</p>
 <p>什么时候用它：改代码前先弄清动机，或复盘一个奇怪的设计。什么时候别用：问题能靠读代码回答时，先用 how。</p></aside>
+
 <h1>Why</h1>
 <p>在 Codex 上，先读<a href="javascript:void(0)" style="text-decoration:none;color:inherit">平台映射</a>，包括其中按 skill 的备注，再执行本技能。</p>
 <p>在 GitHub Copilot 上，先读<a href="javascript:void(0)" style="text-decoration:none;color:inherit">平台映射</a>，包括其中按 skill 的备注，再执行本技能。</p>
@@ -3011,6 +3133,7 @@ session hook: on
 <aside class="readnote"><div class="ntag">解读</div><p>这条原则说：同一个前提上的修复连着失败两次，该怀疑的是前提，不是第三个修复方案。</p>
 <p>它拦的是「在错误的地基上反复打补丁」：比如登录超时，你先改了超时时间，又加了重试，都在同一个闸门上失败——因为真正的假设「服务是健康的」本身就是错的，第三个补丁只会继续白费。</p>
 <p>适用信号：两个以上修复共享同一个假设却都失败；你准备做第三次尝试之前，先把那句所有修复都依赖的前提写下来，设计一个如果前提为假结果就会不同的观察去检验它。</p></aside>
+
 <h1>Attack the Premise</h1>
 <p>当两个或更多修复共享同一个前提、又在同一道关口失败时，怀疑的是前提，不是修复本身。</p>
 <ul>
@@ -3023,6 +3146,7 @@ session hook: on
 <aside class="readnote"><div class="ntag">解读</div><p>这条原则说：校验和错误处理只放在系统入口（CLI、配置、网络、外部 API），内部代码无条件信任，业务逻辑写成不依赖框架的纯函数。</p>
 <p>它拦的是「校验撒得满地都是」：同一个配置在边界解析时查了一次 nil，调用链三层深处又查一次，每层都觉得自己在防御，实际是噪音加虚假安全感，而且逻辑焊死在框架上没法单独测试。</p>
 <p>适用信号：给接线层写代码时；发现自己在调用链深处做重复的 nil 检查；一段业务逻辑和框架类型缠在一起。自问两句——这份数据正在跨边界吗？能不能抽成外壳直接调的纯函数？</p></aside>
+
 <h1>Boundary Discipline</h1>
 <p>在数据跨越系统边界的地方（CLI 参数、配置文件、外部 API、网络）做校验、收窄类型、处理错误。边界之内信任类型：不再重复校验，不再写冗余的 nil 检查。在边界把原始数据解析成领域类型，把传输层和框架类型挡在公共接口之外。业务逻辑住在没有框架依赖的纯函数里，调用它们的壳很薄。</p>
 <p>两个检验。这份数据现在正在跨越边界吗？如果不是，这个校验是冗余的。这能成为一个壳直接调用的纯函数吗？如果能，就抽出来。</p><h2 id="principle-build-the-lever"><span class="ttl">principle-build-the-lever</span></h2>
@@ -3030,6 +3154,7 @@ session hook: on
 <aside class="readnote"><div class="ntag">解读</div><p>这条原则说：只要工作不是一眼能看清的琐事，就先造一个能完成或证明它的工具（codemod、脚本、生成器、子代理技能），而不是手工干——工具是审查者可以重跑的产物。</p>
 <p>它拦的是「手工修改没法复核」：你手工改了 40 个文件，审查者想验证只能全部重做；一个确定性脚本把「信我」变成「跑这个」。哪怕是一次性的活也适用，门槛是琐事与否，不是是否重复。</p>
 <p>适用信号：任务涉及批量编辑、迁移、比较、验证；你发现自己要对别人说「相信我改对了」。注意检验标准：diff 里没有脚本或技能文件，就等于没用上这条原则。</p></aside>
+
 <h1>Build the Lever</h1>
 <p>工作不琐碎时，构建能做它的工具（codemod、脚本、生成器，或可重跑的检查），而不是手工做。门槛是琐碎与否，不是是否重复。只有两三个显而易见的编辑才跳过工具。</p>
 <ul>
@@ -3043,6 +3168,7 @@ session hook: on
 <aside class="readnote"><div class="ntag">解读</div><p>这条原则说：同一条指令第二次写出来、或同一个纠正反复出现时，把它做成 lint、元数据标志、运行时检查或脚本，而不是再加一段文字。</p>
 <p>它拦的是「用文字执行规则」：你在文档里写了三遍「不要提交 dist 目录」，第四遍还是有人（或某个 AI）提交了。规则写成结构，违规在机器层面就不可能发生；写不完的文字只是症状。</p>
 <p>适用信号：你发现自己正在第二次写下同一条指令；某个纠正已经在多个任务里反复出现。例外是确实需要判断力、没法编码的教训——那就把指令写得更醒目，并补一个失败模式的示例。</p></aside>
+
 <h1>Encode Lessons in Structure</h1>
 <p>如果这条教训需要判断力、无法编码，那就让指令更醒目，并补一个该失败模式的示例。</p>
 <p><strong>推论：</strong> 如果修复可以是结构性的，就只用结构性修复。指令只是症状。</p><h2 id="principle-exhaust-the-design-space"><span class="ttl">principle-exhaust-the-design-space</span></h2>
@@ -3050,12 +3176,14 @@ session hook: on
 <aside class="readnote"><div class="ntag">解读</div><p>这条原则说：面对代码库里没有先例的全新交互或架构决策，不要拍脑袋选一个方案，先做 2-3 个互相竞争的原型并排比较再定。</p>
 <p>它拦的是「第一个想法就是终稿」：一个没人做过的拖拽交互，直接实现进生产代码，手感不对才发现方向错了，回头成本巨大。手感型决策在一次性 HTML 里试错比在生产代码里便宜得多。</p>
 <p>适用信号：决策没有先例可抄、体验取决于手感而非逻辑（全新 UI 交互、关键架构选型）。一旦发现自己在「就按第一个方案做」和「再想想」之间犹豫，就是该建原型的时候。</p></aside>
+
 <h1>Exhaust the Design Space</h1>
 <p>它也适用于产品设计的取舍——那些体验取决于手感而非逻辑的决策。</p><h2 id="principle-experience-first"><span class="ttl">principle-experience-first</span></h2>
 <div class="note"><b>description（路由依据，译文）。</b>出现产品、UX 或功能范围的取舍时应用。选用户愉悦而非实现便利；少而精胜过多而糙。</div>
 <aside class="readnote"><div class="ntag">解读</div><p>这条原则说：实现便利和用户愉悦冲突时，选愉悦；少发货、发好的——三个打磨过的功能胜过十个粗糙的。</p>
 <p>它拦的是「为省事牺牲体验」：赶工期直接用框架默认样式、塞十个半成品功能凑数、错误状态不设计。用户是任何消费这份工作的人——库的调用方、下一位维护这段代码的工程师也算，权衡时同样从他们的视角出发。</p>
 <p>适用信号：产品、UX 或功能范围出现取舍时；你想说「先这样上线后面前面再改」时。注意它和 foundational-thinking 的分工：那条管工作的顺序，这条管工作的目标。</p></aside>
+
 <h1>Experience First</h1>
 <p>当实现便利与用户愉悦冲突时，选愉悦。</p>
 <ul>
@@ -3071,6 +3199,7 @@ session hook: on
 <aside class="readnote"><div class="ntag">解读</div><p>这条原则说：任何测量出的数字（提速、延迟、评测分），在信任和报告之前要能解释它——说出限制它的资源，排除它测的不是你以为的那份工作的可能。</p>
 <p>它拦的是「数字崇拜」：benchmark 显示快了 3 倍，你据此上了线，实际是压测工具本身成了瓶颈、或缓存把工作跳过了。说不出「为什么不是翻倍」的人，根本不知道自己测的是什么。</p>
 <p>适用信号：跑测试之前（先写下哪个结果会改变决策和噪声底线），以及拿到数字之后。常见嫌疑清单：错误、被缓存跳过的工作、从未运行到的代码、留在默认配置的一边、噪声。</p></aside>
+
 <h1>Explain the Number</h1>
 <ul>
 <li><strong>跑之前先写下判据。</strong> 写明什么样的结果会改变决策，以及噪声底。当逐次运行的波动大于效应本身时，停止。</li>
@@ -3083,6 +3212,7 @@ session hook: on
 <aside class="readnote"><div class="ntag">解读</div><p>这条原则说：调试时把症状追回系统第一次出错的地方，在那里修；一个守卫只有在它处理的状态是合法状态时才算修复。</p>
 <p>它拦的是「治症状」：日志报空指针，你在使用处加了个 nil 检查，bug 被藏起来继续换地方浮现，代码里从此多一个没人点名的 workaround。需要一段长注释来自圆其说的补丁，错的是代码不是注释。</p>
 <p>适用信号：任何调试场景。逐层问「为什么」直到答案是代码里的一个错误决策；同时问出错的状态是不是合法状态——不该存在的状态，要去修产生它的东西。只在重启后失败的，先怀疑持久化状态。</p></aside>
+
 <h1>Fix Root Causes</h1>
 <p>修故障本身，不是修它浮现的地方。根因是系统第一次做出不该做的动作、或第一次没能处理一个本应处理的状态的地方。</p>
 <ul>
@@ -3095,6 +3225,7 @@ session hook: on
 <aside class="readnote"><div class="ntag">解读</div><p>这条原则说：写逻辑之前先把地基做对——数据结构优先，脚手架优先（CI、测试基建这些后面每个阶段都受益的先搭），共享状态的并发问题先问清楚。</p>
 <p>它拦的是「地基错了返工一切」：核心类型没定就开写，每个访问路径都在将就；并发写共享状态没隔离，上线后竞态间歇性爆发。数据形状对了，下游代码会变得显而易见。</p>
 <p>适用信号：动手写逻辑之前。判断标准是选择余地——「之后的每个阶段都因它受益吗」；并发推论是「另一个参与者并发改它会发生什么」，答案不是「什么都不会」就先隔离。</p></aside>
+
 <h1>Foundational Thinking</h1>
 <p>写逻辑之前先把数据形状定对。早定核心类型，走遍每一条访问路径，选与主导路径匹配的结构。结构要 DRY，不是每一行都要 DRY。</p>
 <p>在各方之间共享状态之前，先问：如果另一个方并发修改它会怎样。答案不是「什么都不会」，就做隔离。</p>
@@ -3103,6 +3234,7 @@ session hook: on
 <aside class="readnote"><div class="ntag">解读</div><p>这条原则说：上下文快满时主动管理——大输出和长文件别往主线程里塞，把大批量路由给子代理，主线程里留摘要而不是原始载荷。</p>
 <p>它拦的是「上下文溢出拖垮推理」：一个 agent 一次性读完几千行日志，上下文被压到触发压缩，关键细节变成伪影丢掉，后面的推理质量全线下降，任务停在半路。</p>
 <p>适用信号：要读大文件、大输出时；重复读取同一批内容时；准备扇出多个子代理做规划时。原文很短，核心就一句：为每个阶段定尺寸、给范围封顶，机制的成本也要计入预算。</p></aside>
+
 <h1>Guard the Context Window</h1>
 <p><strong>为什么：</strong> 上下文溢出会拖垮推理质量，产生压缩伪影，并让进展中断。</p>
 <p><strong>模式：</strong>
@@ -3111,6 +3243,7 @@ session hook: on
 <aside class="readnote"><div class="ntag">解读</div><p>这条原则说：做能解决问题的最小改动——同一个决策只写一个地方（收进唯一事实来源，传结果标志），diff 越短越好，少写的行胜过「优雅」的样板。</p>
 <p>它拦的是「过度工程」：一个能用三行修掉的 bug，被加上新抽象层、配置项、信号串接；同一个开关逻辑在四处重复，改一处漏三处。事后清理型方案也属于违反——它把原因留在原地，还给每次运行加工作量。</p>
 <p>适用信号：重构时；评估 diff 大小时；你发现自己想加抽象、分层或事件机制来「顺手做得更好」的时候。先问：解决这个问题最少要动什么？</p></aside>
+
 <h1>Laziness Protocol</h1>
 <ul>
 <li><strong>合并决策。</strong> 不要在多个地方重复同一个选择。把它放到唯一的事实来源后面，把结果作为一个简单标志传出去。</li>
@@ -3120,6 +3253,7 @@ session hook: on
 <aside class="readnote"><div class="ntag">解读</div><p>这条原则说：设计命令、生命周期步骤和处理循环时，让它们跑多少次、上次停在哪都收敛到同一个正确终态——每步从当前实际状态推导，只应用与目标的差异。</p>
 <p>它拦的是「重试变灾难」：部署脚本上次中途崩了，留下一个半成品状态，下次重跑要么报错要么把事情做两遍（重复扣款、重复写入），每次重启都变成一次手工调试。</p>
 <p>适用信号：环境里崩溃、重启、重试是常态（命令行工具、任务队列、CI）。三个检验：连跑两次会怎样？上次在每个可能的点崩溃过会怎样？重跑收敛到同一终态吗？任何答案带「取决于留下的状态」，就补一个对账步骤；写一半的记录用「临时文件再 rename」处理。</p></aside>
+
 <h1>Make Operations Idempotent</h1>
 <p>设计每一个改变状态的操作，使它无论跑多少次、无论上一次停在哪里，都收敛到正确的状态。</p>
 <p>每一步都从当下存在的状态推导，而不是从上一次运行想做什么推导。读当前状态，与目标比较，只应用差值。</p>
@@ -3129,6 +3263,7 @@ session hook: on
 <aside class="readnote"><div class="ntag">解读</div><p>这条原则说：引入新的内部 API 时，在同一波改动里把所有调用方迁过去并删掉旧 API，不留兼容层——前提是没有外部用户依赖向后兼容。</p>
 <p>它拦的是「新旧 API 并存成永久债」：为了「平滑过渡」留着旧接口，结果半年后两套 API 都有人用，谁也不敢删，每个新调用方都要做一次选择题。</p>
 <p>适用信号：内部重构引入新 API、且项目能吸收协调一致的破坏性变更时。顺手把测试更新为断言新契约，删掉那些只保护重构前实现细节的测试——它们不是安全网，是绊脚石。</p></aside>
+
 <h1>Migrate Callers Then Delete Legacy APIs</h1>
 <ul>
 <li>更新测试去断言新契约，删掉只保护重构前实现细节的测试</li>
@@ -3141,6 +3276,7 @@ session hook: on
 <aside class="readnote"><div class="ntag">解读</div><p>这条原则说：可维护性就是读者理解代码要花的心力，盯住两个轴——从问题到答案隔了几层间接、读者脑子里要装多少隐藏状态；只被调用一次的包装层内联掉，可变状态的作用域尽量缩小。</p>
 <p>它拦的是「为了架构整洁加层」：六层适配器里每层都是纯透传，查「这个字段从哪来」要跳五个文件；或者一个扁平文件塞 50 个全局变量。LOC 和圈复杂度都是代理指标，读者负担才是真的。</p>
 <p>适用信号：审查或书写难以追踪的代码时。检验标准：新读者能不能在 30 秒内答出「X 从哪来」和「什么能改变 X」；加层或加状态前先问它在别处省下的负担是否至少和增加的一样多。</p></aside>
+
 <h1>Minimize Reader Load</h1>
 <p>阅读负担是读者为了理解代码必须付出的工作量。它有两个相互独立的维度：从问题到答案之间要追踪多少层，以及要在脑子里记住多少隐藏或可变的状态。两个都要守住。</p>
 <ul>
@@ -3153,6 +3289,7 @@ session hook: on
 <aside class="readnote"><div class="ntag">解读</div><p>这条原则说：把领域规则编码进数据结构（状态机、判别联合、查找表、reducer），而不是散落在 if/else 和布尔标志里——好的结构让非法状态根本无法表示，分支自然消失。</p>
 <p>它拦的是「布尔标志地狱」：<code>isLoading</code>、<code>hasError</code>、<code>isSubmitted</code> 三个标志组合出八个状态，其中三个是非法的，全靠散落各处的检查兜着；新功能来了再往 if 链上接一支。写代码时就选定结构很便宜，之后再补就像一次永远排不上队的重构。</p>
 <p>适用信号：有状态的逻辑、大量分支、同一形状假设跨文件重复；第二个必须和第一个同步的布尔值出现了；模块按「加载/校验/转换/保存」这类阶段命名、在各步骤重复同样的领域规则。反面的提醒也成立：形状已经清晰就别强加抽象。</p></aside>
+
 <h1>Model the Domain</h1>
 <p>把领域知识编码进数据结构，而不是散落在各处条件判断里。结构选对了，非法状态就无法被表示出来，分支也随之消失。</p>
 <p>需要时优先选：用状态机代替散落的布尔标志或阶段检查；用带类型的模型代替松散的参数；用映射、注册表或可辨识联合代替跨文件的分支；用 reducer 代替随手写的修改逻辑；在访问模式需要的地方用索引、队列或规范化的集合。</p>
@@ -3162,6 +3299,7 @@ session hook: on
 <aside class="readnote"><div class="ntag">解读</div><p>这条原则说：可逆的工作不要停下来问「我该不该做」——做出合理决定直接推进，把结果拿出来给人事后纠偏；只有不可逆动作（force-push、删生产数据、对外发消息）才需要确认。</p>
 <p>它拦的是「假性阻塞」：agent 写到一半停下来问「要不要把这个函数拆开」，一等几小时，而这件事改错了也只是再改一次的事。错误决定的代价通常远低于阻塞。</p>
 <p>适用信号：你（或 agent）在可逆工作上犹豫要不要征求同意时。记住分工：产品方向来自人类，执行不该阻塞；先推进再展示，发现问题记录下来下一轮修。</p></aside>
+
 <h1>Never Block on the Human</h1>
 <p>人对代理的监督是异步的，代理不能因此停下来。做出合理的决策，继续推进，让人事后纠偏。代码改动可逆、可审查，一个错误决策的代价通常低于停下来等人。</p>
 <ul>
@@ -3175,6 +3313,7 @@ session hook: on
 <aside class="readnote"><div class="ntag">解读</div><p>这条原则说：有计划的重写和迁移要瞄准可验证的终态去收敛，中间阶段允许有计划地「破」，不要为每一步的平滑稳定造一堆一次性兼容代码。</p>
 <p>它拦的是「过渡态变永久态」：迁移分五期，每期都为兼容旧结构写临时胶水，第五期结束没人记得胶水是临时的，它们成了长期债务。有范围、可逆的中间破坏，比永远修不完的兼容层便宜。</p>
 <p>适用信号：多阶段重写、大规模迁移，且有明确的阶段边界。护栏要同时用上：宣布哪里允许暂时破坏，正在改动的区域保留高信号检查，计划完成时跑完整的静态和运行时验证。</p></aside>
+
 <h1>Outcome-Oriented Execution</h1>
 <p>优化目标是那个可验证的最终状态，而不是维持平滑的中间状态。</p>
 <p><strong>为什么：</strong> 让每个中间步骤都完全稳定，往往会产生临时兼容代码，最后变成长期债务。要向目标架构收敛，在明确的验证边界上证明正确性。</p>
@@ -3190,6 +3329,7 @@ session hook: on
 <aside class="readnote"><div class="ntag">解读</div><p>这条原则说：宣布完成之前，对着真实产物直接验证——运行功能、读真实值、看退出码和 diff；文件时间戳、子代理的自我报告、「能编译」都算数不算证明。</p>
 <p>它拦的是「间接验证翻车」：子代理报告「测试全部通过」，实际它跑的是缓存结果；进程活没活靠派生状态推断，实际早就崩了。甚至要验证过程本身——一个正确结果可能建立在没读过原始记录的复原之上。</p>
 <p>适用信号：每个任务收尾时。报告「已合并/已发送/已启动」前先读真实状态；检查失败时先怀疑观察方法。最强的证明是审查者可重跑的确定性脚本，红色只有在失败内容正是你预测的分歧时才说明仪器是好的。</p></aside>
+
 <h1>Prove It Works</h1>
 <p>每项产出都要直接检查真实对象来验证：运行功能、读取真实值、检查 diff。代理指标（文件修改时间、自我汇报、缓存输出、「能编译」）都不算数。检查失败时，先怀疑观察手段，再怀疑系统本身。</p>
 <p>汇报成功（已合并、已发送、已启动）之前，先读取真实状态和退出码。被截断的输出（<code>| tail -1</code>）和你自己 echo 的东西什么都证明不了。</p>
@@ -3200,6 +3340,7 @@ session hook: on
 <aside class="readnote"><div class="ntag">解读</div><p>这条原则说：往现有设计里整合新需求时，别把它拴在旧结构上——先问「如果带着这个需求从零开始写，我们会建什么」，按答案重新设计，再增量交付。</p>
 <p>它拦的是「需求被旧设计扭曲」：往三层的架构里硬塞一个本该影响核心类型的新需求，最后长出一个别扭的特例分支，所有调用方跟着将就。重新设计保住的是选择余地。</p>
 <p>适用信号：新需求和现有设计的假设冲突时。做法是先读所有受影响文件理解当前设计，想清楚整个重设计，然后把改动传播到每一处引用——类型、文档、示例、理由章节，一个不漏。</p></aside>
+
 <h1>Redesign From First Principles</h1>
 <p>融入一项改动时，不要把它硬钉在现有设计上。重新设计，就当这个需求从一开始就是基础假设。</p>
 <ul>
@@ -3213,6 +3354,7 @@ session hook: on
 <aside class="readnote"><div class="ntag">解读</div><p>这条原则说：并发参与者可能共享可变状态时，先问他们是否真的需要同一个对象——不需要就各自拥有自己的文件、键、分支；确实需要共享，才用锁文件、顺序阶段这类结构手段强制串行化。指令和约定不是并发控制。</p>
 <p>它拦的是「一把锁包治百病」：两个 worker 往同一个 <code>state.json</code> 里各写一个字段，加注释说「请勿并发调用」就算解决——竞态是间歇性的，难复现、调试昂贵。其实拆成两个状态文件就消除了共享。</p>
 <p>适用信号：设计多 worker、多阶段并行流程，或发现双方读写同一个文件、推送同一个分支时。把「我们需要一把锁」当作设计坏味道来检查，而不是默认答案。</p></aside>
+
 <h1>Separate Before Serializing Shared State</h1>
 <p>当并发执行方可能写同一个文件、分支、键或对象时，先问一句：它们是真需要一个共享对象，还是在各自发布互不相关的事实？默认给每个执行方自己的文件、键、分支或状态目录，只在读取状态的地方做合并。两个 worker 各写一个字段到同一个 <code>state.json</code>，仍然是共享修改。</p>
 <p>只有当「单一共享写入点」确实是必要不变量时，才用结构化的方式串行化访问（锁文件、单一写入者、顺序阶段、compare-and-swap）。指令说明不是并发控制，「我们需要加个锁」是一种坏味道，要先回头检查共享本身是否必要。</p><h2 id="principle-sequence-verifiable-units"><span class="ttl">principle-sequence-verifiable-units</span></h2>
@@ -3220,6 +3362,7 @@ session hook: on
 <aside class="readnote"><div class="ntag">解读</div><p>这条原则说：多步骤工作（扫荡、迁移、成批相似编辑）拆成小单元，每个单元以可验证的状态收尾，当前单元没变绿不前进；提交和 PR 也按审查者能重放的顺序堆叠。</p>
 <p>它拦的是「破坏被埋进批次」：一口气改了 30 个文件才发现错了，坏改动已经和好改动搅在一起，而且你一直是在坏地基上盖楼。在引发它的那个单元就被抓住的破坏，定位起来便宜得多。</p>
 <p>适用信号：批量编辑、迁移、堆叠提交时。标准交付形状是先放失败的测试、再放修复；每个提交单独能落地，整个序列读起来是一段论证。有杠杆（脚本）替你编辑时逐单元检查几乎免费，也照样跑。</p></aside>
+
 <h1>Sequence work into verifiable units</h1>
 <p>把工作排成一个个小单元，每个单元都结束在一个可检查的状态上，当前单元不通过就不前进。</p>
 <p>在批量清扫、迁移或成批相似修改中，每个单元都是一个括号：已知良好的状态、一处改动、跑检查、继续。即使修改是工具自动做的，逐单元检查也要照跑。</p>
@@ -3228,6 +3371,7 @@ session hook: on
 <aside class="readnote"><div class="ntag">解读</div><p>这条原则说：演进系统时先删后建——先移除死代码、冗余校验器和 stub 引用，把基座变简单了再往上构建；不为臆测的边界情况加规格之外的东西。</p>
 <p>它拦的是「复杂性只增不减」：重写一个模块时把旧路径全留着「以防万一」，新功能盖在没人敢删的旧代码上；留了一个空 stub 引用当占位，三个月后没人记得它是占位。目标是留下一个比你发现时更简单、暴露面不更大的设计。</p>
 <p>适用信号：给新增、重构或重写排序时；写解析器或守卫之前问一句「规格真的要求它吗」；一个引用没有任何新内容时，删掉它而不是留 stub。</p></aside>
+
 <h1>Subtract Before You Add</h1>
 <p>演进系统时，先删复杂度，再构建。默认做减法。</p>
 <p>把简化当作持续投入。离开时，让设计在相同或更小的表面积背后，比你接手时更简单、更能干。</p>
@@ -3243,6 +3387,7 @@ session hook: on
 <aside class="readnote"><div class="ntag">解读</div><p>这条原则说：测试断言的是代码的用户能观察到的东西（返回值、错误、可读回的状态、对外部系统的影响），不是内部实现——用两个假想改动审判每个测试：破坏行为时它必须失败，只改内部实现时它必须仍然通过。</p>
 <p>它拦的是「假测试」：断言比契约更松、期望值由被测代码自己算出来、复述一个从没被读过的 prompt 字符串——行为坏了测试照样绿；反过来，断言内部调用顺序的测试会在每次重构时逼你重写，却抓不到任何 bug。</p>
 <p>适用信号：写、改或保留任何测试时。写法上通过用户的接口用具体输入驱动代码，期望值从需求推导而非从运行代码推导。注意边界：mock 服务收到的载荷是行为，精确错误措辞是实现——契约说了算。</p></aside>
+
 <h1>Test Behavior, Not Implementation</h1>
 <p>测试是对「代码使用者能通过接口观察到什么」的主张：返回值、错误、可读回的状态，以及对外部系统的影响。私有辅助函数、内部调用顺序、中间数据，都是实现细节。</p>
 <p>用两个假想的编辑来评判每条测试：</p>
@@ -3255,6 +3400,7 @@ session hook: on
 <aside class="readnote"><div class="ntag">解读</div><p>这条原则说：让编译器帮你拒绝错误——非法状态用类型定义到无法表示，语义原语加品牌类型（<code>UserId</code> 和 <code>OrderId</code> 都是字符串但不该能互换），外部数据过解析函数才给类型，有权威 schema 就从它派生而不是手写平行类型。</p>
 <p>它拦的是「原语类型混用」：函数签名是 <code>(string, string)</code>，调用时把 orderId 传进了 userId 参数，编译器毫无反应；schema 改了一个字段，手工维护的平行类型悄悄落后，运行时才炸。</p>
 <p>适用信号：在任何静态类型语言里设计类型、审查函数签名时。判据很简单：两个参数共享同一个原语类型但含义不同，就加品牌；每个数据入口（RPC、JSON、CLI 参数、配置、环境变量）放一个解析函数。</p></aside>
+
 <h1>Type System Discipline</h1>
 <p>让编译器拒绝不可能的状态、错配的原始类型和未处理的变体。</p>
 <ul>
