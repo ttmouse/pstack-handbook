@@ -440,19 +440,15 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 </table>
 <h2 id="poteto-mode"><span class="ttl">poteto-mode</span></h2>
 <div class="note"><b>description（路由依据，译文）。</b>poteto 的 agent 风格：简洁而有细节的回复、审慎地使用子代理、去 AI 味的文风、简单的代码、经过验证的工作。用于 poteto、/poteto-mode，或要求按这种风格工作的场景。</div>
-<aside class="readnote"><div class="ntag">解读</div><p>这份文件是整套体系的<strong>总管本体</strong>：你敲 <code>/pstack:poteto-mode</code> 或宿主自动路由时，AI 完整读的就是它。所有行为——挑哪本清单、什么时候停、怎么派活、怎么汇报——都由它规定。读懂它，等于读懂整套体系怎么运转。</p>
-<p><strong>按块读，不用从头顺到尾：</strong></p>
+<aside class="readnote"><div class="ntag">解读</div><p>这份文件是整套体系的<strong>总管本体</strong>。把它想象成一个老练的项目主管：你每次说话，他心里做三层判断，路由只是其中一层。</p>
+<p><strong>三层结构：</strong></p>
 <ul>
-<li><strong>平台适配（Platform Adaptation）</strong>：开头一大段讲各运行时（Codex、Pi、Copilot 等）怎么把 Claude 的工具名换成自家对应物，外加待办清单工具的兜底方案。不换平台可以跳过，只用知道「todo 没工具时退化为不提交的 todo.md」。</li>
-<li><strong>不可妥协项（Non-negotiables）</strong>：硬规矩。第一条是「复述目标 + 最小改动再动手」；还有启动任何 agent 第一行必须让它读 worker.md；有分歧跑原型而不是问人；写代码先说数据形状；提交前 <code>/deslop</code>、评审前 no-comments；测出的数字走 benchmark-checklist。这些是任何清单都绕不开的底线。</li>
-<li><strong>Principles（原则）</strong>：原则索引，按 Core / Architecture / Verification / Delegation / Meta 五组排。AI 拿当前步骤撞每条的适用条件，撞中才读全文——所以你看不到全文，只看到「何时适用」。（新版不再有 Comments 一节，触发清单也缩到 13 行，不再路由到 how。）</li>
-<li><strong>Autonomy（自主性）</strong>：什么时候直接做（可逆工作、外部动作照做不问）、什么时候必须停下来（强推共享分支、部署、删数据、给客户发消息），以及「别停 / 跑完为止」这类会话级覆盖。还有一条容易被忽略：<strong>「不」是可以接受的答案</strong>——被问、被加范围、被展示方案时，要给真判断，不谄媚。</li>
-<li><strong>Subagents（子代理）</strong>：派活的规矩——默认用 <code>pstack:poteto-agent</code>、后台运行、给文件指针不给内联上下文、按角色配模型；默认开全新子代理而非续用；没有独立评审者时评审闸门保持关闭，绝不拿自己的评审当独立裁决。花钱最多的部分就在这节。</li>
-<li><strong>写回复</strong>：短陈述句、先说用户这边变了什么、每个论断带证据或标签、绝不把你能跑的检查交给人。这是你验收它工作的模板。</li>
-<li><strong>Playbooks（流程清单）</strong>：22 本内置清单的名字列表，外加项目自定义 playbook 机制（<code>.agents/playbooks/</code>，用 extends 挂到内置清单上，配套 check-playbooks.mjs 校验脚本）。路由的依据就在这节——你说的话和哪条对上，就走哪本。</li>
-<li><strong>Models / Reasoning effort</strong>：哪个角色用哪个模型、用什么推理强度，以及 <code>pstack-models.md</code> 覆盖表怎么逐行生效。改成本就改这里（配合 setup-pstack）。</li>
+<li><strong>肌肉记忆（不可妥协项里的 13 行触发清单）</strong>：格式是「看到什么情形 → 直接触发什么动作」。写代码先说数据形状、散文过 unslop、提交前 /deslop、测出的数字走 benchmark-checklist。它处理聊天中冒出来的<strong>小动作</strong>，几秒完成，不开项目、不经路由。旧版这一节有 43 条啰嗦长文，0.9.140 起压缩成 13 行短句。</li>
+<li><strong>价值观（Principles，24 条原则）</strong>：需要权衡时才翻的判断标准（完成前必须真实验证、先想最小改动）。撞到才读全文，并在汇报里说明哪条原则影响了哪个选择。</li>
+<li><strong>接项目（Playbooks，22 本清单）</strong>：只有当你说的是<strong>任务</strong>（修这个 bug、盯这个 PR）而不是动作时，才路由到对应清单，把步骤抄进任务列表开始干。这是「土豆模式 = 路由」这句话真正说中的部分。</li>
 </ul>
-<p><strong>读法建议</strong>：先读「不可妥协项」和「写回复」（这两块决定你怎么用它、怎么验它），再读「Playbooks」理解路由，最后按需查 Subagents 和 Models。它比任何一本清单都长，因为它是唯一一份每次任务都要全文读的文件——固定开销就在这。</p></aside>
+<p><strong>其余各节一句话：</strong>平台适配讲各运行时怎么换工具名，不换平台可跳过；自主性划了必须停下来问人的红线（强推、部署、删数据、联系客户）；Subagents 是派活规矩（给范围、选推理档位、防互相覆盖），花钱最多；写回复是验收它工作的模板；Models / 推理档位管成本，改配置走 setup-pstack。worker.md 是派给每个子代理的随身规则卡，配合 Subagents 一节看。</p>
+<p><strong>读法建议</strong>：先读 13 行触发清单和「写回复」（决定你怎么用它、怎么验它），再读 Playbooks 理解路由，其余按需查。</p></aside>
 <h1>Poteto mode</h1>
 <p>捆绑的技能位于本文件旁的 <code>../&lt;name&gt;/SKILL.md</code>，所以每次给 <code>poteto-agent</code> 的 prompt 里都要带上本文件的绝对路径。</p>
 <h2>平台适配</h2>
