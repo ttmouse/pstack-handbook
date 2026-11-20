@@ -1,0 +1,390 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#f6f5f2"><meta name="description" content="Claude Code 团队如何在 AI 大量生成代码时，按风险分层审查并快速回滚。">
+<title>Claude Code 团队如何做代码审查｜中文译编</title>
+<style>
+:root{color-scheme:light dark;--bg:#f6f5f2;--paper:#efeeea;--paper2:#e5e4de;--ink:#16171a;--muted:#64686f;--line:#d9d7d0;--green:#17563b;--green-soft:#e3ebe5;--blue:#315e9e;--amber:#8a5b12;--red:#a8321f;--serif:"Songti SC","Noto Serif CJK SC",Georgia,serif;--sans:-apple-system,BlinkMacSystemFont,"PingFang SC","Noto Sans CJK SC","Microsoft YaHei",sans-serif;--mono:ui-monospace,SFMono-Regular,Menlo,monospace}
+@media(prefers-color-scheme:dark){:root{--bg:#0c0d0f;--paper:#151619;--paper2:#1d1f23;--ink:#ebeef1;--muted:#969ca4;--line:#2a2d33;--green:#7fd7a4;--green-soft:#16241d;--blue:#8ab8ff;--amber:#f0c46a;--red:#ff9a8a}}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:24px}body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.85 var(--sans);-webkit-font-smoothing:antialiased}a{color:inherit;text-decoration-color:var(--muted);text-underline-offset:.2em}a:hover{color:var(--green)}.layout{display:grid;grid-template-columns:230px minmax(0,1fr);max-width:1440px;margin:auto}.toc{position:sticky;top:0;height:100vh;overflow:auto;padding:34px 22px;background:var(--paper);font-size:13px;line-height:1.5}.toc strong{display:block;font:600 17px var(--serif);margin-bottom:18px}.toc .edition-switch{position:relative;flex-basis:100%;width:100%;margin-bottom:14px}.toc .edition-switch summary{display:flex;align-items:center;gap:10px;cursor:pointer;list-style:none;font:600 15px/1.5 var(--serif)}.toc .edition-switch summary::-webkit-details-marker{display:none}.toc .edition-caret{width:7px;height:7px;border-right:1px solid var(--muted);border-bottom:1px solid var(--muted);transform:rotate(45deg) translateY(-2px);transition:transform .2s ease;flex:0 0 auto}.toc .edition-switch[open] .edition-caret{transform:rotate(225deg) translateY(-2px)}.toc .edition-menu{position:absolute;top:calc(100% + 10px);left:0;z-index:60;min-width:230px;padding:6px;background:var(--raise);border:1px solid var(--line)}.toc .edition-menu a{display:block;padding:9px 10px;color:var(--muted);font-size:14px;line-height:1.5;text-decoration:none}.toc .edition-menu a:hover,.toc .edition-menu a[aria-current="page"]{color:var(--ink);background:var(--green-soft)}.toc a{display:block;padding:6px 0;color:var(--muted);text-decoration:none}.toc a:hover{color:var(--green)}main{min-width:0;padding:48px clamp(24px,6vw,94px) 100px;max-width:1050px}.home-link{display:inline-flex;margin:0 0 20px;color:var(--muted);font-size:14px;line-height:1.5;text-decoration:none}.home-link:hover{color:var(--green);text-decoration:underline}.eyebrow{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--green);font-weight:700}.hero{padding:20px 0 50px;border-bottom:1px solid var(--line)}h1,h2,h3{font-family:var(--serif);text-wrap:balance}h1{font-size:clamp(2.3rem,6vw,4.6rem);line-height:1.13;letter-spacing:-.025em;margin:16px 0 18px;max-width:14em}h2{font-size:clamp(1.65rem,3vw,2.35rem);line-height:1.25;margin:78px 0 16px}h3{font-size:1.28rem;line-height:1.45;margin:44px 0 10px}p{max-width:42em;margin:16px 0}ul,ol{max-width:43em;padding-left:1.3em}li{padding-left:.2em;margin:8px 0}blockquote{max-width:40em;margin:28px 0;padding:3px 0 3px 20px;border-left:3px solid var(--green);font:1.18rem/1.7 var(--serif)}.meta{font-size:14px;color:var(--muted)}.lead{font-size:1.2rem;max-width:39em}.callout{max-width:48em;padding:18px 22px;background:var(--paper);margin:28px 0}.callout b{color:var(--green)}.figure{max-width:880px;margin:36px 0 44px}.viz{padding:clamp(14px,3vw,28px);background:var(--paper);overflow:hidden}.viz svg{display:block;width:100%;height:auto}.figure figcaption{color:var(--muted);font-size:13px;line-height:1.65;padding:10px 2px}.life-head{display:flex;flex-direction:column;gap:3px;margin:0 0 10px}.life-head strong{font:600 20px/1.35 var(--serif)}.life-head span{font-size:13px;color:var(--muted)}.dual-svg .desktop,.learn-viz .learn-desktop{display:block}.dual-svg .mobile,.learn-viz .learn-mobile{display:none}.dual-svg svg{width:100%;height:auto}.learn-viz{overflow:hidden}
+.figure figcaption b{color:var(--ink);letter-spacing:.08em}.diagram text{font-family:var(--sans);fill:var(--ink)}.diagram .muted{fill:var(--muted)}.diagram .box{fill:var(--bg);stroke:var(--line);stroke-width:1.4}.diagram .green{fill:var(--green-soft);stroke:var(--green)}.diagram .blue{fill:var(--bg);stroke:var(--blue)}.diagram .amber{fill:var(--bg);stroke:var(--amber)}.diagram .red{fill:var(--bg);stroke:var(--red)}.diagram .line{stroke:var(--muted);stroke-width:1.5;fill:none}.diagram .dash{stroke-dasharray:5 5}.diagram .label{font-size:13px}.diagram .small{font-size:11px}.diagram .title{font-size:16px;font-weight:650}.diagram .step{font-size:12px;font-weight:700;fill:var(--green)}.diagram .tag{font-size:10px;fill:var(--muted)}.diagram .edge{stroke:var(--line);stroke-width:1;fill:none}.diagram .accent{fill:var(--green)}.table-wrap{max-width:760px;overflow-x:auto;margin:24px 0}table{border-collapse:collapse;width:100%;font-size:15px;line-height:1.65}th{text-align:left;color:var(--muted);font-size:13px;font-weight:600}td,th{padding:13px 16px 13px 0;border-bottom:1px solid var(--line);vertical-align:top}td:first-child{font-weight:650;white-space:nowrap}.source{margin-top:80px;padding-top:24px;border-top:1px solid var(--line);font-size:14px;color:var(--muted)}.source a{color:var(--ink)}.image-frame{padding:0;background:#fff}.image-frame img{display:block;width:100%;height:auto}.image-note{font-size:13px;color:var(--muted)}code{font: .9em var(--mono);background:var(--paper2);padding:.1em .35em;border-radius:3px}
+@media(max-width:800px){.layout{display:block}.toc{position:relative;height:auto;max-height:48vh;padding:14px 22px;display:flex;gap:8px 18px;flex-wrap:wrap;border-bottom:1px solid var(--line)}.toc strong{width:100%;margin:0}.toc a{padding:2px 0}main{padding:30px 22px 70px}.hero{padding-top:8px}h2{margin-top:58px}.figure{margin-left:-4px;margin-right:-4px}.viz{padding:12px}}
+@media(max-width:650px){.dual-svg .desktop,.learn-viz .learn-desktop{display:none}.dual-svg .mobile,.learn-viz .learn-mobile{display:block}}
+@media(max-width:520px){body{font-size:16px;line-height:1.8}.toc a{font-size:12px}.diagram .label{font-size:12px}.diagram .small{font-size:10px}.table-wrap{overflow:visible}table,tbody,tr,td{display:block;width:100%}thead{display:none}tr{padding:10px 0;border-bottom:1px solid var(--line)}td{border:0;padding:4px 0}td:first-child{font-size:16px;color:var(--green)}td:nth-child(2)::before{content:"示例：";font-weight:650;color:var(--muted)}td:nth-child(3)::before{content:"人工批准：";font-weight:650;color:var(--muted)}}
+</style></head><body>
+<div class="layout"><nav class="toc" aria-label="文章目录"><details class="edition-switch"><summary>pstack 学习手册<span class="edition-caret" aria-hidden="true"></span></summary><div class="edition-menu" role="group" aria-label="切换阅读页面"><a href="index.html">pstack 学习手册</a><a href="zh/index.html">pstack 原文全译</a><a href="code-review-cn.html" aria-current="page">Claude Code 代码审查篇</a></div></details><strong>本文目录</strong><a href="#why">重新思考审查</a><a href="#time">人的时间与注意力</a><a href="#journey">一次改动的旅程</a><a href="#layers">分层检查</a><a href="#better">让审查器变好</a><a href="#humans">人继续负责什么</a><a href="#context">团队如何共享理解</a><a href="#ownership">你合并，你负责</a><a href="#adopt">如何采用</a></nav>
+<main><header class="hero"><a class="home-link" href="index.html">← 返回 pstack 学习手册</a><div class="eyebrow">工程 · 中文译编</div><h1>Claude Code 团队如何做代码审查</h1><p class="lead">当 Agent 生成代码的速度越来越快，团队如何审查？Claude Code 团队没有取消审查，而是把更多阅读交给机器，把人的注意力留给真正需要判断的地方，并让错误更快暴露、更容易撤回。</p><p class="meta">Addy Osmani、Morgan Westlee Lunt、Qing Wang · 2026 年 10 月 15 日 · 原文约 14 分钟</p><div class="callout"><b>文中数据：</b>6 月到 9 月，Claude Code 仓库合并的 PR 数量翻了一倍多，需要回滚的比例下降了 40% 以上。作者将这归因于覆盖更广的自动审查、风险分级，以及快速回滚机制的共同作用。</div></header>
+<section id="why"><h2>重新思考代码审查的目的</h2><p>Agent 写代码后，改动数量增长得很快。Anthropic 的单体仓库每天落地的改动，从当年 5 月约 2,500 个增加到 9 月超过 30,000 个。面对这样的速度，逐行人工审查很难持续。</p><p>代码审查有两个作用：在发布前发现并修复问题；帮助团队建立对代码库的共同理解。本文主要讨论第一个作用。</p><p>“有没有人读过代码”并不是一个准确的质量指标。更好的问题是：<b>这项改动可能出什么问题？哪种检查——自动化还是人工——最适合发现它？</b></p><p>审查因此从 PR 末尾的一道关卡，变成贯穿开发过程的持续检查，像写作时的拼写检查。多数改动在交给人看之前，已经由 Claude 检查和修复过。</p></section>
+<section id="time"><h2>稀缺资源：人的时间和注意力</h2><p>减少审查时间本身不够。如果坏代码引发故障，节省下来的时间又花在修复上，就只是把成本挪了位置。团队的目标是：大多数 PR 最多只需要一位人类参与者（可以是作者本人），同时不增加回滚和事故。</p><p>团队会观察每个 PR 的人工批准次数（中位数和第 95 百分位）、人工评论数量，以及 PR 等待人工处理的时间。回滚率和事故率是质量护栏：它们上升，就代表所谓的“省时间”并没有真正省下来。</p></section>
+<section id="journey"><h2>一次改动的旅程</h2><p>改动可能来自工程师的电脑，也可能来自 Slack 中的 Claude 会话。它会经过多层检查，再逐步到达用户。</p>
+<figure class="figure"><div class="life-head"><strong>一项改动的生命周期</strong><span>典型 Claude Code 改动：从作者的电脑到用户</span></div><div class="viz dual-svg"><svg xmlns="http://www.w3.org/2000/svg" class="diagram desktop" aria-hidden="false" focusable="false" id="code-review-life-of-a-change-cn" width="651" height="522" viewBox="2 0 651 522" role="img" aria-labelledby="code-review-life-of-a-change-cn-title"><title id="code-review-life-of-a-change-cn-title">一项改动的生命周期</title><style>#code-review-life-of-a-change-cn text{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Noto Sans CJK SC','Microsoft YaHei',sans-serif}#code-review-life-of-a-change-cn .mono{font-family:ui-monospace,monospace}</style>
+<path d="M11 33.5 L11 460.5" fill="none" stroke-width="1" stroke-linejoin="round" style="stroke:var(--line)" />
+<circle cx="11" cy="33.5" r="7" stroke-width="2" style="fill:var(--paper);stroke:var(--paper)" />
+<circle cx="11" cy="33.5" r="6.5" fill="none" stroke-width="1" style="stroke:var(--muted)" />
+<path d="M8 33.5 L10.2 35.8 L14.2 31.3" fill="none" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" style="stroke:var(--green)" />
+<circle cx="11" cy="114.5" r="7" stroke-width="2" style="fill:var(--paper);stroke:var(--paper)" />
+<circle cx="11" cy="114.5" r="6.5" fill="none" stroke-width="1" style="stroke:var(--muted)" />
+<path d="M8 114.5 L10.2 116.8 L14.2 112.3" fill="none" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" style="stroke:var(--green)" />
+<circle cx="11" cy="161.5" r="7" stroke-width="2" style="fill:var(--paper);stroke:var(--paper)" />
+<circle cx="11" cy="161.5" r="6.5" fill="none" stroke-width="1" style="stroke:var(--muted)" />
+<path d="M8 161.5 L10.2 163.8 L14.2 159.3" fill="none" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" style="stroke:var(--green)" />
+<circle cx="11" cy="208.5" r="7" stroke-width="2" style="fill:var(--paper);stroke:var(--paper)" />
+<circle cx="11" cy="208.5" r="6.5" fill="none" stroke-width="1" style="stroke:var(--muted)" />
+<path d="M8 208.5 L10.2 210.8 L14.2 206.3" fill="none" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" style="stroke:var(--green)" />
+<circle cx="11" cy="255.5" r="7" stroke-width="2" style="fill:var(--paper);stroke:var(--paper)" />
+<polygon points="11,248.5 18,255.5 11,262.5 4,255.5" style="fill:var(--amber)" />
+<circle cx="11" cy="336.5" r="7" stroke-width="2" style="fill:var(--paper);stroke:var(--paper)" />
+<circle cx="11" cy="336.5" r="6.5" fill="none" stroke-width="1" style="stroke:var(--muted)" />
+<path d="M8 336.5 L10.2 338.8 L14.2 334.3" fill="none" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" style="stroke:var(--green)" />
+<circle cx="11" cy="400.5" r="7" stroke-width="2" style="fill:var(--paper);stroke:var(--paper)" />
+<circle cx="11" cy="400.5" r="6.5" fill="none" stroke-width="1" style="stroke:var(--muted)" />
+<path d="M8 400.5 L10.2 402.8 L14.2 398.3" fill="none" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" style="stroke:var(--green)" />
+<circle cx="11" cy="430.5" r="7" stroke-width="2" style="fill:var(--paper);stroke:var(--paper)" />
+<circle cx="11" cy="430.5" r="6.5" fill="none" stroke-width="1" style="stroke:var(--muted)" />
+<path d="M8 430.5 L10.2 432.8 L14.2 428.3" fill="none" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" style="stroke:var(--green)" />
+<circle cx="11" cy="460.5" r="7" stroke-width="2" style="fill:var(--paper);stroke:var(--paper)" />
+<path d="M16.6 462.5 A6 6 0 1 1 14.4 455.5" fill="none" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" style="stroke:var(--green)" />
+<path d="M11.6 453.9 L14.6 455.5 L13.6 458.7" fill="none" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" style="stroke:var(--green)" />
+<text x="32" y="14" font-size="11" font-weight="500" letter-spacing="0.08em" class="mono" style="fill:var(--muted)">PR 提交前</text>
+<text x="32" y="38" font-size="14" font-weight="500" style="fill:var(--ink)">先验证工作</text>
+<text x="277" y="38" font-size="13" style="fill:var(--muted)">Claude 运行测试、构建和 lint；另一个 Agent</text>
+<text x="277" y="55" font-size="13" style="fill:var(--muted)">在全新上下文中复查代码差异</text>
+<text x="32" y="95" font-size="11" font-weight="500" letter-spacing="0.08em" class="mono" style="fill:var(--muted)">每个 PR 都执行</text>
+<text x="32" y="119" font-size="14" font-weight="500" style="fill:var(--ink)">必需的 CI</text>
+<text x="277" y="119" font-size="13" style="fill:var(--muted)">Lint、类型、各平台测试、构建和打包；失败会</text>
+<text x="277" y="136" font-size="13" style="fill:var(--muted)">阻止合并</text>
+<text x="32" y="166" font-size="14" font-weight="500" style="fill:var(--ink)">Claude 代码审查</text>
+<text x="277" y="166" font-size="13" style="fill:var(--muted)">多个 Agent 并行找缺陷；其他 Agent 复核每项发现，</text>
+<text x="277" y="183" font-size="13" style="fill:var(--muted)">可信发现按严重程度排序</text>
+<text x="32" y="213" font-size="14" font-weight="500" style="fill:var(--ink)">安全审查</text>
+<text x="277" y="213" font-size="13" style="fill:var(--muted)">独立检查；任一审查还有未解决发现，都会阻止</text>
+<text x="277" y="230" font-size="13" style="fill:var(--muted)">合并</text>
+<text x="32" y="260" font-size="14" font-weight="500" style="fill:var(--ink)">按风险审批</text>
+<text x="277" y="260" font-size="13" style="fill:var(--muted)">分类器确定需要 0、1 或 2 名人审；部分路径</text>
+<text x="277" y="277" font-size="13" style="fill:var(--muted)">始终要求人工审查</text>
+<text x="32" y="317" font-size="11" font-weight="500" letter-spacing="0.08em" class="mono" style="fill:var(--muted)">合并阶段</text>
+<text x="32" y="341" font-size="14" font-weight="500" style="fill:var(--ink)">合并队列</text>
+<text x="277" y="341" font-size="13" style="fill:var(--muted)">把改动应用到最新主分支，再次运行全部检查</text>
+<text x="32" y="381" font-size="11" font-weight="500" letter-spacing="0.08em" class="mono" style="fill:var(--muted)">合并之后</text>
+<text x="32" y="405" font-size="14" font-weight="500" style="fill:var(--ink)">先通过功能开关供内部使用</text>
+<text x="277" y="405" font-size="13" style="fill:var(--muted)">Anthropic 员工先试用，再逐步开放给所有用户</text>
+<text x="32" y="435" font-size="14" font-weight="500" style="fill:var(--ink)">分阶段发布</text>
+<text x="277" y="435" font-size="13" style="fill:var(--muted)">先进入 latest 渠道，之后再进入 stable 渠道</text>
+<text x="32" y="465" font-size="14" font-weight="500" style="fill:var(--ink)">监控、修复或回滚</text>
+<text x="277" y="465" font-size="13" style="fill:var(--muted)">作者与 on-call 持续观察；功能开关可快速关闭，</text>
+<text x="277" y="482" font-size="13" style="fill:var(--muted)">有问题的版本会被回滚</text>
+<circle cx="11" cy="511.5" r="7" stroke-width="2" style="fill:var(--paper);stroke:var(--paper)" />
+<circle cx="11" cy="511.5" r="6.5" fill="none" stroke-width="1" style="stroke:var(--muted)" />
+<path d="M8 511.5 L10.2 513.8 L14.2 509.3" fill="none" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" style="stroke:var(--green)" />
+<text x="26" y="516" font-size="13" style="fill:var(--muted)">自动化检查</text>
+<circle cx="122.66593017578126" cy="511.5" r="7" stroke-width="2" style="fill:var(--paper);stroke:var(--paper)" />
+<polygon points="122.66593017578126,504.5 129.66593017578126,511.5 122.66593017578126,518.5 115.66593017578126,511.5" style="fill:var(--amber)" />
+<text x="137.66593017578126" y="516" font-size="13" style="fill:var(--muted)">人工决策，人数按风险调整</text>
+<circle cx="355.21875244140625" cy="511.5" r="7" stroke-width="2" style="fill:var(--paper);stroke:var(--paper)" />
+<path d="M360.8187524414063 513.5 A6 6 0 1 1 358.61875244140623 506.5" fill="none" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" style="stroke:var(--green)" />
+<path d="M355.8187524414063 504.9 L358.8187524414063 506.5 L357.8187524414063 509.7" fill="none" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" style="stroke:var(--green)" />
+<text x="370.21875244140625" y="516" font-size="13" style="fill:var(--muted)">故障恢复</text>
+</svg>
+<svg xmlns="http://www.w3.org/2000/svg" class="diagram mobile" aria-hidden="false" focusable="false" id="code-review-life-of-a-change-mobile-cn" width="300" height="797" viewBox="2 0 300 797" role="img" aria-labelledby="code-review-life-of-a-change-mobile-cn-title"><title id="code-review-life-of-a-change-mobile-cn-title">一项改动的生命周期</title><style>#code-review-life-of-a-change-mobile-cn text{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Noto Sans CJK SC','Microsoft YaHei',sans-serif}#code-review-life-of-a-change-mobile-cn .mono{font-family:ui-monospace,monospace}</style>
+<path d="M11 34.5 L11 671.5" fill="none" stroke-width="1" stroke-linejoin="round" style="stroke:var(--line)" />
+<circle cx="11" cy="34.5" r="7" stroke-width="2" style="fill:var(--paper);stroke:var(--paper)" />
+<circle cx="11" cy="34.5" r="6.5" fill="none" stroke-width="1" style="stroke:var(--muted)" />
+<path d="M8 34.5 L10.2 36.8 L14.2 32.3" fill="none" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" style="stroke:var(--green)" />
+<circle cx="11" cy="147.5" r="7" stroke-width="2" style="fill:var(--paper);stroke:var(--paper)" />
+<circle cx="11" cy="147.5" r="6.5" fill="none" stroke-width="1" style="stroke:var(--muted)" />
+<path d="M8 147.5 L10.2 149.8 L14.2 145.3" fill="none" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" style="stroke:var(--green)" />
+<circle cx="11" cy="210.5" r="7" stroke-width="2" style="fill:var(--paper);stroke:var(--paper)" />
+<circle cx="11" cy="210.5" r="6.5" fill="none" stroke-width="1" style="stroke:var(--muted)" />
+<path d="M8 210.5 L10.2 212.8 L14.2 208.3" fill="none" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" style="stroke:var(--green)" />
+<circle cx="11" cy="290.5" r="7" stroke-width="2" style="fill:var(--paper);stroke:var(--paper)" />
+<circle cx="11" cy="290.5" r="6.5" fill="none" stroke-width="1" style="stroke:var(--muted)" />
+<path d="M8 290.5 L10.2 292.8 L14.2 288.3" fill="none" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" style="stroke:var(--green)" />
+<circle cx="11" cy="353.5" r="7" stroke-width="2" style="fill:var(--paper);stroke:var(--paper)" />
+<polygon points="11,346.5 18,353.5 11,360.5 4,353.5" style="fill:var(--amber)" />
+<circle cx="11" cy="449.5" r="7" stroke-width="2" style="fill:var(--paper);stroke:var(--paper)" />
+<circle cx="11" cy="449.5" r="6.5" fill="none" stroke-width="1" style="stroke:var(--muted)" />
+<path d="M8 449.5 L10.2 451.8 L14.2 447.3" fill="none" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" style="stroke:var(--green)" />
+<circle cx="11" cy="545.5" r="7" stroke-width="2" style="fill:var(--paper);stroke:var(--paper)" />
+<circle cx="11" cy="545.5" r="6.5" fill="none" stroke-width="1" style="stroke:var(--muted)" />
+<path d="M8 545.5 L10.2 547.8 L14.2 543.3" fill="none" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" style="stroke:var(--green)" />
+<circle cx="11" cy="608.5" r="7" stroke-width="2" style="fill:var(--paper);stroke:var(--paper)" />
+<circle cx="11" cy="608.5" r="6.5" fill="none" stroke-width="1" style="stroke:var(--muted)" />
+<path d="M8 608.5 L10.2 610.8 L14.2 606.3" fill="none" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" style="stroke:var(--green)" />
+<circle cx="11" cy="671.5" r="7" stroke-width="2" style="fill:var(--paper);stroke:var(--paper)" />
+<path d="M16.6 673.5 A6 6 0 1 1 14.4 666.5" fill="none" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" style="stroke:var(--green)" />
+<path d="M11.6 664.9 L14.6 666.5 L13.6 669.7" fill="none" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" style="stroke:var(--green)" />
+<text x="32" y="14" font-size="12.75" font-weight="500" letter-spacing="0.08em" class="mono" style="fill:var(--muted)">PR 提交前</text>
+<text x="32" y="39" font-size="14" font-weight="500" style="fill:var(--ink)">先验证工作</text>
+<text x="32" y="57" font-size="13" style="fill:var(--muted)">Claude runs the tests, build and linter; a</text>
+<text x="32" y="74" font-size="13" style="fill:var(--muted)">second agent reviews the diff in a fresh</text>
+<text x="32" y="91" font-size="13" style="fill:var(--muted)">context</text>
+<text x="32" y="127" font-size="12.75" font-weight="500" letter-spacing="0.08em" class="mono" style="fill:var(--muted)">每个 PR 都执行</text>
+<text x="32" y="152" font-size="14" font-weight="500" style="fill:var(--ink)">必需的 CI</text>
+<text x="32" y="170" font-size="13" style="fill:var(--muted)">Lint, types, tests across platforms, build</text>
+<text x="32" y="187" font-size="13" style="fill:var(--muted)">and packaging. Red blocks the merge</text>
+<text x="32" y="215" font-size="14" font-weight="500" style="fill:var(--ink)">Claude 代码审查</text>
+<text x="32" y="233" font-size="13" style="fill:var(--muted)">Agents hunt for bugs in parallel, verifiers</text>
+<text x="32" y="250" font-size="13" style="fill:var(--muted)">vote on each finding, survivors ranked by</text>
+<text x="32" y="267" font-size="13" style="fill:var(--muted)">severity</text>
+<text x="32" y="295" font-size="14" font-weight="500" style="fill:var(--ink)">安全审查</text>
+<text x="32" y="313" font-size="13" style="fill:var(--muted)">A separate pass. Open findings from either</text>
+<text x="32" y="330" font-size="13" style="fill:var(--muted)">review block the merge</text>
+<text x="32" y="358" font-size="14" font-weight="500" style="fill:var(--ink)">按风险审批</text>
+<text x="32" y="376" font-size="13" style="fill:var(--muted)">A classifier sets the tier: no person, one, or</text>
+<text x="32" y="393" font-size="13" style="fill:var(--muted)">two. Some paths always need a person</text>
+<text x="32" y="429" font-size="12.75" font-weight="500" letter-spacing="0.08em" class="mono" style="fill:var(--muted)">合并阶段</text>
+<text x="32" y="454" font-size="14" font-weight="500" style="fill:var(--ink)">合并队列</text>
+<text x="32" y="472" font-size="13" style="fill:var(--muted)">Checks run again on the latest main with</text>
+<text x="32" y="489" font-size="13" style="fill:var(--muted)">the change applied</text>
+<text x="32" y="525" font-size="12.75" font-weight="500" letter-spacing="0.08em" class="mono" style="fill:var(--muted)">合并之后</text>
+<text x="32" y="550" font-size="14" font-weight="500" style="fill:var(--ink)">先通过功能开关供内部使用</text>
+<text x="32" y="568" font-size="13" style="fill:var(--muted)">Anthropic employees run it before it</text>
+<text x="32" y="585" font-size="13" style="fill:var(--muted)">reaches everyone</text>
+<text x="32" y="613" font-size="14" font-weight="500" style="fill:var(--ink)">分阶段发布</text>
+<text x="32" y="631" font-size="13" style="fill:var(--muted)">The latest channel first; the stable channel</text>
+<text x="32" y="648" font-size="13" style="fill:var(--muted)">trails it</text>
+<text x="32" y="676" font-size="14" font-weight="500" style="fill:var(--ink)">监控、修复或回滚</text>
+<text x="32" y="694" font-size="13" style="fill:var(--muted)">The author and on-call watch; flags turn off</text>
+<text x="32" y="711" font-size="13" style="fill:var(--muted)">quickly, broken builds get reverted</text>
+<circle cx="11" cy="738.5" r="7" stroke-width="2" style="fill:var(--paper);stroke:var(--paper)" />
+<circle cx="11" cy="738.5" r="6.5" fill="none" stroke-width="1" style="stroke:var(--muted)" />
+<path d="M8 738.5 L10.2 740.8 L14.2 736.3" fill="none" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" style="stroke:var(--green)" />
+<text x="32" y="743" font-size="13" style="fill:var(--muted)">自动化检查</text>
+<circle cx="11" cy="762.5" r="7" stroke-width="2" style="fill:var(--paper);stroke:var(--paper)" />
+<polygon points="11,755.5 18,762.5 11,769.5 4,762.5" style="fill:var(--amber)" />
+<text x="32" y="767" font-size="13" style="fill:var(--muted)">人工决策，人数按风险调整</text>
+<circle cx="11" cy="786.5" r="7" stroke-width="2" style="fill:var(--paper);stroke:var(--paper)" />
+<path d="M16.6 788.5 A6 6 0 1 1 14.4 781.5" fill="none" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" style="stroke:var(--green)" />
+<path d="M11.6 779.9 L14.6 781.5 L13.6 784.7" fill="none" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" style="stroke:var(--green)" />
+<text x="32" y="791" font-size="13" style="fill:var(--muted)">故障恢复</text>
+</svg></div><figcaption><b>图 A</b>　按原图逐项翻译重绘。圆形勾选表示自动化检查，菱形表示由人按风险作决定，回环表示发布后的恢复机制。</figcaption></figure></section>
+<section id="layers"><h2>一层一层检查，而不是只设一道关卡</h2><p>每一层都会漏掉一部分问题，但漏网问题还会进入后续检查。只有穿过所有层的少数问题，才需要依赖发布后的监控和回滚。</p>
+<figure class="figure"><div class="life-head"><strong>多层防线，而不是一道关卡</strong><span>六层检查，下方还有回滚</span></div><div class="viz dual-svg"><svg xmlns="http://www.w3.org/2000/svg" class="diagram desktop" aria-hidden="false" focusable="false" id="code-review-layers-cn" width="651" height="369" viewBox="0 0 651 369" role="img" aria-labelledby="code-review-layers-cn-title"><title id="code-review-layers-cn-title">多层防线与快速回滚</title><style>#code-review-layers-cn text{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Noto Sans CJK SC','Microsoft YaHei',sans-serif}#code-review-layers-cn .mono{font-family:ui-monospace,monospace}</style>
+<text x="40" y="14" font-size="13" style="fill:var(--muted)">可能漏过的缺陷</text>
+<path d="M188 22 L188 343" fill="none" stroke-width="1" stroke-dasharray="3 3" style="stroke:var(--amber)" />
+<path d="M78.8 22 L78.8 54" fill="none" stroke-width="1" stroke-dasharray="3 3" opacity=".55" style="stroke:var(--amber)" />
+<path d="M297.2 22 L297.2 54" fill="none" stroke-width="1" stroke-dasharray="3 3" opacity=".55" style="stroke:var(--amber)" />
+<path d="M110 65.5 L110 104" fill="none" stroke-width="1" stroke-dasharray="3 3" opacity=".55" style="stroke:var(--amber)" />
+<path d="M271.2 115.5 L271.2 154" fill="none" stroke-width="1" stroke-dasharray="3 3" opacity=".55" style="stroke:var(--amber)" />
+<path d="M136 165.5 L136 204" fill="none" stroke-width="1" stroke-dasharray="3 3" opacity=".55" style="stroke:var(--amber)" />
+<path d="M253 215.5 L253 254" fill="none" stroke-width="1" stroke-dasharray="3 3" opacity=".55" style="stroke:var(--amber)" />
+<path d="M99.6 265.5 L99.6 304" fill="none" stroke-width="1" stroke-dasharray="3 3" opacity=".55" style="stroke:var(--amber)" />
+<polygon points="40,72 300,72 336,50 76,50" stroke-width="1" style="fill:var(--line);stroke:var(--line)" />
+<ellipse cx="188" cy="61" rx="14" ry="4.5" stroke-width="1" style="fill:var(--paper);stroke:var(--line)" />
+<ellipse cx="110" cy="61" rx="14" ry="4.5" stroke-width="1" style="fill:var(--paper);stroke:var(--line)" />
+<text x="358" y="65.5" font-size="13" style="fill:var(--ink)">提交前验证</text>
+<polygon points="40,122 300,122 336,100 76,100" stroke-width="1" style="fill:var(--line);stroke:var(--line)" />
+<ellipse cx="188" cy="111" rx="14" ry="4.5" stroke-width="1" style="fill:var(--paper);stroke:var(--line)" />
+<ellipse cx="271.2" cy="111" rx="14" ry="4.5" stroke-width="1" style="fill:var(--paper);stroke:var(--line)" />
+<text x="358" y="115.5" font-size="13" style="fill:var(--ink)">必需 CI</text>
+<polygon points="40,172 300,172 336,150 76,150" stroke-width="1" style="fill:var(--line);stroke:var(--line)" />
+<ellipse cx="188" cy="161" rx="14" ry="4.5" stroke-width="1" style="fill:var(--paper);stroke:var(--line)" />
+<ellipse cx="136" cy="161" rx="14" ry="4.5" stroke-width="1" style="fill:var(--paper);stroke:var(--line)" />
+<text x="358" y="165.5" font-size="13" style="fill:var(--ink)">AI 审查</text>
+<polygon points="40,222 300,222 336,200 76,200" stroke-width="1" style="fill:var(--line);stroke:var(--line)" />
+<ellipse cx="188" cy="211" rx="14" ry="4.5" stroke-width="1" style="fill:var(--paper);stroke:var(--line)" />
+<ellipse cx="253" cy="211" rx="14" ry="4.5" stroke-width="1" style="fill:var(--paper);stroke:var(--line)" />
+<text x="358" y="215.5" font-size="13" style="fill:var(--ink)">安全审查</text>
+<polygon points="40,272 300,272 336,250 76,250" stroke-width="1" style="fill:var(--line);stroke:var(--line)" />
+<ellipse cx="188" cy="261" rx="14" ry="4.5" stroke-width="1" style="fill:var(--paper);stroke:var(--line)" />
+<ellipse cx="99.6" cy="261" rx="14" ry="4.5" stroke-width="1" style="fill:var(--paper);stroke:var(--line)" />
+<text x="358" y="265.5" font-size="13" style="fill:var(--ink)">人工批准</text>
+<polygon points="40,322 300,322 336,300 76,300" stroke-width="1" style="fill:var(--line);stroke:var(--line)" />
+<ellipse cx="188" cy="311" rx="14" ry="4.5" stroke-width="1" style="fill:var(--paper);stroke:var(--line)" />
+<ellipse cx="281.6" cy="311" rx="14" ry="4.5" stroke-width="1" style="fill:var(--paper);stroke:var(--line)" />
+<text x="358" y="315.5" font-size="13" style="fill:var(--ink)">合并队列 + 功能开关</text>
+<path d="M188 56.5 L188 315.5" fill="none" stroke-width="1" stroke-dasharray="3 3" style="stroke:var(--amber)" />
+<circle cx="78.8" cy="59" r="4.5" stroke-width="2" style="fill:var(--amber);stroke:var(--paper)" />
+<circle cx="297.2" cy="59" r="4.5" stroke-width="2" style="fill:var(--amber);stroke:var(--paper)" />
+<circle cx="110" cy="109" r="4.5" stroke-width="2" style="fill:var(--amber);stroke:var(--paper)" />
+<circle cx="271.2" cy="159" r="4.5" stroke-width="2" style="fill:var(--amber);stroke:var(--paper)" />
+<circle cx="136" cy="209" r="4.5" stroke-width="2" style="fill:var(--amber);stroke:var(--paper)" />
+<circle cx="253" cy="259" r="4.5" stroke-width="2" style="fill:var(--amber);stroke:var(--paper)" />
+<circle cx="99.6" cy="309" r="4.5" stroke-width="2" style="fill:var(--amber);stroke:var(--paper)" />
+<path d="M144 341 Q188 369 232 341" fill="none" stroke-width="1" style="stroke:var(--amber)" />
+<circle cx="188" cy="351" r="5.5" stroke-width="2" style="fill:var(--amber);stroke:var(--paper)" />
+<text x="358" y="355.5" font-size="13" font-weight="500" style="fill:var(--amber)">快速回滚</text>
+</svg>
+<svg xmlns="http://www.w3.org/2000/svg" class="diagram mobile" aria-hidden="false" focusable="false" id="code-review-layers-mobile-cn" width="300" height="304" viewBox="0 0 300 304" role="img" aria-labelledby="code-review-layers-mobile-cn-title"><title id="code-review-layers-mobile-cn-title">多层防线与快速回滚</title><style>#code-review-layers-mobile-cn text{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Noto Sans CJK SC','Microsoft YaHei',sans-serif}#code-review-layers-mobile-cn .mono{font-family:ui-monospace,monospace}</style>
+<text x="2" y="14" font-size="13" style="fill:var(--muted)">可能漏过的缺陷</text>
+<path d="M82 22 L82 278" fill="none" stroke-width="1" stroke-dasharray="3 3" style="stroke:var(--amber)" />
+<path d="M24 22 L24 45" fill="none" stroke-width="1" stroke-dasharray="3 3" opacity=".55" style="stroke:var(--amber)" />
+<path d="M140 22 L140 45" fill="none" stroke-width="1" stroke-dasharray="3 3" opacity=".55" style="stroke:var(--amber)" />
+<path d="M40.6 55.5 L40.6 85" fill="none" stroke-width="1" stroke-dasharray="3 3" opacity=".55" style="stroke:var(--amber)" />
+<path d="M126.2 95.5 L126.2 125" fill="none" stroke-width="1" stroke-dasharray="3 3" opacity=".55" style="stroke:var(--amber)" />
+<path d="M54.4 135.5 L54.4 165" fill="none" stroke-width="1" stroke-dasharray="3 3" opacity=".55" style="stroke:var(--amber)" />
+<path d="M116.5 175.5 L116.5 205" fill="none" stroke-width="1" stroke-dasharray="3 3" opacity=".55" style="stroke:var(--amber)" />
+<path d="M35.1 215.5 L35.1 245" fill="none" stroke-width="1" stroke-dasharray="3 3" opacity=".55" style="stroke:var(--amber)" />
+<polygon points="2,60 140,60 162,44 24,44" stroke-width="1" style="fill:var(--line);stroke:var(--line)" />
+<ellipse cx="82" cy="52" rx="10" ry="3.5" stroke-width="1" style="fill:var(--paper);stroke:var(--line)" />
+<ellipse cx="40.6" cy="52" rx="10" ry="3.5" stroke-width="1" style="fill:var(--paper);stroke:var(--line)" />
+<text x="174" y="56.5" font-size="13" style="fill:var(--ink)">提交前验证</text>
+<polygon points="2,100 140,100 162,84 24,84" stroke-width="1" style="fill:var(--line);stroke:var(--line)" />
+<ellipse cx="82" cy="92" rx="10" ry="3.5" stroke-width="1" style="fill:var(--paper);stroke:var(--line)" />
+<ellipse cx="126.2" cy="92" rx="10" ry="3.5" stroke-width="1" style="fill:var(--paper);stroke:var(--line)" />
+<text x="174" y="96.5" font-size="13" style="fill:var(--ink)">必需 CI</text>
+<polygon points="2,140 140,140 162,124 24,124" stroke-width="1" style="fill:var(--line);stroke:var(--line)" />
+<ellipse cx="82" cy="132" rx="10" ry="3.5" stroke-width="1" style="fill:var(--paper);stroke:var(--line)" />
+<ellipse cx="54.4" cy="132" rx="10" ry="3.5" stroke-width="1" style="fill:var(--paper);stroke:var(--line)" />
+<text x="174" y="136.5" font-size="13" style="fill:var(--ink)">AI 审查</text>
+<polygon points="2,180 140,180 162,164 24,164" stroke-width="1" style="fill:var(--line);stroke:var(--line)" />
+<ellipse cx="82" cy="172" rx="10" ry="3.5" stroke-width="1" style="fill:var(--paper);stroke:var(--line)" />
+<ellipse cx="116.5" cy="172" rx="10" ry="3.5" stroke-width="1" style="fill:var(--paper);stroke:var(--line)" />
+<text x="174" y="176.5" font-size="13" style="fill:var(--ink)">安全审查</text>
+<polygon points="2,220 140,220 162,204 24,204" stroke-width="1" style="fill:var(--line);stroke:var(--line)" />
+<ellipse cx="82" cy="212" rx="10" ry="3.5" stroke-width="1" style="fill:var(--paper);stroke:var(--line)" />
+<ellipse cx="35.1" cy="212" rx="10" ry="3.5" stroke-width="1" style="fill:var(--paper);stroke:var(--line)" />
+<text x="174" y="216.5" font-size="13" style="fill:var(--ink)">人工批准</text>
+<polygon points="2,260 140,260 162,244 24,244" stroke-width="1" style="fill:var(--line);stroke:var(--line)" />
+<ellipse cx="82" cy="252" rx="10" ry="3.5" stroke-width="1" style="fill:var(--paper);stroke:var(--line)" />
+<ellipse cx="131.7" cy="252" rx="10" ry="3.5" stroke-width="1" style="fill:var(--paper);stroke:var(--line)" />
+<text x="174" y="256.5" font-size="13" style="fill:var(--ink)">合并队列 + 功能开关</text>
+<path d="M82 48.5 L82 255.5" fill="none" stroke-width="1" stroke-dasharray="3 3" style="stroke:var(--amber)" />
+<circle cx="24" cy="50" r="4.5" stroke-width="2" style="fill:var(--amber);stroke:var(--paper)" />
+<circle cx="140" cy="50" r="4.5" stroke-width="2" style="fill:var(--amber);stroke:var(--paper)" />
+<circle cx="40.6" cy="90" r="4.5" stroke-width="2" style="fill:var(--amber);stroke:var(--paper)" />
+<circle cx="126.2" cy="130" r="4.5" stroke-width="2" style="fill:var(--amber);stroke:var(--paper)" />
+<circle cx="54.4" cy="170" r="4.5" stroke-width="2" style="fill:var(--amber);stroke:var(--paper)" />
+<circle cx="116.5" cy="210" r="4.5" stroke-width="2" style="fill:var(--amber);stroke:var(--paper)" />
+<circle cx="35.1" cy="250" r="4.5" stroke-width="2" style="fill:var(--amber);stroke:var(--paper)" />
+<path d="M48 276 Q82 304 116 276" fill="none" stroke-width="1" style="stroke:var(--amber)" />
+<circle cx="82" cy="286" r="5.5" stroke-width="2" style="fill:var(--amber);stroke:var(--paper)" />
+<text x="174" y="290.5" font-size="13" font-weight="500" style="fill:var(--amber)">快速回滚</text>
+</svg></div><figcaption><b>图 B</b>　椭圆表示每层的“漏检孔”，点表示问题在该层被发现；贯穿各层的虚线表示一个问题连续漏过所有检查，最后由快速回滚兜底。</figcaption></figure>
+<h3>1. 在别人看之前，先验证工作</h3><p>给 Claude 能够运行的检查，例如测试、构建或与设计稿对照的截图，并要求它展示结果。随后让拥有新上下文的子 Agent 检查差异。提交 PR 前，团队成员还会用工具找缺陷、简化 diff、端到端检查行为；界面改动还要对照设计规范。</p><p>反复出现的审查问题应修在源头：技能、lint 规则或项目说明文件。<code>CLAUDE.md</code> 说明项目技术栈、约定、目标与非目标；<code>REVIEW.md</code> 说明代码所有者所在区域的风险、失败特征、忽略路径，以及报告问题时应提供的文件和行号证据。好的规则短而具体。</p>
+<h3>2. 每个 PR 都经过 AI 审查</h3><p>Claude 将代码差异与整个仓库和 PR 意图对照，判断改动是否解决问题、是否符合系统设计、是否破坏其他功能；修复缺陷时会追查根因。多个 Agent 同时寻找缺陷，再由另一组 Agent 对发现投票。仅剩下足够可信的发现会成为行内评论，并按严重程度标注为“重要”“小问题”或“原有问题”。每一项都要修复，或说明为何不采纳。</p><p>团队上线研究预览时，获得实质性评论的内部 PR 比例从 16% 升至 54%。超过 1,000 行的 PR 大多会有发现，小型 PR 多数干净。每个仓库可选 Quick、Standard、Deep；漏掉缺陷代价越大，Deep 越值得。</p>
+<h3>3. 安全审查可以阻止合并</h3><p>安全审查独立运行。缺陷审查或安全审查只要还有未解决发现，PR 就不能合并。作者修复问题，或简短说明这是误报。后续提交真正修复问题时，发现会自动清除。</p>
+<h3>4. 阻断式自动检查</h3><p>常规检查包括 lint、类型检查、所有平台的测试和构建。一个 CLI PR 在人看之前，可能要通过数十项检查。PR 模板还会询问如何测试、如何撤回；Claude 可以填写，但提出改动的人负责确认。</p>
+<h3>5. 按风险分配人工批准</h3><p>文档修复与自动更新器改动的风险不同，审查要求也不同。</p><div class="table-wrap"><table><thead><tr><th>风险</th><th>示例</th><th>需要的人工批准</th></tr></thead><tbody><tr><td>低</td><td>文档、文案、仅内部使用的功能、带功能开关的增量改动</td><td>自动审查与安全检查通过后，可不需要</td></tr><tr><td>中</td><td>普通产品改动；缓存、自动更新器、系统提示词等敏感部分</td><td>1 人</td></tr><tr><td>高</td><td>最高风险代码，以及指定为始终需要两人审查的路径</td><td>2 人</td></tr></tbody></table></div><p>风险由改动决定，而不是作者决定。分类器读取改动并分级，另一个分类器再判断是否仍需额外的人审。敏感路径和 CI 工作流文件始终要求人参与。轻量路径只对可信作者开放。Agent 的批准不能代替人的批准；指挥 Agent 改代码的人，和亲手写代码一样要承担责任。批准只对具体提交有效；出现系统无法确认的新提交后，必须重新批准。</p>
+<h3>6. 合并队列、功能开关与渐进发布</h3><p>合并队列把 PR 放到最新主分支上重新运行检查，避免两个单独通过的改动组合后破坏主分支。新行为通常先通过功能开关开放给 Anthropic 内部员工。公开版本先进入 <code>latest</code>，之后才进入 <code>stable</code>。</p>
+<h3>7. 快速发现，快速回滚</h3><p>仍会有错误漏过检查，因此最后一层是快速发现。功能开关可以不重新部署就关闭。Claude Code 有每周 on-call 轮值；事故复盘会追问哪一层本该发现问题。团队目前仍依靠作者、on-call 以及回滚和事故仪表板发现坏合并，希望在更多代码走向零人工合并之前增加自动熔断机制。</p><blockquote>放慢速度确实可能减少错误，但很大程度上只是因为做得更少。团队更愿意提升发现和修复问题的速度。</blockquote></section>
+<section id="better"><h2>如何让审查器变得更好</h2><p>审查流程通过持续评估来改进。任何事故都可以变成评估案例：团队收集造成事故的 PR、后续修复和回滚，请熟悉代码的工程师确认缺陷及其所在位置，再每天用这些案例运行审查器。</p>
+<figure class="figure"><div class="life-head"><strong>把事故变成评估集</strong><span>从事故案例出发，每天检查审查器的变化</span></div><div class="viz dual-svg"><svg xmlns="http://www.w3.org/2000/svg" class="diagram desktop" aria-hidden="false" focusable="false" id="code-review-incident-eval-cn" width="651" height="196" viewBox="28 26 651 196" role="img" aria-labelledby="code-review-incident-eval-cn-title"><title id="code-review-incident-eval-cn-title">用事故案例持续评估审查器</title><style>#code-review-incident-eval-cn text{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Noto Sans CJK SC','Microsoft YaHei',sans-serif}#code-review-incident-eval-cn .mono{font-family:ui-monospace,monospace}</style>
+<text x="54" y="44.5" font-size="14" font-weight="500" style="fill:var(--ink)">事故或回滚</text>
+<text x="54" y="62" font-size="12.5" style="fill:var(--muted)">某项改动造成了故障</text>
+<text x="271" y="44.5" font-size="14" font-weight="500" style="fill:var(--ink)">专家核验的案例</text>
+<text x="271" y="62" font-size="12.5" style="fill:var(--muted)">专家确认缺陷及位置</text>
+<text x="488" y="44.5" font-size="14" font-weight="500" style="fill:var(--ink)">加入评估集</text>
+<text x="488" y="62" font-size="12.5" style="fill:var(--muted)">每次事故都增加一个案例</text>
+<text x="54" y="154.5" font-size="14" font-weight="500" style="fill:var(--ink)">修改审查器</text>
+<text x="54" y="172" font-size="12.5" style="fill:var(--muted)">提示词、工具或模型</text>
+<text x="271" y="154.5" font-size="14" font-weight="500" style="fill:var(--ink)">每日运行评估</text>
+<text x="271" y="172" font-size="12.5" style="fill:var(--muted)">对照全部案例评分</text>
+<text x="488" y="154.5" font-size="14" font-weight="500" style="fill:var(--ink)">分数提高了吗？</text>
+<text x="488" y="172" font-size="12.5" style="fill:var(--muted)">提高就保留；否则撤回</text>
+<path d="M181.3 40 L247 40" fill="none" stroke-width="1" stroke-linejoin="round" style="stroke:var(--muted)" />
+<path d="M243 36.5 L247 40 L243 43.5" fill="none" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" style="stroke:var(--muted)" />
+<path d="M422.6 40 L464 40" fill="none" stroke-width="1" stroke-linejoin="round" style="stroke:var(--muted)" />
+<path d="M460 36.5 L464 40 L460 43.5" fill="none" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" style="stroke:var(--muted)" />
+<path d="M474 50 L474 104 L257 104 L257 140" fill="none" stroke-width="1" stroke-linejoin="round" style="stroke:var(--muted)" />
+<path d="M253.5 136 L257 140 L260.5 136" fill="none" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" style="stroke:var(--muted)" />
+<path d="M203.4 150 L247 150" fill="none" stroke-width="1" stroke-linejoin="round" style="stroke:var(--muted)" />
+<path d="M243 146.5 L247 150 L243 153.5" fill="none" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" style="stroke:var(--muted)" />
+<path d="M368.9 150 L464 150" fill="none" stroke-width="1" stroke-linejoin="round" style="stroke:var(--muted)" />
+<path d="M460 146.5 L464 150 L460 153.5" fill="none" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" style="stroke:var(--muted)" />
+<path d="M474 160 L474 214 L40 214 L40 160" fill="none" stroke-width="1" stroke-linejoin="round" style="stroke:var(--muted)" />
+<path d="M36.5 164 L40 160 L43.5 164" fill="none" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" style="stroke:var(--muted)" />
+<text x="257" y="207" text-anchor="middle" font-size="13" style="fill:var(--muted)">继续评估下一项改动</text>
+<circle cx="40" cy="40" r="5.5" stroke-width="2" style="fill:var(--green);stroke:var(--paper)" />
+<circle cx="257" cy="40" r="5.5" stroke-width="2" style="fill:var(--green);stroke:var(--paper)" />
+<circle cx="474" cy="40" r="5.5" stroke-width="2" style="fill:var(--green);stroke:var(--paper)" />
+<circle cx="40" cy="150" r="5.5" stroke-width="2" style="fill:var(--green);stroke:var(--paper)" />
+<circle cx="257" cy="150" r="5.5" stroke-width="2" style="fill:var(--amber);stroke:var(--paper)" />
+<circle cx="474" cy="150" r="5.5" stroke-width="2" style="fill:var(--green);stroke:var(--paper)" />
+</svg>
+<svg xmlns="http://www.w3.org/2000/svg" class="diagram mobile" aria-hidden="false" focusable="false" id="code-review-incident-eval-mobile-cn" width="300" height="306" viewBox="0 0 300 306" role="img" aria-labelledby="code-review-incident-eval-mobile-cn-title"><title id="code-review-incident-eval-mobile-cn-title">用事故案例持续评估审查器</title><style>#code-review-incident-eval-mobile-cn text{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Noto Sans CJK SC','Microsoft YaHei',sans-serif}#code-review-incident-eval-mobile-cn .mono{font-family:ui-monospace,monospace}</style>
+<text x="46" y="14" font-size="14" font-weight="500" style="fill:var(--ink)">事故或回滚</text>
+<text x="46" y="32" font-size="13" style="fill:var(--muted)">某项改动造成了故障</text>
+<text x="46" y="66" font-size="14" font-weight="500" style="fill:var(--ink)">专家核验的案例</text>
+<text x="46" y="84" font-size="13" style="fill:var(--muted)">专家确认缺陷及位置</text>
+<text x="46" y="118" font-size="14" font-weight="500" style="fill:var(--ink)">加入评估集</text>
+<text x="46" y="136" font-size="13" style="fill:var(--muted)">每次事故都增加一个案例</text>
+<text x="46" y="170" font-size="14" font-weight="500" style="fill:var(--ink)">每日运行评估</text>
+<text x="46" y="188" font-size="13" style="fill:var(--muted)">对照全部案例评分</text>
+<text x="46" y="222" font-size="14" font-weight="500" style="fill:var(--ink)">分数提高了吗？</text>
+<text x="46" y="240" font-size="13" style="fill:var(--muted)">提高就保留；否则撤回</text>
+<text x="46" y="274" font-size="14" font-weight="500" style="fill:var(--ink)">修改审查器</text>
+<text x="46" y="292" font-size="13" style="fill:var(--muted)">提示词、工具或模型</text>
+<path d="M30 19.5 L30 51.5" fill="none" stroke-width="1" stroke-linejoin="round" style="stroke:var(--muted)" />
+<path d="M26.5 47.5 L30 51.5 L33.5 47.5" fill="none" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" style="stroke:var(--muted)" />
+<path d="M30 71.5 L30 103.5" fill="none" stroke-width="1" stroke-linejoin="round" style="stroke:var(--muted)" />
+<path d="M26.5 99.5 L30 103.5 L33.5 99.5" fill="none" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" style="stroke:var(--muted)" />
+<path d="M30 123.5 L30 155.5" fill="none" stroke-width="1" stroke-linejoin="round" style="stroke:var(--muted)" />
+<path d="M26.5 151.5 L30 155.5 L33.5 151.5" fill="none" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" style="stroke:var(--muted)" />
+<path d="M30 175.5 L30 207.5" fill="none" stroke-width="1" stroke-linejoin="round" style="stroke:var(--muted)" />
+<path d="M26.5 203.5 L30 207.5 L33.5 203.5" fill="none" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" style="stroke:var(--muted)" />
+<path d="M30 227.5 L30 259.5" fill="none" stroke-width="1" stroke-linejoin="round" style="stroke:var(--muted)" />
+<path d="M26.5 255.5 L30 259.5 L33.5 255.5" fill="none" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" style="stroke:var(--muted)" />
+<path d="M20 269.5 L8 269.5 L8 165.5 L20 165.5" fill="none" stroke-width="1" stroke-linejoin="round" style="stroke:var(--muted)" />
+<path d="M16 162 L20 165.5 L16 169" fill="none" stroke-width="1" stroke-linejoin="round" stroke-linecap="round" style="stroke:var(--muted)" />
+<circle cx="30" cy="9.5" r="5.5" stroke-width="2" style="fill:var(--green);stroke:var(--paper)" />
+<circle cx="30" cy="61.5" r="5.5" stroke-width="2" style="fill:var(--green);stroke:var(--paper)" />
+<circle cx="30" cy="113.5" r="5.5" stroke-width="2" style="fill:var(--green);stroke:var(--paper)" />
+<circle cx="30" cy="165.5" r="5.5" stroke-width="2" style="fill:var(--amber);stroke:var(--paper)" />
+<circle cx="30" cy="217.5" r="5.5" stroke-width="2" style="fill:var(--green);stroke:var(--paper)" />
+<circle cx="30" cy="269.5" r="5.5" stroke-width="2" style="fill:var(--green);stroke:var(--paper)" />
+</svg></div><figcaption><b>图 C</b>　新事故经专家确认后加入案例集；审查器改动每天对照所有案例评分，分数提高就保留，否则撤回，再评估下一项改动。</figcaption></figure>
+<p>团队还通过作者如何处理评论来衡量噪声：修复了、认为错误、说明行为是有意的，或认为不值得处理。也会在已知干净的 PR 上运行审查器，统计它是否提出了可能引发有害修改的建议。明确的优先级是：先抓住真正的缺陷，再减少审查轮数。</p><p>噪声对 Agent 作者的成本更高：人可以很快略过一个小意见，Agent 可能真的去改代码，带来新提交和新一轮审查。审查必须收敛。某个 CLI PR 曾一夜之间经历 50 多轮审查与修复。调查发现，审查器反复指出的代码中，约 59% 从第一次审查时就已存在；它经常是在后续轮次补报旧问题，而非发现新问题。</p><p>团队之后增加了轮数上限：三轮之后要求作者重新思考方案；前几轮后只复查新增 diff；指出问题类别，让作者一次修完所有同类问题；不重复已经发布的发现。审查 Agent 也会夜间扫描既有代码，提前发现旧缺陷。</p>
+<figure class="figure"><div class="life-head"><strong>让审查过程收敛</strong><span>内部 PR 改进前后的审查指标</span></div><div class="viz dual-svg"><svg xmlns="http://www.w3.org/2000/svg" class="diagram desktop" aria-hidden="false" focusable="false" id="code-review-convergence-cn" width="651" height="253" viewBox="0 0 651 253" role="img" aria-labelledby="code-review-convergence-cn-title"><title id="code-review-convergence-cn-title">审查轮次改进前后对比</title><style>#code-review-convergence-cn text{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Noto Sans CJK SC','Microsoft YaHei',sans-serif}#code-review-convergence-cn .mono{font-family:ui-monospace,monospace}</style>
+<text x="2" y="14" font-size="13" font-weight="500" style="fill:var(--ink)">一轮审查与修复后通过</text>
+<rect x="2" y="26" width="234.0" height="14" style="fill:var(--paper2)" />
+<text x="244" y="37" font-size="13" font-weight="400" style="fill:var(--muted)">65%</text>
+<rect x="2" y="46" width="280.8" height="14" style="fill:var(--amber)" />
+<text x="290.8" y="57" font-size="13" font-weight="500" style="fill:var(--ink)">78%</text>
+<path d="M2 76 L647 76" fill="none" stroke-width="1" stroke-linejoin="round" style="stroke:var(--line)" />
+<text x="2" y="96" font-size="13" font-weight="500" style="fill:var(--ink)">需要五轮或更多轮</text>
+<rect x="2" y="108" width="32.0" height="14" style="fill:var(--paper2)" />
+<text x="42.04" y="119" font-size="13" font-weight="400" style="fill:var(--muted)">8.9%</text>
+<rect x="2" y="128" width="5.4" height="14" style="fill:var(--amber)" />
+<text x="15.4" y="139" font-size="13" font-weight="500" style="fill:var(--ink)">1.5%</text>
+<path d="M2 158 L647 158" fill="none" stroke-width="1" stroke-linejoin="round" style="stroke:var(--line)" />
+<text x="2" y="178" font-size="13" font-weight="500" style="fill:var(--ink)">平均审查轮数</text>
+<rect x="2" y="190" width="249.6" height="14" style="fill:var(--paper2)" />
+<text x="259.6" y="201" font-size="13" font-weight="400" style="fill:var(--muted)">2.08</text>
+<rect x="2" y="210" width="158.4" height="14" style="fill:var(--amber)" />
+<text x="168.4" y="221" font-size="13" font-weight="500" style="fill:var(--ink)">1.32</text>
+<rect x="2" y="239" width="10" height="10" style="fill:var(--paper2)" />
+<text x="18" y="248" font-size="13" style="fill:var(--muted)">改进前</text>
+<rect x="84.26945755004883" y="239" width="10" height="10" style="fill:var(--amber)" />
+<text x="100.26945755004883" y="248" font-size="13" style="fill:var(--muted)">改进后</text>
+</svg>
+<svg xmlns="http://www.w3.org/2000/svg" class="diagram mobile" aria-hidden="false" focusable="false" id="code-review-convergence-mobile-cn" width="300" height="273" viewBox="0 0 300 273" role="img" aria-labelledby="code-review-convergence-mobile-cn-title"><title id="code-review-convergence-mobile-cn-title">审查轮次改进前后对比</title><style>#code-review-convergence-mobile-cn text{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Noto Sans CJK SC','Microsoft YaHei',sans-serif}#code-review-convergence-mobile-cn .mono{font-family:ui-monospace,monospace}</style>
+<text x="2" y="14" font-size="13" font-weight="500" style="fill:var(--ink)">一轮审查与修复后通过</text>
+<rect x="2" y="26" width="149.5" height="14" style="fill:var(--paper2)" />
+<text x="159.5" y="37" font-size="13" font-weight="400" style="fill:var(--muted)">65%</text>
+<rect x="2" y="46" width="179.4" height="14" style="fill:var(--amber)" />
+<text x="189.39999999999998" y="57" font-size="13" font-weight="500" style="fill:var(--ink)">78%</text>
+<path d="M2 76 L296 76" fill="none" stroke-width="1" stroke-linejoin="round" style="stroke:var(--line)" />
+<text x="2" y="96" font-size="13" font-weight="500" style="fill:var(--ink)">需要五轮或更多轮</text>
+<rect x="2" y="108" width="20.5" height="14" style="fill:var(--paper2)" />
+<text x="30.47" y="119" font-size="13" font-weight="400" style="fill:var(--muted)">8.9%</text>
+<rect x="2" y="128" width="3.4" height="14" style="fill:var(--amber)" />
+<text x="13.45" y="139" font-size="13" font-weight="500" style="fill:var(--ink)">1.5%</text>
+<path d="M2 158 L296 158" fill="none" stroke-width="1" stroke-linejoin="round" style="stroke:var(--line)" />
+<text x="2" y="178" font-size="13" font-weight="500" style="fill:var(--ink)">平均审查轮数</text>
+<rect x="2" y="190" width="159.5" height="14" style="fill:var(--paper2)" />
+<text x="169.5" y="201" font-size="13" font-weight="400" style="fill:var(--muted)">2.08</text>
+<rect x="2" y="210" width="101.2" height="14" style="fill:var(--amber)" />
+<text x="111.2" y="221" font-size="13" font-weight="500" style="fill:var(--ink)">1.32</text>
+<rect x="2" y="239" width="10" height="10" style="fill:var(--paper2)" />
+<text x="18" y="248" font-size="13" style="fill:var(--muted)">改进前</text>
+<rect x="2" y="259" width="10" height="10" style="fill:var(--amber)" />
+<text x="18" y="268" font-size="13" style="fill:var(--muted)">改进后</text>
+</svg></div><figcaption><b>图 D</b>　改进后，一轮审查和修复便通过的 PR 从 65% 升至 78%；五轮以上的比例从 8.9% 降至 1.5%；平均审查轮数从 2.08 降至 1.32。</figcaption></figure></section>
+<section id="humans"><h2>人继续留在环路中的地方</h2><p>让资深工程师从深度工作中抽身，只为发现常规小错误，成本很高。团队仍把以下工作交给人：</p><ul><li><b>判断是否值得做：</b>方向、品味和范围。要问“我们真的应该做这件事吗？”</li><li><b>审查高风险代码：</b>例如账单、自动更新器和 CI 工作流。</li><li><b>审查会被他人仿效的架构决策。</b></li><li><b>阅读证据：</b>测试输出、实际运行的命令及其结果、截图和审查发现。如果说不清检查会漏掉什么，就要认真请人审查，而非快速点过。</li><li><b>对最终结果负责：</b>不论代码由谁输入，发布的人类都要承担责任。</li></ul></section>
+<section id="context"><h2>团队如何共享对代码的理解</h2><p>代码审查也承担知识共享的作用：阅读队友的 diff，能了解改了什么、模块如何连接。但团队并不要求有人把整个 Claude Code 的结构都记在脑中。需要理解某个局部时，就让 Claude 针对那一部分写说明，几分钟便能生成，而且符合代码的当前状态。</p><figure class="figure"><div class="life-head"><strong>如果机器读了大部分代码，人怎么了解代码库？</strong><span>理解自己将要改动的那一小块，不需要记住整个仓库</span></div><div class="viz learn-viz"><svg class="diagram learn-desktop" viewBox="0 0 900 440" role="img" aria-labelledby="learn-title"><title id="learn-title">从代码库切片生成解释或可视化学习材料</title><defs><marker id="learn-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" class="line"/></marker></defs>
+<text x="450" y="30" text-anchor="middle" class="title">只学你当前需要理解的那一部分</text>
+<rect x="28" y="65" width="250" height="215" rx="10" class="box"/><text x="153" y="91" text-anchor="middle" class="label">整个代码库</text>
+<g fill="var(--paper2)" stroke="var(--line)" stroke-width="1"><rect x="55" y="112" width="42" height="34"/><rect x="104" y="112" width="42" height="34"/><rect x="153" y="112" width="42" height="34"/><rect x="202" y="112" width="42" height="34"/><rect x="55" y="153" width="42" height="34"/><rect x="104" y="153" width="42" height="34"/><rect x="153" y="153" width="42" height="34"/><rect x="202" y="153" width="42" height="34"/><rect x="55" y="194" width="42" height="34"/><rect x="104" y="194" width="42" height="34"/><rect x="153" y="194" width="42" height="34"/><rect x="202" y="194" width="42" height="34"/></g><rect x="151" y="151" width="46" height="38" rx="3" class="green"/><text x="174" y="168" text-anchor="middle" class="small">托管设置</text><text x="174" y="182" text-anchor="middle" class="small">这一小块</text><text x="153" y="255" text-anchor="middle" class="small muted">没人需要把整个仓库装进脑中</text>
+<path d="M290 170H344" class="line" marker-end="url(#learn-arrow)"/><rect x="355" y="90" width="225" height="165" rx="10" class="box green"/><text x="467" y="124" text-anchor="middle" class="step">向 Claude 提问</text><text x="467" y="158" text-anchor="middle" class="label">“Claude Code 如何读取</text><text x="467" y="181" text-anchor="middle" class="label">托管设置？”</text><text x="467" y="224" text-anchor="middle" class="small muted">只问你要理解的具体切片</text>
+<path d="M585 170H620V111H646M620 170V229H646" class="line" marker-end="url(#learn-arrow)"/><rect x="656" y="70" width="218" height="91" rx="10" class="box blue"/><text x="765" y="103" text-anchor="middle" class="title">生成解释</text><text x="765" y="129" text-anchor="middle" class="small muted">几分钟 · 反映当前代码</text><rect x="656" y="184" width="218" height="91" rx="10" class="box amber"/><text x="765" y="217" text-anchor="middle" class="title">制作可视化材料</text><text x="765" y="243" text-anchor="middle" class="small muted">按个人习惯讲解模块</text>
+<path d="M35 313H865" class="edge"/><text x="450" y="343" text-anchor="middle" class="title">把注意力花在能学到东西的地方</text><rect x="43" y="362" width="380" height="55" rx="8" class="box"/><text x="233" y="385" text-anchor="middle" class="label">逐行读一行文案改动</text><text x="233" y="405" text-anchor="middle" class="small muted">几乎学不到代码库结构</text><rect x="477" y="362" width="380" height="55" rx="8" class="box green"/><text x="667" y="385" text-anchor="middle" class="label">读即将修改模块的解释</text><text x="667" y="405" text-anchor="middle" class="small muted">更快理解真正要动的部分</text></svg>
+<svg class="diagram learn-mobile" viewBox="0 0 360 760" role="img" aria-labelledby="learn-mobile-title"><title id="learn-mobile-title">询问 Claude 理解代码库的某个具体切片</title><defs><marker id="learn-arrow-m" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" class="line"/></marker></defs><text x="180" y="28" text-anchor="middle" class="title">只学当前要改的那一块</text><rect x="24" y="53" width="312" height="155" rx="10" class="box"/><text x="180" y="78" text-anchor="middle" class="label">整个代码库（不必全部记住）</text><g fill="var(--paper2)" stroke="var(--line)" stroke-width="1"><rect x="49" y="93" width="34" height="28"/><rect x="89" y="93" width="34" height="28"/><rect x="129" y="93" width="34" height="28"/><rect x="169" y="93" width="34" height="28"/><rect x="209" y="93" width="34" height="28"/><rect x="249" y="93" width="34" height="28"/><rect x="49" y="127" width="34" height="28"/><rect x="89" y="127" width="34" height="28"/><rect x="129" y="127" width="34" height="28"/><rect x="169" y="127" width="34" height="28"/><rect x="209" y="127" width="34" height="28"/><rect x="249" y="127" width="34" height="28"/></g><rect x="127" y="125" width="38" height="32" rx="3" class="green"/><text x="146" y="145" text-anchor="middle" class="small">目标切片</text><text x="180" y="184" text-anchor="middle" class="small muted">例如：托管设置</text>
+<path d="M180 212V236" class="line" marker-end="url(#learn-arrow-m)"/><rect x="24" y="244" width="312" height="115" rx="10" class="box green"/><text x="180" y="274" text-anchor="middle" class="step">向 Claude 提问</text><text x="180" y="305" text-anchor="middle" class="label">“Claude Code 如何读取</text><text x="180" y="329" text-anchor="middle" class="label">托管设置？”</text><path d="M180 363V387M180 387H93V405M180 387H267V405" class="line" marker-end="url(#learn-arrow-m)"/>
+<rect x="24" y="414" width="145" height="95" rx="9" class="box blue"/><text x="96" y="448" text-anchor="middle" class="title">生成解释</text><text x="96" y="475" text-anchor="middle" class="small muted">几分钟，基于当前代码</text><rect x="191" y="414" width="145" height="95" rx="9" class="box amber"/><text x="263" y="448" text-anchor="middle" class="title">可视化材料</text><text x="263" y="475" text-anchor="middle" class="small muted">按个人习惯学习</text><path d="M24 533H336" class="edge"/><text x="180" y="565" text-anchor="middle" class="title">把时间花在真正有用的学习上</text><rect x="24" y="584" width="312" height="63" rx="8" class="box"/><text x="180" y="610" text-anchor="middle" class="label">逐行看一行文案改动</text><text x="180" y="633" text-anchor="middle" class="small muted">几乎学不到代码库结构</text><rect x="24" y="665" width="312" height="63" rx="8" class="box green"/><text x="180" y="691" text-anchor="middle" class="label">读即将修改模块的解释</text><text x="180" y="714" text-anchor="middle" class="small muted">更快理解实际要动的部分</text></svg></div><figcaption><b>原文插图重绘</b>　选中代码库中的具体切片，向 Claude 提问；它可以写解释，也可以制作适合自己的可视化材料。原图强调：这比逐行读低信息量的文案改动更有助于理解代码库。</figcaption></figure><p>有些人会进一步让 Claude 制作小型可视化材料，按自己喜欢的方式讲解模块。团队开放频道的工作习惯也让成员能看到彼此正在构建什么，在过程中互相补充。</p></section>
+<section id="ownership"><h2>“你合并，你负责”</h2><p>如果你合并了一项小型或中型改动，后来出问题，通常由你来修复。这套方式建立在几个条件上：</p><ul><li>改动足够小，容易审查、调试和回滚；</li><li>一切都可撤回，功能开关、回滚和分阶段发布能在几分钟内撤销大多数错误；</li><li>影响范围决定门槛，代价高的代码需要更多人和更多检查；</li><li>遥测与内部使用能快速暴露回归；</li><li>负责修复不是追责甩锅。作者上下文最多，事故复盘看的是系统。</li></ul><p>责任也是共享的。开放频道让任何人都能看到其他人在做什么、接续讨论，或让 Claude 检查遗漏。来自代码所有者之外的反馈，也帮助团队在不逐行设卡的情况下保持质量。</p><h3>该改变方向时就改变方向</h3><p>Agent 让启动工作变得便宜，也意味着有些工作不该合并。有人可以在频道里指出先前决策、追问原因或提出更简单的做法，作者就关闭或调整 PR。关键是尽早在讨论中提出不同方向，不要等 PR 完成后才用阻塞评论提出。</p></section>
+<section id="adopt"><h2>如何采用这套流程</h2><p>文章认为，大部分工具和机制现在已经可用。</p><h3>提交 PR 之前</h3><ul><li>在简短的 <code>CLAUDE.md</code> 中列出 Agent 可运行的检查；用 hooks 执行格式化和 lint。</li><li>本地运行 <code>/code-review</code>、<code>/security-review</code>，或用新上下文的子 Agent 复审。</li><li>新增 <code>REVIEW.md</code>，把反复出现的意见整理成规则。</li></ul><h3>每个 PR 都执行</h3><ul><li>要求 CI 通过；PR 模板包含“测试”“风险”“如何回滚”。</li><li>先在一个仓库启用 AI 审查，调好 <code>REVIEW.md</code> 后再推广。</li><li>添加自动安全审查，要求合并前处理完所有审查讨论。</li><li>按风险选择快速或深入审查；漏掉缺陷代价高时，选择 Deep。</li><li>限制审查轮数；前几轮之后只复查新 diff。</li></ul><h3>批准、合并与发布</h3><ul><li>写下风险等级，让等级由改动决定；先严格，再依据证据逐步放宽。</li><li>只给可信作者开放轻量批准流程。</li><li>用 CODEOWNERS 和分支保护规则，让认证、账单、CI、发布工作流和安装器始终有人审查。</li><li>机器人批准不能代替必需的人审；有新提交时撤销旧批准。</li><li>使用合并队列、功能开关、内部先用、分阶段发布和一步回滚。</li><li>把事故与回滚加入评估集；提示词、工具或模型变化时重新评估审查器。</li><li>度量人工耗时，同时用回滚率和事故率守住质量。</li></ul></section>
+<section><h2>文章的方向</h2><p>批准 PR 仍然是人的决定。Claude Code 的公开审查产品提供问题发现，不代替人批准；Anthropic 自己的仓库则进一步允许部分低风险改动仅凭自动检查合并。</p><p>审查漏掉问题时，团队会问模型当时缺少什么信息，再把修正写进 <code>CLAUDE.md</code>、技能或新的检查中。目标没变：降低每项改动消耗的人工时间，同时不增加回滚和事故。</p><blockquote>核心不是把所有代码都交给机器，而是让机器承担可重复的检查，让人把时间花在方向、风险和证据上，并让每项改动都容易验证、监控和撤回。</blockquote></section>
+<footer class="source">中文译编，按原文结构整理并重绘流程图。图 D 数据、风险分级和流程描述来自原文。<br>原文：<a href="https://claude.dev/blog/solving-code-review-at-anthropic/">How the Claude Code team does code review</a> · 作者 Addy Osmani、Morgan Westlee Lunt、Qing Wang。</footer>
+</main></div></body></html>

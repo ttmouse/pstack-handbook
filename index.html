@@ -67,8 +67,18 @@ a:focus-visible{outline:2px solid var(--brand);outline-offset:3px;border-radius:
 /* ---------- rail ---------- */
 .rail{position:sticky;top:0;z-index:30;height:100dvh;overflow-y:auto;background:var(--raise);
   padding:28px 22px 48px;scrollbar-width:thin}
-.rail-head{display:flex;align-items:center;justify-content:space-between;margin:0 0 30px;padding:0}
+.rail-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 30px;padding:0}
 .wordmark{font-family:var(--display);font-size:17px;line-height:1.4;letter-spacing:.01em}
+.edition-switch{position:relative;min-width:0}
+.edition-switch summary{display:flex;align-items:center;gap:10px;cursor:pointer;list-style:none}
+.edition-switch summary::-webkit-details-marker{display:none}
+.edition-caret{width:7px;height:7px;border-right:1px solid var(--muted);border-bottom:1px solid var(--muted);transform:rotate(45deg) translateY(-2px);transition:transform .2s ease;flex:0 0 auto}
+.edition-switch[open] .edition-caret{transform:rotate(225deg) translateY(-2px)}
+.edition-switch summary:focus-visible,.toc-control:focus-visible{outline:2px solid var(--brand);outline-offset:4px}
+.edition-menu{position:absolute;top:calc(100% + 12px);left:0;z-index:60;min-width:230px;padding:6px;background:var(--raise);border:1px solid var(--line)}
+.edition-menu a{display:block;padding:9px 10px;color:var(--muted);font-size:14px;line-height:1.5;text-decoration:none}
+.edition-menu a:hover,.edition-menu a[aria-current="page"]{color:var(--ink);background:var(--brand-soft)}
+.toc-control{display:none;align-items:center;justify-content:center;min-width:28px;min-height:32px;cursor:pointer}
 .chev{display:none}
 .rail-list{list-style:none;margin:0;padding:0;font-size:14px;line-height:1.5}
 .rail-list li{margin:0;padding:0}
@@ -105,6 +115,9 @@ main :is(p,ul,ol,h3,h4,blockquote,.note,.search){max-width:var(--measure)}
   transition:background-color .26s ease,color .26s ease,transform .26s ease}
 .go:hover{background:var(--brand);color:var(--ground);transform:translateY(-2px)}
 .go:active{transform:translateY(0)}
+.cover-links{display:grid;gap:8px;min-width:220px;font-size:14px;line-height:1.5}
+.cover-links a{color:var(--muted);text-decoration:none}
+.cover-links a:hover{color:var(--brand);text-decoration:underline}
 
 /* ---------- headings ---------- */
 h2{display:block;
@@ -152,6 +165,16 @@ hr{border:0;height:56px;margin:0}
 .tag{font-size:14px;font-weight:600}
 .tag::after{content:"·";margin:0 .45em;font-weight:400;color:var(--muted)}
 .tag.hot{color:var(--brand)}
+.method-flow{list-style:none;counter-reset:method-step;max-width:52em;margin:28px 0 22px;padding:0}
+.method-flow>li{counter-increment:method-step;display:grid;grid-template-columns:38px minmax(0,1fr);gap:14px;position:relative;margin:0;padding:0 0 16px}
+.method-flow>li::before{content:counter(method-step);display:grid;place-items:center;width:36px;height:36px;border:1px solid var(--brand);border-radius:50%;background:var(--ground);color:var(--brand);font-family:var(--display);font-weight:600;font-variant-numeric:tabular-nums}
+.method-flow>li:not(:last-child)::after{content:"";position:absolute;left:17px;top:40px;bottom:0;border-left:1px solid var(--line)}
+.method-step{padding:14px 18px;border:1px solid var(--line);background:var(--raise)}
+.method-step-head{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;flex-wrap:wrap}
+.method-step-head h4{margin:0}
+.method-timing{border:1px solid var(--line);padding:2px 8px;font-size:13px;line-height:1.5;color:var(--muted)}
+.method-step p{max-width:none;margin:8px 0 0}
+.method-output{padding-top:8px;border-top:1px solid var(--line)}
 
 /* ---------- tables ---------- */
 .tw{max-width:52em;overflow-x:auto;margin:26px 0}
@@ -214,7 +237,8 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 @media (max-width:1080px){
   .shell{display:block}
   .rail{position:sticky;height:auto;max-height:100dvh;padding:0;background:var(--raise)}
-  .rail-head{cursor:pointer;min-height:56px;margin:0;padding:0 clamp(20px,5vw,34px)}
+  .rail-head{cursor:default;min-height:56px;margin:0;padding:0 clamp(20px,5vw,34px)}
+  .toc-control{display:flex}
   .chev{display:block;width:8px;height:8px;border-right:1.5px solid var(--ink);
     border-bottom:1.5px solid var(--ink);transform:rotate(45deg) translateY(-3px);
     transition:transform .3s ease}
@@ -230,7 +254,7 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
   .toc-toggle:checked ~ .shell .rail-list[hidden]{display:none}
   .rail-results a{padding:12px 8px 12px 0;font-size:16px}
   .rail-results .r-s{font-size:13px}
-  .toc-toggle:focus-visible ~ .shell .rail-head{outline:2px solid var(--brand);outline-offset:-3px}
+  .toc-toggle:focus-visible ~ .shell .toc-control{outline:2px solid var(--brand);outline-offset:2px}
   main{padding:0 clamp(20px,5vw,34px) 96px}
   .cover{min-height:auto;padding-top:clamp(30px,7vw,64px)}
   h2,h3,h4{scroll-margin-top:80px}
@@ -285,10 +309,17 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 <input type="checkbox" id="tocToggle" class="toc-toggle">
 <div class="shell">
 <nav class="rail" aria-label="章节目录">
-  <label class="rail-head" for="tocToggle">
-    <span class="wordmark">pstack 学习手册</span>
-    <span class="chev" aria-hidden="true"></span>
-  </label>
+  <div class="rail-head">
+    <details class="edition-switch">
+      <summary><span class="wordmark">pstack 学习手册</span><span class="edition-caret" aria-hidden="true"></span></summary>
+      <div class="edition-menu" aria-label="切换阅读页面">
+        <a href="index.html" aria-current="page">pstack 学习手册</a>
+        <a href="zh/index.html">pstack 原文全译</a>
+        <a href="code-review-cn.html">Claude Code 代码审查篇</a>
+      </div>
+    </details>
+    <label class="toc-control" for="tocToggle" aria-label="展开章节目录"><span class="chev" aria-hidden="true"></span></label>
+  </div>
   <div class="rail-search">
     <input id="search" placeholder="搜索全文" autocomplete="off">
     <ol class="rail-results" hidden></ol>
@@ -332,6 +363,10 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
       <div class="stat"><b>43</b><span>个技能</span></div>
       <div class="stat"><b>24</b><span>条原则</span></div>
     </div>
+    <nav class="cover-links" aria-label="更多阅读入口">
+      <a href="zh/index.html">阅读 pstack 原文全译 →</a>
+      <a href="code-review-cn.html">阅读 Claude Code 代码审查篇 →</a>
+    </nav>
   </div>
 </header>
 <h2 id="howto"><span class="num">0</span><span class="ttl">怎么用这本手册</span></h2>
@@ -433,6 +468,58 @@ done</code></pre>
 <figure class="devfig"><div class="figscroll"><svg viewBox="0 0 900 600" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="一个缺陷从复现到提交的六个步骤，第五步不通过时回到第二步"><defs><marker id="story-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0.5 L10,5 L0,9.5 z" fill="var(--muted)"/></marker></defs><rect x="195.0" y="31.0" width="470.0" height="58.0" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="430.0" y="53.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">1 先让它重现出来</text><text x="430.0" y="75.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">再点一次保存，数一数，真存了两条</text><rect x="195.0" y="117.0" width="470.0" height="58.0" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="430.0" y="139.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">2 猜几个可能的原因</text><text x="430.0" y="161.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">点了两下？请求发了两次？逻辑跑了两遍？</text><rect x="195.0" y="203.0" width="470.0" height="58.0" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="430.0" y="225.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">3 一个个排除，拿到运行时证据</text><text x="430.0" y="247.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">加一行日志，看这次点击发了几个请求</text><rect x="195.0" y="289.0" width="470.0" height="58.0" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="430.0" y="311.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">4 找到原因，只改那一处</text><text x="430.0" y="333.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">不是顺手多改几处</text><rect x="195.0" y="375.0" width="470.0" height="58.0" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="430.0" y="397.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">5 回到同一个地方再试一遍</text><text x="430.0" y="419.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">同一个入口，再点一次，数一数</text><rect x="195.0" y="461.0" width="470.0" height="58.0" fill="var(--panel2)" stroke="var(--line)" stroke-width="1.4"/><text x="430.0" y="483.0" text-anchor="middle" font-size="15" font-weight="600" fill="var(--fg)">6 交上去，写清是怎么回事</text><text x="430.0" y="505.0" text-anchor="middle" font-size="12.5" fill="var(--muted)">改了什么、为什么、怎么验的</text><line x1="430.0" y1="89.0" x2="430.0" y2="117.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#story-arrow)"/><line x1="430.0" y1="175.0" x2="430.0" y2="203.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#story-arrow)"/><line x1="430.0" y1="261.0" x2="430.0" y2="289.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#story-arrow)"/><line x1="430.0" y1="347.0" x2="430.0" y2="375.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#story-arrow)"/><line x1="430.0" y1="433.0" x2="430.0" y2="461.0" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#story-arrow)"/><path d="M 195.0 404.0 L 120.0 404.0 L 120.0 146.0 L 194.0 146.0" fill="none" stroke="var(--muted)" stroke-width="1.5" stroke-linejoin="round" stroke-dasharray="6 5" marker-end="url(#story-arrow)"/><text x="104.0" y="275.0" text-anchor="middle" font-size="12" font-weight="400" fill="var(--muted)" transform="rotate(-90 104.0 275.0)">不通就回头</text><rect x="672" y="208" width="212" height="128" fill="none" stroke="var(--line)" stroke-dasharray="6 5"/><text x="686.0" y="236.0" text-anchor="start" font-size="12.5" font-weight="400" fill="var(--accent2)">最容易被跳过的两步</text><text x="686.0" y="264.0" text-anchor="start" font-size="12.5" font-weight="400" fill="var(--muted)">第 2 步 猜原因</text><text x="686.0" y="288.0" text-anchor="start" font-size="12.5" font-weight="400" fill="var(--muted)">第 5 步 回原地再试</text><text x="686.0" y="316.0" text-anchor="start" font-size="12" font-weight="400" fill="var(--muted)">跳了，结论就不可信</text></svg></div><figcaption>六步里最容易跳过的是第二步和第五步。整套流程只是把这两步固定下来。</figcaption></figure>
 
 <p>这套东西做的，就是把这个顺序固定下来，并且要求每一步都留下能复查的痕迹。它不比你聪明，它只是不会偷懒跳过第二步和第五步。</p>
+
+<h3>这套方法怎样运转</h3>
+
+<p>五点连成的是一套工作系统，不是每个任务都从 1 跑到 5。前两步处理眼前的任务。第 3、4 步把反复踩到的问题变成代码约束和验证工具。第 5 步再按证据扩大委派范围。</p>
+
+<ol class="method-flow">
+  <li><div class="method-step">
+    <div class="method-step-head"><h4>先确认 Agent 理解了问题</h4><span class="method-timing">每项任务</span></div>
+    <p>让 Agent 用自己的话复述目标和完成标准。要求它说出不确定的地方；缺信息时先问清楚再动手。<code>/sharpen</code> 帮你把含糊的目标改写成清晰指令，<code>/in-your-own-words</code> 让它复述确认。</p>
+    <p class="method-output"><b>得到：</b>人和 Agent 对要解决的问题、边界和验收结果有同一理解。</p>
+  </div></li>
+  <li><div class="method-step">
+    <div class="method-step-head"><h4>让 Agent 读懂项目</h4><span class="method-timing">每项任务</span></div>
+    <p>你输入 <code>/how</code>，让它讲清这段代码怎么工作；输入 <code>/recall</code>，让它从历史会话和记录里整理出相关决策与结论。</p>
+    <p class="method-output"><b>得到：</b>它能指出要改哪里、为什么改，以及必须遵守哪些现有约束。</p>
+  </div></li>
+  <li><div class="method-step">
+    <div class="method-step-head"><h4>把反复教训写进工程约束</h4><span class="method-timing">问题重复或风险明确时</span></div>
+    <p>同类错误反复出现时，你运行 <code>/correct</code>，让它找出重复错误的根因，再改共享代码、架构或类型边界。能自动识别的错误，加 lint 或 CI 检查。不要只把同一句提醒再写进提示词。</p>
+    <p class="method-output"><b>得到：</b>正确路径更容易走，已知错误能被工具及时拦住。</p>
+  </div></li>
+  <li><div class="method-step">
+    <div class="method-step-head"><h4>让 Agent 能自己验证产品</h4><span class="method-timing">工具建好后，每项任务都会用</span></div>
+    <p>用功能地图说明用户怎样找到并使用功能，再给 Agent 能启动产品、操作界面和读取结果的工具。按问题类型加测试、fuzz 或形式化验证。</p>
+    <p class="method-output"><b>得到：</b>一条能重复运行的验收路径，以及截图、日志或断言等证据。</p>
+  </div></li>
+  <li><div class="method-step">
+    <div class="method-step-head"><h4>有证据后再扩大委派</h4><span class="method-timing">仅限验证覆盖的范围</span></div>
+    <p>由总协调 Agent 拆分任务，用 <code>/swarm</code> 并行处理互不冲突的部分。只有检查能稳定发现回归，才在这些范围启用自动执行。</p>
+    <p class="method-output"><b>得到：</b>更多并行工作，同时保留失败回退和独立的合并、发布权限。</p>
+  </div></li>
+</ol>
+
+<div class="note good"><b>关键是循环，不是编号。</b>第 1、2 步随每项任务重复。第 3 步由反复问题或已知风险触发。第 4 步的工具通常建一次、持续使用。第 5 步只扩大已经能验证的工作范围。验证失败就回到理解问题、修正代码或补强检查。所有斜杠技能都由你发起：你输入命令，或明确让 Agent 调用；执行阅读、修改和检查的是 Agent。</div>
+
+<h4>第一次修复：走第 1、2、4 步</h4>
+
+<p>第一次处理重复保存时，先确认目标、查清代码路径，再用已有验证工具验收。问题只出现一次，就先做到这里。</p>
+
+<ol>
+  <li><b>说清结果。</b>让 Agent 先复述目标：“在测试页每点一次保存，只新增一条记录。”</li>
+  <li><b>查清原因。</b>让它沿着按钮、请求和写入记录的路径排查。先找出第二条记录在哪一步产生，再决定改法。</li>
+  <li><b>用同一行为验收。</b>从空白测试列表开始，逐次点击保存五次，最后正好有五条记录。数量不对，就回到排查，不算完成。</li>
+</ol>
+
+<h4>同类问题再出现：走第 3 步，再评估第 5 步</h4>
+
+<p>如果这是一次孤立问题，修好并验证就够了，不必为它新造一条通用规则。如果其他页面也出现重复记录，就查它们是否共用同一段保存逻辑或重试机制。找到共同根因后，把限制放到那个位置，并给保存行为加一条能重复运行的检查。</p>
+
+<p>接下来，让 Agent 在一个低风险页面独立处理同类改动，并运行这条检查。只有检查能拦住重复记录，同时正常保存仍能通过，才扩大同类任务的委派范围。验证通过不等于自动合并或发布，这些权限仍按风险单独设置。第 7 章讲验证，第 8 章讲并行与规模。</p>
+
+<p>第 16 章的“外循环”讲需求从哪里来。这里的系统改进循环讲 Agent 做完任务后，怎样把经验变成更可靠的代码约束和验证能力。</p>
 
 <h3>名词是怎么长出来的</h3>
 
@@ -659,6 +746,8 @@ description: Find what a change could break somewhere else before it ships...
 
 <h4 class="pb" id="pb-14"><span class="pbnum">14</span><span class="pbtitle">Shipping 上线</span></h4>
 <p>一串 PR 已经绿了。绿不等于安全。每个 PR 先由一个没写过这段代码的代理独立验证，只有从根部连续通过的那一段才落地。</p>
+
+<div class="note good"><b>对照阅读：另一支团队如何设计整套代码审查。</b><p><a href="code-review-cn.html">Claude Code 团队如何做代码审查</a>：从提交前验证、分层审查和风险审批，延伸到分阶段发布与回滚。</p></div>
 
 <h4 class="pb" id="pb-15"><span class="pbnum">15</span><span class="pbtitle">Opening a PR 开 PR</span></h4>
 <p>每本 playbook 的收尾步骤。它管 PR 描述的结构、自测说明、风险与回滚。</p>
