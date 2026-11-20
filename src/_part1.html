@@ -291,6 +291,13 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 }
 
 @media print{
+  :root{
+    --ground:#fff;--raise:#fff;--raise-2:#f2f1ee;--ink:#000;--muted:#55595f;
+    --brand:#17563b;--brand-soft:#e3ebe5;--warn-bg:#f3e9e3;--good-bg:#e4ece6;--line:#ccc;
+    --panel:#fff;--panel2:#f2f1ee;--fg:#000;
+    --accent:#1f5fd0;--accent2:#8a5b12;--ok:#17724a;--bad:#a8321f;--code:#efeeea;
+  }
+  main :is(p,ul,ol,h3,h4,blockquote,.note,.search){max-width:var(--measure)}
   .rail,.search,.go,.chev{display:none!important}
   .shell{display:block}
   main{padding:0;max-width:none}

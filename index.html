@@ -291,6 +291,13 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 }
 
 @media print{
+  :root{
+    --ground:#fff;--raise:#fff;--raise-2:#f2f1ee;--ink:#000;--muted:#55595f;
+    --brand:#17563b;--brand-soft:#e3ebe5;--warn-bg:#f3e9e3;--good-bg:#e4ece6;--line:#ccc;
+    --panel:#fff;--panel2:#f2f1ee;--fg:#000;
+    --accent:#1f5fd0;--accent2:#8a5b12;--ok:#17724a;--bad:#a8321f;--code:#efeeea;
+  }
+  main :is(p,ul,ol,h3,h4,blockquote,.note,.search){max-width:var(--measure)}
   .rail,.search,.go,.chev{display:none!important}
   .shell{display:block}
   main{padding:0;max-width:none}
@@ -1906,7 +1913,7 @@ create-verification-skill  造一个能自己跑应用的验证技能</code></pr
 
 <p><b>停人的地方只有三类。</b>翻遍二十三本，必停人的只有：合并权、不可逆动作、产品或偏好判断。其余全部自动化。第 6 章「自主，但有几件事必须停」说的就是这条的判断层。</p>
 
-<footer class="colophon">
+<footer class="colophon" id="colophon">
   <p class="closing">pstack 学习手册</p>
   <p class="muted">本手册依据本机安装的 pstack 0.9.129 写成，单文件发布，样式与插图全部内联。版本升级后，第 3、4 章与附录 D 的数量与技能名可能变化，其余章节的判断不随版本改变。</p>
 </footer>

@@ -1,6 +1,6 @@
 ---
 name: verify
-description: 用真实浏览器驱动 pstack 手册，验证改动有没有坏。改完页面、合并前、或要复现一条报障时用。命令是 node .claude/skills/verify/scripts/verify.mjs，退出码 0 通过，1 失败，2 用法错误。
+description: 用真实浏览器驱动 pstack 手册，验证改动有没有坏。改完页面、合并前、或要复现一条报障时用。入口命令是 tools/check.sh（diagrams → build → verify 一条命令），退出码 0 通过，1 失败，2 用法错误。
 ---
 
 # verify
@@ -10,13 +10,22 @@ description: 用真实浏览器驱动 pstack 手册，验证改动有没有坏�
 ## 跑
 
 ```bash
-node .claude/skills/verify/scripts/verify.mjs              # 全部
+tools/check.sh                                             # diagrams → build → verify 一条命令，退出码即结论
+node .claude/skills/verify/scripts/verify.mjs              # 只跑浏览器验证（18 项 + extra，约 25s）
 node .claude/skills/verify/scripts/verify.mjs --feature contrast
-node .claude/skills/verify/scripts/verify.mjs --json       # 给脚本用
+node .claude/skills/verify/scripts/verify.mjs --json       # 给脚本用（带通道与耗时）
 node .claude/skills/verify/scripts/verify.mjs --out .audit/verify   # 每项留一张截图
+node .claude/skills/verify/scripts/verify.mjs --channel launch      # 不依赖常驻 Chrome，用自带 chromium 无头新开
+node .claude/skills/verify/scripts/verify.mjs --extra                # 加跑 extra 项（打印版式）
 ```
 
 退出码就是结论。0 通过，1 有失败，2 参数错。别读文字判断，读退出码。
+
+通道是实测定的（2026-11-20，记录在 `.audit/probe/`）：主通道 `cdp` 连本机常驻 headless Chrome（`http://127.0.0.1:9333`，可用 `VERIFY_CDP` 换端口），不在线会自动拉起（`--headless=new --user-data-dir=/tmp/cdp-d`）。选它是因为保真度——自带 chromium 的无头壳动画时序和真 Chrome 不一致，`reveal` 在那条通道 3/3 稳定误报，真 Chrome 3/3 通过。`--channel launch`（自带 chromium，快约 5s）留给本机没有 Chrome 或常驻实例起不来的场合。两条通道都是无头，有人在前台干活也不抢屏；远程会话用 headed `channel:'chrome'` 会无限卡死，别再用。
+
+依赖只有 python3 和 playwright。playwright 按 Node 的向上解析找，仓库住在 `~/projects` 下时直接命中 `~/node_modules`；clone 到别处跑 verify 报 `Cannot find playwright`，就在那个 clone 里 `npm i playwright`（diagrams/build 不受影响，干净 clone 重建产物字节一致）。
+
+门槛待拍板：`print-layout` 现在是 extra（`--extra` 或 `--feature print-layout` 才跑），要不要进默认必过套件等拍板；拍进就删掉 verify.mjs 里它的 `extra: true` 一行。
 
 ## 判据
 

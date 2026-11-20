@@ -17,10 +17,9 @@
 | 横向溢出 | 任意宽度 | `overflow` | 320 到 1440 五档都不横向滚动 |
 | 资源自足 | 打开页面 | `no-errors` | 无脚本报错、无外链请求 |
 | playbook 编号 | 第 3 章 | `playbook-numbers` | 01 起连续，不缺号 |
+| 打印版式 | 系统打印或导出 PDF | `print-layout` | A4 下版心众数在 490–560px（37em@10.5pt=518），深浅系统色下图面都是浅色，导轨隐藏、reveal 全可见、无横向溢出 |
+| 附录与页脚锚点 | 正文交叉引用点进附录 A–D；外链 `#colophon` 直达页脚 | `appendix-anchors` | 4 个附录锚点落点距视口顶 40–140px（scroll-margin 84），视口中点落在该节 offsetTop 区间内；页脚落点在视口内 |
 
-## 还没被覆盖的
+这张表的功能名和 `scripts/verify.mjs` 的 FEATURES 检查项 ID 一一对应。改页面时对着这张表看，别漏；新增功能先补检查（先红后绿）再动页面。
 
-这些功能存在，但没有对应检查。要动它们之前先补一条：
-
-- 打印样式（`@media print` 有规则，没有检查）
-- 页脚与附录的锚点
+`print-layout` 目前是 extra：`--feature print-layout` 或 `--extra` 才跑，进不进默认必过门槛待拍板。
