@@ -334,10 +334,18 @@ def build():
 <input type="checkbox" id="tocToggle" class="toc-toggle">
 <div class="shell">
 <nav class="rail" aria-label="文档目录">
-  <label class="rail-head" for="tocToggle">
-    <span class="wordmark">pstack 原文全译</span>
-    <span class="chev" aria-hidden="true"></span>
-  </label>
+  <div class="rail-head">
+    <details class="edition-switch">
+      <summary><span class="wordmark">pstack 原文全译</span><span class="edition-caret" aria-hidden="true"></span></summary>
+      <div class="edition-menu" aria-label="切换阅读页面">
+        <a href="../index.html">pstack 学习手册</a>
+        <a href="index.html" aria-current="page">pstack 原文全译</a>
+        <a href="../code-review-cn.html">Claude Code 代码审查篇</a>
+        <a href="../skills-cn.html">需要人来输入的技能</a>
+      </div>
+    </details>
+    <label class="toc-control" for="tocToggle" aria-label="展开章节目录"><span class="chev" aria-hidden="true"></span></label>
+  </div>
   <div class="rail-search">
     <input id="search" placeholder="搜索全文" autocomplete="off">
     <ol class="rail-results" hidden></ol>

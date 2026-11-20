@@ -152,6 +152,49 @@ const FEATURES = [
     },
   },
   {
+    id: 'edition-menu',
+    name: '左上角版本菜单完整弹出，不被侧栏裁剪',
+    viewport: 'laptop',
+    async run(p, browser) {
+      const probe = async (width, height) => {
+        const page = await browser.newPage({ viewport: { width, height } });
+        await page.goto(PAGE, { waitUntil: 'load' });
+        await page.click('.edition-switch summary');
+        await page.waitForTimeout(150);
+        const m = await page.evaluate(() => {
+          const rail = document.querySelector('.rail');
+          const menu = document.querySelector('.edition-menu');
+          const b = menu.getBoundingClientRect();
+          const hitsMenu = (x, y) =>
+            !!document.elementFromPoint(x, y)?.closest('.edition-menu');
+          const railClips = ['auto', 'scroll', 'hidden', 'clip'].includes(
+            getComputedStyle(rail).overflowY,
+          );
+          const railBox = rail.getBoundingClientRect();
+          return {
+            open: b.height > 0,
+            cutRight:
+              railClips && b.right > railBox.right + 1 &&
+              !hitsMenu(b.right - 5, b.top + b.height / 2),
+            cutBottom: railClips && !hitsMenu(b.left + b.width / 2, b.bottom - 5),
+            overflowPx: Math.max(0, Math.round(b.right - railBox.right)),
+          };
+        });
+        await page.close();
+        return m;
+      };
+      const lap = await probe(1180, 900);
+      const phone = await probe(390, 844);
+      const bad = [];
+      if (!lap.open || !phone.open) bad.push('菜单没展开');
+      if (lap.cutRight) bad.push(`桌面菜单右缘被裁掉 ${lap.overflowPx}px`);
+      if (lap.cutBottom) bad.push('桌面菜单下缘被裁');
+      if (phone.cutBottom) bad.push('窄屏菜单下缘被顶栏裁掉');
+      if (phone.cutRight) bad.push(`窄屏菜单右缘被裁掉 ${phone.overflowPx}px`);
+      return bad.length ? fail(bad.join('; ')) : ok('桌面和窄屏菜单都完整可见');
+    },
+  },
+  {
     id: 'chapter-nav',
     name: '点目录跳到对应章，章节标题不被顶栏压住',
     viewport: 'laptop',
