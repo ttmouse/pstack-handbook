@@ -67,7 +67,17 @@ a:focus-visible{outline:2px solid var(--brand);outline-offset:3px;border-radius:
 /* ---------- rail ---------- */
 .rail{position:sticky;top:0;z-index:30;height:100dvh;overflow-y:auto;background:var(--raise);
   padding:28px 22px 48px;scrollbar-width:thin}
-.rail-head{display:flex;align-items:center;justify-content:space-between;margin:0 0 30px;padding:0}
+.rail-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 30px;padding:0}
+.edition-switch{position:relative;min-width:0}
+.edition-switch summary{display:flex;align-items:center;gap:10px;cursor:pointer;list-style:none}
+.edition-switch summary::-webkit-details-marker{display:none}
+.edition-caret{width:7px;height:7px;border-right:1px solid var(--muted);border-bottom:1px solid var(--muted);transform:rotate(45deg) translateY(-2px);transition:transform .2s ease;flex:0 0 auto}
+.edition-switch[open] .edition-caret{transform:rotate(225deg) translateY(-2px)}
+.edition-switch summary:focus-visible,.toc-control:focus-visible{outline:2px solid var(--brand);outline-offset:4px}
+.edition-menu{position:absolute;top:calc(100% + 12px);left:0;z-index:60;min-width:230px;padding:6px;background:var(--raise);border:1px solid var(--line)}
+.edition-menu a{display:block;padding:9px 10px;color:var(--muted);font-size:14px;line-height:1.5;text-decoration:none}
+.edition-menu a:hover,.edition-menu a[aria-current="page"]{color:var(--ink);background:var(--brand-soft)}
+.toc-control{display:none;align-items:center;justify-content:center;min-width:28px;min-height:32px;cursor:pointer}
 .wordmark{font-family:var(--display);font-size:17px;line-height:1.4;letter-spacing:.01em}
 .chev{display:none}
 .rail-list{list-style:none;margin:0;padding:0;font-size:14px;line-height:1.5}
@@ -152,6 +162,16 @@ hr{border:0;height:56px;margin:0}
 .tag{font-size:14px;font-weight:600}
 .tag::after{content:"·";margin:0 .45em;font-weight:400;color:var(--muted)}
 .tag.hot{color:var(--brand)}
+.method-flow{list-style:none;counter-reset:method-step;max-width:52em;margin:28px 0 22px;padding:0}
+.method-flow>li{counter-increment:method-step;display:grid;grid-template-columns:38px minmax(0,1fr);gap:14px;position:relative;margin:0;padding:0 0 16px}
+.method-flow>li::before{content:counter(method-step);display:grid;place-items:center;width:36px;height:36px;border:1px solid var(--brand);border-radius:50%;background:var(--ground);color:var(--brand);font-family:var(--display);font-weight:600;font-variant-numeric:tabular-nums}
+.method-flow>li:not(:last-child)::after{content:"";position:absolute;left:17px;top:40px;bottom:0;border-left:1px solid var(--line)}
+.method-step{padding:14px 18px;border:1px solid var(--line);background:var(--raise)}
+.method-step-head{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;flex-wrap:wrap}
+.method-step-head h4{margin:0}
+.method-timing{border:1px solid var(--line);padding:2px 8px;font-size:13px;line-height:1.5;color:var(--muted)}
+.method-step p{max-width:none;margin:8px 0 0}
+.method-output{padding-top:8px;border-top:1px solid var(--line)}
 
 /* ---------- tables ---------- */
 .tw{max-width:52em;overflow-x:auto;margin:26px 0}
@@ -214,7 +234,8 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 @media (max-width:1080px){
   .shell{display:block}
   .rail{position:sticky;height:auto;max-height:100dvh;padding:0;background:var(--raise)}
-  .rail-head{cursor:pointer;min-height:56px;margin:0;padding:0 clamp(20px,5vw,34px)}
+  .rail-head{cursor:default;min-height:56px;margin:0;padding:0 clamp(20px,5vw,34px)}
+  .toc-control{display:flex}
   .chev{display:block;width:8px;height:8px;border-right:1.5px solid var(--ink);
     border-bottom:1.5px solid var(--ink);transform:rotate(45deg) translateY(-3px);
     transition:transform .3s ease}
@@ -230,7 +251,7 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
   .toc-toggle:checked ~ .shell .rail-list[hidden]{display:none}
   .rail-results a{padding:12px 8px 12px 0;font-size:16px}
   .rail-results .r-s{font-size:13px}
-  .toc-toggle:focus-visible ~ .shell .rail-head{outline:2px solid var(--brand);outline-offset:-3px}
+  .toc-toggle:focus-visible ~ .shell .toc-control{outline:2px solid var(--brand);outline-offset:2px}
   main{padding:0 clamp(20px,5vw,34px) 96px}
   .cover{min-height:auto;padding-top:clamp(30px,7vw,64px)}
   h2,h3,h4{scroll-margin-top:80px}
@@ -285,10 +306,18 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 <input type="checkbox" id="tocToggle" class="toc-toggle">
 <div class="shell">
 <nav class="rail" aria-label="章节目录">
-  <label class="rail-head" for="tocToggle">
-    <span class="wordmark">pstack 学习手册</span>
-    <span class="chev" aria-hidden="true"></span>
-  </label>
+  <div class="rail-head">
+    <details class="edition-switch">
+      <summary><span class="wordmark">pstack 学习手册</span><span class="edition-caret" aria-hidden="true"></span></summary>
+      <div class="edition-menu" aria-label="切换阅读页面">
+        <a href="index.html" aria-current="page">pstack 学习手册</a>
+        <a href="zh/index.html">pstack 原文全译</a>
+        <a href="code-review-cn.html">Claude Code 代码审查篇</a>
+        <a href="skills-cn.html">需要人来输入的技能</a>
+      </div>
+    </details>
+    <label class="toc-control" for="tocToggle" aria-label="展开章节目录"><span class="chev" aria-hidden="true"></span></label>
+  </div>
   <div class="rail-search">
     <input id="search" placeholder="搜索全文" autocomplete="off">
     <ol class="rail-results" hidden></ol>
@@ -297,7 +326,7 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
   <ol class="rail-list">
     <li><a href="#howto"><span class="n">0</span>怎么用这本手册</a></li>
     <li><a href="#story"><span class="n">0.5</span>十分钟，一个故事</a></li>
-    <li><a href="#map"><span class="n">1</span>全景：四层结构</a></li>
+    <li><a href="#map"><span class="n">1</span>全景：两条环和四层结构</a></li>
     <li><a href="#mech"><span class="n">2</span>技能如何运行</a></li>
     <li><a href="#playbooks"><span class="n">3</span>二十三本 playbook</a></li>
     <li><a href="#skills"><span class="n">4</span>技能全解</a></li>
@@ -323,7 +352,7 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 
 <header class="cover">
   <h1><span class="ln">pstack</span><span class="ln">学习手册</span></h1>
-  <p class="lede">拿到一个任务，能判断它该走哪条流程、核对技能选择、预判它会先做什么。陌生技能随时查。</p>
+  <p class="lede">拿到一个任务，能判断它该走哪条流程、核对技能选择、预判它会先做什么。这套能力是两条环里的内循环；决定做什么的外循环在第 16 章。陌生技能随时查。</p>
   <div class="cover-foot">
     <a class="go" href="#howto">开始读</a>
     <div class="stats">
@@ -379,7 +408,7 @@ done</code></pre>
   <li>派一个真实小任务，看它是否进入 poteto-mode、把步骤抄进待办清单。抄不出清单，等于没装好。</li>
 </ol>
 
-<div class="note"><b>装上只是下排。</b>技能装齐只解决「流程有没有」，不解决「今天该干什么」。这句出自第 16 章：外循环那半，没有任何插件替你装。</div>
+<div class="note"><b>装上只是下排。</b>技能装齐只解决「流程有没有」，不解决「今天该干什么」。两条环的全景在第 1 章开头；外循环那半没有任何插件替你装，搭法在第 16 章。</div>
 
 <h3>怎么读</h3>
 
@@ -403,6 +432,7 @@ done</code></pre>
 <tr><td>能核对技能选择是否合适</td><td>给三个真实任务，先选技能分组，再查表说明具体技能何时该用、何时不该用</td><td>4</td></tr>
 <tr><td>能设计一次可被机器判定的验收</td><td>给一个改动写出验收标准，别人照着跑能得出同样结论</td><td>7</td></tr>
 <tr><td>能判断一次并行该开几路、瓶颈在哪</td><td>给出任务和人数，说出上限与理由</td><td>8</td></tr>
+<tr><td>能说出两条环各管什么、缺外循环会怎样</td><td>合上书画出两条环，标出手册教的是哪一排，说出只装下排的症状</td><td>1、16</td></tr>
 </table>
 
 <div class="note"><b>重要前提。</b>手册描述的是本机安装的版本 0.9.129。作者原文写于更早的版本，数量对不上是正常的。看到任何二手文章里的数字，先怀疑，再本机核对。</div>
@@ -434,6 +464,58 @@ done</code></pre>
 
 <p>这套东西做的，就是把这个顺序固定下来，并且要求每一步都留下能复查的痕迹。它不比你聪明，它只是不会偷懒跳过第二步和第五步。</p>
 
+<h3>这套方法怎样运转</h3>
+
+<p>五点连成的是一套工作系统，不是每个任务都从 1 跑到 5。前两步处理眼前的任务。第 3、4 步把反复踩到的问题变成代码约束和验证工具。第 5 步再按证据扩大委派范围。</p>
+
+<ol class="method-flow">
+  <li><div class="method-step">
+    <div class="method-step-head"><h4>先确认 Agent 理解了问题</h4><span class="method-timing">每项任务</span></div>
+    <p>让 Agent 用自己的话复述目标和完成标准。要求它说出不确定的地方；缺信息时先问清楚再动手。<code>/sharpen</code> 帮你把含糊的目标改写成清晰指令，<code>/in-your-own-words</code> 让它复述确认。</p>
+    <p class="method-output"><b>得到：</b>人和 Agent 对要解决的问题、边界和验收结果有同一理解。</p>
+  </div></li>
+  <li><div class="method-step">
+    <div class="method-step-head"><h4>让 Agent 读懂项目</h4><span class="method-timing">每项任务</span></div>
+    <p>你输入 <code>/how</code>，让它讲清这段代码怎么工作；输入 <code>/recall</code>，让它从历史会话和记录里整理出相关决策与结论。</p>
+    <p class="method-output"><b>得到：</b>它能指出要改哪里、为什么改，以及必须遵守哪些现有约束。</p>
+  </div></li>
+  <li><div class="method-step">
+    <div class="method-step-head"><h4>把反复教训写进工程约束</h4><span class="method-timing">问题重复或风险明确时</span></div>
+    <p>同类错误反复出现时，你运行 <code>/correct</code>，让它找出重复错误的根因，再改共享代码、架构或类型边界。能自动识别的错误，加 lint 或 CI 检查。不要只把同一句提醒再写进提示词。</p>
+    <p class="method-output"><b>得到：</b>正确路径更容易走，已知错误能被工具及时拦住。</p>
+  </div></li>
+  <li><div class="method-step">
+    <div class="method-step-head"><h4>让 Agent 能自己验证产品</h4><span class="method-timing">工具建好后，每项任务都会用</span></div>
+    <p>用功能地图说明用户怎样找到并使用功能，再给 Agent 能启动产品、操作界面和读取结果的工具。按问题类型加测试、fuzz 或形式化验证。</p>
+    <p class="method-output"><b>得到：</b>一条能重复运行的验收路径，以及截图、日志或断言等证据。</p>
+  </div></li>
+  <li><div class="method-step">
+    <div class="method-step-head"><h4>有证据后再扩大委派</h4><span class="method-timing">仅限验证覆盖的范围</span></div>
+    <p>由总协调 Agent 拆分任务，用 <code>/swarm</code> 并行处理互不冲突的部分。只有检查能稳定发现回归，才在这些范围启用自动执行。</p>
+    <p class="method-output"><b>得到：</b>更多并行工作，同时保留失败回退和独立的合并、发布权限。</p>
+  </div></li>
+</ol>
+
+<div class="note good"><b>关键是循环，不是编号。</b>第 1、2 步随每项任务重复。第 3 步由反复问题或已知风险触发。第 4 步的工具通常建一次、持续使用。第 5 步只扩大已经能验证的工作范围。验证失败就回到理解问题、修正代码或补强检查。所有斜杠技能都由你发起：你输入命令，或明确让 Agent 调用；执行阅读、修改和检查的是 Agent。</div>
+
+<h4>第一次修复：走第 1、2、4 步</h4>
+
+<p>第一次处理重复保存时，先确认目标、查清代码路径，再用已有验证工具验收。问题只出现一次，就先做到这里。</p>
+
+<ol>
+  <li><b>说清结果。</b>让 Agent 先复述目标：“在测试页每点一次保存，只新增一条记录。”</li>
+  <li><b>查清原因。</b>让它沿着按钮、请求和写入记录的路径排查。先找出第二条记录在哪一步产生，再决定改法。</li>
+  <li><b>用同一行为验收。</b>从空白测试列表开始，逐次点击保存五次，最后正好有五条记录。数量不对，就回到排查，不算完成。</li>
+</ol>
+
+<h4>同类问题再出现：走第 3 步，再评估第 5 步</h4>
+
+<p>如果这是一次孤立问题，修好并验证就够了，不必为它新造一条通用规则。如果其他页面也出现重复记录，就查它们是否共用同一段保存逻辑或重试机制。找到共同根因后，把限制放到那个位置，并给保存行为加一条能重复运行的检查。</p>
+
+<p>接下来，让 Agent 在一个低风险页面独立处理同类改动，并运行这条检查。只有检查能拦住重复记录，同时正常保存仍能通过，才扩大同类任务的委派范围。验证通过不等于自动合并或发布，这些权限仍按风险单独设置。第 7 章讲验证，第 8 章讲并行与规模。</p>
+
+<p>第 16 章的“外循环”讲需求从哪里来。这里的系统改进循环讲 Agent 做完任务后，怎样把经验变成更可靠的代码约束和验证能力。</p>
+
 <h3>名词是怎么长出来的</h3>
 
 <p>上面那六步，被写成一份清单。清单不止一份，修毛病有一份，做新功能有一份，看别人提交的改动也有一份。这些清单叫 playbook。</p>
@@ -461,15 +543,23 @@ done</code></pre>
 
 <p>因为它把「靠自觉」换成了「靠流程」。自觉靠不住，尤其是让机器干活的时候。流程可以检查，自觉不能。</p>
 
-<p>剩下的十二章，都是在这六步上做加法。读完故事，你已经知道它在干什么了。</p>
+<p>剩下的十二章，都是在这六步上做加法。读完故事，你已经知道它在干什么了。还要在开头说清一件事：这个故事只讲了「把一件事做完」的那一半。活从哪来、该不该做，是另一半，这本手册只在第 16 章给框架。</p>
 
-<h2 id="map">1 全景：四层结构</h2>
+<h2 id="map">1 全景：两条环和四层结构</h2>
 
-<p>一句话：pstack 不是程序，是六十七份写给 AI 看的说明书，加一个负责分派的总管。</p>
+<h3>两条环，先定位这本手册</h3>
+
+<p>先看整条产线，再看这本手册教的那一半。整套体系是两条环。<b>外循环决定做什么</b>：活从哪来、该不该做、派给谁。<b>内循环决定做完了</b>：一次任务进来之后，怎么判断类型、走哪条清单、怎么验证、怎么交出去。两排之间只传两样东西：一句带完成标准的话，和一条回流的教训。</p>
+
+<!--FIG:outerloop-->
+
+<p>看清这张图，就知道了这本手册的位置：<b>第 1 到 15 章教的都是下排，也就是内循环。</b>把 pstack 装齐，装到的也是下排。上排没有任何插件提供，要自己搭，搭法在第 16 章。只装下排的症状是：工具很全，但不知道今天该干什么。</p>
+
+<h3>内循环的四层</h3>
+
+<p>下排的内容，一句话：pstack 不是程序，是六十七份写给 AI 看的说明书，加一个负责分派的总管。</p>
 
 <p>它的组织形式和一般「提示词库」不同。提示词库是平铺的，越用越乱。它是四层，每层职责单一。</p>
-
-<h3>四层</h3>
 
 <table>
 <tr><th>层</th><th>是什么</th><th>数量</th><th>能不能直接叫</th></tr>
