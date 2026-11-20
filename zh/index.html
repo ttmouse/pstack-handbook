@@ -66,8 +66,18 @@ a:focus-visible{outline:2px solid var(--brand);outline-offset:3px;border-radius:
 /* ---------- rail ---------- */
 .rail{position:sticky;top:0;z-index:30;height:100dvh;overflow-y:auto;background:var(--raise);
   padding:28px 22px 48px;scrollbar-width:thin}
-.rail-head{display:flex;align-items:center;justify-content:space-between;margin:0 0 30px;padding:0}
+.rail-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 30px;padding:0}
 .wordmark{font-family:var(--display);font-size:17px;line-height:1.4;letter-spacing:.01em}
+.edition-switch{position:relative;min-width:0}
+.edition-switch summary{display:flex;align-items:center;gap:10px;cursor:pointer;list-style:none}
+.edition-switch summary::-webkit-details-marker{display:none}
+.edition-caret{width:7px;height:7px;border-right:1px solid var(--muted);border-bottom:1px solid var(--muted);transform:rotate(45deg) translateY(-2px);transition:transform .2s ease;flex:0 0 auto}
+.edition-switch[open] .edition-caret{transform:rotate(225deg) translateY(-2px)}
+.edition-switch summary:focus-visible,.toc-control:focus-visible{outline:2px solid var(--brand);outline-offset:4px}
+.edition-menu{position:absolute;top:calc(100% + 12px);left:0;z-index:60;min-width:230px;padding:6px;background:var(--raise);border:1px solid var(--line)}
+.edition-menu a{display:block;padding:9px 10px;color:var(--muted);font-size:14px;line-height:1.5;text-decoration:none}
+.edition-menu a:hover,.edition-menu a[aria-current="page"]{color:var(--ink);background:var(--brand-soft)}
+.toc-control{display:none;align-items:center;justify-content:center;min-width:28px;min-height:32px;cursor:pointer}
 .chev{display:none}
 .rail-list{list-style:none;margin:0;padding:0;font-size:14px;line-height:1.5}
 .rail-list li{margin:0;padding:0}
@@ -213,7 +223,8 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 @media (max-width:1080px){
   .shell{display:block}
   .rail{position:sticky;height:auto;max-height:100dvh;padding:0;background:var(--raise)}
-  .rail-head{cursor:pointer;min-height:56px;margin:0;padding:0 clamp(20px,5vw,34px)}
+  .rail-head{cursor:default;min-height:56px;margin:0;padding:0 clamp(20px,5vw,34px)}
+  .toc-control{display:flex}
   .chev{display:block;width:8px;height:8px;border-right:1.5px solid var(--ink);
     border-bottom:1.5px solid var(--ink);transform:rotate(45deg) translateY(-3px);
     transition:transform .3s ease}
@@ -229,7 +240,7 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
   .toc-toggle:checked ~ .shell .rail-list[hidden]{display:none}
   .rail-results a{padding:12px 8px 12px 0;font-size:16px}
   .rail-results .r-s{font-size:13px}
-  .toc-toggle:focus-visible ~ .shell .rail-head{outline:2px solid var(--brand);outline-offset:-3px}
+  .toc-toggle:focus-visible ~ .shell .toc-control{outline:2px solid var(--brand);outline-offset:2px}
   main{padding:0 clamp(20px,5vw,34px) 96px}
   .cover{min-height:auto;padding-top:clamp(30px,7vw,64px)}
   h2,h3,h4{scroll-margin-top:80px}
@@ -312,10 +323,17 @@ mark{background:var(--brand-soft);color:inherit;padding:0 1px;border-radius:1px}
 <input type="checkbox" id="tocToggle" class="toc-toggle">
 <div class="shell">
 <nav class="rail" aria-label="文档目录">
-  <label class="rail-head" for="tocToggle">
-    <span class="wordmark">pstack 原文全译</span>
-    <span class="chev" aria-hidden="true"></span>
-  </label>
+  <div class="rail-head">
+    <details class="edition-switch">
+      <summary><span class="wordmark">pstack 原文全译</span><span class="edition-caret" aria-hidden="true"></span></summary>
+      <div class="edition-menu" aria-label="切换阅读页面">
+        <a href="../index.html">pstack 学习手册</a>
+        <a href="index.html" aria-current="page">pstack 原文全译</a>
+        <a href="../code-review-cn.html">Claude Code 代码审查篇</a>
+      </div>
+    </details>
+    <label class="toc-control" for="tocToggle" aria-label="展开章节目录"><span class="chev" aria-hidden="true"></span></label>
+  </div>
   <div class="rail-search">
     <input id="search" placeholder="搜索全文" autocomplete="off">
     <ol class="rail-results" hidden></ol>
